@@ -6,8 +6,7 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager instance = null;
 
-	private string monster = "green-monster-1";
-	private Text monsterSelected;
+	string monster = "green-monster-1";
 
 	void Awake() {
 		if(instance == null) {
@@ -16,27 +15,18 @@ public class GameManager : MonoBehaviour {
 		else if(instance != this) {
 			Destroy(gameObject);
 		}
+		DontDestroyOnLoad(this);
 	}
 
 	// Update is called once per frame
 	void Update () {
-		monsterSelected = GameObject.Find ("Text").GetComponent<Text>();
-		monsterSelected.text = monster;
 	}
 
-	public void setGreenMonster() {
-		setMonster("green-monster-1");
-	}
-
-	public void setBlueMonster() {
-		setMonster("blue-monster");
-	}
-
-	void setMonster(string color) {
+	public void setMonster(string color) {
 		this.monster = color;
 	}
-
-	string getMonster() {
+	
+	public string getMonster() {
 		return monster;
 	}
 }

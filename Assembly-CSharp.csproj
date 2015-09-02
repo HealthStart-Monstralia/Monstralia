@@ -46,13 +46,17 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\ChangeAudio.cs" />
+     <Compile Include="Assets\Scripts\ChangeSprite.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
-     <Compile Include="Assets\Scripts\LoadImage.cs" />
+     <Compile Include="Assets\Scripts\LoadSprite.cs" />
+     <Compile Include="Assets\Scripts\Loader.cs" />
      <Compile Include="Assets\Scripts\MonsterBehavior.cs" />
+     <Compile Include="Assets\Scripts\MuteAudio.cs" />
+     <Compile Include="Assets\Scripts\SaveData.cs" />
+     <Compile Include="Assets\Scripts\SetMonster.cs" />
+     <Compile Include="Assets\Scripts\SoundManager.cs" />
      <Compile Include="Assets\Scripts\SwitchScene.cs" />
      <None Include="Assets\UI\Fonts\averia_sans_libre\OFL.txt" />
-     <None Include="Assets\UI\Images\Monsters\greenmonster.bytes.txt" />
      <None Include="Assets\UI\Fonts\skranji\OFL.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
