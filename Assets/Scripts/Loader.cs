@@ -3,13 +3,13 @@ using System.Collections;
 
 public class Loader : MonoBehaviour {
 	
-	public GameObject gameManager;
-	public AudioClip backgroundMusic;
+	public GameObject singleton;
 
 	void Awake() { 
 
 		if(GameManager.instance == null) {
-			Instantiate(gameManager);
+			Instantiate(singleton);
 		}
+
 	}
 }
