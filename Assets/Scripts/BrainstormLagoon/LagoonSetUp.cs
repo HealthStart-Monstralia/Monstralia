@@ -7,11 +7,15 @@ public class LagoonSetUp : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		SoundManager.instance.LagoonSetup(clips);
+		Setup ();
 	}
 
-	// Update is called once per frame
-	void Update () {
-	
+	void Setup ()
+	{
+		SoundManager.instance.LagoonSetup (clips);
+	}
+
+	public void Teardown() {
+		SoundManager.instance.LagoonTearDown ();
 	}
 }
