@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager instance = null;
 
-	string monster = "green-monster-1";
+	string monster;
 
 	void Awake() {
 		if(instance == null) {
@@ -16,10 +16,6 @@ public class GameManager : MonoBehaviour {
 			Destroy(gameObject);
 		}
 		DontDestroyOnLoad(this);
-	}
-
-	// Update is called once per frame
-	void Update () {
 	}
 
 	public void setMonster(string color) {
