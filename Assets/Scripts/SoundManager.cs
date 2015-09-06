@@ -6,7 +6,7 @@ public class SoundManager : MonoBehaviour {
 	public static SoundManager instance = null;
 	bool muted = false;
 
-	AudioSource backgroundMusic;
+	public AudioSource backgroundMusic;
 	
 	void Awake () {
 		if(instance == null) {
@@ -27,6 +27,32 @@ public class SoundManager : MonoBehaviour {
 			AudioListener.pause = false;
 			muted = false;
 		}
+	}
+
+	public void LagoonSetup (AudioClip[] clips) {
+
+		if(!muted) {
+			backgroundMusic.Stop ();
+		}
+		foreach(AudioClip clip in clips) {
+			AudioSource newSource = gameObject.AddComponent<AudioSource>();
+			newSource.clip = clip;
+			newSource.loop = true;
+			newSource.playOnAwake = true;
+			newSource.volume = 0.5f;
+			newSource.Play();
+		}
+
+	}
+
+	public void LagoonTearDown() {
+		AudioSource[] sources = gameObject.GetComponents<AudioSource>();
+		foreach(AudioSource source in sources) {
+			if(source != backgroundMusic) {
+				Destroy(source);
+			}
+		}
+
 	}
 
 }
