@@ -49,11 +49,8 @@ public class SoundManager : MonoBehaviour {
 	}
 
 	public void LagoonTearDown() {
-		print("in LagoonTearDown");
 		AudioSource[] sources = gameObject.GetComponents<AudioSource>();
-		print("size of sources: " + sources.Length);
 		foreach(AudioSource source in sources) {
-			print("in loop");
 			if(source != backgroundMusic) {
 				Destroy(source);
 			}
