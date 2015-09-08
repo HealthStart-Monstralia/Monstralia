@@ -1,14 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class BrainbowGame : MonoBehaviour {
 
 	public static BrainbowGame instance;
 
-	public GameObject instructionsCanvas;
+	public GameObject gameoverCanvas;
 	public List<GameObject> foods;
 	public Transform[] spawnPoints;
+	public Text scoreText;
+	public Text timerText;
+
+	private int score;
+	private float startTime;
+	private float timeRemaining;
+	private float nextUpdate;
+	private bool timing;
 
 	void Awake() {
 		if(instance == null) {
@@ -19,15 +28,39 @@ public class BrainbowGame : MonoBehaviour {
 		}
 	}
 	void Start(){
+		score = 0;
+		startTime = Time.time;
+		timeRemaining = 45;
+		timerText.text = "Time: " + timeRemaining;
 		for(int i = 0; i < 4; ++i) {
 			print(i);
 			SpawnFood(spawnPoints[i]);
 		}
-		print("size of list: " + foods.Count);
+	}
+
+	void Update() {
+		scoreText.text = "Score: " + score;
+
+		if(score == 20 || timeRemaining <= 0f) {
+			GameOver();
+		}
+
+		if(timing) {
+			timeRemaining -= Time.deltaTime;
+			if(Time.time > nextUpdate) {
+				nextUpdate = Time.time+1;
+				timerText.text = "Time: " + (int)timeRemaining;
+			}
+		}
+	}
+
+	public void StartGame() {
+		timing = true;
 	}
 
 	public void Replace(GameObject toReplace) {
-		if(toReplace.GetComponent<Food>() != null) {
+		++score;
+		if(toReplace.GetComponent<Food>() != null && foods.Count > 0) {
 			SpawnFood(toReplace.GetComponent<Food>().getOrigin());
 		}
 	}
@@ -42,13 +75,11 @@ public class BrainbowGame : MonoBehaviour {
 		newFood.GetComponent<SpriteRenderer>().sortingOrder = 1;
 		foods.RemoveAt(randomIndex);
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		// print ("in Update of Brainbow game");
-		//if (Time.timeSinceLevelLoad < 3.0f)
-		//	print ("instructionsCanvas.name: " + instructionsCanvas.name);
+
+	void GameOver() {
+		timerText.gameObject.SetActive(false);
+		gameoverCanvas.gameObject.SetActive(true);
+		Text gameoverScore = gameoverCanvas.GetComponentInChildren<Text>();
+		gameoverScore.text = "Good job! You scored: " + score;
 	}
-
-
 }

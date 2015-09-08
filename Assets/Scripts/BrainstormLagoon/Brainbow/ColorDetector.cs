@@ -16,7 +16,6 @@ public class ColorDetector : Colorable {
 		if(other.GetComponent<Food>() != null) {
 			Food foodColor = other.gameObject.GetComponent<Food>();
 			if(foodColor.color == this.color && !Input.GetMouseButton(0)) {
-				print("colors match!");
 				Destroy(other.GetComponent<Collider2D>());
 				BrainbowGame.instance.Replace(other.gameObject);
 			}
