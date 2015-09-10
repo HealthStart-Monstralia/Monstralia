@@ -12,10 +12,10 @@ public class BrainbowGame : MonoBehaviour {
 	public Transform[] spawnPoints;
 	public Text scoreText;
 	public Text timerText;
+	public float timeRemaining;
 
 	private int score;
 	private float startTime;
-	private float timeRemaining;
 	private float nextUpdate;
 	private bool timing;
 
@@ -27,6 +27,7 @@ public class BrainbowGame : MonoBehaviour {
 			Destroy(gameObject);
 		}
 	}
+
 	void Start(){
 		score = 0;
 		startTime = Time.time;
