@@ -72,7 +72,7 @@ public class BrainbowGame : MonoBehaviour {
 		newFood.GetComponent<Food>().SetOrigin(spawnPos);
 		newFood.transform.SetParent (GameObject.Find ("FruitSpawnPanel").transform);
 		newFood.transform.localPosition = spawnPos.localPosition;
-		newFood.transform.localScale = new Vector3(17, 17, 0);
+		newFood.transform.localScale = new Vector3(25, 25, 0);
 		newFood.GetComponent<SpriteRenderer>().sortingOrder = 1;
 		foods.RemoveAt(randomIndex);
 	}
@@ -81,6 +81,6 @@ public class BrainbowGame : MonoBehaviour {
 		timerText.gameObject.SetActive(false);
 		gameoverCanvas.gameObject.SetActive(true);
 		Text gameoverScore = gameoverCanvas.GetComponentInChildren<Text>();
-		gameoverScore.text = "Good job! You scored: " + score;
+		gameoverScore.text = "Good job! You fed your monster: " + score + " healthy foods!";
 	}
 }
