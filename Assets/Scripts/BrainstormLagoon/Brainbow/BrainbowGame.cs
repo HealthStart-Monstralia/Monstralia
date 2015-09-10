@@ -34,7 +34,6 @@ public class BrainbowGame : MonoBehaviour {
 		timeRemaining = 45;
 		timerText.text = "Time: " + timeRemaining;
 		for(int i = 0; i < 4; ++i) {
-			print(i);
 			SpawnFood(spawnPoints[i]);
 		}
 	}
@@ -62,7 +61,7 @@ public class BrainbowGame : MonoBehaviour {
 	public void Replace(GameObject toReplace) {
 		++score;
 		if(toReplace.GetComponent<Food>() != null && foods.Count > 0) {
-			SpawnFood(toReplace.GetComponent<Food>().getOrigin());
+			SpawnFood(toReplace.GetComponent<Food>().GetOrigin());
 		}
 	}
 

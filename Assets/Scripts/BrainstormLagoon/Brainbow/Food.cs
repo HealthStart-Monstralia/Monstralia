@@ -9,10 +9,13 @@ public class Food : Colorable {
 	private Vector3 screenPoint;
 
 	private Transform origin;
+
+	private bool busy;
 	
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody2D>();
+		busy = false;
 	}
 	
 	// Update is called once per frame
@@ -38,7 +41,15 @@ public class Food : Colorable {
 		this.origin = origin;
 	}
 
-	public Transform getOrigin() {
+	public Transform GetOrigin() {
 		return origin;
+	}
+
+	public void SetBusy(bool busy) {
+		this.busy = busy;
+	}
+
+	public bool IsBusy() {
+		return busy;
 	}
 }
