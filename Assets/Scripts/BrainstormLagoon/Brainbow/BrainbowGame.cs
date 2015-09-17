@@ -10,6 +10,7 @@ public class BrainbowGame : MonoBehaviour {
 	private float startTime;
 	private float nextUpdate;
 	private bool timing;
+	private Food activeFood;
 
 	public GameObject gameoverCanvas;
 	public List<GameObject> foods;
@@ -81,7 +82,12 @@ public class BrainbowGame : MonoBehaviour {
 		foods.RemoveAt(randomIndex);
 	}
 
+	public void SetActiveFood(Food food) {
+		activeFood = food;
+	}
+
 	void GameOver() {
+		activeFood.StopMoving();
 		timerText.gameObject.SetActive(false);
 		gameoverCanvas.gameObject.SetActive(true);
 		Text gameoverScore = gameoverCanvas.GetComponentInChildren<Text>();

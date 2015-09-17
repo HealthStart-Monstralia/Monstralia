@@ -3,17 +3,16 @@ using System;
 
 public class Food : Colorable {
 
-	private Rigidbody2D rb;
-
 	private Vector3 offset;
 	private Vector3 screenPoint;
 	private Transform origin;
 	private bool busy;
+	private bool moving;
 	
 	// Use this for initialization
 	void Start () {
-		rb = GetComponent<Rigidbody2D>();
 		busy = false;
+		moving = false;
 	}
 	
 	// Update is called once per frame
@@ -22,7 +21,11 @@ public class Food : Colorable {
 	}
 
 	void OnMouseDown() {
-		offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+		if(!busy) {
+			moving = true;
+			BrainbowGame.GetInstance().SetActiveFood(this);
+			offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+		}
 	}
 
 	void OnMouseDrag() {
@@ -32,7 +35,7 @@ public class Food : Colorable {
 	}
 
 	void OnMouseUp() {
-		if(!busy) {
+		if(!busy && moving) {
 			gameObject.transform.position = GetOrigin().position;
 			SoundManager.GetInstance().PlayClip(BrainbowGame.GetInstance().wrongSound); 
 		}
@@ -52,5 +55,10 @@ public class Food : Colorable {
 
 	public bool IsBusy() {
 		return busy;
+	}
+
+	public void StopMoving() {
+		busy = true;
+		gameObject.transform.position = GetOrigin().position;
 	}
 }
