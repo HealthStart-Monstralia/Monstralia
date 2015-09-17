@@ -3,9 +3,8 @@ using System.Collections;
 
 public class SoundManager : MonoBehaviour {
 
-	public static SoundManager instance = null;
-	bool muted = false;
-
+	private static SoundManager instance = null;
+	private bool muted = false;
 	public AudioSource backgroundMusic;
 	
 	void Awake () {
@@ -16,6 +15,10 @@ public class SoundManager : MonoBehaviour {
 			Destroy(gameObject);
 		}
 		DontDestroyOnLoad(this);
+	}
+
+	public static SoundManager GetInstance() {
+		return instance;
 	}
 
 	public void mute() {

@@ -5,7 +5,11 @@ using UnityEngine.UI;
 
 public class BrainbowGame : MonoBehaviour {
 
-	public static BrainbowGame instance;
+	private static BrainbowGame instance;
+	private int score;
+	private float startTime;
+	private float nextUpdate;
+	private bool timing;
 
 	public GameObject gameoverCanvas;
 	public List<GameObject> foods;
@@ -13,11 +17,8 @@ public class BrainbowGame : MonoBehaviour {
 	public Text scoreText;
 	public Text timerText;
 	public float timeRemaining;
-
-	private int score;
-	private float startTime;
-	private float nextUpdate;
-	private bool timing;
+	public AudioClip correctSound;
+	public AudioClip wrongSound;
 
 	void Awake() {
 		if(instance == null) {
@@ -26,6 +27,10 @@ public class BrainbowGame : MonoBehaviour {
 		else if(instance != this) {
 			Destroy(gameObject);
 		}
+	}
+
+	public static BrainbowGame GetInstance() {
+		return instance;
 	}
 
 	void Start(){
