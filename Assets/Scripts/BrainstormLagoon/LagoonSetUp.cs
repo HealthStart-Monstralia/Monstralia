@@ -12,10 +12,10 @@ public class LagoonSetUp : MonoBehaviour {
 
 	void Setup ()
 	{
-		SoundManager.instance.LagoonSetup (clips);
+		SoundManager.GetInstance().LagoonSetup (clips);
 	}
 
 	public void Teardown() {
-		SoundManager.instance.LagoonTearDown ();
+		SoundManager.GetInstance().LagoonTearDown ();
 	}
 }

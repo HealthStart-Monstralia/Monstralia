@@ -6,7 +6,8 @@ public class SoundManager : MonoBehaviour {
 	private static SoundManager instance = null;
 	private bool muted = false;
 	public AudioSource backgroundMusic;
-	
+	public AudioSource SFXsource;
+
 	void Awake () {
 		if(instance == null) {
 			instance = this;
@@ -30,6 +31,11 @@ public class SoundManager : MonoBehaviour {
 			AudioListener.pause = false;
 			muted = false;
 		}
+	}
+
+	public void PlayClip(AudioClip clip) {
+		SFXsource.clip = clip;
+		SFXsource.Play ();
 	}
 
 	public void LagoonSetup (AudioClip[] clips) {
