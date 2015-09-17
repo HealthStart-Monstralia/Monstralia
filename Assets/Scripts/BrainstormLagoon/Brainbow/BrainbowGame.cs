@@ -7,7 +7,6 @@ public class BrainbowGame : MonoBehaviour {
 
 	private static BrainbowGame instance;
 	private int score;
-	private float startTime;
 	private float nextUpdate;
 	private bool timing;
 	private Food activeFood;
@@ -18,6 +17,7 @@ public class BrainbowGame : MonoBehaviour {
 	public Text scoreText;
 	public Text timerText;
 	public float timeRemaining;
+	public AudioClip backgroundMusic;
 	public AudioClip correctSound;
 	public AudioClip wrongSound;
 
@@ -36,12 +36,9 @@ public class BrainbowGame : MonoBehaviour {
 
 	void Start(){
 		score = 0;
-		startTime = Time.time;
 		timeRemaining = 45;
 		timerText.text = "Time: " + timeRemaining;
-		for(int i = 0; i < 4; ++i) {
-			SpawnFood(spawnPoints[i]);
-		}
+		SoundManager.GetInstance().ChangeBackgroundMusic(backgroundMusic);
 	}
 
 	void Update() {
@@ -62,6 +59,9 @@ public class BrainbowGame : MonoBehaviour {
 
 	public void StartGame() {
 		timing = true;
+		for(int i = 0; i < 4; ++i) {
+			SpawnFood(spawnPoints[i]);
+		}
 	}
 
 	public void Replace(GameObject toReplace) {

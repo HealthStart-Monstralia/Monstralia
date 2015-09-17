@@ -5,7 +5,8 @@ public class SoundManager : MonoBehaviour {
 
 	private static SoundManager instance = null;
 	private bool muted = false;
-	public AudioSource backgroundMusic;
+	public AudioClip gameBackgroundMusic;
+	public AudioSource backgroundSource;
 	public AudioSource SFXsource;
 
 	void Awake () {
@@ -38,10 +39,15 @@ public class SoundManager : MonoBehaviour {
 		SFXsource.Play ();
 	}
 
+	public void ChangeBackgroundMusic(AudioClip newBackgroundMusic) {
+		backgroundSource.clip = newBackgroundMusic;
+		backgroundSource.Play ();
+	}
+
 	public void LagoonSetup (AudioClip[] clips) {
 
 		if(!muted) {
-			backgroundMusic.Stop ();
+			backgroundSource.Stop ();
 		}
 		foreach(AudioClip clip in clips) {
 			AudioSource newSource = gameObject.AddComponent<AudioSource>();
@@ -54,17 +60,18 @@ public class SoundManager : MonoBehaviour {
 
 	}
 	void PlayBackgroundMusic() {
-		backgroundMusic.Play ();
+		backgroundSource.Play ();
 	}
 
-	public void LagoonTearDown() {
+	public void LagoonTearDown(bool toMainMap) {
 		AudioSource[] sources = gameObject.GetComponents<AudioSource>();
 		foreach(AudioSource source in sources) {
-			if(source != backgroundMusic) {
+			if(source != backgroundSource) {
 				Destroy(source);
 			}
 		}
-		PlayBackgroundMusic();
+		if(toMainMap)
+			PlayBackgroundMusic();
 	}
 
 }

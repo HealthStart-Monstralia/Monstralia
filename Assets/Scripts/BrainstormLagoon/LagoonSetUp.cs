@@ -15,7 +15,7 @@ public class LagoonSetUp : MonoBehaviour {
 		SoundManager.GetInstance().LagoonSetup (clips);
 	}
 
-	public void Teardown() {
-		SoundManager.GetInstance().LagoonTearDown ();
+	public void Teardown(bool toMainMap) {
+		SoundManager.GetInstance().LagoonTearDown (toMainMap);
 	}
 }
