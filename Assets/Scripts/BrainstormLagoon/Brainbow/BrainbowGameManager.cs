@@ -7,9 +7,8 @@ public class BrainbowGameManager : MonoBehaviour {
 
 	private static BrainbowGameManager instance;
 	private int score;
-	private float nextUpdate;
-	private bool timing;
 	private Food activeFood;
+	private bool gameStarted;
 
 	public GameObject gameoverCanvas;
 	public List<GameObject> foods;
@@ -17,7 +16,8 @@ public class BrainbowGameManager : MonoBehaviour {
 	public Transform spawnParent;
 	public Text scoreText;
 	public Text timerText;
-	public float timeRemaining;
+	public float timeLimit;
+	public Timer timer;
 	public AudioClip backgroundMusic;
 	public AudioClip correctSound;
 	public AudioClip wrongSound;
@@ -37,29 +37,31 @@ public class BrainbowGameManager : MonoBehaviour {
 
 	void Start(){
 		score = 0;
-		timeRemaining = 45;
-		timerText.text = "Time: " + timeRemaining;
+
+		if(timer != null) {
+			timer = Instantiate(timer);
+			timer.SetTimeLimit(this.timeLimit);
+		}
+		timerText.text = "Time: " + timer.TimeRemaining();
 		SoundManager.GetInstance().ChangeBackgroundMusic(backgroundMusic);
 	}
 
 	void Update() {
-		scoreText.text = "Score: " + score;
+		if(gameStarted) {
+			print("GAME IS STARTED");
+			scoreText.text = "Score: " + score;
 
-		if(score == 20 || timeRemaining <= 0f) {
-			GameOver();
-		}
-
-		if(timing) {
-			timeRemaining -= Time.deltaTime;
-			if(Time.time > nextUpdate) {
-				nextUpdate = Time.time+1;
-				timerText.text = "Time: " + (int)timeRemaining;
+			if(score == 20 || timer.TimeRemaining() <= 0f) {
+				GameOver();
 			}
+
+			timerText.text = "Time: " + (int)timer.TimeRemaining();
 		}
 	}
 
 	public void StartGame() {
-		timing = true;
+		gameStarted = true;
+		timer.StartTimer();
 		for(int i = 0; i < 4; ++i) {
 			SpawnFood(spawnPoints[i]);
 		}
@@ -73,14 +75,12 @@ public class BrainbowGameManager : MonoBehaviour {
 	}
 
 	void SpawnFood(Transform spawnPos) {
+		print("spawning a food");
 		int randomIndex = Random.Range (0, foods.Count);
 		GameObject newFood = Instantiate(foods[randomIndex]);
 		newFood.GetComponent<Food>().SetOrigin(spawnPos);
 		newFood.GetComponent<Food>().Spawn(spawnPos, spawnParent);
-		newFood.transform.SetParent (GameObject.Find ("FruitSpawnPanel").transform);
-		newFood.transform.localPosition = spawnPos.localPosition;
-		newFood.transform.localScale = new Vector3(25, 25, 0);
-		newFood.GetComponent<SpriteRenderer>().sortingOrder = 1;
+		SetActiveFood(newFood.GetComponent<Food>());
 		foods.RemoveAt(randomIndex);
 	}
 
@@ -89,6 +89,7 @@ public class BrainbowGameManager : MonoBehaviour {
 	}
 
 	void GameOver() {
+		timer.StopTimer();
 		activeFood.StopMoving();
 		timerText.gameObject.SetActive(false);
 		gameoverCanvas.gameObject.SetActive(true);

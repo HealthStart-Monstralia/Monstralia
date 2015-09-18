@@ -4,6 +4,7 @@ using System.Collections;
 public class MemoryMatchGameManager : MonoBehaviour {
 
 	private static MemoryMatchGameManager instance;
+	private bool timing;
 
 	public Transform foodToMatchSpawnPos;
 	public GameObject[] foods;
@@ -25,5 +26,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	public static MemoryMatchGameManager GetInstance() {
 		return instance;
+	}
+
+	public void StartGame() {
+		timing = true;
 	}
 }
