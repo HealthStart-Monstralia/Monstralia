@@ -48,7 +48,6 @@ public class BrainbowGameManager : MonoBehaviour {
 
 	void Update() {
 		if(gameStarted) {
-			print("GAME IS STARTED");
 			scoreText.text = "Score: " + score;
 
 			if(score == 20 || timer.TimeRemaining() <= 0f) {

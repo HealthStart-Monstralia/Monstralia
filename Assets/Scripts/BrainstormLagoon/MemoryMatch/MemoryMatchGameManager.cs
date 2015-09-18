@@ -4,10 +4,12 @@ using System.Collections;
 public class MemoryMatchGameManager : MonoBehaviour {
 
 	private static MemoryMatchGameManager instance;
-	private bool timing;
+	private bool gameStart;
 
 	public Transform foodToMatchSpawnPos;
 	public GameObject[] foods;
+	public Timer timer;
+	public float timeLimit;
 
 	// Use this for initialization
 	void Awake () {
@@ -16,6 +18,11 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		}
 		else if(instance != this) {
 			Destroy(gameObject);
+		}
+
+		if(timer != null) {
+			timer = Instantiate(timer);
+			timer.SetTimeLimit(timeLimit);
 		}
 	}
 
@@ -29,6 +36,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	public void StartGame() {
-		timing = true;
+		gameStart = true;
+		timer.StartTimer();
 	}
 }
