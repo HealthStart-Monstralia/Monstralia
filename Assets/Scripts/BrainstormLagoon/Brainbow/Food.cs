@@ -23,7 +23,7 @@ public class Food : Colorable {
 	void OnMouseDown() {
 		if(!busy) {
 			moving = true;
-			BrainbowGame.GetInstance().SetActiveFood(this);
+			BrainbowGameManager.GetInstance().SetActiveFood(this);
 			offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
 		}
 	}
@@ -37,8 +37,17 @@ public class Food : Colorable {
 	void OnMouseUp() {
 		if(!busy && moving) {
 			gameObject.transform.position = GetOrigin().position;
-			SoundManager.GetInstance().PlayClip(BrainbowGame.GetInstance().wrongSound); 
+			SoundManager.GetInstance().PlayClip(BrainbowGameManager.GetInstance().wrongSound); 
 		}
+	}
+
+	public void Spawn(Transform spawnPos, Transform parent) {
+		if(parent != null) {
+			gameObject.transform.SetParent (GameObject.Find ("FruitSpawnPanel").transform);
+		}
+		gameObject.transform.localPosition = spawnPos.localPosition;
+		gameObject.transform.localScale = new Vector3(25, 25, 0);
+		gameObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
 	}
 
 	public void SetOrigin(Transform origin) {

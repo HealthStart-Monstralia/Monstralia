@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class BrainbowGame : MonoBehaviour {
+public class BrainbowGameManager : MonoBehaviour {
 
-	private static BrainbowGame instance;
+	private static BrainbowGameManager instance;
 	private int score;
 	private float nextUpdate;
 	private bool timing;
@@ -14,6 +14,7 @@ public class BrainbowGame : MonoBehaviour {
 	public GameObject gameoverCanvas;
 	public List<GameObject> foods;
 	public Transform[] spawnPoints;
+	public Transform spawnParent;
 	public Text scoreText;
 	public Text timerText;
 	public float timeRemaining;
@@ -30,7 +31,7 @@ public class BrainbowGame : MonoBehaviour {
 		}
 	}
 
-	public static BrainbowGame GetInstance() {
+	public static BrainbowGameManager GetInstance() {
 		return instance;
 	}
 
@@ -75,6 +76,7 @@ public class BrainbowGame : MonoBehaviour {
 		int randomIndex = Random.Range (0, foods.Count);
 		GameObject newFood = Instantiate(foods[randomIndex]);
 		newFood.GetComponent<Food>().SetOrigin(spawnPos);
+		newFood.GetComponent<Food>().Spawn(spawnPos, spawnParent);
 		newFood.transform.SetParent (GameObject.Find ("FruitSpawnPanel").transform);
 		newFood.transform.localPosition = spawnPos.localPosition;
 		newFood.transform.localScale = new Vector3(25, 25, 0);

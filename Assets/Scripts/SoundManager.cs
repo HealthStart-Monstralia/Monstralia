@@ -66,7 +66,7 @@ public class SoundManager : MonoBehaviour {
 	public void LagoonTearDown(bool toMainMap) {
 		AudioSource[] sources = gameObject.GetComponents<AudioSource>();
 		foreach(AudioSource source in sources) {
-			if(source != backgroundSource) {
+			if(source != backgroundSource && source != SFXsource) {
 				Destroy(source);
 			}
 		}

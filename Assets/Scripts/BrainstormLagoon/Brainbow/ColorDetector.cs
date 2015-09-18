@@ -23,10 +23,10 @@ public class ColorDetector : Colorable {
 					food.SetBusy(true);
 					if(food.color == this.color) {
 						food.SetBusy(true);
-						SoundManager.GetInstance().PlayClip(BrainbowGame.GetInstance().correctSound);
+						SoundManager.GetInstance().PlayClip(BrainbowGameManager.GetInstance().correctSound);
 						other.gameObject.transform.position = destinations[nextDest++].position;
 						Destroy(other.GetComponent<Collider2D>());
-						BrainbowGame.GetInstance().Replace(other.gameObject);
+						BrainbowGameManager.GetInstance().Replace(other.gameObject);
 					}
 					else if(!Input.GetMouseButton(0)) {
 						food.SetBusy(false);
