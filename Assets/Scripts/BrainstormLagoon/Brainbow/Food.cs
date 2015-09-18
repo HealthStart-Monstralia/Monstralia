@@ -41,12 +41,12 @@ public class Food : Colorable {
 		}
 	}
 
-	public void Spawn(Transform spawnPos, Transform parent) {
+	public void Spawn(Transform spawnPos, Transform parent, float scale) {
 		if(parent != null) {
-			gameObject.transform.SetParent (GameObject.Find ("FruitSpawnPanel").transform);
+			gameObject.transform.SetParent (parent.transform);
 		}
 		gameObject.transform.localPosition = spawnPos.localPosition;
-		gameObject.transform.localScale = new Vector3(25, 25, 0);
+		gameObject.transform.localScale = new Vector3(scale, scale, 1);
 		gameObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
 	}
 

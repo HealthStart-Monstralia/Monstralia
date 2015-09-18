@@ -14,6 +14,7 @@ public class BrainbowGameManager : MonoBehaviour {
 	public List<GameObject> foods;
 	public Transform[] spawnPoints;
 	public Transform spawnParent;
+	public int foodScale;
 	public Text scoreText;
 	public Text timerText;
 	public float timeLimit;
@@ -74,11 +75,10 @@ public class BrainbowGameManager : MonoBehaviour {
 	}
 
 	void SpawnFood(Transform spawnPos) {
-		print("spawning a food");
 		int randomIndex = Random.Range (0, foods.Count);
 		GameObject newFood = Instantiate(foods[randomIndex]);
 		newFood.GetComponent<Food>().SetOrigin(spawnPos);
-		newFood.GetComponent<Food>().Spawn(spawnPos, spawnParent);
+		newFood.GetComponent<Food>().Spawn(spawnPos, spawnParent, foodScale);
 		SetActiveFood(newFood.GetComponent<Food>());
 		foods.RemoveAt(randomIndex);
 	}
