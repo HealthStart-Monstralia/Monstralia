@@ -42,6 +42,7 @@ public class DishBehavior : MonoBehaviour {
 			}
 			else {
 				top.GetComponent<SpriteRenderer>().enabled = false;
+				print(gameObject.name);
 				MemoryMatchGameManager.GetInstance().ChooseFoodToMatch();
 			}
 			isGuessing = false;

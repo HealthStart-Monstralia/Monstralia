@@ -10,7 +10,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	private bool gameStartup;
 	private int score;
 	private GameObject currentFoodToMatch;
-	public int difficultyLevel; //eventually make private
+	private int difficultyLevel; //eventually make private
 	private List<GameObject> activeFoods;
 
 	public Transform foodToMatchSpawnPos;
@@ -40,6 +40,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			timer.SetTimeLimit(timeLimit);
 		}
 		activeFoods = new List<GameObject>();
+		difficultyLevel = GameManager.GetInstance().GetLevel("MemoryMatch");
 	}
 
 	// Update is called once per frame
@@ -62,6 +63,8 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		gameStart = true;
 		timer.StartTimer();
 
+		SpawnDishes();
+
 		SelectFoods();
 
 		List<GameObject> copy = new List<GameObject>(activeFoods);
@@ -73,6 +76,13 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			dishes[i].GetComponent<DishBehavior>().SetFood(newFood.GetComponent<Food>());
 		}
 		gameStartup = false;
+	}
+
+	void SpawnDishes() {
+		print("difficulty Level : " + difficultyLevel*3);
+		for(int i = 0; i < difficultyLevel*3; ++i) {
+			dishes[i].SetActive(true);
+		}
 	}
 
 	void SelectFoods() {
@@ -120,6 +130,11 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	void GameOver() {
+		gameStart = false;
+		if(score >= difficultyLevel*3) {
+			GameManager.GetInstance().LevelUp("MemoryMatch");
+		}
+
 		timer.StopTimer();
 		timerText.gameObject.SetActive(false);
 		scoreText.gameObject.SetActive(false);
