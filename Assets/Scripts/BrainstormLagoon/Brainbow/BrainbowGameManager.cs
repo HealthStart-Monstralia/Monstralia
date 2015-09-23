@@ -9,6 +9,8 @@ public class BrainbowGameManager : MonoBehaviour {
 	private int score;
 	private BrainbowFood activeFood;
 	private bool gameStarted;
+	private int difficultyLevel;
+	private Dictionary<int, int> scoreGoals;
 
 	public Canvas gameoverCanvas;
 	public List<GameObject> foods;
@@ -30,6 +32,14 @@ public class BrainbowGameManager : MonoBehaviour {
 		else if(instance != this) {
 			Destroy(gameObject);
 		}
+		difficultyLevel = GameManager.GetInstance().GetLevel("Brainbow");
+
+		scoreGoals = new Dictionary<int, int>()
+		{
+			{1, 8},
+			{2, 12},
+			{3, 20}
+		};
 	}
 
 	public static BrainbowGameManager GetInstance() {
@@ -51,7 +61,7 @@ public class BrainbowGameManager : MonoBehaviour {
 		if(gameStarted) {
 			scoreText.text = "Score: " + score;
 
-			if(score == 20 || timer.TimeRemaining() <= 0f) {
+			if(score == scoreGoals[difficultyLevel] || timer.TimeRemaining() <= 0f) {
 				GameOver();
 			}
 
@@ -88,6 +98,11 @@ public class BrainbowGameManager : MonoBehaviour {
 	}
 
 	void GameOver() {
+		gameStarted = false;
+		if(score >= scoreGoals[difficultyLevel]) {
+			GameManager.GetInstance().LevelUp("Brainbow");
+		}
+
 		timer.StopTimer();
 		activeFood.StopMoving();
 		timerText.gameObject.SetActive(false);
