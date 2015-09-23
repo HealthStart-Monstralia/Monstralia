@@ -7,10 +7,10 @@ public class BrainbowGameManager : MonoBehaviour {
 
 	private static BrainbowGameManager instance;
 	private int score;
-	private Food activeFood;
+	private BrainbowFood activeFood;
 	private bool gameStarted;
 
-	public GameObject gameoverCanvas;
+	public Canvas gameoverCanvas;
 	public List<GameObject> foods;
 	public Transform[] spawnPoints;
 	public Transform spawnParent;
@@ -70,20 +70,20 @@ public class BrainbowGameManager : MonoBehaviour {
 	public void Replace(GameObject toReplace) {
 		++score;
 		if(toReplace.GetComponent<Food>() != null && foods.Count > 0) {
-			SpawnFood(toReplace.GetComponent<Food>().GetOrigin());
+			SpawnFood(toReplace.GetComponent<BrainbowFood>().GetOrigin());
 		}
 	}
 
 	void SpawnFood(Transform spawnPos) {
 		int randomIndex = Random.Range (0, foods.Count);
 		GameObject newFood = Instantiate(foods[randomIndex]);
-		newFood.GetComponent<Food>().SetOrigin(spawnPos);
-		newFood.GetComponent<Food>().Spawn(spawnPos, spawnParent, foodScale);
-		SetActiveFood(newFood.GetComponent<Food>());
+		newFood.GetComponent<BrainbowFood>().SetOrigin(spawnPos);
+		newFood.GetComponent<BrainbowFood>().Spawn(spawnPos, spawnParent, foodScale);
+		SetActiveFood(newFood.GetComponent<BrainbowFood>());
 		foods.RemoveAt(randomIndex);
 	}
 
-	public void SetActiveFood(Food food) {
+	public void SetActiveFood(BrainbowFood food) {
 		activeFood = food;
 	}
 

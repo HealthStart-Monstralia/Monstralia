@@ -46,14 +46,17 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\BrainstormLagoon\Brainbow\BrainbowFood.cs" />
      <Compile Include="Assets\Scripts\BrainstormLagoon\Brainbow\BrainbowGameManager.cs" />
      <Compile Include="Assets\Scripts\BrainstormLagoon\Brainbow\ColorDetector.cs" />
      <Compile Include="Assets\Scripts\BrainstormLagoon\Brainbow\Colorable.cs" />
-     <Compile Include="Assets\Scripts\BrainstormLagoon\Brainbow\Food.cs" />
      <Compile Include="Assets\Scripts\BrainstormLagoon\LagoonSetUp.cs" />
+     <Compile Include="Assets\Scripts\BrainstormLagoon\MemoryMatch\DishBehavior.cs" />
+     <Compile Include="Assets\Scripts\BrainstormLagoon\MemoryMatch\MemoryMatchFood.cs" />
      <Compile Include="Assets\Scripts\BrainstormLagoon\MemoryMatch\MemoryMatchGameManager.cs" />
      <Compile Include="Assets\Scripts\ChangeSprite.cs" />
      <Compile Include="Assets\Scripts\DontDestroy.cs" />
+     <Compile Include="Assets\Scripts\Food.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\LoadMonster.cs" />
      <Compile Include="Assets\Scripts\Loader.cs" />

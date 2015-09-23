@@ -17,7 +17,7 @@ public class ColorDetector : Colorable {
 	void OnTriggerStay2D(Collider2D other) {
 		if(!Input.GetMouseButton(0)) {
 			if(other.GetComponent<Food>() != null) {
-				Food food = other.gameObject.GetComponent<Food>();
+				BrainbowFood food = other.gameObject.GetComponent<BrainbowFood>();
 
 				if(!food.IsBusy ()) {
 					food.SetBusy(true);
@@ -30,7 +30,7 @@ public class ColorDetector : Colorable {
 					}
 					else if(!Input.GetMouseButton(0)) {
 						food.SetBusy(false);
-						other.gameObject.transform.position = other.GetComponent<Food>().GetOrigin().position;
+						other.gameObject.transform.position = other.GetComponent<BrainbowFood>().GetOrigin().position;
 					}
 				}
 			}
