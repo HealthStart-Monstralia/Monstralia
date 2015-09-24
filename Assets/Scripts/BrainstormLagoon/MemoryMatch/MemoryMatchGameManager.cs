@@ -100,7 +100,6 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	public void ChooseFoodToMatch() {
 		if(!gameStartup) {
-			print("UPDATING SCORE");
 			++score;
 		}
 

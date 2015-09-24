@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour {
 
 	private Dictionary<string, int> gameLevels;
+	private Dictionary<string, int> gameStars;
 
 	public static GameManager instance = null;
 
@@ -29,6 +30,10 @@ public class GameManager : MonoBehaviour {
 		gameLevels = new Dictionary<string, int>();
 		gameLevels.Add("Brainbow", 1);
 		gameLevels.Add("MemoryMatch", 1);
+
+		gameStars = new Dictionary<string, int>();
+		gameStars.Add ("Brainbow", 0);
+		gameStars.Add("MemoryMatch", 0);
 	}
 
 	public void setMonster(string color) {
@@ -44,12 +49,19 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public bool LevelUp(string gameName) {
-		print("current level for " + gameName + " is: " + gameLevels[gameName]);
-		if(gameLevels[gameName] < 3) {
-			print("leveling up: " + gameName + " to level" + (gameLevels[gameName] + 1));
-			gameLevels[gameName] += 1;
+		print("leveling up");
+		if(gameStars[gameName] <= 3) {
+			gameStars[gameName] += 1;
+			if(gameLevels[gameName] != 3){
+				gameLevels[gameName] += 1;
+			}
 			return true;
 		}
 		return false;
 	}
+
+	public int GetNumStars(string gameName) {
+		return gameStars[gameName];
+	}
+
 }
