@@ -39,6 +39,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			timer = Instantiate(timer);
 			timer.SetTimeLimit(timeLimit);
 		}
+
+		UpdateScoreText();
+
 		activeFoods = new List<GameObject>();
 		difficultyLevel = GameManager.GetInstance().GetLevel("MemoryMatch");
 	}
@@ -62,7 +65,6 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	public void StartGame() {
 		gameStartup = true;
-		gameStarted = true;
 
 		SpawnDishes();
 
@@ -78,9 +80,6 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		}
 
 		StartCoroutine(RevealDishes());
-
-		timer.StartTimer();
-		gameStartup = false;
 	}
 
 	void SpawnDishes() {
@@ -97,6 +96,10 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		foreach(GameObject d in dishes) {
 			d.GetComponent<DishBehavior>().top.GetComponent<SpriteRenderer>().enabled = true;
 		}
+		yield return new WaitForSeconds(1.0f);
+		gameStartup = false;
+		gameStarted = true;
+		timer.StartTimer();
 	}
 
 	void SelectFoods() {
@@ -115,7 +118,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public void ChooseFoodToMatch() {
 		if(!gameStartup) {
 			++score;
-			scoreText.text = "Score: " + score;
+			UpdateScoreText();
 		}
 
 		if(GameObject.Find ("ToMatchSpawnPos").transform.childCount > 0)
@@ -155,5 +158,13 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		gameOverCanvas.gameObject.SetActive(true);
 		Text gameOverText = gameOverCanvas.GetComponentInChildren<Text>();
 		gameOverText.text = "Great job! You matched " + score + " healthy foods!";
+	}
+
+	public bool isGameStarted() {
+		return gameStarted;
+	}
+
+	void UpdateScoreText() {
+		scoreText.text = "Score: " + score;
 	}
 }
