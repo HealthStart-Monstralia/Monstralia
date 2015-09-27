@@ -7,11 +7,9 @@ public class Timer : MonoBehaviour {
 
 	private bool timing;
 	private float timeRemaining;
-	private float nextUpdateTime;
 
 	void Start() {
 		timing = false;
-		nextUpdateTime = 0.0f;
 	}
 
 	// Update is called once per frame

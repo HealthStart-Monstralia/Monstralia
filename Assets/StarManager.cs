@@ -16,7 +16,6 @@ public class StarManager : MonoBehaviour {
 
 		foreach(GameObject starBase in starBases) {
 			int numStars = GameManager.GetInstance().GetNumStars(baseToGame[starBase.name]);
-			print("num stars for: " + starBase.name + " is: " + numStars);
 
 			for(int i = 0; i < numStars; ++i) {
 				starBase.transform.GetChild(i).gameObject.SetActive(true);

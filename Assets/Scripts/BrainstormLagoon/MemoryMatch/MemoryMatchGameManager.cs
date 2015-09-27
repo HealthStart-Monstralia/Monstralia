@@ -6,11 +6,11 @@ using UnityEngine.UI;
 public class MemoryMatchGameManager : MonoBehaviour {
 
 	private static MemoryMatchGameManager instance;
-	private bool gameStart;
+	private bool gameStarted;
 	private bool gameStartup;
 	private int score;
 	private GameObject currentFoodToMatch;
-	private int difficultyLevel; //eventually make private
+	private int difficultyLevel;
 	private List<GameObject> activeFoods;
 
 	public Transform foodToMatchSpawnPos;
@@ -45,13 +45,15 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(gameStart){
-			scoreText.text = "Score: " + score;
-			timerText.text = "Time: " + timer.TimeRemaining();
+		if(gameStarted){
 			if(score >= difficultyLevel*3 || timer.TimeRemaining () < 0) {
 				GameOver();
 			}
 		}
+	}
+
+	void FixedUpdate() {
+		timerText.text = "Time: " + timer.TimeRemaining();
 	}
 
 	public static MemoryMatchGameManager GetInstance() {
@@ -60,8 +62,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	public void StartGame() {
 		gameStartup = true;
-		gameStart = true;
-		timer.StartTimer();
+		gameStarted = true;
 
 		SpawnDishes();
 
@@ -75,13 +76,26 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			GameObject newFood = SpawnFood(copy, true, foodSpawnPos[i], foodParentPos[i], foodScale);
 			dishes[i].GetComponent<DishBehavior>().SetFood(newFood.GetComponent<Food>());
 		}
+
+		StartCoroutine(RevealDishes());
+
+		timer.StartTimer();
 		gameStartup = false;
 	}
 
 	void SpawnDishes() {
-		print("difficulty Level : " + difficultyLevel*3);
 		for(int i = 0; i < difficultyLevel*3; ++i) {
 			dishes[i].SetActive(true);
+		}
+	}
+
+	IEnumerator RevealDishes() {
+		foreach(GameObject d in dishes) {
+			d.GetComponent<DishBehavior>().top.GetComponent<SpriteRenderer>().enabled = false;
+		}
+		yield return new WaitForSeconds(3.0f);
+		foreach(GameObject d in dishes) {
+			d.GetComponent<DishBehavior>().top.GetComponent<SpriteRenderer>().enabled = true;
 		}
 	}
 
@@ -101,6 +115,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public void ChooseFoodToMatch() {
 		if(!gameStartup) {
 			++score;
+			scoreText.text = "Score: " + score;
 		}
 
 		if(GameObject.Find ("ToMatchSpawnPos").transform.childCount > 0)
@@ -129,7 +144,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	void GameOver() {
-		gameStart = false;
+		gameStarted = false;
 		if(score >= difficultyLevel*3) {
 			GameManager.GetInstance().LevelUp("MemoryMatch");
 		}
