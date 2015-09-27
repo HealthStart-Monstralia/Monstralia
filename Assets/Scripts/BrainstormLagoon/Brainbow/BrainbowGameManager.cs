@@ -59,26 +59,29 @@ public class BrainbowGameManager : MonoBehaviour {
 
 	void Update() {
 		if(gameStarted) {
-			scoreText.text = "Score: " + score;
-
-			if(score == scoreGoals[difficultyLevel] || timer.TimeRemaining() <= 0f) {
+			if(score == 20 || timer.TimeRemaining() <= 0.0f) {
 				GameOver();
 			}
+		}
+	}
 
-			timerText.text = "Time: " + (int)timer.TimeRemaining();
+	void FixedUpdate() {
+		if(gameStarted) {
+			timerText.text = "Time: " + timer.TimeRemaining();
 		}
 	}
 
 	public void StartGame() {
 		gameStarted = true;
-		timer.StartTimer();
 		for(int i = 0; i < 4; ++i) {
 			SpawnFood(spawnPoints[i]);
 		}
+		timer.StartTimer();
 	}
 
 	public void Replace(GameObject toReplace) {
 		++score;
+		scoreText.text = "Score: " + score;
 		if(toReplace.GetComponent<Food>() != null && foods.Count > 0) {
 			SpawnFood(toReplace.GetComponent<BrainbowFood>().GetOrigin());
 		}

@@ -15,12 +15,9 @@ public class Timer : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 		if(timing) {
 			timeRemaining -= Time.deltaTime;
-			if(Time.time > nextUpdateTime) {
-
-			}
 		}
 	
 	}
@@ -32,7 +29,6 @@ public class Timer : MonoBehaviour {
 
 	public void StartTimer() {
 		timing = true;
-		nextUpdateTime = Time.time + 1.0f;
 	}
 
 	public int TimeRemaining() {
