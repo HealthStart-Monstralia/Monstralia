@@ -23,7 +23,7 @@ public class BrainbowGameManager : MonoBehaviour {
 	public Timer timer;
 	public AudioClip backgroundMusic;
 	public AudioClip correctSound;
-	public AudioClip wrongSound;
+	public AudioClip incorrectSound;
 
 	void Awake() {
 		if(instance == null) {
