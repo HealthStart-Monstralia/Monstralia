@@ -23,7 +23,7 @@ public class BrainbowGameManager : MonoBehaviour {
 	public Timer timer;
 	public AudioClip backgroundMusic;
 	public AudioClip correctSound;
-	public AudioClip wrongSound;
+	public AudioClip incorrectSound;
 
 	void Awake() {
 		if(instance == null) {
@@ -53,6 +53,7 @@ public class BrainbowGameManager : MonoBehaviour {
 			timer = Instantiate(timer);
 			timer.SetTimeLimit(this.timeLimit);
 		}
+		scoreText.text = "Score: " + score;
 		timerText.text = "Time: " + timer.TimeRemaining();
 		SoundManager.GetInstance().ChangeBackgroundMusic(backgroundMusic);
 	}

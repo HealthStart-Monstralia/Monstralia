@@ -1,19 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Food.
+/// </summary>
 public abstract class Food : Colorable {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-	public virtual void Spawn(Transform spawnPos, Transform parent, float scale) {
+	public virtual void Spawn(Transform spawnPos, Transform parent = null, float scale = 1.0f) {
 		if(parent != null) {
 			gameObject.transform.SetParent (parent.transform);
 		}

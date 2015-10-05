@@ -69,7 +69,7 @@ public class BrainbowFood : Food {
 
 	void MoveBack () {
 		gameObject.transform.position = GetOrigin ().position;
-		SoundManager.GetInstance ().PlayClip (BrainbowGameManager.GetInstance ().wrongSound);
+		SoundManager.GetInstance ().PlayClip (BrainbowGameManager.GetInstance ().incorrectSound);
 	}
 
 	public void StopMoving() {
