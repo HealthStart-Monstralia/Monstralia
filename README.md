@@ -3,3 +3,7 @@ Gamifying good healthy habits for kids! Children ages 2-6 take control of a baby
 
 # If you would like to contribute
 All current development is on the 'unity' branch and the 'master' branch is for finalized changes.
+
+Setup:
+*Clone the repo to your local machine
+*Download the Unity game engine from https://unity3d.com
