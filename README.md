@@ -6,6 +6,7 @@ All current development is on the 'unity' branch and the 'master' branch is for 
 
 ## Setup:
 * Clone the repo to your local machine.
+* Run "git checkout unity" to switch to the unity branch.
 * Download the Unity game engine from https://unity3d.com
 * Go to your clone of the repo then /Assets/Scenes and click on any of the .unity files.
 * Unity should open and automatically import the project named "Monstralia."
