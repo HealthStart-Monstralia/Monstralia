@@ -1,7 +1,6 @@
 var searchData=
 [
   ['backgroundmusic',['backgroundMusic',['../class_brainbow_game_manager.html#a045dba3ea28132bc504049bc324d7bd2',1,'BrainbowGameManager']]],
-  ['backgroundsource',['backgroundSource',['../class_sound_manager.html#a99e232257cab4f1f35eaa03d2e987531',1,'SoundManager']]],
   ['basetogame',['baseToGame',['../class_star_manager.html#a3edaaa0ffd73682412627bb949424511',1,'StarManager']]],
   ['bottom',['bottom',['../class_dish_behavior.html#af971fc1b806c8398fa7e4737f55ac866',1,'DishBehavior']]],
   ['brainbowfood',['BrainbowFood',['../class_brainbow_food.html',1,'']]],

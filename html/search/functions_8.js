@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['playbackgroundmusic',['PlayBackgroundMusic',['../class_sound_manager.html#abdb93e4917b55c35d60ae8462909e7a2',1,'SoundManager']]],
-  ['playclip',['PlayClip',['../class_sound_manager.html#a88ebbda14f9cbbcd05ed907cf5578680',1,'SoundManager']]]
+  ['replace',['Replace',['../class_brainbow_game_manager.html#a4e744dd40166c5aa5ce9645154ed344c',1,'BrainbowGameManager']]],
+  ['revealdishes',['RevealDishes',['../class_memory_match_game_manager.html#a06cae5b0d50b10451099b8b6ab9d1a3b',1,'MemoryMatchGameManager']]]
 ];
