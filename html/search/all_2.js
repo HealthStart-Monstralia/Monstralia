@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['changebackgroundmusic',['ChangeBackgroundMusic',['../class_sound_manager.html#a5ce0d0b5c27e2cd7871d056ff6b3ac1f',1,'SoundManager']]],
   ['changed',['changed',['../class_change_sprite.html#a991f7fdbacbf11228b63bb3d03ffce49',1,'ChangeSprite']]],
   ['changesprite',['ChangeSprite',['../class_change_sprite.html',1,'']]],
   ['changesprite_2ecs',['ChangeSprite.cs',['../_change_sprite_8cs.html',1,'']]],
