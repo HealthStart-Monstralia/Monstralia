@@ -25,6 +25,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public Text timerText;
 	public Text scoreText;
 	public Canvas gameOverCanvas;
+	public AudioClip correctSound;
 
 	// Use this for initialization
 	void Awake () {
