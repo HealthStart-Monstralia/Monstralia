@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 /**
@@ -12,10 +13,14 @@ public class SoundManager : MonoBehaviour {
 
 	private static SoundManager instance = null; 	/*!< The singleton instance of this class */
 	private bool muted = false;						/*!< Flag for if the sound has been muted */
+	private bool setup;
 
 	public AudioClip gameBackgroundMusic;			/*!< The main background music for the game */
 	public AudioSource backgroundSource;			/*!< The AudioSource for the background music */
 	public AudioSource SFXsource;					/*!< The AudioSource for the sound effects */
+	public Slider volumeSlider;						/*!< The Slider that controls the background music volume*/
+	public AudioClip testClip;						/*!< AudioClip used to test ChangeSoundEffectsVolume*/
+	public Slider SFXslider;						/*!< The Slider that controls the sound effects volume*/
 
 	/** \cond */
 	void Awake () {
@@ -27,6 +32,14 @@ public class SoundManager : MonoBehaviour {
 			Destroy(gameObject);
 		}
 		DontDestroyOnLoad(this);
+	}
+
+	void Start() {
+		setup = true;
+		//set the value of the volume slider
+		volumeSlider.value = backgroundSource.volume;
+		SFXslider.value = SFXsource.volume;
+		setup = false;
 	}
 	/** /endcond */
 
@@ -63,11 +76,26 @@ public class SoundManager : MonoBehaviour {
 
 	/**
 	 * \brief Change the background music to a new clip.
-	 * @param newBackgroundMusic: the AudioClip of the new background music,
+	 * @param newBackgroundMusic: the AudioClip of the new background music.
 	 */
 	public void ChangeBackgroundMusic(AudioClip newBackgroundMusic) {
 		backgroundSource.clip = newBackgroundMusic;
 		backgroundSource.Play ();
+	}
+
+	/**
+	 * \brief Change the background music volume.
+	 * @param newVolume: the float value of the new volume.
+	 */
+	public void ChangeBackgroundVolume(float newVolume) {
+		backgroundSource.volume = newVolume;
+	}
+
+	public void ChangeSoundEffectsVolume(float newVolume) {
+		SFXsource.volume = newVolume;
+		if(!setup) {
+			PlayClip(testClip);
+		}
 	}
 
 	/**

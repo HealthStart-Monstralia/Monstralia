@@ -48,7 +48,9 @@ public class DishBehavior : MonoBehaviour {
 				top.GetComponent<SpriteRenderer>().enabled = true;
 			}
 			else {
-				top.GetComponent<SpriteRenderer>().enabled = false;
+				//top.GetComponent<SpriteRenderer>().enabled = false;
+				SoundManager.GetInstance().PlayClip(MemoryMatchGameManager.GetInstance().correctSound);
+				yield return new WaitForSeconds(.5f);
 				MemoryMatchGameManager.GetInstance().ChooseFoodToMatch();
 			}
 			//The player can now guess again.
