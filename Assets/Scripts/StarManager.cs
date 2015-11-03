@@ -19,6 +19,7 @@ public class StarManager : MonoBehaviour {
 
 			for(int i = 0; i < numStars; ++i) {
 				starBase.transform.GetChild(i).gameObject.SetActive(true);
+				starBase.transform.GetChild(i).gameObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
 			}
 		}
 	
