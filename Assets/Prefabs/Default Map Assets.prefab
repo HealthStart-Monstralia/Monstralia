@@ -10,8 +10,9 @@ GameObject:
   - 224: {fileID: 22483452}
   - 114: {fileID: 11488038}
   - 212: {fileID: 21271216}
-  - 82: {fileID: 8271910}
   - 114: {fileID: 11462250}
+  - 65: {fileID: 6564390}
+  - 65: {fileID: 6539454}
   m_Layer: 10
   m_Name: Monster Sprite
   m_TagString: Untagged
@@ -30,6 +31,7 @@ GameObject:
   - 222: {fileID: 22239512}
   - 114: {fileID: 11478996}
   - 114: {fileID: 11419128}
+  - 114: {fileID: 11431832}
   m_Layer: 5
   m_Name: CustomizeButton
   m_TagString: Untagged
@@ -55,75 +57,30 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!82 &8271910
-AudioSource:
+--- !u!65 &6539454
+BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 112102}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: b24e99fa0112142c79cc477b3a50ad46, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 2
-  Loop: 0
-  Mute: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    - time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
+  serializedVersion: 2
+  m_Size: {x: 10.3999996, y: 14.5, z: .200000003}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &6564390
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 112102}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10.3999996, y: 14.5, z: .200000003}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &11419128
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -163,20 +120,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 127970}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 11431832}
+        m_MethodName: loadScene
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -187,6 +133,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &11431832
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 115722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70955650897f8422da0c5875e43541f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneToLoad: StickerPage
 --- !u!114 &11441736
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -198,7 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -350,8 +308,8 @@ RectTransform:
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 70, y: 77}
-  m_SizeDelta: {x: 101, y: 101}
+  m_AnchoredPosition: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: .5, y: .5}
 --- !u!224 &22483452
 RectTransform:
@@ -361,13 +319,13 @@ RectTransform:
   m_GameObject: {fileID: 112102}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -5.00022554}
-  m_LocalScale: {x: 11, y: 11, z: 1}
+  m_LocalScale: {x: 12, y: 12, z: 1}
   m_Children: []
   m_Father: {fileID: 22427046}
   m_RootOrder: 1
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -73.7600021, y: 77.0699997}
+  m_AnchoredPosition: {x: -100, y: 100}
   m_SizeDelta: {x: 12.75, y: 16.5}
   m_Pivot: {x: .5, y: .5}
 --- !u!1001 &100100000
@@ -393,6 +351,10 @@ Prefab:
       propertyPath: clip
       value: 
       objectReference: {fileID: 8300000, guid: b24e99fa0112142c79cc477b3a50ad46, type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 127970}
