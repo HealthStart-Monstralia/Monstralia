@@ -150,6 +150,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	void GameOver() {
 		gameStarted = false;
 		if(score >= difficultyLevel*3) {
+			if(difficultyLevel == 1) {
+				GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Amygdala");
+			}
 			GameManager.GetInstance().LevelUp("MemoryMatch");
 		}
 
