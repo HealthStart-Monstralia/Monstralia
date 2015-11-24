@@ -576,20 +576,6 @@ RectTransform:
   m_PrefabParentObject: {fileID: 22413964, guid: d4aa7f1e0aade45a1ad228e455f9f9f9,
     type: 2}
   m_PrefabInternal: {fileID: 313633002}
---- !u!111 &313633007
-Animation:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 313633004}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 0}
-  m_Animations: []
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!95 &313633009
 Animator:
   serializedVersion: 3
@@ -607,6 +593,20 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!111 &313633011
+Animation:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 313633004}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &329227263 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 104094, guid: d4aa7f1e0aade45a1ad228e455f9f9f9, type: 2}
@@ -1850,6 +1850,7 @@ GameObject:
   - 4: {fileID: 1026224817}
   - 212: {fileID: 1026224818}
   - 95: {fileID: 1026224819}
+  - 111: {fileID: 1026224820}
   m_Layer: 0
   m_Name: Hand
   m_TagString: Untagged
@@ -1864,7 +1865,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1026224816}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 244, y: -225, z: -9606.46875}
+  m_LocalPosition: {x: 244, y: -224, z: -9606.46875}
   m_LocalScale: {x: 55.2683601, y: 55.2683678, z: 55.2683678}
   m_Children: []
   m_Father: {fileID: 1198866622}
@@ -1912,6 +1913,20 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!111 &1026224820
+Animation:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1026224816}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 93a75ec47454941a591274af38d30794, type: 2}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1033991191 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 174454, guid: d4aa7f1e0aade45a1ad228e455f9f9f9, type: 2}
@@ -3019,6 +3034,38 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!111 &1692924361
+Animation:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1692924356}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 075eccd9a85be4209a6dd6b8ad357848, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: aaa7635c8bffb4af3a27f6657a81ee1f, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+--- !u!95 &1692924362
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1692924356}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2a39850207a9b44a9ae340d624bb5925, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &1698109523
 GameObject:
   m_ObjectHideFlags: 0
@@ -3408,6 +3455,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 2048992136}
   - 212: {fileID: 2048992137}
+  - 95: {fileID: 2048992138}
   m_Layer: 0
   m_Name: panelbanana
   m_TagString: Untagged
@@ -3423,7 +3471,7 @@ Transform:
   m_GameObject: {fileID: 2048992135}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6, y: -212, z: -9606.61816}
-  m_LocalScale: {x: 23.489315, y: 23.4893188, z: 23.4893188}
+  m_LocalScale: {x: 21.6209526, y: 21.6209507, z: 21.6209507}
   m_Children: []
   m_Father: {fileID: 1198866622}
   m_RootOrder: 10
@@ -3453,6 +3501,23 @@ SpriteRenderer:
   m_SortingOrder: 12
   m_Sprite: {fileID: 21300000, guid: a4b8a7978b8014e39817f7d929516efd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
+--- !u!95 &2048992138
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2048992135}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e2a14e5e85bd648fb85b635050f3cc23, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!1 &2057680827
 GameObject:
   m_ObjectHideFlags: 0
@@ -3462,6 +3527,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 2057680828}
   - 212: {fileID: 2057680829}
+  - 95: {fileID: 2057680830}
   m_Layer: 0
   m_Name: banana
   m_TagString: Untagged
@@ -3477,7 +3543,7 @@ Transform:
   m_GameObject: {fileID: 2057680827}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: .170000002, y: .959999979, z: -14515}
-  m_LocalScale: {x: .887272298, y: .887272298, z: 35.4908905}
+  m_LocalScale: {x: .93568176, y: .93568176, z: 37.427269}
   m_Children: []
   m_Father: {fileID: 1692924354}
   m_RootOrder: 0
@@ -3507,6 +3573,23 @@ SpriteRenderer:
   m_SortingOrder: 12
   m_Sprite: {fileID: 21300000, guid: a4b8a7978b8014e39817f7d929516efd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
+--- !u!95 &2057680830
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2057680827}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: cba632768155544e39462693096bc275, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!224 &2137191318 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 22413964, guid: d4aa7f1e0aade45a1ad228e455f9f9f9,
