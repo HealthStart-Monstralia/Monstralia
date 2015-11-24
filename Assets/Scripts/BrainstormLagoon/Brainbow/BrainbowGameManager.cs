@@ -13,6 +13,7 @@ public class BrainbowGameManager : MonoBehaviour {
 	private Dictionary<int, int> scoreGoals;
 
 	public Canvas gameoverCanvas;
+	public Canvas stickerPopupCanvas;
 	public List<GameObject> foods;
 	public Transform[] spawnPoints;
 	public Transform spawnParent;
@@ -105,6 +106,7 @@ public class BrainbowGameManager : MonoBehaviour {
 		gameStarted = false;
 		if(score >= scoreGoals[difficultyLevel]) {
 			if(difficultyLevel == 1) {
+				stickerPopupCanvas.gameObject.SetActive(true);
 				GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Brainbow");
 			}
 			GameManager.GetInstance().LevelUp("Brainbow");
@@ -113,8 +115,15 @@ public class BrainbowGameManager : MonoBehaviour {
 		timer.StopTimer();
 		activeFood.StopMoving();
 		timerText.gameObject.SetActive(false);
-		gameoverCanvas.gameObject.SetActive(true);
-		Text gameoverScore = gameoverCanvas.GetComponentInChildren<Text>();
+
+		if(difficultyLevel > 1) {
+			DisplayGameOverCanvas ();
+		}
+	}
+
+	public void DisplayGameOverCanvas () {
+		gameoverCanvas.gameObject.SetActive (true);
+		Text gameoverScore = gameoverCanvas.GetComponentInChildren<Text> ();
 		gameoverScore.text = "Good job! You fed your monster: " + score + " healthy foods!";
 	}
 }

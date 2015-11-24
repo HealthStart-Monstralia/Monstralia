@@ -12,6 +12,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	private GameObject currentFoodToMatch;
 	private int difficultyLevel;
 	private List<GameObject> activeFoods;
+	private bool stickerCanvasIsUp;
 
 	public Transform foodToMatchSpawnPos;
 	public Transform[] foodSpawnPos;
@@ -25,6 +26,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public Text timerText;
 	public Text scoreText;
 	public Canvas gameOverCanvas;
+	public Canvas stickerPopupCanvas;
 	public AudioClip correctSound;
 
 	// Use this for initialization
@@ -151,6 +153,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		gameStarted = false;
 		if(score >= difficultyLevel*3) {
 			if(difficultyLevel == 1) {
+				stickerPopupCanvas.gameObject.SetActive(true);
 				GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Amygdala");
 			}
 			GameManager.GetInstance().LevelUp("MemoryMatch");
@@ -159,8 +162,14 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		timer.StopTimer();
 		timerText.gameObject.SetActive(false);
 		scoreText.gameObject.SetActive(false);
+		if(difficultyLevel > 1) {
+			DisplayGameOverPopup();
+		}
+	}
+
+	public void DisplayGameOverPopup () {
 		gameOverCanvas.gameObject.SetActive(true);
-		Text gameOverText = gameOverCanvas.GetComponentInChildren<Text>();
+		Text gameOverText = gameOverCanvas.GetComponentInChildren<Text> ();
 		gameOverText.text = "Great job! You matched " + score + " healthy foods!";
 	}
 
