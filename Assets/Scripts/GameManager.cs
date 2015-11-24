@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
 
 	private Dictionary<string, int> gameLevels;
 	private Dictionary<string, int> gameStars;
+	private List<string> brainStickers;
 
 	public static GameManager instance = null;
 
@@ -34,6 +35,8 @@ public class GameManager : MonoBehaviour {
 		gameStars = new Dictionary<string, int>();
 		gameStars.Add ("Brainbow", 0);
 		gameStars.Add("MemoryMatch", 0);
+
+		brainStickers = new List<string>();
 	}
 
 	public void setMonster(string color) {
@@ -62,6 +65,20 @@ public class GameManager : MonoBehaviour {
 
 	public int GetNumStars(string gameName) {
 		return gameStars[gameName];
+	}
+
+	//temporary solution
+	public void ActivateSticker(string region, string stickerName) {
+		if(region == "BrainstormLagoon") {
+			brainStickers.Add(stickerName);
+		}
+		else {
+			print("That region isn't implemented yet");
+		}
+	}
+
+	public List<string> GetStickers() {
+		return brainStickers;
 	}
 
 }

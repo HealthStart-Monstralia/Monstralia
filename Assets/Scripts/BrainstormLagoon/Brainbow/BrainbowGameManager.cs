@@ -104,6 +104,9 @@ public class BrainbowGameManager : MonoBehaviour {
 	void GameOver() {
 		gameStarted = false;
 		if(score >= scoreGoals[difficultyLevel]) {
+			if(difficultyLevel == 1) {
+				GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Brainbow");
+			}
 			GameManager.GetInstance().LevelUp("Brainbow");
 		}
 
