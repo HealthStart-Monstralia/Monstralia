@@ -83,6 +83,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneToLoad: BrainstormLagoon
+  loadingScreen: {fileID: 117540, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
 --- !u!114 &11411736
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -352,7 +353,11 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: loadingScreen
+      value: 
+      objectReference: {fileID: 117540, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 103334}

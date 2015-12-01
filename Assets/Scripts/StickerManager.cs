@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class StickerManager : MonoBehaviour {
 
-	public bool debug = true;
+	public bool debug;
 
 	public List<GameObject> stickers;
 

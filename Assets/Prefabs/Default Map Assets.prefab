@@ -33,11 +33,11 @@ GameObject:
   - 114: {fileID: 11419128}
   - 114: {fileID: 11431832}
   m_Layer: 5
-  m_Name: CustomizeButton
+  m_Name: StickerbookButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &127970
 GameObject:
@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneToLoad: StickerPage
+  loadingScreen: {fileID: 117540, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
 --- !u!114 &11441736
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -207,7 +208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Sprite: {fileID: 21300000, guid: ad1b24ecc79a14572874ea3a1ea7f342, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8e3f56b24865f4f0ab5928531a6cf945, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -355,6 +356,23 @@ Prefab:
       propertyPath: m_UiScaleMode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8e3f56b24865f4f0ab5928531a6cf945,
+        type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_Name
+      value: StickerbookButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: loadingScreen
+      value: 
+      objectReference: {fileID: 117540, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 127970}
