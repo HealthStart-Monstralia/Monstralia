@@ -26,6 +26,8 @@ public class BrainbowGameManager : MonoBehaviour {
 	public AudioClip correctSound;
 	public AudioClip incorrectSound;
 
+	public GameObject goImage;
+
 	void Awake() {
 		if(instance == null) {
 			instance = this;
@@ -73,12 +75,20 @@ public class BrainbowGameManager : MonoBehaviour {
 		}
 	}
 
-	public void StartGame() {
+	void StartGame() {
+		StartCoroutine(DisplayGo ());
 		gameStarted = true;
 		for(int i = 0; i < 4; ++i) {
 			SpawnFood(spawnPoints[i]);
 		}
 		timer.StartTimer();
+	}
+
+	IEnumerator DisplayGo ()
+	{
+		goImage.SetActive (true);
+		yield return new WaitForSeconds (1.0f);
+		goImage.SetActive (false);
 	}
 
 	public void Replace(GameObject toReplace) {

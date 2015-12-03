@@ -17,7 +17,7 @@ public class StickerManager : MonoBehaviour {
 		if(debug) {
 			activeStickers.Add("Cerebellum");
 			activeStickers.Add ("Frontal");
-			activeStickers.Add("Hippocampus");
+			activeStickers.Add("Amygdala");
 		}
 
 		foreach(string sticker in activeStickers) {

@@ -29,6 +29,8 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public Canvas stickerPopupCanvas;
 	public AudioClip correctSound;
 
+	public GameObject goImage;
+
 	// Use this for initialization
 	void Awake () {
 		if(instance == null) {
@@ -99,7 +101,10 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		foreach(GameObject d in dishes) {
 			d.GetComponent<DishBehavior>().top.GetComponent<SpriteRenderer>().enabled = true;
 		}
+		//CountdownManager.GetInstance().BeginCountdown();
+		goImage.SetActive(true);
 		yield return new WaitForSeconds(1.0f);
+		goImage.SetActive(false);
 		gameStartup = false;
 		gameStarted = true;
 		timer.StartTimer();
@@ -150,13 +155,11 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	void GameOver() {
-		print("GAME OVER!!!!!");
 		gameStarted = false;
 		if(score >= difficultyLevel*3) {
 			if(difficultyLevel == 1) {
-				print("DISPLAYING STICKER POPUP");
 				stickerPopupCanvas.gameObject.SetActive(true);
-				GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Amygdala");
+				GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Hippocampus");
 			}
 			GameManager.GetInstance().LevelUp("MemoryMatch");
 		}
@@ -170,7 +173,6 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	public void DisplayGameOverPopup () {
-		print("IN DISPLAYGAMEOVERPOPUP");
 		gameOverCanvas.gameObject.SetActive(true);
 		Text gameOverText = gameOverCanvas.GetComponentInChildren<Text> ();
 		gameOverText.text = "Great job! You matched " + score + " healthy foods!";

@@ -1527,6 +1527,64 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 495790398}
   m_Script: {fileID: 11500000, guid: 70955650897f8422da0c5875e43541f6, type: 3}
+--- !u!1001 &574518390
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 487448, guid: f20a34c32246f4fb582607f47a465573, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 487448, guid: f20a34c32246f4fb582607f47a465573, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 487448, guid: f20a34c32246f4fb582607f47a465573, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 487448, guid: f20a34c32246f4fb582607f47a465573, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 487448, guid: f20a34c32246f4fb582607f47a465573, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 487448, guid: f20a34c32246f4fb582607f47a465573, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 487448, guid: f20a34c32246f4fb582607f47a465573, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 487448, guid: f20a34c32246f4fb582607f47a465573, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 141060, guid: f20a34c32246f4fb582607f47a465573, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 21207190, guid: f20a34c32246f4fb582607f47a465573, type: 2}
+      propertyPath: m_SortingOrder
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 21223170, guid: f20a34c32246f4fb582607f47a465573, type: 2}
+      propertyPath: m_SortingOrder
+      value: 101
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: f20a34c32246f4fb582607f47a465573, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1 &574518391 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 141060, guid: f20a34c32246f4fb582607f47a465573, type: 2}
+  m_PrefabInternal: {fileID: 574518390}
 --- !u!224 &629082263 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 22482228, guid: 4644d7eaf153e425a8a362d8e7daf15b,
@@ -2958,7 +3016,8 @@ MonoBehaviour:
   timer: {fileID: 11425286, guid: acd22bf20657649ccb1fd20c60347a24, type: 2}
   backgroundMusic: {fileID: 8300000, guid: 3265aca7dd7cb4256a906218743de845, type: 3}
   correctSound: {fileID: 8300000, guid: 2a5d4400613f94b80b68d7eb65259fdb, type: 3}
-  incorrectSound: {fileID: 0}
+  incorrectSound: {fileID: 8300000, guid: 12e21f6ae835d402c8fb59a9c6ab4023, type: 3}
+  goImage: {fileID: 574518391}
 --- !u!1 &1780094927
 GameObject:
   m_ObjectHideFlags: 0
