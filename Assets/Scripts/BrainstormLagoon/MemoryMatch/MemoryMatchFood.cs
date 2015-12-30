@@ -12,4 +12,8 @@ public class MemoryMatchFood : Food {
 	void Update () {
 	
 	}
+
+	public void DisplaySubtitle() {
+		gameObject.GetComponent<Subtitle>().Display(gameObject.transform.position);
+	}
 }
