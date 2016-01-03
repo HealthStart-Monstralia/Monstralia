@@ -28,9 +28,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public Canvas gameOverCanvas;
 	public Canvas stickerPopupCanvas;
 	public AudioClip correctSound;
-
-	public GameObject goImage;
-
+	
 	// Use this for initialization
 	void Awake () {
 		if(instance == null) {
@@ -102,11 +100,29 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			d.GetComponent<DishBehavior>().top.GetComponent<SpriteRenderer>().enabled = true;
 		}
 		//CountdownManager.GetInstance().BeginCountdown();
-		goImage.SetActive(true);
-		yield return new WaitForSeconds(1.0f);
-		goImage.SetActive(false);
+		GameObject countdown3 = (GameObject)Instantiate(Resources.Load("Countdown3")); 
+		countdown3.SetActive (true);
+		yield return new WaitForSeconds (1.0f);
+		countdown3.SetActive (false);
+		
+		GameObject countdown2 = (GameObject)Instantiate(Resources.Load("Countdown2"));
+		countdown2.SetActive (true);
+		yield return new WaitForSeconds (1.0f);
+		countdown2.SetActive (false);
+		
+		GameObject countdown1 = (GameObject)Instantiate(Resources.Load("Countdown1"));
+		countdown1.SetActive (true);
+		yield return new WaitForSeconds (1.0f);
+		countdown1.SetActive (false);
+		
+		GameObject countdownGo = (GameObject)Instantiate(Resources.Load("CountdownGo"));
+		countdownGo.SetActive (true);
+		yield return new WaitForSeconds (1.0f);
+		countdownGo.SetActive (false); 
+
 		gameStartup = false;
 		gameStarted = true;
+
 		timer.StartTimer();
 	}
 
