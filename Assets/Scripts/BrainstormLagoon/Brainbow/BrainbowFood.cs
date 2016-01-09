@@ -48,7 +48,7 @@ public class BrainbowFood : Food {
 				ColorDetector detector = hit.collider.gameObject.GetComponent<ColorDetector>();
 				SoundManager.GetInstance().PlayClip(BrainbowGameManager.GetInstance().correctSound);
 				detector.AddFood(gameObject);
-				Destroy(gameObject.GetComponent<Collider2D>());
+				gameObject.GetComponent<Collider2D>().enabled = false;
 				BrainbowGameManager.GetInstance().Replace(gameObject);
 			}
 			else {
@@ -76,4 +76,5 @@ public class BrainbowFood : Food {
 		busy = true;
 		gameObject.transform.position = GetOrigin().position;
 	}
+	
 }
