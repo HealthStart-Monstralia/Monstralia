@@ -56,7 +56,7 @@ public class DishBehavior : MonoBehaviour {
 			}
 			//The player can now guess again.
 			isGuessing = false;
-			return true;
+			//return true;
 		}
 	}
 }

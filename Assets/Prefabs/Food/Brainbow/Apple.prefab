@@ -12,6 +12,7 @@ GameObject:
   - 114: {fileID: 11478930}
   - 58: {fileID: 5877550}
   - 50: {fileID: 5004644}
+  - 114: {fileID: 11453146}
   m_Layer: 0
   m_Name: Apple
   m_TagString: Untagged
@@ -48,6 +49,20 @@ CircleCollider2D:
   m_Offset: {x: .409999996, y: -.50999999}
   serializedVersion: 2
   m_Radius: 2
+--- !u!114 &11453146
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 137474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8d597286c17642fd8f081f8661f3b5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: Apple
+  clip: {fileID: 0}
+  subtitleBackground: {fileID: 134420, guid: abddf1eef92ef451faa9a62ff9167596, type: 2}
 --- !u!114 &11478930
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -125,6 +140,14 @@ Prefab:
       propertyPath: layerMask.m_Bits
       value: 2048
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: name
+      value: Apple
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: subtitleBackground
+      value: 
+      objectReference: {fileID: 134420, guid: abddf1eef92ef451faa9a62ff9167596, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 137474}
