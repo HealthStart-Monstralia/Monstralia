@@ -13,7 +13,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	private int difficultyLevel;
 	private List<GameObject> activeFoods;
 	private bool stickerCanvasIsUp;
-
+	
 	public Transform foodToMatchSpawnPos;
 	public Transform[] foodSpawnPos;
 	public Transform[] foodParentPos;

@@ -11,7 +11,7 @@ public class BrainbowGameManager : MonoBehaviour {
 	private bool gameStarted;
 	private int difficultyLevel;
 	private Dictionary<int, int> scoreGoals;
-
+	
 	public Canvas gameoverCanvas;
 	public Canvas stickerPopupCanvas;
 	public List<GameObject> foods;
@@ -74,34 +74,17 @@ public class BrainbowGameManager : MonoBehaviour {
 	}
 
 	void StartGame() {
-		StartCoroutine(DisplayGo ());	gameStarted = true;
+		DisplayGo ();	
+		gameStarted = true;
 		for(int i = 0; i < 4; ++i) {
 			SpawnFood(spawnPoints[i]);
 		}
 		timer.StartTimer();
 	}
 
-	IEnumerator DisplayGo ()
+	void DisplayGo ()
 	{
-		GameObject countdown3 = (GameObject)Instantiate(Resources.Load("Countdown3")); 
-		countdown3.SetActive (true);
-		yield return new WaitForSeconds (1.0f);
-		countdown3.SetActive (false);
-		
-		GameObject countdown2 = (GameObject)Instantiate(Resources.Load("Countdown2"));
-		countdown2.SetActive (true);
-		yield return new WaitForSeconds (1.0f);
-		countdown2.SetActive (false);
-		
-		GameObject countdown1 = (GameObject)Instantiate(Resources.Load("Countdown1"));
-		countdown1.SetActive (true);
-		yield return new WaitForSeconds (1.0f);
-		countdown1.SetActive (false);
-		
-		GameObject countdownGo = (GameObject)Instantiate(Resources.Load("CountdownGo"));
-		countdownGo.SetActive (true);
-		yield return new WaitForSeconds (1.0f);
-		countdownGo.SetActive (false);
+		StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
 	}
 
 	public void Replace(GameObject toReplace) {

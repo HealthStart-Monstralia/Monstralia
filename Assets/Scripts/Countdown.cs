@@ -3,28 +3,32 @@ using System.Collections;
 
 public class Countdown : MonoBehaviour {
 
+	public GameObject countdown1;
+	public GameObject countdown2;
+	public GameObject countdown3;
+	public GameObject countdownGo;
 
-	public IEnumerator RunCountdown () {
+	public IEnumerator RunCountdown() {
 
-		GameObject countdown3 = (GameObject)Instantiate(Resources.Load("Countdown3")); 
-		countdown3.SetActive (true);
+		GameObject count3 = (GameObject)Instantiate(countdown3);
+		count3.SetActive (true);
 		yield return new WaitForSeconds (1.0f);
-		countdown3.SetActive (false);
+		Destroy(count3);
 		
-		GameObject countdown2 = (GameObject)Instantiate(Resources.Load("Countdown2"));
-		countdown2.SetActive (true);
+		GameObject count2 = (GameObject)Instantiate(countdown2);
+		count2.SetActive (true);
 		yield return new WaitForSeconds (1.0f);
-		countdown2.SetActive (false);
+		Destroy(count2);
 		
-		GameObject countdown1 = (GameObject)Instantiate(Resources.Load("Countdown1"));
-		countdown1.SetActive (true);
+		GameObject count1 = (GameObject)Instantiate(countdown1);
+		count1.SetActive (true);
 		yield return new WaitForSeconds (1.0f);
-		countdown1.SetActive (false);
+		Destroy(count1);
 		
-		GameObject countdownGo = (GameObject)Instantiate(Resources.Load("CountdownGo"));
-		countdownGo.SetActive (true);
+		GameObject countGo = (GameObject)Instantiate(countdownGo);
+		countGo.SetActive (true);
 		yield return new WaitForSeconds (1.0f);
-		countdownGo.SetActive (false);
+		Destroy(countGo);
 	}
 
 }
