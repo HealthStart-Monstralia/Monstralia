@@ -25,9 +25,7 @@ public class BrainbowGameManager : MonoBehaviour {
 	public AudioClip backgroundMusic;
 	public AudioClip correctSound;
 	public AudioClip incorrectSound;
-
-	public GameObject goImage;
-
+	
 	void Awake() {
 		if(instance == null) {
 			instance = this;
@@ -76,8 +74,7 @@ public class BrainbowGameManager : MonoBehaviour {
 	}
 
 	void StartGame() {
-		StartCoroutine(DisplayGo ());
-		gameStarted = true;
+		StartCoroutine(DisplayGo ());	gameStarted = true;
 		for(int i = 0; i < 4; ++i) {
 			SpawnFood(spawnPoints[i]);
 		}
@@ -86,9 +83,25 @@ public class BrainbowGameManager : MonoBehaviour {
 
 	IEnumerator DisplayGo ()
 	{
-		goImage.SetActive (true);
+		GameObject countdown3 = (GameObject)Instantiate(Resources.Load("Countdown3")); 
+		countdown3.SetActive (true);
 		yield return new WaitForSeconds (1.0f);
-		goImage.SetActive (false);
+		countdown3.SetActive (false);
+		
+		GameObject countdown2 = (GameObject)Instantiate(Resources.Load("Countdown2"));
+		countdown2.SetActive (true);
+		yield return new WaitForSeconds (1.0f);
+		countdown2.SetActive (false);
+		
+		GameObject countdown1 = (GameObject)Instantiate(Resources.Load("Countdown1"));
+		countdown1.SetActive (true);
+		yield return new WaitForSeconds (1.0f);
+		countdown1.SetActive (false);
+		
+		GameObject countdownGo = (GameObject)Instantiate(Resources.Load("CountdownGo"));
+		countdownGo.SetActive (true);
+		yield return new WaitForSeconds (1.0f);
+		countdownGo.SetActive (false);
 	}
 
 	public void Replace(GameObject toReplace) {
