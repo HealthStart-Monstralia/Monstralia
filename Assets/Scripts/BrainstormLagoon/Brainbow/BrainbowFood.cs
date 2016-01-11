@@ -50,6 +50,8 @@ public class BrainbowFood : Food {
 				detector.AddFood(gameObject);
 				gameObject.GetComponent<Collider2D>().enabled = false;
 				BrainbowGameManager.GetInstance().Replace(gameObject);
+				Debug.Log ("About to call Subtitle.Display");
+				gameObject.GetComponent<Subtitle>().Display(gameObject, gameObject.transform.position + Vector3.up*5);
 			}
 			else {
 				MoveBack ();
