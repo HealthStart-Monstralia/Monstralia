@@ -29,6 +29,8 @@ public class Countdown : MonoBehaviour {
 		countGo.SetActive (true);
 		yield return new WaitForSeconds (1.0f);
 		Destroy(countGo);
+		if(BrainbowGameManager.GetInstance() != null)
+			BrainbowGameManager.GetInstance().StartGame ();
 	}
 
 }

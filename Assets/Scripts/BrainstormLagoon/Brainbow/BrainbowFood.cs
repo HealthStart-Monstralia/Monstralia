@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 public class BrainbowFood : Food {
 
@@ -50,8 +52,10 @@ public class BrainbowFood : Food {
 				detector.AddFood(gameObject);
 				gameObject.GetComponent<Collider2D>().enabled = false;
 				BrainbowGameManager.GetInstance().Replace(gameObject);
-				Debug.Log ("About to call Subtitle.Display");
-				gameObject.GetComponent<Subtitle>().Display(gameObject, gameObject.transform.position + Vector3.up*5);
+
+				// Subtitle work.
+				// Debug.Log ("About to call Subtitle.Display");
+				// gameObject.GetComponent<Subtitle>().Display(gameObject, gameObject.transform.position + Vector3.up*5);
 			}
 			else {
 				MoveBack ();
@@ -78,5 +82,13 @@ public class BrainbowFood : Food {
 		busy = true;
 		gameObject.transform.position = GetOrigin().position;
 	}
+
+	void OnTriggerEnter2D(Collider2D other) {
+		// Destroy(this.gameObject);
+		if (other.name == "EndGameAnimation(Clone)")
+			//Destroy (this.gameObject);
+			gameObject.SetActive (false);
+	}
 	
+
 }

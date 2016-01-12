@@ -44,7 +44,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 189320}
   m_Enabled: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
@@ -139,6 +139,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: name
       value: Cashews
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

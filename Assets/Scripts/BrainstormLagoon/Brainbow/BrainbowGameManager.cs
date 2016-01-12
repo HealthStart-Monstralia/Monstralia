@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class BrainbowGameManager : MonoBehaviour {
+public class BrainbowGameManager : AbstractGameManager {
 
 	private static BrainbowGameManager instance;
 	private int score;
@@ -15,6 +15,7 @@ public class BrainbowGameManager : MonoBehaviour {
 	public Canvas gameoverCanvas;
 	public Canvas stickerPopupCanvas;
 	public List<GameObject> foods;
+	public List<GameObject> inGameFoods = new List<GameObject>();
 	public Transform[] spawnPoints;
 	public Transform spawnParent;
 	public int foodScale;
@@ -25,6 +26,9 @@ public class BrainbowGameManager : MonoBehaviour {
 	public AudioClip backgroundMusic;
 	public AudioClip correctSound;
 	public AudioClip incorrectSound;
+
+	public bool animIsPlaying = false;
+	public GameObject endGameAnimation;
 	
 	void Awake() {
 		if(instance == null) {
@@ -62,7 +66,11 @@ public class BrainbowGameManager : MonoBehaviour {
 	void Update() {
 		if(gameStarted) {
 			if(score == 20 || timer.TimeRemaining() <= 0.0f) {
-				GameOver();
+				// Animation.
+				if(!animIsPlaying) {
+					Debug.Log ("About to play anim");
+					StartCoroutine(RunEndGameAnimation ());
+				}
 			}
 		}
 	}
@@ -73,8 +81,7 @@ public class BrainbowGameManager : MonoBehaviour {
 		}
 	}
 
-	void StartGame() {
-		DisplayGo ();	
+	public void StartGame() {
 		gameStarted = true;
 		for(int i = 0; i < 4; ++i) {
 			SpawnFood(spawnPoints[i]);
@@ -82,8 +89,7 @@ public class BrainbowGameManager : MonoBehaviour {
 		timer.StartTimer();
 	}
 
-	void DisplayGo ()
-	{
+	public void DisplayGo () {
 		StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
 	}
 
@@ -101,6 +107,7 @@ public class BrainbowGameManager : MonoBehaviour {
 		newFood.GetComponent<BrainbowFood>().SetOrigin(spawnPos);
 		newFood.GetComponent<BrainbowFood>().Spawn(spawnPos, spawnParent, foodScale);
 		SetActiveFood(newFood.GetComponent<BrainbowFood>());
+		inGameFoods.Add (newFood);
 		foods.RemoveAt(randomIndex);
 	}
 
@@ -108,7 +115,8 @@ public class BrainbowGameManager : MonoBehaviour {
 		activeFood = food;
 	}
 
-	void GameOver() {
+	override public void GameOver() {
+		Debug.Log ("In GameOver");
 		gameStarted = false;
 		if(score >= scoreGoals[difficultyLevel]) {
 			if(difficultyLevel == 1) {
@@ -118,13 +126,29 @@ public class BrainbowGameManager : MonoBehaviour {
 			GameManager.GetInstance().LevelUp("Brainbow");
 		}
 
-		timer.StopTimer();
-		activeFood.StopMoving();
+		if (activeFood != null) {
+			activeFood.StopMoving ();
+		}
 		timerText.gameObject.SetActive(false);
 
-		if(difficultyLevel > 1) {
+		if(difficultyLevel >= 1) {
 			DisplayGameOverCanvas ();
 		}
+	}
+
+	IEnumerator RunEndGameAnimation() {
+		animIsPlaying = true;
+		timer.StopTimer();
+
+		foreach (GameObject food in inGameFoods) {
+			food.GetComponent<Collider2D>().enabled = true;
+		}
+
+		GameObject animation = (GameObject)Instantiate(endGameAnimation);
+		animation.gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameManager.instance.getMonster());
+		Debug.Log ("Length: " + endGameAnimation.gameObject.GetComponent<Animator> ().runtimeAnimatorController.animationClips [0].length);
+		yield return new WaitForSeconds (endGameAnimation.gameObject.GetComponent<Animator> ().runtimeAnimatorController.animationClips [0].length);
+		GameOver ();
 	}
 
 	public void DisplayGameOverCanvas () {
