@@ -117,7 +117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   name: Squash
-  clip: {fileID: 0}
+  clip: {fileID: 8300000, guid: c5a58e8289eef42f68cbab672a6f9ff1, type: 3}
   subtitleBackground: {fileID: 134420, guid: abddf1eef92ef451faa9a62ff9167596, type: 2}
 --- !u!114 &11470592
 MonoBehaviour:
@@ -200,6 +200,10 @@ Prefab:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: clip
+      value: 
+      objectReference: {fileID: 8300000, guid: c5a58e8289eef42f68cbab672a6f9ff1, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 167922}

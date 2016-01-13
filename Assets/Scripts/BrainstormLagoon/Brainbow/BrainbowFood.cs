@@ -55,7 +55,7 @@ public class BrainbowFood : Food {
 
 				// Subtitle work.
 				// Debug.Log ("About to call Subtitle.Display");
-				// gameObject.GetComponent<Subtitle>().Display(gameObject, gameObject.transform.position + Vector3.up*5);
+				 gameObject.GetComponent<Subtitle>().Display(gameObject, gameObject.transform.position + Vector3.up*5);
 			}
 			else {
 				MoveBack ();

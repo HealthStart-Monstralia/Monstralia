@@ -17,12 +17,15 @@ public class Subtitle : MonoBehaviour {
 	}
 
 	public void Display(GameObject parent, Vector2 newPos) {
-		Debug.Log ("In Subtitle.Display");
 		GameObject background = (GameObject)Instantiate(subtitleBackground);
+		background.gameObject.SetActive(true);
 		background.transform.parent = parent.transform;
+		background.transform.localScale = parent.transform.localScale;
 		Text subText = background.GetComponentsInChildren<Text>()[0];
 		subText.text = "" + name;
 		background.transform.position = newPos;
-		background.gameObject.SetActive(true);
+
+		Debug.Log ("About to play clip");
+		SoundManager.GetInstance().PlayClip(clip);
 	}
 }
