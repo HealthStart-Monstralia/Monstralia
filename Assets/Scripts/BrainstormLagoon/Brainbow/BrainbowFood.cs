@@ -10,6 +10,7 @@ public class BrainbowFood : Food {
 	private Transform origin;
 	private bool busy;
 	private bool moving;
+	private static bool gameOver;
 
 	public LayerMask layerMask;
 	
@@ -17,23 +18,22 @@ public class BrainbowFood : Food {
 	void Start () {
 		busy = false;
 		moving = false;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
+		gameOver = false;
 	}
 
 	void OnMouseDown() {
-		if(!busy) {
+		if(!busy && !gameOver) {
 			moving = true;
 			BrainbowGameManager.GetInstance().SetActiveFood(this);
 			offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
+
+			//Display the food's name
+			StartCoroutine(gameObject.GetComponent<Subtitle>().Display(BrainbowGameManager.GetInstance().subtitlePanel, gameObject));
 		}
 	}
 	
 	void FixedUpdate() {
-		if(moving) {
+		if(moving && !gameOver) {
 			Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
 			Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
 			gameObject.GetComponent<Rigidbody2D>().MovePosition(curPosition);
@@ -48,14 +48,10 @@ public class BrainbowFood : Food {
 
 			if(hit.collider != null && hit.collider.gameObject.GetComponent<ColorDetector>().color == this.color) {
 				ColorDetector detector = hit.collider.gameObject.GetComponent<ColorDetector>();
-				SoundManager.GetInstance().PlayClip(BrainbowGameManager.GetInstance().correctSound);
+				SoundManager.GetInstance().PlaySFXClip(BrainbowGameManager.GetInstance().correctSound);
 				detector.AddFood(gameObject);
 				gameObject.GetComponent<Collider2D>().enabled = false;
 				BrainbowGameManager.GetInstance().Replace(gameObject);
-
-				// Subtitle work.
-				// Debug.Log ("About to call Subtitle.Display");
-				 gameObject.GetComponent<Subtitle>().Display(gameObject, gameObject.transform.position + Vector3.up*5);
 			}
 			else {
 				MoveBack ();
@@ -75,11 +71,11 @@ public class BrainbowFood : Food {
 
 	void MoveBack () {
 		gameObject.transform.position = GetOrigin ().position;
-		SoundManager.GetInstance ().PlayClip (BrainbowGameManager.GetInstance ().incorrectSound);
+		SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().incorrectSound);
 	}
 
 	public void StopMoving() {
-		busy = true;
+		gameOver = true;
 		gameObject.transform.position = GetOrigin().position;
 	}
 

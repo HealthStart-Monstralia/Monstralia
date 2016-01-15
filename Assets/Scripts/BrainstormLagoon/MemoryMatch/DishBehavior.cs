@@ -50,7 +50,7 @@ public class DishBehavior : MonoBehaviour {
 			}
 			else {
 				//top.GetComponent<SpriteRenderer>().enabled = false;
-				SoundManager.GetInstance().PlayClip(MemoryMatchGameManager.GetInstance().correctSound);
+				SoundManager.GetInstance().PlaySFXClip(MemoryMatchGameManager.GetInstance().correctSound);
 				yield return new WaitForSeconds(.5f);
 				MemoryMatchGameManager.GetInstance().ChooseFoodToMatch();
 			}

@@ -1822,7 +1822,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2072651096}
-        m_MethodName: ChangeSoundEffectsVolume
+        m_MethodName: ChangeSFXVolume
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4316,7 +4316,18 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2072651096}
+        m_MethodName: ChangeVoiceOverVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Slider+SliderEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &1844489218
@@ -4746,6 +4757,7 @@ GameObject:
   - 114: {fileID: 2072651096}
   - 82: {fileID: 2072651095}
   - 82: {fileID: 2072651098}
+  - 82: {fileID: 2072651099}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Manager
@@ -4764,7 +4776,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 8e038355eb8874c4f840d00addb9c7be, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: .600000024
+  m_Volume: .5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -4834,11 +4846,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameBackgroundMusic: {fileID: 8300000, guid: 8e038355eb8874c4f840d00addb9c7be, type: 3}
+  isPlayingVoiceOver: 0
   backgroundSource: {fileID: 2072651095}
   SFXsource: {fileID: 2072651098}
+  voiceOverSource: {fileID: 2072651099}
   volumeSlider: {fileID: 578656033}
-  testClip: {fileID: 8300000, guid: 3eaacd3e8e6b0463399829b013efce26, type: 3}
+  SFXtestClip: {fileID: 8300000, guid: 3eaacd3e8e6b0463399829b013efce26, type: 3}
   SFXslider: {fileID: 580856756}
+  voiceTestClip: {fileID: 8300000, guid: 0508bad1b495949d28797f190ddf7e4e, type: 3}
+  VoiceOverSlider: {fileID: 1835389040}
 --- !u!4 &2072651097
 Transform:
   m_ObjectHideFlags: 0
@@ -4862,7 +4878,76 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: .699999988
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+--- !u!82 &2072651099
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2072651094}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: .800000012
   m_Pitch: 1
   Loop: 0
   Mute: 0

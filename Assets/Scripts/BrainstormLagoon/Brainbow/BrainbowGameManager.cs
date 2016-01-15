@@ -11,6 +11,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	private bool gameStarted;
 	private int difficultyLevel;
 	private Dictionary<int, int> scoreGoals;
+	private bool animIsPlaying = false;
 	
 	public Canvas gameoverCanvas;
 	public Canvas stickerPopupCanvas;
@@ -26,9 +27,8 @@ public class BrainbowGameManager : AbstractGameManager {
 	public AudioClip backgroundMusic;
 	public AudioClip correctSound;
 	public AudioClip incorrectSound;
-
-	public bool animIsPlaying = false;
 	public GameObject endGameAnimation;
+	public GameObject subtitlePanel;
 	
 	void Awake() {
 		if(instance == null) {
@@ -68,8 +68,7 @@ public class BrainbowGameManager : AbstractGameManager {
 			if(score == 20 || timer.TimeRemaining() <= 0.0f) {
 				// Animation.
 				if(!animIsPlaying) {
-					Debug.Log ("About to play anim");
-					StartCoroutine(RunEndGameAnimation ());
+					EndGameTearDown();
 				}
 			}
 		}
@@ -104,6 +103,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	void SpawnFood(Transform spawnPos) {
 		int randomIndex = Random.Range (0, foods.Count);
 		GameObject newFood = Instantiate(foods[randomIndex]);
+		newFood.name = foods[randomIndex].name;
 		newFood.GetComponent<BrainbowFood>().SetOrigin(spawnPos);
 		newFood.GetComponent<BrainbowFood>().Spawn(spawnPos, spawnParent, foodScale);
 		SetActiveFood(newFood.GetComponent<BrainbowFood>());
@@ -116,8 +116,6 @@ public class BrainbowGameManager : AbstractGameManager {
 	}
 
 	override public void GameOver() {
-		Debug.Log ("In GameOver");
-		gameStarted = false;
 		if(score >= scoreGoals[difficultyLevel]) {
 			if(difficultyLevel == 1) {
 				stickerPopupCanvas.gameObject.SetActive(true);
@@ -126,19 +124,27 @@ public class BrainbowGameManager : AbstractGameManager {
 			GameManager.GetInstance().LevelUp("Brainbow");
 		}
 
-		if (activeFood != null) {
-			activeFood.StopMoving ();
-		}
-		timerText.gameObject.SetActive(false);
-
 		if(difficultyLevel >= 1) {
 			DisplayGameOverCanvas ();
 		}
 	}
 
+	void EndGameTearDown ()
+	{
+		gameStarted = false;
+		timer.StopTimer();
+
+		if (activeFood != null) {
+			activeFood.StopMoving ();
+		}
+
+		timerText.gameObject.SetActive (false);
+
+		StartCoroutine(RunEndGameAnimation());
+	}
+
 	IEnumerator RunEndGameAnimation() {
 		animIsPlaying = true;
-		timer.StopTimer();
 
 		foreach (GameObject food in inGameFoods) {
 			food.GetComponent<Collider2D>().enabled = true;
@@ -146,7 +152,6 @@ public class BrainbowGameManager : AbstractGameManager {
 
 		GameObject animation = (GameObject)Instantiate(endGameAnimation);
 		animation.gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameManager.instance.getMonster());
-		Debug.Log ("Length: " + endGameAnimation.gameObject.GetComponent<Animator> ().runtimeAnimatorController.animationClips [0].length);
 		yield return new WaitForSeconds (endGameAnimation.gameObject.GetComponent<Animator> ().runtimeAnimatorController.animationClips [0].length);
 		GameOver ();
 	}

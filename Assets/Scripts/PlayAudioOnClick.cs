@@ -6,6 +6,6 @@ public class PlayAudioOnClick : MonoBehaviour {
 	public AudioClip clip;
 
 	void OnMouseDown() {
-		SoundManager.GetInstance().PlayClip(clip);
+		SoundManager.GetInstance().PlaySFXClip(clip);
 	}
 }
