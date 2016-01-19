@@ -28,6 +28,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public Canvas gameOverCanvas;
 	public Canvas stickerPopupCanvas;
 	public AudioClip correctSound;
+	public GameObject subtitlePanel;
 	
 	// Use this for initialization
 	void Awake () {
@@ -99,25 +100,6 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		foreach(GameObject d in dishes) {
 			d.GetComponent<DishBehavior>().top.GetComponent<SpriteRenderer>().enabled = true;
 		}
-//		GameObject countdown3 = (GameObject)Instantiate(Resources.Load("Countdown3")); 
-//		countdown3.SetActive (true);
-//		yield return new WaitForSeconds (1.0f);
-//		countdown3.SetActive (false);
-//		
-//		GameObject countdown2 = (GameObject)Instantiate(Resources.Load("Countdown2"));
-//		countdown2.SetActive (true);
-//		yield return new WaitForSeconds (1.0f);
-//		countdown2.SetActive (false);
-//		
-//		GameObject countdown1 = (GameObject)Instantiate(Resources.Load("Countdown1"));
-//		countdown1.SetActive (true);
-//		yield return new WaitForSeconds (1.0f);
-//		countdown1.SetActive (false);
-//		
-//		GameObject countdownGo = (GameObject)Instantiate(Resources.Load("CountdownGo"));
-//		countdownGo.SetActive (true);
-//		yield return new WaitForSeconds (1.0f);
-//		countdownGo.SetActive (false); 
 
 		gameStartup = false;
 		StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
@@ -156,6 +138,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	GameObject SpawnFood(List<GameObject> foodsList, bool setAnchor, Transform spawnPos, Transform parent, float scale) {
 		int randomIndex = Random.Range (0, foodsList.Count);
 		GameObject newFood = Instantiate(foodsList[randomIndex]);
+		newFood.name = foodsList[randomIndex].name;
 		newFood.GetComponent<Food>().Spawn(spawnPos, parent, scale);
 		if(setAnchor) {
 			newFood.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1f);

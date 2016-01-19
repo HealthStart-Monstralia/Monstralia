@@ -813,6 +813,60 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+--- !u!1001 &438895294
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1933648704}
+    m_Modifications:
+    - target: {fileID: 411130, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 411130, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -297.76001
+      objectReference: {fileID: 0}
+    - target: {fileID: 411130, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 411130, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 411130, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 411130, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 411130, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 411130, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 187716, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &438895295 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 411130, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
+  m_PrefabInternal: {fileID: 438895294}
+--- !u!1 &438895296 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 187716, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
+  m_PrefabInternal: {fileID: 438895294}
 --- !u!4 &518633946 stripped
 Transform:
   m_PrefabParentObject: {fileID: 407294, guid: d4aa7f1e0aade45a1ad228e455f9f9f9, type: 2}
@@ -2671,6 +2725,7 @@ MonoBehaviour:
   gameOverCanvas: {fileID: 397233140}
   stickerPopupCanvas: {fileID: 1963199117}
   correctSound: {fileID: 8300000, guid: 3eaacd3e8e6b0463399829b013efce26, type: 3}
+  subtitlePanel: {fileID: 438895296}
 --- !u!4 &1491141534
 Transform:
   m_ObjectHideFlags: 0
@@ -2695,9 +2750,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   countdown1: {fileID: 111596, guid: c63a14c9bb6014332b9242277d8812e4, type: 2}
+  count1Clip: {fileID: 8300000, guid: e225b339188024323a6c9cde59c078c3, type: 3}
   countdown2: {fileID: 149756, guid: 4b0e633b26fdf46fda29d9cb8418636f, type: 2}
+  count2Clip: {fileID: 8300000, guid: 02bad7043b34d492cbff3bc311bb6604, type: 3}
   countdown3: {fileID: 162434, guid: 03e4996be2e744e4a91f59168acb0c04, type: 2}
+  count3Clip: {fileID: 8300000, guid: 8aebbe868483445329c045c4be782599, type: 3}
   countdownGo: {fileID: 108608, guid: 4aff7b1d991234e578dabe4dcaf36f5b, type: 2}
+  countGoClip: {fileID: 8300000, guid: 768ada77c2a3e4289992c90393b6b229, type: 3}
 --- !u!4 &1520152876 stripped
 Transform:
   m_PrefabParentObject: {fileID: 407294, guid: d4aa7f1e0aade45a1ad228e455f9f9f9, type: 2}
@@ -3565,6 +3624,7 @@ RectTransform:
   - {fileID: 928595307}
   - {fileID: 772577731}
   - {fileID: 1920118782}
+  - {fileID: 438895295}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 0}

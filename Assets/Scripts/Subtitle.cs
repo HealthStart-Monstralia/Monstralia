@@ -19,5 +19,6 @@ public class Subtitle : MonoBehaviour {
 		subtitlePanel.GetComponentsInChildren<Text>()[0].text = food.name;
 		SoundManager.GetInstance().PlayVoiceOverClip(clip);
 		yield return new WaitForSeconds(clip.length);
+		subtitlePanel.SetActive(false);
 	}
 }

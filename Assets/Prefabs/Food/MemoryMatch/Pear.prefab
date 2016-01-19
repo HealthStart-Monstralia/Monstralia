@@ -41,9 +41,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8d597286c17642fd8f081f8661f3b5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Pear
-  clip: {fileID: 0}
-  subtitleBackground: {fileID: 134420, guid: abddf1eef92ef451faa9a62ff9167596, type: 2}
+  clip: {fileID: 8300000, guid: 41457026bb69e463c9f35ff169faa93e, type: 3}
 --- !u!212 &21207474
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -102,6 +100,10 @@ Prefab:
       propertyPath: subtitleBackground
       value: 
       objectReference: {fileID: 134420, guid: abddf1eef92ef451faa9a62ff9167596, type: 2}
+    - target: {fileID: 0}
+      propertyPath: clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 41457026bb69e463c9f35ff169faa93e, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 148490}

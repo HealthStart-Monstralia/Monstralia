@@ -12,7 +12,7 @@ GameObject:
   - 114: {fileID: 11435080}
   - 114: {fileID: 11473536}
   m_Layer: 0
-  m_Name: Beans
+  m_Name: Green Beans
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,9 +41,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8d597286c17642fd8f081f8661f3b5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Green Beans
-  clip: {fileID: 0}
-  subtitleBackground: {fileID: 134420, guid: abddf1eef92ef451faa9a62ff9167596, type: 2}
+  clip: {fileID: 8300000, guid: 6cfc1e7c735e24f32ad9c34b3966922a, type: 3}
 --- !u!212 &21274290
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -102,6 +100,10 @@ Prefab:
       propertyPath: subtitleBackground
       value: 
       objectReference: {fileID: 134420, guid: abddf1eef92ef451faa9a62ff9167596, type: 2}
+    - target: {fileID: 0}
+      propertyPath: clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 6cfc1e7c735e24f32ad9c34b3966922a, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 177686}
