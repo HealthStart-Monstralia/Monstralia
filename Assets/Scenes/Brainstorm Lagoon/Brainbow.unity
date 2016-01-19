@@ -2528,6 +2528,7 @@ GameObject:
   - 223: {fileID: 1448859534}
   - 114: {fileID: 1448859533}
   - 114: {fileID: 1448859532}
+  - 114: {fileID: 1448859535}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2614,6 +2615,18 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
+--- !u!114 &1448859535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1448859530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bfbb99635be347fbae0198511149999, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipToPlay: {fileID: 0}
 --- !u!1001 &1507907523
 Prefab:
   m_ObjectHideFlags: 0
@@ -3019,6 +3032,12 @@ MonoBehaviour:
   incorrectSound: {fileID: 8300000, guid: 12e21f6ae835d402c8fb59a9c6ab4023, type: 3}
   endGameAnimation: {fileID: 148260, guid: 6d63f40c202904ce4865a76a1bd723a1, type: 2}
   subtitlePanel: {fileID: 64884121}
+  correctMatchClips:
+  - {fileID: 8300000, guid: 9a684b4d00359486c859fed5d8bc197e, type: 3}
+  - {fileID: 8300000, guid: 60919670219414efd90bc0344e8bc283, type: 3}
+  wrongMatchClips:
+  - {fileID: 8300000, guid: 14d73772f00f4476aaa455489055904c, type: 3}
+  - {fileID: 8300000, guid: 44effb4713b064b548d67ff6394d77b0, type: 3}
 --- !u!114 &1756093590
 MonoBehaviour:
   m_ObjectHideFlags: 0

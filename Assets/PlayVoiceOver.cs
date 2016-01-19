@@ -3,13 +3,10 @@ using System.Collections;
 
 public class PlayVoiceOver : MonoBehaviour {
 
+	public AudioClip clipToPlay;
+
 	// Use this for initialization
 	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+		SoundManager.GetInstance().PlayVoiceOverClip(clipToPlay);
 	}
 }

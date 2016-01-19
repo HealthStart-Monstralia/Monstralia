@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System;
+//using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -50,11 +50,17 @@ public class BrainbowFood : Food {
 				ColorDetector detector = hit.collider.gameObject.GetComponent<ColorDetector>();
 				SoundManager.GetInstance().PlaySFXClip(BrainbowGameManager.GetInstance().correctSound);
 				detector.AddFood(gameObject);
+
+				int randomClipIndex = Random.Range(0, BrainbowGameManager.GetInstance().correctMatchClips.Length);
+				SoundManager.GetInstance().PlayVoiceOverClip(BrainbowGameManager.GetInstance().correctMatchClips[randomClipIndex]);
+
 				gameObject.GetComponent<Collider2D>().enabled = false;
 				BrainbowGameManager.GetInstance().Replace(gameObject);
 			}
 			else {
 				MoveBack ();
+				int randomClipIndex = Random.Range(0, BrainbowGameManager.GetInstance().wrongMatchClips.Length);
+				SoundManager.GetInstance().PlayVoiceOverClip(BrainbowGameManager.GetInstance().wrongMatchClips[randomClipIndex]);
 			}
 		}
 		moving = false;

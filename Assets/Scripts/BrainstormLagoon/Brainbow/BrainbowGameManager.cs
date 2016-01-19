@@ -29,6 +29,8 @@ public class BrainbowGameManager : AbstractGameManager {
 	public AudioClip incorrectSound;
 	public GameObject endGameAnimation;
 	public GameObject subtitlePanel;
+	public AudioClip[] correctMatchClips;
+	public AudioClip[] wrongMatchClips;
 	
 	void Awake() {
 		if(instance == null) {
