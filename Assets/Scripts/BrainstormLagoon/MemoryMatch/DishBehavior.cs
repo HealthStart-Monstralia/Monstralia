@@ -43,20 +43,16 @@ public class DishBehavior : MonoBehaviour {
 		if(!isGuessing && MemoryMatchGameManager.GetInstance().isGameStarted()) {
 			isGuessing = true;
 			//Reveal the food underneath the dish by setting the sprite renderer to disabled.
-<<<<<<< HEAD
-			top.GetComponent<SpriteRenderer>().enabled = false;
-			StartCoroutine(myFood.gameObject.GetComponent<Subtitle>().Display(MemoryMatchGameManager.GetInstance().subtitlePanel, myFood.gameObject));
-=======
 			top.GetComponent<Animation>().Play (animation["DishTopRevealLift"].name);
-//			myFood.GetComponent<MemoryMatchFood>().DisplaySubtitle();
->>>>>>> f4a3539b5d24a94b48b0e10463981a9d10dfc527
+			myFood.GetComponent<Subtitle>().Display(MemoryMatchGameManager.GetInstance().subtitlePanel, myFood.gameObject);
 			if(MemoryMatchGameManager.GetInstance().GetFoodToMatch().name != myFood.name) {
+				int randomClipIndex = Random.Range (0, MemoryMatchGameManager.GetInstance().wrongMatchClips.Length);
+				SoundManager.GetInstance().PlayVoiceOverClip(MemoryMatchGameManager.GetInstance().wrongMatchClips[randomClipIndex]);
+
 				yield return new WaitForSeconds(2f);
 				top.GetComponent<Animation>().Play (animation["DishTopRevealClose"].name);
-				//top.GetComponent<SpriteRenderer>().enabled = true;
 			}
 			else {
-				//top.GetComponent<SpriteRenderer>().enabled = false;
 				top.GetComponent<Animation>().Play (animation["DishTopRevealLift"].name);
 				SoundManager.GetInstance().PlaySFXClip(MemoryMatchGameManager.GetInstance().correctSound);
 				MemoryMatchGameManager.GetInstance().AddToMatchedList(myFood);

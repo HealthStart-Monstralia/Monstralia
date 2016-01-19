@@ -28,6 +28,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	public AudioClip correctSound;
 	public AudioClip incorrectSound;
 	public GameObject endGameAnimation;
+	public AudioClip munchSound;
 	public GameObject subtitlePanel;
 	public AudioClip[] correctMatchClips;
 	public AudioClip[] wrongMatchClips;

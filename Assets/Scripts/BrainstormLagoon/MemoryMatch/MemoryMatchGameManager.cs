@@ -29,14 +29,12 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public Canvas gameOverCanvas;
 	public Canvas stickerPopupCanvas;
 	public AudioClip correctSound;
-<<<<<<< HEAD
 	public GameObject subtitlePanel;
-=======
-
 	public bool animIsPlaying = false;
+	public AudioClip munchClip;
 	public Transform target;
 	public float speed;
->>>>>>> f4a3539b5d24a94b48b0e10463981a9d10dfc527
+	public AudioClip[] wrongMatchClips;
 	
 	// Use this for initialization
 	void Awake () {
@@ -110,17 +108,12 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			d.GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (animation["DishTopRevealLift"].name);
 		}
 		yield return new WaitForSeconds(3.0f);
-<<<<<<< HEAD
-		foreach(GameObject d in dishes) {
-			d.GetComponent<DishBehavior>().top.GetComponent<SpriteRenderer>().enabled = true;
-		}
-=======
+
 		for(int i = 0; i < difficultyLevel*3; ++i) {
 			GameObject d = dishes[i];
 			Animation animation = d.GetComponent<DishBehavior>().top.GetComponent<Animation>();
 			d.GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (animation["DishTopRevealClose"].name);
 		} 
->>>>>>> f4a3539b5d24a94b48b0e10463981a9d10dfc527
 
 		gameStartup = false;
 		StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
@@ -189,6 +182,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			GameObject d = dishes[i];
 			Animation animation = d.GetComponent<DishBehavior>().bottom.GetComponent<Animation>();
 			Destroy(d.GetComponent<DishBehavior>().bottom.GetComponentInChildren<Food>().gameObject);
+			SoundManager.GetInstance().PlaySFXClip(munchClip);
 			d.GetComponent<DishBehavior>().bottom.GetComponent<Animation>().Play (animation["DishBottomShake"].name);
 			yield return new WaitForSeconds (1.2f);
 		}
