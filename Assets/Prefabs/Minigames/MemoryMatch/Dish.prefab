@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 224: {fileID: 22413964}
   - 212: {fileID: 21226076}
+  - 111: {fileID: 11174208}
   m_Layer: 10
   m_Name: DishBottom
   m_TagString: Untagged
@@ -25,6 +26,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 407294}
   - 212: {fileID: 21205904}
+  - 111: {fileID: 11162796}
   m_Layer: 10
   m_Name: DishTop
   m_TagString: Untagged
@@ -74,6 +76,36 @@ CircleCollider2D:
   m_Offset: {x: .899999976, y: -11.3900003}
   serializedVersion: 2
   m_Radius: 96.9400024
+--- !u!111 &11162796
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 116936}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 1f1597543d9e1403db0602d42ac7469a, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: aff312578f5054048bc1eb9c54ddbd6f, type: 2}
+  - {fileID: 7400000, guid: 1f1597543d9e1403db0602d42ac7469a, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
+--- !u!111 &11174208
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104094}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: e1e8a6ccbe6614bca8c17f4f7578d02b, type: 2}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &11430258
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -183,6 +215,10 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 0}
+      propertyPath: m_Animations.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: m_SortingOrder
       value: 3
       objectReference: {fileID: 0}
@@ -209,6 +245,26 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Animation
+      value: 
+      objectReference: {fileID: 7400000, guid: e1e8a6ccbe6614bca8c17f4f7578d02b, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_PlayAutomatically
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Animations.Array.data[0]
+      value: 
+      objectReference: {fileID: 7400000, guid: aff312578f5054048bc1eb9c54ddbd6f, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_Animations.Array.data[1]
+      value: 
+      objectReference: {fileID: 7400000, guid: 1f1597543d9e1403db0602d42ac7469a, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_AnimatePhysics
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

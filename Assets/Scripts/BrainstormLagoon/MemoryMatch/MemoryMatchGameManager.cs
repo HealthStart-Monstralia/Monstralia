@@ -12,6 +12,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	private GameObject currentFoodToMatch;
 	private int difficultyLevel;
 	private List<GameObject> activeFoods;
+	private List<Food> matchedFoods;
 	private bool stickerCanvasIsUp;
 	
 	public Transform foodToMatchSpawnPos;
@@ -28,6 +29,10 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public Canvas gameOverCanvas;
 	public Canvas stickerPopupCanvas;
 	public AudioClip correctSound;
+
+	public bool animIsPlaying = false;
+	public Transform target;
+	public float speed;
 	
 	// Use this for initialization
 	void Awake () {
@@ -46,6 +51,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		UpdateScoreText();
 
 		activeFoods = new List<GameObject>();
+		matchedFoods = new List<Food> ();
 		difficultyLevel = GameManager.GetInstance().GetLevel("MemoryMatch");
 	}
 
@@ -53,7 +59,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	void Update () {
 		if(gameStarted){
 			if(score >= difficultyLevel*3 || timer.TimeRemaining () < 0) {
-				GameOver();
+				if(!animIsPlaying)
+					StartCoroutine(RunEndGameAnimation());
+				// GameOver();
 			}
 		}
 	}
@@ -92,32 +100,17 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	IEnumerator RevealDishes() {
-		foreach(GameObject d in dishes) {
-			d.GetComponent<DishBehavior>().top.GetComponent<SpriteRenderer>().enabled = false;
+		for(int i = 0; i < difficultyLevel*3; ++i) {
+			GameObject d = dishes[i];
+			Animation animation = d.GetComponent<DishBehavior>().top.GetComponent<Animation>();
+			d.GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (animation["DishTopRevealLift"].name);
 		}
 		yield return new WaitForSeconds(3.0f);
-		foreach(GameObject d in dishes) {
-			d.GetComponent<DishBehavior>().top.GetComponent<SpriteRenderer>().enabled = true;
-		}
-//		GameObject countdown3 = (GameObject)Instantiate(Resources.Load("Countdown3")); 
-//		countdown3.SetActive (true);
-//		yield return new WaitForSeconds (1.0f);
-//		countdown3.SetActive (false);
-//		
-//		GameObject countdown2 = (GameObject)Instantiate(Resources.Load("Countdown2"));
-//		countdown2.SetActive (true);
-//		yield return new WaitForSeconds (1.0f);
-//		countdown2.SetActive (false);
-//		
-//		GameObject countdown1 = (GameObject)Instantiate(Resources.Load("Countdown1"));
-//		countdown1.SetActive (true);
-//		yield return new WaitForSeconds (1.0f);
-//		countdown1.SetActive (false);
-//		
-//		GameObject countdownGo = (GameObject)Instantiate(Resources.Load("CountdownGo"));
-//		countdownGo.SetActive (true);
-//		yield return new WaitForSeconds (1.0f);
-//		countdownGo.SetActive (false); 
+		for(int i = 0; i < difficultyLevel*3; ++i) {
+			GameObject d = dishes[i];
+			Animation animation = d.GetComponent<DishBehavior>().top.GetComponent<Animation>();
+			d.GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (animation["DishTopRevealClose"].name);
+		} 
 
 		gameStartup = false;
 		StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
@@ -170,6 +163,29 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		return currentFoodToMatch.GetComponent<Food>();
 	}
 
+	public void AddToMatchedList(Food food) {
+		matchedFoods.Add (food);
+	}
+
+	IEnumerator RunEndGameAnimation(){
+		Debug.Log ("inside RunEndGameAnimation");
+		animIsPlaying = true;
+		timer.StopTimer();
+
+		Debug.Log ("activeFoods.Count: " + activeFoods.Count);
+
+		for(int i = 0; i < difficultyLevel*3; ++i) {
+			GameObject d = dishes[i];
+			Animation animation = d.GetComponent<DishBehavior>().bottom.GetComponent<Animation>();
+			Destroy(d.GetComponent<DishBehavior>().bottom.GetComponentInChildren<Food>().gameObject);
+			d.GetComponent<DishBehavior>().bottom.GetComponent<Animation>().Play (animation["DishBottomShake"].name);
+			yield return new WaitForSeconds (1.2f);
+		}
+		yield return new WaitForSeconds (1f);
+		GameOver ();
+	}
+	
+
 	void GameOver() {
 		gameStarted = false;
 		if(score >= difficultyLevel*3) {
@@ -180,7 +196,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			GameManager.GetInstance().LevelUp("MemoryMatch");
 		}
 
-		timer.StopTimer();
+		// timer.StopTimer();
 		timerText.gameObject.SetActive(false);
 		scoreText.gameObject.SetActive(false);
 		if(difficultyLevel > 1) {
