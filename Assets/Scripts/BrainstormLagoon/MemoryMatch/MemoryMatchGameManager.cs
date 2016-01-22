@@ -172,11 +172,8 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	IEnumerator RunEndGameAnimation(){
-		Debug.Log ("inside RunEndGameAnimation");
 		animIsPlaying = true;
 		timer.StopTimer();
-
-		Debug.Log ("activeFoods.Count: " + activeFoods.Count);
 
 		for(int i = 0; i < difficultyLevel*3; ++i) {
 			GameObject d = dishes[i];

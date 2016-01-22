@@ -44,11 +44,9 @@ public class DishBehavior : MonoBehaviour {
 			isGuessing = true;
 			//Reveal the food underneath the dish by setting the sprite renderer to disabled.
 			top.GetComponent<Animation>().Play (animation["DishTopRevealLift"].name);
-			myFood.GetComponent<Subtitle>().Display(MemoryMatchGameManager.GetInstance().subtitlePanel, myFood.gameObject);
-			if(MemoryMatchGameManager.GetInstance().GetFoodToMatch().name != myFood.name) {
-				int randomClipIndex = Random.Range (0, MemoryMatchGameManager.GetInstance().wrongMatchClips.Length);
-				SoundManager.GetInstance().PlayVoiceOverClip(MemoryMatchGameManager.GetInstance().wrongMatchClips[randomClipIndex]);
+			myFood.GetComponent<Subtitle>().Display(MemoryMatchGameManager.GetInstance().subtitlePanel, myFood.gameObject, myFood.clipOfName);
 
+			if(MemoryMatchGameManager.GetInstance().GetFoodToMatch().name != myFood.name) {
 				yield return new WaitForSeconds(2f);
 				top.GetComponent<Animation>().Play (animation["DishTopRevealClose"].name);
 			}
@@ -63,7 +61,6 @@ public class DishBehavior : MonoBehaviour {
 			}
 			//The player can now guess again.
 			isGuessing = false;
-			//return true;
 		}
 	}
 	

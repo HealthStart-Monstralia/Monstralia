@@ -10,6 +10,8 @@ using System.Collections;
  */
 public abstract class Food : Colorable {
 
+	public AudioClip clipOfName;	/*!< audio clip of the food's name to be used with subtitles */
+
 	/**
 	 * \brief Spawn the food into the scene at the spcified location
 	 * @param spawnPos: The posistion to spawn the food at.

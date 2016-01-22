@@ -2,23 +2,15 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class Subtitle : MonoBehaviour {
-	
-	public AudioClip clip;
+public class Subtitle {
 
-	public string GetName() {
-		return name;
-	}
-
-	public AudioClip GetClip() {
-		return clip;
-	}
-
-	public IEnumerator Display(GameObject subtitlePanel, GameObject food) {
+	public void Display(GameObject subtitlePanel, GameObject food, AudioClip clip) {
 		subtitlePanel.SetActive(true);
 		subtitlePanel.GetComponentsInChildren<Text>()[0].text = food.name;
 		SoundManager.GetInstance().PlayVoiceOverClip(clip);
-		yield return new WaitForSeconds(clip.length);
+	}
+
+	public void Hide(GameObject subtitlePanel) {
 		subtitlePanel.SetActive(false);
 	}
 }
