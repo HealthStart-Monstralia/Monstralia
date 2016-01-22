@@ -10,7 +10,6 @@ GameObject:
   - 224: {fileID: 22468418}
   - 212: {fileID: 21252932}
   - 114: {fileID: 11472202}
-  - 114: {fileID: 11400036}
   - 50: {fileID: 5096062}
   m_Layer: 0
   m_Name: Cabbage
@@ -35,18 +34,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &11400036
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 184190}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8d597286c17642fd8f081f8661f3b5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: 5b9aeb0b03971433a9ec3127357986ef, type: 3}
 --- !u!114 &11472202
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -59,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: 3
+  clipOfName: {fileID: 8300000, guid: 5b9aeb0b03971433a9ec3127357986ef, type: 3}
 --- !u!212 &21252932
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -119,6 +107,10 @@ Prefab:
       objectReference: {fileID: 134420, guid: abddf1eef92ef451faa9a62ff9167596, type: 2}
     - target: {fileID: 0}
       propertyPath: clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 5b9aeb0b03971433a9ec3127357986ef, type: 3}
+    - target: {fileID: 0}
+      propertyPath: clipOfName
       value: 
       objectReference: {fileID: 8300000, guid: 5b9aeb0b03971433a9ec3127357986ef, type: 3}
     m_RemovedComponents: []

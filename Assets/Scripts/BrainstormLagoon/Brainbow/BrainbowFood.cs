@@ -28,7 +28,8 @@ public class BrainbowFood : Food {
 			offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
 
 			//Display the food's name
-			StartCoroutine(gameObject.GetComponent<Subtitle>().Display(BrainbowGameManager.GetInstance().subtitlePanel, gameObject));
+			//move this into game manager with method call
+			BrainbowGameManager.GetInstance().subtitlePanel.GetComponent<SubtitlePanel>().Display(gameObject.name, gameObject.GetComponent<Food>().clipOfName);
 		}
 	}
 	
@@ -51,8 +52,10 @@ public class BrainbowFood : Food {
 				SoundManager.GetInstance().PlaySFXClip(BrainbowGameManager.GetInstance().correctSound);
 				detector.AddFood(gameObject);
 
-				int randomClipIndex = Random.Range(0, BrainbowGameManager.GetInstance().correctMatchClips.Length);
-				SoundManager.GetInstance().PlayVoiceOverClip(BrainbowGameManager.GetInstance().correctMatchClips[randomClipIndex]);
+				if(Random.value < 0.3f) {
+					int randomClipIndex = Random.Range(0, BrainbowGameManager.GetInstance().correctMatchClips.Length);
+					SoundManager.GetInstance().PlayVoiceOverClip(BrainbowGameManager.GetInstance().correctMatchClips[randomClipIndex]);
+				}
 
 				gameObject.GetComponent<Collider2D>().enabled = false;
 				BrainbowGameManager.GetInstance().Replace(gameObject);
@@ -65,6 +68,12 @@ public class BrainbowFood : Food {
 		}
 		moving = false;
 		busy = false;
+		StartCoroutine(HideSubtitle());
+	}
+
+	IEnumerator HideSubtitle() {
+		yield return new WaitForSeconds(0.5f);
+		BrainbowGameManager.GetInstance().subtitlePanel.GetComponent<SubtitlePanel>().Hide();
 	}
 
 	public void SetOrigin(Transform origin) {

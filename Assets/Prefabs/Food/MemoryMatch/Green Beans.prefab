@@ -10,7 +10,6 @@ GameObject:
   - 224: {fileID: 22456498}
   - 212: {fileID: 21274290}
   - 114: {fileID: 11435080}
-  - 114: {fileID: 11473536}
   - 50: {fileID: 5045616}
   m_Layer: 0
   m_Name: Green Beans
@@ -47,18 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: 2
---- !u!114 &11473536
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 177686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8d597286c17642fd8f081f8661f3b5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: 6cfc1e7c735e24f32ad9c34b3966922a, type: 3}
+  clipOfName: {fileID: 8300000, guid: 0179f9f6f214f44e5b2f9e382ce906d0, type: 3}
 --- !u!212 &21274290
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -121,6 +109,10 @@ Prefab:
       propertyPath: clip
       value: 
       objectReference: {fileID: 8300000, guid: 6cfc1e7c735e24f32ad9c34b3966922a, type: 3}
+    - target: {fileID: 0}
+      propertyPath: clipOfName
+      value: 
+      objectReference: {fileID: 8300000, guid: 0179f9f6f214f44e5b2f9e382ce906d0, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 177686}

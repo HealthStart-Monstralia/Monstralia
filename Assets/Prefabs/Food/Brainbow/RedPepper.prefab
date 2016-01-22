@@ -12,7 +12,6 @@ GameObject:
   - 114: {fileID: 11419888}
   - 58: {fileID: 5819950}
   - 50: {fileID: 5068770}
-  - 114: {fileID: 11405138}
   m_Layer: 0
   m_Name: RedPepper
   m_TagString: Untagged
@@ -49,18 +48,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: -.140000001}
   serializedVersion: 2
   m_Radius: 2.05999994
---- !u!114 &11405138
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 121452}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8d597286c17642fd8f081f8661f3b5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: 7e28988a82cb84a44902fc9c23db0301, type: 3}
 --- !u!114 &11419888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -73,6 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: 0
+  clipOfName: {fileID: 8300000, guid: 7e28988a82cb84a44902fc9c23db0301, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 2048
@@ -144,6 +132,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7e28988a82cb84a44902fc9c23db0301, type: 3}
+    - target: {fileID: 0}
+      propertyPath: clipOfName
       value: 
       objectReference: {fileID: 8300000, guid: 7e28988a82cb84a44902fc9c23db0301, type: 3}
     m_RemovedComponents: []

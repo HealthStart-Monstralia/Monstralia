@@ -5,12 +5,11 @@ public class SubtitlePanel : MonoBehaviour {
 
 	private Subtitle sub;
 
-	// Use this for initialization
-	void Start () {
-		sub = new Subtitle();
-	}
-
 	public void Display(string subtitle, AudioClip clip) {
+		if(sub == null) {
+			sub = new Subtitle();
+		}
+
 		sub.Display(gameObject, subtitle, clip);
 	}
 

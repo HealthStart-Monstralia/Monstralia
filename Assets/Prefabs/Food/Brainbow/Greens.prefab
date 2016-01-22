@@ -12,7 +12,6 @@ GameObject:
   - 114: {fileID: 11436926}
   - 58: {fileID: 5814752}
   - 50: {fileID: 5053162}
-  - 114: {fileID: 11484210}
   m_Layer: 0
   m_Name: Greens
   m_TagString: Untagged
@@ -61,21 +60,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: 2
+  clipOfName: {fileID: 8300000, guid: dbfa3c53681394a1dbbe5cbb6f738de5, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 2048
---- !u!114 &11484210
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 124698}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8d597286c17642fd8f081f8661f3b5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: dbfa3c53681394a1dbbe5cbb6f738de5, type: 3}
 --- !u!212 &21281982
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -144,6 +132,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: clip
+      value: 
+      objectReference: {fileID: 8300000, guid: dbfa3c53681394a1dbbe5cbb6f738de5, type: 3}
+    - target: {fileID: 0}
+      propertyPath: clipOfName
       value: 
       objectReference: {fileID: 8300000, guid: dbfa3c53681394a1dbbe5cbb6f738de5, type: 3}
     m_RemovedComponents: []

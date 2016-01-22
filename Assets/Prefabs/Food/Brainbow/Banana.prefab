@@ -12,7 +12,6 @@ GameObject:
   - 114: {fileID: 11402652}
   - 60: {fileID: 6095186}
   - 50: {fileID: 5045260}
-  - 114: {fileID: 11449228}
   m_Layer: 0
   m_Name: Banana
   m_TagString: Untagged
@@ -126,21 +125,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: 1
+  clipOfName: {fileID: 8300000, guid: 8ebac9de724a6469180b708d04154e58, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 2048
---- !u!114 &11449228
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 170606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8d597286c17642fd8f081f8661f3b5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: 8ebac9de724a6469180b708d04154e58, type: 3}
 --- !u!212 &21210046
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -221,6 +209,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8ebac9de724a6469180b708d04154e58, type: 3}
+    - target: {fileID: 0}
+      propertyPath: clipOfName
       value: 
       objectReference: {fileID: 8300000, guid: 8ebac9de724a6469180b708d04154e58, type: 3}
     m_RemovedComponents: []

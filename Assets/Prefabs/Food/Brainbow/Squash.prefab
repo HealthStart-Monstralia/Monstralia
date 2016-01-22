@@ -12,7 +12,6 @@ GameObject:
   - 114: {fileID: 11470592}
   - 60: {fileID: 6050868}
   - 50: {fileID: 5068766}
-  - 114: {fileID: 11460326}
   m_Layer: 0
   m_Name: Squash
   m_TagString: Untagged
@@ -105,18 +104,6 @@ PolygonCollider2D:
       - {x: -.805000007, y: -1.38999999}
       - {x: -.61500001, y: -1.35000002}
       - {x: -.405000001, y: -1.29999995}
---- !u!114 &11460326
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 167922}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8d597286c17642fd8f081f8661f3b5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: c5a58e8289eef42f68cbab672a6f9ff1, type: 3}
 --- !u!114 &11470592
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -129,6 +116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: 1
+  clipOfName: {fileID: 8300000, guid: c5a58e8289eef42f68cbab672a6f9ff1, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 2048
@@ -200,6 +188,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: clip
+      value: 
+      objectReference: {fileID: 8300000, guid: c5a58e8289eef42f68cbab672a6f9ff1, type: 3}
+    - target: {fileID: 0}
+      propertyPath: clipOfName
       value: 
       objectReference: {fileID: 8300000, guid: c5a58e8289eef42f68cbab672a6f9ff1, type: 3}
     m_RemovedComponents: []

@@ -4,9 +4,10 @@ using UnityEngine.UI;
 
 public class Subtitle {
 
-	public void Display(GameObject subtitlePanel, GameObject food, AudioClip clip) {
+	public void Display(GameObject subtitlePanel, string subtitle, AudioClip clip) {
 		subtitlePanel.SetActive(true);
-		subtitlePanel.GetComponentsInChildren<Text>()[0].text = food.name;
+		subtitlePanel.GetComponentsInChildren<Text>()[0].text = subtitle;
+		Debug.Log (clip.name);
 		SoundManager.GetInstance().PlayVoiceOverClip(clip);
 	}
 

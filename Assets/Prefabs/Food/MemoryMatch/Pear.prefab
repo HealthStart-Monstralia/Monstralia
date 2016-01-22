@@ -10,7 +10,6 @@ GameObject:
   - 224: {fileID: 22472574}
   - 212: {fileID: 21207474}
   - 114: {fileID: 11445404}
-  - 114: {fileID: 11454034}
   - 50: {fileID: 5053966}
   m_Layer: 0
   m_Name: Pear
@@ -47,18 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: 2
---- !u!114 &11454034
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 148490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8d597286c17642fd8f081f8661f3b5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: 41457026bb69e463c9f35ff169faa93e, type: 3}
+  clipOfName: {fileID: 8300000, guid: 41457026bb69e463c9f35ff169faa93e, type: 3}
 --- !u!212 &21207474
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -119,6 +107,10 @@ Prefab:
       objectReference: {fileID: 134420, guid: abddf1eef92ef451faa9a62ff9167596, type: 2}
     - target: {fileID: 0}
       propertyPath: clip
+      value: 
+      objectReference: {fileID: 8300000, guid: 41457026bb69e463c9f35ff169faa93e, type: 3}
+    - target: {fileID: 0}
+      propertyPath: clipOfName
       value: 
       objectReference: {fileID: 8300000, guid: 41457026bb69e463c9f35ff169faa93e, type: 3}
     m_RemovedComponents: []

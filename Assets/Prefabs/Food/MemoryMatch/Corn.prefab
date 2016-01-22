@@ -11,7 +11,6 @@ GameObject:
   - 212: {fileID: 21291118}
   - 114: {fileID: 11442742}
   - 50: {fileID: 5020952}
-  - 114: {fileID: 11412786}
   - 60: {fileID: 6029788}
   m_Layer: 0
   m_Name: Corn
@@ -84,18 +83,6 @@ PolygonCollider2D:
       - {x: -.560000002, y: -.850000024}
       - {x: -.439999998, y: -.899999976}
       - {x: -.140000001, y: -.910000026}
---- !u!114 &11412786
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 131928}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8d597286c17642fd8f081f8661f3b5c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: b5b05b306b5eb41af993304f8ea1166a, type: 3}
 --- !u!114 &11442742
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -108,6 +95,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: 1
+  clipOfName: {fileID: 0}
   layerMask:
     serializedVersion: 2
     m_Bits: 2048
