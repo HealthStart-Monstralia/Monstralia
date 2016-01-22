@@ -134,6 +134,7 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	void EndGameTearDown ()
 	{
+		subtitlePanel.GetComponent<SubtitlePanel>().Hide ();
 		gameStarted = false;
 		timer.StopTimer();
 
