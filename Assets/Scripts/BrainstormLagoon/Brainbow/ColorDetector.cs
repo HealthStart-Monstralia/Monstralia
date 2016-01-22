@@ -21,6 +21,7 @@ public class ColorDetector : Colorable {
 	 * @param food: A GameObject representing the food that was just matched
 	 */
 	public void AddFood(GameObject food) {
+		Debug.Log ("adding " + food.name);
 		food.transform.position = destinations[nextDest++].position;
 	}
 }

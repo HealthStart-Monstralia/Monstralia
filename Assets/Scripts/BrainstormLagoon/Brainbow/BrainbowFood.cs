@@ -48,9 +48,15 @@ public class BrainbowFood : Food {
 			RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, 1.0f, layerMask);
 
 			if(hit.collider != null && hit.collider.gameObject.GetComponent<ColorDetector>().color == this.color) {
+				BrainbowGameManager.GetInstance().SetActiveFood(null);
+
 				ColorDetector detector = hit.collider.gameObject.GetComponent<ColorDetector>();
 				SoundManager.GetInstance().PlaySFXClip(BrainbowGameManager.GetInstance().correctSound);
+				Vector3 oldPos = gameObject.transform.position;
 				detector.AddFood(gameObject);
+
+				Debug.Log("Are the positions the same?: ");
+				Debug.Log (gameObject.transform.position == oldPos);
 
 				if(Random.value < 0.3f) {
 					int randomClipIndex = Random.Range(0, BrainbowGameManager.GetInstance().correctMatchClips.Length);
@@ -61,6 +67,7 @@ public class BrainbowFood : Food {
 				BrainbowGameManager.GetInstance().Replace(gameObject);
 			}
 			else {
+				Debug.Log ("About to move back");
 				MoveBack ();
 				int randomClipIndex = Random.Range(0, BrainbowGameManager.GetInstance().wrongMatchClips.Length);
 				SoundManager.GetInstance().PlayVoiceOverClip(BrainbowGameManager.GetInstance().wrongMatchClips[randomClipIndex]);
