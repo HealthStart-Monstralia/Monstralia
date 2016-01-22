@@ -138,21 +138,8 @@ public class SoundManager : MonoBehaviour {
 	 * \brief Setup the sounds for Brainstorm Lagoon
 	 * @param clips: an array of AudioClips to be played
 	 */
-	public void LagoonSetup (AudioClip[] clips) {
-
-		if(!muted) {
-			backgroundSource.Stop ();
-		}
-		//create a new AudioSource to play each clip
-		foreach(AudioClip clip in clips) {
-			AudioSource newSource = gameObject.AddComponent<AudioSource>();
-			newSource.clip = clip;
-			newSource.loop = true;
-			newSource.playOnAwake = true;
-			newSource.volume = 0.5f;
-			newSource.Play();
-		}
-
+	public void LagoonSetup (AudioClip lagoonBG) {
+		ChangeBackgroundMusic(lagoonBG);
 	}
 
 	/**
@@ -166,16 +153,9 @@ public class SoundManager : MonoBehaviour {
 	 * \brief Teardown the sounds in Brainstorm Lagoon and prepare sounds for MainMap
 	 */
 	public void LagoonTearDown(bool toMainMap) {
-		AudioSource[] sources = gameObject.GetComponents<AudioSource>();
-		//get rid of all AudioSources except the original bg source and SFX source
-		foreach(AudioSource source in sources) {
-			if(source != backgroundSource && source != SFXsource && source != voiceOverSource) {
-				Destroy(source);
-			}
-		}
 		//only play the original bg music if returning to MainMap
-		if(toMainMap)
-			PlayBackgroundMusic();
+		if(toMainMap) 
+			ChangeBackgroundMusic(gameBackgroundMusic);
 	}
 
 }
