@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Constants {
+public static class Constants {
 
-	public enum BrainstormLagoonLevels{
-		BRAINSTORMLAGOON,
-		MEMORYMATCH
+	public enum BrainstormLagoonLevels {
+		BRAINBOW,
+		MEMORY_MATCH
 	};
 }

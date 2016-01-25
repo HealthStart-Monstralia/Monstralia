@@ -72,7 +72,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	
 		//create enums for each part of the island that represents the games to avoid using numbers to access the arrays
 		//in GameManager. Ex: brainstormLagoonTutorial[BrainstormLagoon.BRAINBOW]
-		if(GameManager.GetInstance().brainstormLagoonTutorial[0]) {
+		if(GameManager.GetInstance().brainstormLagoonTutorial[(int)Constants.BrainstormLagoonLevels.BRAINBOW]) {
 			StartCoroutine(RunTutorial());
 		}
 		else {
