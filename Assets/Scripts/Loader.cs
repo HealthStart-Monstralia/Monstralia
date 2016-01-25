@@ -7,7 +7,7 @@ public class Loader : MonoBehaviour {
 
 	void Awake() { 
 
-		if(GameManager.instance == null) {
+		if(GameManager.GetInstance() == null) {
 			Instantiate(singleton);
 		}
 

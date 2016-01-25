@@ -55,9 +55,6 @@ public class BrainbowFood : Food {
 				Vector3 oldPos = gameObject.transform.position;
 				detector.AddFood(gameObject);
 
-				Debug.Log("Are the positions the same?: ");
-				Debug.Log (gameObject.transform.position == oldPos);
-
 				if(Random.value < 0.3f) {
 					int randomClipIndex = Random.Range(0, BrainbowGameManager.GetInstance().correctMatchClips.Length);
 					SoundManager.GetInstance().PlayVoiceOverClip(BrainbowGameManager.GetInstance().correctMatchClips[randomClipIndex]);
@@ -67,7 +64,6 @@ public class BrainbowFood : Food {
 				BrainbowGameManager.GetInstance().Replace(gameObject);
 			}
 			else {
-				Debug.Log ("About to move back");
 				MoveBack ();
 				int randomClipIndex = Random.Range(0, BrainbowGameManager.GetInstance().wrongMatchClips.Length);
 				SoundManager.GetInstance().PlayVoiceOverClip(BrainbowGameManager.GetInstance().wrongMatchClips[randomClipIndex]);
@@ -97,8 +93,10 @@ public class BrainbowFood : Food {
 	}
 
 	public void StopMoving() {
+		Debug.Log ("In stop moving");
 		gameOver = true;
 		gameObject.transform.position = GetOrigin().position;
+		gameObject.GetComponent<Collider2D>().enabled = false;
 	}
 
 	void OnTriggerEnter2D(Collider2D other) {

@@ -33,9 +33,9 @@ public class StickerManager : MonoBehaviour {
 			else if (sticker == "Hippocampus") {
 				stickers[3].SetActive (true);
 			}
-//			else if(sticker == "Brainbow") {
-//				stickers[4].SetActive(true);
-//			}
+			else if(sticker == "Brainbow") {
+				stickers[4].SetActive(true);
+			}
 		}
 	}
 	

@@ -8,12 +8,17 @@ public class GameManager : MonoBehaviour {
 	private Dictionary<string, int> gameLevels;
 	private Dictionary<string, int> gameStars;
 	private List<string> brainStickers;
+	private static GameManager instance = null;
 
-	public static GameManager instance = null;
+	public bool[] brainstormLagoonTutorial = new bool[5];
 
 	string monster;
 
 	void Awake() {
+		for(int i = 0; i < 5; ++i) {
+			brainstormLagoonTutorial[i] = true;
+		}
+
 		if(instance == null) {
 			instance = this;
 		}
