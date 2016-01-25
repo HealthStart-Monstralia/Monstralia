@@ -37,8 +37,6 @@ public class Countdown : MonoBehaviour {
 		SoundManager.GetInstance().PlayVoiceOverClip(countGoClip);
 		yield return new WaitForSeconds (1.0f);
 		Destroy(countGo);
-		if(BrainbowGameManager.GetInstance() != null)
-			BrainbowGameManager.GetInstance().StartGame ();
 	}
 
 }

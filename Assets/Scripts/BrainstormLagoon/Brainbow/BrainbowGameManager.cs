@@ -84,6 +84,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	}
 
 	public void StartGame() {
+		StartCoroutine (DisplayGo ());
 		gameStarted = true;
 		for(int i = 0; i < 4; ++i) {
 			SpawnFood(spawnPoints[i]);
@@ -91,8 +92,9 @@ public class BrainbowGameManager : AbstractGameManager {
 		timer.StartTimer();
 	}
 
-	public void DisplayGo () {
+	public IEnumerator DisplayGo () {
 		StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
+		yield return new WaitForSeconds (4.0f);
 	}
 
 	public void Replace(GameObject toReplace) {

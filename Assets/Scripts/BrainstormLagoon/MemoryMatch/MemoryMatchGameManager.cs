@@ -117,6 +117,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 		gameStartup = false;
 		StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
+
+
+		yield return new WaitForSeconds (4.0f);
 		gameStarted = true;
 
 		timer.StartTimer();
