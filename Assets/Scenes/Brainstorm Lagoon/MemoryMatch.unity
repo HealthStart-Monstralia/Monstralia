@@ -2590,6 +2590,11 @@ RectTransform:
 GameObject:
   m_PrefabParentObject: {fileID: 189138, guid: c397aee46cbd54b8daf404e9b2b190e4, type: 2}
   m_PrefabInternal: {fileID: 1198866621}
+--- !u!223 &1198866624 stripped
+Canvas:
+  m_PrefabParentObject: {fileID: 22305840, guid: c397aee46cbd54b8daf404e9b2b190e4,
+    type: 2}
+  m_PrefabInternal: {fileID: 1198866621}
 --- !u!1 &1226688053 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 174454, guid: d4aa7f1e0aade45a1ad228e455f9f9f9, type: 2}
@@ -2660,6 +2665,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f58ba44d4bf9d401c823768c737b4b59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instructionPopup: {fileID: 1198866624}
   foodToMatchSpawnPos: {fileID: 1600727203}
   foodSpawnPos:
   - {fileID: 27386620}

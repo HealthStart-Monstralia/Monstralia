@@ -31,6 +31,14 @@ public class DishBehavior : MonoBehaviour {
 		myFood = gameObject.GetComponentsInChildren<Food>()[0];
 	}
 
+	public void Reset() {
+		Destroy(myFood.gameObject);
+		if(top.activeSelf == false) {
+			top.SetActive(true);
+			top.GetComponent<Animation>().Play (top.GetComponent<Animation>()["DishTopRevealClose"].name);
+		}
+	}
+
 	/**
 	 * \brief OnMouseDown is called when the player clicks (or taps) one of the dishes.
 	 * 
@@ -40,7 +48,7 @@ public class DishBehavior : MonoBehaviour {
 	 */
 	IEnumerator OnMouseDown() {
 		Animation animation = top.GetComponent<Animation>();
-		if(!isGuessing && MemoryMatchGameManager.GetInstance().isGameStarted()) {
+		if(!isGuessing && (MemoryMatchGameManager.GetInstance().isGameStarted() || MemoryMatchGameManager.GetInstance().isRunningTutorial())) {
 			isGuessing = true;
 
 			//Reveal the food underneath the dish by setting the sprite renderer to disabled.

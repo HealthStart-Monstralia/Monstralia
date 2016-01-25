@@ -67,8 +67,7 @@ public class BrainbowGameManager : AbstractGameManager {
 			timer = Instantiate(timer);
 			timer.SetTimeLimit(this.timeLimit);
 		}
-		scoreText.text = "Score: " + score;
-		timerText.text = "Time: " + timer.TimeRemaining();
+		UpdateScoreText();
 		SoundManager.GetInstance().ChangeBackgroundMusic(backgroundMusic);
 	
 		//create enums for each part of the island that represents the games to avoid using numbers to access the arrays
@@ -231,5 +230,9 @@ public class BrainbowGameManager : AbstractGameManager {
 		gameoverCanvas.gameObject.SetActive (true);
 		Text gameoverScore = gameoverCanvas.GetComponentInChildren<Text> ();
 		gameoverScore.text = "Good job! You fed your monster: " + score + " healthy foods!";
+	}
+
+	void UpdateScoreText() {
+		scoreText.text = "Score: " + score;
 	}
 }

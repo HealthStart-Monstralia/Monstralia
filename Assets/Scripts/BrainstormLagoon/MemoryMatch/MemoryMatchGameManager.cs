@@ -14,7 +14,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	private List<GameObject> activeFoods;
 	private List<Food> matchedFoods;
 	private bool stickerCanvasIsUp;
-	
+	private bool runningTutorial = false;
+
+	public Canvas instructionPopup;
 	public Transform foodToMatchSpawnPos;
 	public Transform[] foodSpawnPos;
 	public Transform[] foodParentPos;
@@ -45,20 +47,39 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			Destroy(gameObject);
 		}
 
+		difficultyLevel = GameManager.GetInstance ().GetLevel ("MemoryMatch");
+	}
+
+	void Start () {
+		score = 0;
+
 		if(timer != null) {
 			timer = Instantiate(timer);
 			timer.SetTimeLimit(timeLimit);
 		}
 
-		UpdateScoreText();
-
-		activeFoods = new List<GameObject>();
+		UpdateScoreText ();
+		activeFoods = new List<GameObject> ();
 		matchedFoods = new List<Food> ();
-		difficultyLevel = GameManager.GetInstance().GetLevel("MemoryMatch");
+
+		if(GameManager.GetInstance().brainstormLagoonTutorial[0]) {
+			StartCoroutine(RunTutorial());
+		}
+		else {
+			StartGame ();
+		}
+
 	}
 
 	// Update is called once per frame
 	void Update () {
+		if(runningTutorial) {
+			if(score == 1) {
+				StartCoroutine(TutorialTearDown());
+			}
+		}
+
+
 		if(gameStarted){
 			if(score >= difficultyLevel*3 || timer.TimeRemaining () < 0) {
 				if(!animIsPlaying)
@@ -69,11 +90,31 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		timerText.text = "Time: " + timer.TimeRemaining();
+		if(gameStarted) {
+			timerText.text = "Time: " + timer.TimeRemaining();
+		}
 	}
 
 	public static MemoryMatchGameManager GetInstance() {
 		return instance;
+	}
+
+	IEnumerator RunTutorial () {
+		runningTutorial = true;
+		instructionPopup.gameObject.SetActive(true);
+		yield return new WaitForSeconds(5.0f);
+		instructionPopup.gameObject.SetActive(false);
+		subtitlePanel.GetComponent<SubtitlePanel>().Display("Now you try!", correctSound);
+
+		StartGame ();
+	}
+
+	IEnumerator TutorialTearDown() {
+		score = 0;
+		subtitlePanel.GetComponent<SubtitlePanel>().Display("Great Job! Let's play MemoryMatch!", correctSound);
+		yield return new WaitForSeconds(2.0f);
+		ResetDishes();
+		StartGame ();
 	}
 
 	public void StartGame() {
@@ -116,13 +157,22 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		} 
 
 		gameStartup = false;
-		StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
 
+		if(!runningTutorial) {
+			StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
 
-		yield return new WaitForSeconds (4.0f);
-		gameStarted = true;
+			yield return new WaitForSeconds (4.0f);
+			gameStarted = true;
 
-		timer.StartTimer();
+			timer.StartTimer();
+		}
+	}
+
+	void ResetDishes() {
+		for(int i = 0; i < difficultyLevel*3; ++i) {
+			GameObject dish = dishes[i];
+			dish.GetComponent<DishBehavior>().Reset ();
+		}
 	}
 
 	void SelectFoods() {
@@ -217,6 +267,10 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	public bool isGameStarted() {
 		return gameStarted;
+	}
+
+	public bool isRunningTutorial() {
+		return runningTutorial;
 	}
 
 	void UpdateScoreText() {
