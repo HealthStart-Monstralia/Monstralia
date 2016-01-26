@@ -106,19 +106,22 @@ public class BrainbowGameManager : AbstractGameManager {
 	IEnumerator RunTutorial() {
 		runningTutorial = true;
 		instructionPopup.gameObject.SetActive(true);
-		yield return new WaitForSeconds(5.0f);
+
+		Animation anim = instructionPopup.gameObject.transform.FindChild ("TutorialAnimation").gameObject.GetComponent<Animation> ();
+		anim.Play ("DragToStripe");
+
+		yield return new WaitForSeconds(anim.GetClip("DragToStripe").length);
+		anim.gameObject.SetActive (false);
+
+		GameObject banana = instructionPopup.transform.FindChild ("Banana").gameObject;
+		banana.GetComponent<SpriteRenderer> ().enabled = true;
+		banana.GetComponent<PolygonCollider2D> ().enabled = true;
+
 
 		subtitlePanel.GetComponent<SubtitlePanel>().Display("Now You Try!", correctSound);
 
-		BrainbowFood[] foods = instructionPopup.GetComponentsInChildren<BrainbowFood>();
-		foreach(BrainbowFood f in foods) {
-			if(f.name == "Banana") {
-				f.GetComponent<PolygonCollider2D>().enabled = true;
-				banana = f;
-				bananaOrigin = tutorialOrigin;
-				banana.SetOrigin(bananaOrigin);
-			}
-		}
+		bananaOrigin = tutorialOrigin;
+		banana.GetComponent<BrainbowFood>().SetOrigin(bananaOrigin);
 	}
 
 	IEnumerator TutorialTearDown ()
@@ -193,7 +196,7 @@ public class BrainbowGameManager : AbstractGameManager {
 			GameManager.GetInstance().LevelUp("Brainbow");
 		}
 
-		if(difficultyLevel > 1) {
+		if(difficultyLevel > 1 || score < scoreGoals[difficultyLevel]) {
 			DisplayGameOverCanvas ();
 		}
 	}
