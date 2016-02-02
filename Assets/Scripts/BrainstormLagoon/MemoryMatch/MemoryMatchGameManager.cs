@@ -37,6 +37,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public Transform target;
 	public float speed;
 	public AudioClip[] wrongMatchClips;
+
+	public AudioClip instructions;
+	public AudioClip letsPlay;
 	
 	// Use this for initialization
 	void Awake () {

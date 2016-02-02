@@ -447,6 +447,9 @@ GameObject:
   m_Component:
   - 4: {fileID: 530444243}
   - 212: {fileID: 530444244}
+  - 60: {fileID: 530444246}
+  - 114: {fileID: 530444245}
+  - 50: {fileID: 530444247}
   m_Layer: 0
   m_Name: RainbowSticker
   m_TagString: Untagged
@@ -492,6 +495,70 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: c412e3c7ef39d41128529b47bbbbb16e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &530444245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 530444242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef7960de39243482587796a857d48517, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!60 &530444246
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 530444242}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  m_Points:
+    m_Paths:
+    - - {x: 1.745, y: -1.09500003}
+      - {x: 1.98500001, y: -.764999986}
+      - {x: 2.15499997, y: -.174999997}
+      - {x: 2.20499992, y: .485000014}
+      - {x: 1.66802061, y: 1.10006177}
+      - {x: .985000014, y: 1.505}
+      - {x: .824999988, y: 1.55499995}
+      - {x: .0450000018, y: 1.58500004}
+      - {x: -.504999995, y: 1.36500001}
+      - {x: -.795000017, y: 1.23500001}
+      - {x: -.904999971, y: 1.15499997}
+      - {x: -1.80499995, y: .535000026}
+      - {x: -2.2249999, y: -.275000006}
+      - {x: -2.24499989, y: -.704999983}
+      - {x: -2.25500011, y: -.814999998}
+      - {x: -2.02636552, y: -1.38130343}
+      - {x: -1.43499994, y: -1.48500001}
+      - {x: -.785000026, y: -1.495}
+      - {x: -.275000006, y: -1.54499996}
+      - {x: -.224999994, y: -1.51499999}
+      - {x: .215000004, y: -1.34500003}
+      - {x: .834999979, y: -1.44500005}
+      - {x: 1.38499999, y: -1.58500004}
+      - {x: 1.45500004, y: -1.52499998}
+--- !u!50 &530444247
+Rigidbody2D:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 530444242}
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: .0500000007
+  m_GravityScale: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &567736378
 GameObject:
   m_ObjectHideFlags: 0

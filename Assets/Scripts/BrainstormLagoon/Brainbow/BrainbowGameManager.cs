@@ -38,6 +38,10 @@ public class BrainbowGameManager : AbstractGameManager {
 	public AudioClip[] correctMatchClips;
 	public AudioClip[] wrongMatchClips;
 	public Transform tutorialOrigin;
+
+	public AudioClip instructions;
+	public AudioClip nowYouTry;
+	public AudioClip letsPlay;
 	
 	void Awake() {
 		if(instance == null) {
@@ -108,9 +112,10 @@ public class BrainbowGameManager : AbstractGameManager {
 		instructionPopup.gameObject.SetActive(true);
 
 		Animation anim = instructionPopup.gameObject.transform.FindChild ("TutorialAnimation").gameObject.GetComponent<Animation> ();
+		SoundManager.GetInstance().PlayVoiceOverClip(instructions);
 		anim.Play ("DragToStripe");
 
-		yield return new WaitForSeconds(anim.GetClip("DragToStripe").length);
+		yield return new WaitForSeconds(instructions.length);
 		anim.gameObject.SetActive (false);
 
 		GameObject banana = instructionPopup.transform.FindChild ("Banana").gameObject;
@@ -118,7 +123,7 @@ public class BrainbowGameManager : AbstractGameManager {
 		banana.GetComponent<PolygonCollider2D> ().enabled = true;
 
 
-		subtitlePanel.GetComponent<SubtitlePanel>().Display("Now You Try!", correctSound);
+		subtitlePanel.GetComponent<SubtitlePanel>().Display("Now You Try!", nowYouTry);
 
 		bananaOrigin = tutorialOrigin;
 		banana.GetComponent<BrainbowFood>().SetOrigin(bananaOrigin);
@@ -128,8 +133,8 @@ public class BrainbowGameManager : AbstractGameManager {
 	{
 		score = 0;
 		runningTutorial = false;
-		subtitlePanel.GetComponent<SubtitlePanel>().Display("Great Job! Let's play Brainbow!", correctSound);
-		yield return new WaitForSeconds(2.0f);
+		subtitlePanel.GetComponent<SubtitlePanel>().Display("Perfect!", letsPlay);
+		yield return new WaitForSeconds(letsPlay.length);
 		instructionPopup.gameObject.SetActive(false);
 		StartGame ();
 	}

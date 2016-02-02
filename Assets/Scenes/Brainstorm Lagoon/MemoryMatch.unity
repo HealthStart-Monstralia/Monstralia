@@ -2595,6 +2595,18 @@ Canvas:
   m_PrefabParentObject: {fileID: 22305840, guid: c397aee46cbd54b8daf404e9b2b190e4,
     type: 2}
   m_PrefabInternal: {fileID: 1198866621}
+--- !u!114 &1198866625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1198866623}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bfbb99635be347fbae0198511149999, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipToPlay: {fileID: 8300000, guid: 04b2fba2641fe47bf90bffa6094eb448, type: 3}
 --- !u!1 &1226688053 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 174454, guid: d4aa7f1e0aade45a1ad228e455f9f9f9, type: 2}
@@ -2734,6 +2746,8 @@ MonoBehaviour:
   speed: .00100000005
   wrongMatchClips:
   - {fileID: 8300000, guid: 14d73772f00f4476aaa455489055904c, type: 3}
+  instructions: {fileID: 8300000, guid: 04b2fba2641fe47bf90bffa6094eb448, type: 3}
+  letsPlay: {fileID: 8300000, guid: b1a9a7450655e447197cf664dbaa6df1, type: 3}
 --- !u!4 &1491141534
 Transform:
   m_ObjectHideFlags: 0
