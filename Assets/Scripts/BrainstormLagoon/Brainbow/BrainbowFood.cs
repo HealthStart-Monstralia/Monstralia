@@ -71,6 +71,7 @@ public class BrainbowFood : Food {
 		}
 		moving = false;
 		busy = false;
+		Debug.Log ("About to hide sutitle");
 		StartCoroutine(HideSubtitle());
 	}
 

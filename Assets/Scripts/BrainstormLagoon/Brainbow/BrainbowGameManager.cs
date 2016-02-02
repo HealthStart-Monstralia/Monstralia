@@ -133,8 +133,10 @@ public class BrainbowGameManager : AbstractGameManager {
 	{
 		score = 0;
 		runningTutorial = false;
-		subtitlePanel.GetComponent<SubtitlePanel>().Display("Perfect!", letsPlay);
+		Debug.Log("Displaying perfect!");
+		subtitlePanel.GetComponent<SubtitlePanel>().Display("Perfect!", letsPlay, true);
 		yield return new WaitForSeconds(letsPlay.length);
+		subtitlePanel.GetComponent<SubtitlePanel>().Hide ();
 		instructionPopup.gameObject.SetActive(false);
 		StartGame ();
 	}
@@ -206,8 +208,7 @@ public class BrainbowGameManager : AbstractGameManager {
 		}
 	}
 
-	void EndGameTearDown ()
-	{
+	void EndGameTearDown () {
 		subtitlePanel.GetComponent<SubtitlePanel>().Hide ();
 		gameStarted = false;
 		timer.StopTimer();
@@ -237,7 +238,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	public void DisplayGameOverCanvas () {
 		gameoverCanvas.gameObject.SetActive (true);
 		Text gameoverScore = gameoverCanvas.GetComponentInChildren<Text> ();
-		gameoverScore.text = "Good job! You fed your monster: " + score + " healthy foods!";
+		gameoverScore.text = "Good job! You fed your monster " + score + " healthy brain foods!";
 	}
 
 	void UpdateScoreText() {
