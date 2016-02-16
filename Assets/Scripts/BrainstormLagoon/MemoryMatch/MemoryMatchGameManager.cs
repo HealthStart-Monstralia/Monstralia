@@ -38,6 +38,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public float speed;
 	public AudioClip[] wrongMatchClips;
 
+	public GameObject[] tutorialDishes;
 	public AudioClip instructions;
 	public AudioClip letsPlay;
 	
@@ -65,12 +66,12 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		activeFoods = new List<GameObject> ();
 		matchedFoods = new List<Food> ();
 
-//		if(GameManager.GetInstance().brainstormLagoonTutorial[(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH]) {
-//			StartCoroutine(RunTutorial());
-//		}
-//		else {
-//			StartGame ();
-//		}
+		if(GameManager.GetInstance().brainstormLagoonTutorial[(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH]) {
+			StartCoroutine(RunTutorial());
+		}
+		else {
+			StartGame ();
+		}
 
 	}
 
@@ -104,23 +105,35 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	IEnumerator RunTutorial () {
 		runningTutorial = true;
+
+		currentFoodToMatch = tutorialDishes [0].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Banana").gameObject;
+
+		tutorialDishes [0].GetComponent<DishBehavior> ().SetFood (tutorialDishes [0].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Banana").GetComponent<Food>());
+		tutorialDishes [1].GetComponent<DishBehavior> ().SetFood (tutorialDishes [1].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Berry").GetComponent<Food>());
+		tutorialDishes [2].GetComponent<DishBehavior> ().SetFood (tutorialDishes [2].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Brocolli").GetComponent<Food>());
+
 		instructionPopup.gameObject.SetActive(true);
-		yield return new WaitForSeconds(5.0f);
-		instructionPopup.gameObject.SetActive(false);
+		yield return new WaitForSeconds(instructions.length);
 		subtitlePanel.GetComponent<SubtitlePanel>().Display("Now you try!", correctSound);
 
-		StartGame ();
+//		StartGame ();
 	}
 
 	IEnumerator TutorialTearDown() {
 		score = 0;
-		subtitlePanel.GetComponent<SubtitlePanel>().Display("Great Job! Let's play MemoryMatch!", correctSound);
+		runningTutorial = false;
+		subtitlePanel.GetComponent<SubtitlePanel>().Display("Perfect!", letsPlay);
 		yield return new WaitForSeconds(2.0f);
-		ResetDishes();
+		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
+		instructionPopup.gameObject.SetActive (false);
 		StartGame ();
 	}
 
 	public void StartGame() {
+		scoreText.gameObject.SetActive (true);
+		timerText.gameObject.SetActive (true);
+		UpdateScoreText ();
+
 		gameStartup = true;
 
 		SpawnDishes();

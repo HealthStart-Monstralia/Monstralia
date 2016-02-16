@@ -133,7 +133,6 @@ public class BrainbowGameManager : AbstractGameManager {
 	{
 		score = 0;
 		runningTutorial = false;
-		Debug.Log("Displaying perfect!");
 		subtitlePanel.GetComponent<SubtitlePanel>().Display("Perfect!", letsPlay, true);
 		yield return new WaitForSeconds(letsPlay.length);
 		subtitlePanel.GetComponent<SubtitlePanel>().Hide ();
