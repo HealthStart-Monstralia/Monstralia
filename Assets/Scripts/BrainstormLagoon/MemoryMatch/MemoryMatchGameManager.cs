@@ -27,7 +27,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public Timer timer;
 	public float timeLimit;
 	public Text timerText;
-	public Text scoreText;
+	public Slider scoreGuage;
 	public Canvas gameOverCanvas;
 	public Canvas stickerPopupCanvas;
 	public AudioClip correctSound;
@@ -56,13 +56,14 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	void Start () {
 		score = 0;
+		scoreGuage.maxValue = difficultyLevel*3;
 
 		if(timer != null) {
 			timer = Instantiate(timer);
 			timer.SetTimeLimit(timeLimit);
 		}
 
-		UpdateScoreText ();
+		UpdateScoreGuage ();
 		activeFoods = new List<GameObject> ();
 		matchedFoods = new List<Food> ();
 
@@ -130,9 +131,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	public void StartGame() {
-		scoreText.gameObject.SetActive (true);
+		scoreGuage.gameObject.SetActive (true);
 		timerText.gameObject.SetActive (true);
-		UpdateScoreText ();
+		UpdateScoreGuage ();
 
 		gameStartup = true;
 
@@ -207,7 +208,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public void ChooseFoodToMatch() {
 		if(!gameStartup) {
 			++score;
-			UpdateScoreText();
+			UpdateScoreGuage();
 		}
 
 		if(GameObject.Find ("ToMatchSpawnPos").transform.childCount > 0)
@@ -269,7 +270,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 		// timer.StopTimer();
 		timerText.gameObject.SetActive(false);
-		scoreText.gameObject.SetActive(false);
+		scoreGuage.gameObject.SetActive(false);
 		if(difficultyLevel > 1) {
 			DisplayGameOverPopup();
 		}
@@ -289,7 +290,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		return runningTutorial;
 	}
 
-	void UpdateScoreText() {
-		scoreText.text = "Score: " + score;
+	void UpdateScoreGuage() {
+		scoreGuage.value = score;
 	}
 }

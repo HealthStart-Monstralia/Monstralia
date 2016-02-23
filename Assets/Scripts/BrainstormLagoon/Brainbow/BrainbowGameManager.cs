@@ -25,7 +25,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	public Transform[] spawnPoints;
 	public Transform spawnParent;
 	public int foodScale;
-	public Text scoreText;
+	public Slider scoreGuage;
 	public Text timerText;
 	public float timeLimit;
 	public Timer timer;
@@ -67,11 +67,13 @@ public class BrainbowGameManager : AbstractGameManager {
 	void Start(){
 		score = 0;
 
+		scoreGuage.maxValue = scoreGoals[difficultyLevel];
+
 		if(timer != null) {
 			timer = Instantiate(timer);
 			timer.SetTimeLimit(this.timeLimit);
 		}
-		UpdateScoreText();
+		UpdateScoreGuage();
 		SoundManager.GetInstance().ChangeBackgroundMusic(backgroundMusic);
 	
 		//create enums for each part of the island that represents the games to avoid using numbers to access the arrays
@@ -132,6 +134,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	IEnumerator TutorialTearDown ()
 	{
 		score = 0;
+		UpdateScoreGuage();
 		runningTutorial = false;
 		subtitlePanel.GetComponent<SubtitlePanel>().Display("Perfect!", letsPlay, true);
 		yield return new WaitForSeconds(letsPlay.length);
@@ -145,7 +148,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	}
 
 	public void StartGame() {
-		scoreText.gameObject.SetActive(true);
+		scoreGuage.gameObject.SetActive(true);
 		timerText.gameObject.SetActive(true);
 
 		StartCoroutine (DisplayGo());
@@ -170,7 +173,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	public void Replace(GameObject toReplace) {
 		++score;
 		if(!runningTutorial) {
-			scoreText.text = "Score: " + score;
+			UpdateScoreGuage();
 			if(toReplace.GetComponent<Food>() != null && foods.Count > 0) {
 				SpawnFood(toReplace.GetComponent<BrainbowFood>().GetOrigin());
 			}
@@ -240,7 +243,7 @@ public class BrainbowGameManager : AbstractGameManager {
 		gameoverScore.text = "Good job! You fed your monster " + score + " healthy brain foods!";
 	}
 
-	void UpdateScoreText() {
-		scoreText.text = "Score: " + score;
+	void UpdateScoreGuage() {
+		scoreGuage.value = score;
 	}
 }
