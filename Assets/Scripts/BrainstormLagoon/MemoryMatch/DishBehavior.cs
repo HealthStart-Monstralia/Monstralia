@@ -56,6 +56,7 @@ public class DishBehavior : MonoBehaviour {
 			MemoryMatchGameManager.GetInstance().subtitlePanel.GetComponent<SubtitlePanel>().Display(myFood.name, myFood.clipOfName);
 
 			if(MemoryMatchGameManager.GetInstance().GetFoodToMatch().name != myFood.name) {
+				MemoryMatchGameManager.GetInstance ().SubtractTime(3.0f);
 				yield return new WaitForSeconds(2f);
 				top.GetComponent<Animation>().Play (animation["DishTopRevealClose"].name);
 			}

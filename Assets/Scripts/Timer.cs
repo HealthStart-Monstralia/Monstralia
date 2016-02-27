@@ -56,4 +56,12 @@ public class Timer : MonoBehaviour {
 	public void StopTimer() {
 		timing = false;
 	}
+
+	public void SubtractTime(float delta) {
+		timeRemaining -= delta;
+	}
+
+	public void AddTime(float delta) {
+		timeRemaining += delta;
+	}
 }

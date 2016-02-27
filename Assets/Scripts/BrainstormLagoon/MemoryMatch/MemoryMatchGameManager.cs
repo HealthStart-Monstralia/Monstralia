@@ -295,4 +295,8 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	void UpdateScoreGauge() {
 		scoreGauge.value = score;
 	}
+
+	public void SubtractTime(float delta) {
+		timer.SubtractTime(delta);
+	}
 }
