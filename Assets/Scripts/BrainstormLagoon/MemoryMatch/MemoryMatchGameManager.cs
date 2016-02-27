@@ -27,7 +27,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public Timer timer;
 	public float timeLimit;
 	public Text timerText;
-	public Slider scoreGuage;
+	public Slider scoreGauge;
 	public Canvas gameOverCanvas;
 	public Canvas stickerPopupCanvas;
 	public AudioClip correctSound;
@@ -57,14 +57,14 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	void Start () {
 		score = 0;
-		scoreGuage.maxValue = difficultyLevel*3;
+		scoreGauge.maxValue = difficultyLevel*3;
 
 		if(timer != null) {
 			timer = Instantiate(timer);
 			timer.SetTimeLimit(timeLimit);
 		}
 
-		UpdateScoreGuage ();
+		UpdateScoreGauge ();
 		activeFoods = new List<GameObject> ();
 		matchedFoods = new List<Food> ();
 
@@ -107,6 +107,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	IEnumerator RunTutorial () {
 		runningTutorial = true;
+		instructionPopup.gameObject.SetActive(true);
 
 		currentFoodToMatch = tutorialDishes [0].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Banana").gameObject;
 
@@ -114,7 +115,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		tutorialDishes [1].GetComponent<DishBehavior> ().SetFood (tutorialDishes [1].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Berry").GetComponent<Food>());
 		tutorialDishes [2].GetComponent<DishBehavior> ().SetFood (tutorialDishes [2].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Brocolli").GetComponent<Food>());
 
-		instructionPopup.gameObject.SetActive(true);
+
 		yield return new WaitForSeconds(instructions.length);
 		subtitlePanel.GetComponent<SubtitlePanel>().Display("Now you try!", nowYouTry);
 
@@ -132,9 +133,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	public void StartGame() {
-		scoreGuage.gameObject.SetActive (true);
+		scoreGauge.gameObject.SetActive (true);
 		timerText.gameObject.SetActive (true);
-		UpdateScoreGuage ();
+		UpdateScoreGauge ();
 
 		gameStartup = true;
 
@@ -209,7 +210,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public void ChooseFoodToMatch() {
 		if(!gameStartup) {
 			++score;
-			UpdateScoreGuage();
+			UpdateScoreGauge();
 		}
 
 		if(GameObject.Find ("ToMatchSpawnPos").transform.childCount > 0)
@@ -271,7 +272,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 		// timer.StopTimer();
 		timerText.gameObject.SetActive(false);
-		scoreGuage.gameObject.SetActive(false);
+		scoreGauge.gameObject.SetActive(false);
 		if(difficultyLevel > 1) {
 			DisplayGameOverPopup();
 		}
@@ -291,7 +292,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		return runningTutorial;
 	}
 
-	void UpdateScoreGuage() {
-		scoreGuage.value = score;
+	void UpdateScoreGauge() {
+		scoreGauge.value = score;
 	}
 }

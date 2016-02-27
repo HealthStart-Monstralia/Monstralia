@@ -468,33 +468,17 @@ Prefab:
       propertyPath: m_Pivot.y
       value: .5
       objectReference: {fileID: 0}
-    - target: {fileID: 139548, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 22482766, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 22482766, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 22482766, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
       propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 139548, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
+      propertyPath: m_IsActive
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 22455166, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 11456080, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
-      propertyPath: m_Direction
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 22482766, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
-      propertyPath: m_AnchoredPosition.x
-      value: 8.69999981
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
@@ -2331,7 +2315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!223 &1198866624
 Canvas:
   m_ObjectHideFlags: 0
@@ -2997,7 +2981,7 @@ MonoBehaviour:
   timer: {fileID: 11425286, guid: acd22bf20657649ccb1fd20c60347a24, type: 2}
   timeLimit: 45
   timerText: {fileID: 1066847707}
-  scoreGuage: {fileID: 273660886}
+  scoreGauge: {fileID: 273660886}
   gameOverCanvas: {fileID: 397233140}
   stickerPopupCanvas: {fileID: 1963199117}
   correctSound: {fileID: 8300000, guid: 3eaacd3e8e6b0463399829b013efce26, type: 3}

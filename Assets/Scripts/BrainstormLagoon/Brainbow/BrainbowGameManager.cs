@@ -25,7 +25,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	public Transform[] spawnPoints;
 	public Transform spawnParent;
 	public int foodScale;
-	public Slider scoreGuage;
+	public Slider scoreGauge;
 	public Text timerText;
 	public float timeLimit;
 	public Timer timer;
@@ -67,13 +67,13 @@ public class BrainbowGameManager : AbstractGameManager {
 	void Start(){
 		score = 0;
 
-		scoreGuage.maxValue = scoreGoals[difficultyLevel];
+		scoreGauge.maxValue = scoreGoals[difficultyLevel];
 
 		if(timer != null) {
 			timer = Instantiate(timer);
 			timer.SetTimeLimit(this.timeLimit);
 		}
-		UpdateScoreGuage();
+		UpdateScoreGauge();
 		SoundManager.GetInstance().ChangeBackgroundMusic(backgroundMusic);
 	
 		//create enums for each part of the island that represents the games to avoid using numbers to access the arrays
@@ -134,7 +134,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	IEnumerator TutorialTearDown ()
 	{
 		score = 0;
-		UpdateScoreGuage();
+		UpdateScoreGauge();
 		runningTutorial = false;
 		subtitlePanel.GetComponent<SubtitlePanel>().Display("Perfect!", letsPlay, true);
 		yield return new WaitForSeconds(letsPlay.length);
@@ -148,7 +148,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	}
 
 	public void StartGame() {
-		scoreGuage.gameObject.SetActive(true);
+		scoreGauge.gameObject.SetActive(true);
 		timerText.gameObject.SetActive(true);
 
 		StartCoroutine (DisplayGo());
@@ -173,7 +173,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	public void Replace(GameObject toReplace) {
 		++score;
 		if(!runningTutorial) {
-			UpdateScoreGuage();
+			UpdateScoreGauge();
 			if(toReplace.GetComponent<Food>() != null && foods.Count > 0) {
 				SpawnFood(toReplace.GetComponent<BrainbowFood>().GetOrigin());
 			}
@@ -243,7 +243,7 @@ public class BrainbowGameManager : AbstractGameManager {
 		gameoverScore.text = "Good job! You fed your monster " + score + " healthy brain foods!";
 	}
 
-	void UpdateScoreGuage() {
-		scoreGuage.value = score;
+	void UpdateScoreGauge() {
+		scoreGauge.value = score;
 	}
 }
