@@ -474,15 +474,27 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22482766, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22482766, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22482766, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22455166, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11456080, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
+      propertyPath: m_Direction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 22482766, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 8.69999981
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
@@ -2983,7 +2995,7 @@ MonoBehaviour:
   - {fileID: 1575270489}
   - {fileID: 1856340907}
   timer: {fileID: 11425286, guid: acd22bf20657649ccb1fd20c60347a24, type: 2}
-  timeLimit: 85
+  timeLimit: 45
   timerText: {fileID: 1066847707}
   scoreGuage: {fileID: 273660886}
   gameOverCanvas: {fileID: 397233140}
@@ -3002,6 +3014,7 @@ MonoBehaviour:
   - {fileID: 1438251729}
   instructions: {fileID: 8300000, guid: 04b2fba2641fe47bf90bffa6094eb448, type: 3}
   letsPlay: {fileID: 8300000, guid: b1a9a7450655e447197cf664dbaa6df1, type: 3}
+  nowYouTry: {fileID: 8300000, guid: 67521ea18f2e54ebbafb7f7d8f5ab8d3, type: 3}
 --- !u!4 &1491141534
 Transform:
   m_ObjectHideFlags: 0

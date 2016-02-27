@@ -41,6 +41,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public GameObject[] tutorialDishes;
 	public AudioClip instructions;
 	public AudioClip letsPlay;
+	public AudioClip nowYouTry;
 	
 	// Use this for initialization
 	void Awake () {
@@ -115,7 +116,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 		instructionPopup.gameObject.SetActive(true);
 		yield return new WaitForSeconds(instructions.length);
-		subtitlePanel.GetComponent<SubtitlePanel>().Display("Now you try!", correctSound);
+		subtitlePanel.GetComponent<SubtitlePanel>().Display("Now you try!", nowYouTry);
 
 //		StartGame ();
 	}
