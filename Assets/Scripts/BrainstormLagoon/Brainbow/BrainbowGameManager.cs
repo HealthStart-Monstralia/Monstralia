@@ -113,11 +113,17 @@ public class BrainbowGameManager : AbstractGameManager {
 		runningTutorial = true;
 		instructionPopup.gameObject.SetActive(true);
 
-		Animation anim = instructionPopup.gameObject.transform.FindChild ("TutorialAnimation").gameObject.GetComponent<Animation> ();
 		SoundManager.GetInstance().PlayVoiceOverClip(instructions);
+		yield return new WaitForSeconds(3.5f);	// Replace with generic time of intro audio (after splitting track)
+		GameObject redOutline = instructionPopup.gameObject.transform.FindChild ("RedFlashingOutline").gameObject;
+		redOutline.SetActive(true);
+
+		yield return new WaitForSeconds(instructions.length-4.5f);
+
+		Animation anim = instructionPopup.gameObject.transform.FindChild ("TutorialAnimation").gameObject.GetComponent<Animation> ();
 		anim.Play ("DragToStripe");
 
-		yield return new WaitForSeconds(instructions.length);
+		yield return new WaitForSeconds(anim.clip.length);
 		anim.gameObject.SetActive (false);
 
 		GameObject banana = instructionPopup.transform.FindChild ("Banana").gameObject;
