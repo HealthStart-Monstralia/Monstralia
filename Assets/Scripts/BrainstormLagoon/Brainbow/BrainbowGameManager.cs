@@ -205,8 +205,15 @@ public class BrainbowGameManager : AbstractGameManager {
 		if(score >= scoreGoals[difficultyLevel]) {
 			if(difficultyLevel == 1) {
 				stickerPopupCanvas.gameObject.SetActive(true);
+				if(GameManager.GetInstance().brainstromLagoonFirstSticker) {
+					stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(true);
+					GameManager.GetInstance().brainstromLagoonFirstSticker = false;
+				}
+				else {
+					stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(true);
+				}
 				GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Brainbow");
-				GameManager.GetInstance ().brainstormLagoonTutorial[0] = false;
+				GameManager.GetInstance ().brainstormLagoonTutorial[(int)Constants.BrainstormLagoonLevels.BRAINBOW] = false;
 			}
 			GameManager.GetInstance().LevelUp("Brainbow");
 		}

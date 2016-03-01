@@ -265,7 +265,15 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		if(score >= difficultyLevel*3) {
 			if(difficultyLevel == 1) {
 				stickerPopupCanvas.gameObject.SetActive(true);
+				if(GameManager.GetInstance().brainstromLagoonFirstSticker) {
+					stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(true);
+					GameManager.GetInstance().brainstromLagoonFirstSticker = false;
+				}
+				else {
+					stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(true);
+				}
 				GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Hippocampus");
+				GameManager.GetInstance ().brainstormLagoonTutorial[(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
 			}
 			GameManager.GetInstance().LevelUp("MemoryMatch");
 		}

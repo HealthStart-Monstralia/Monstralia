@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
 	private static GameManager instance = null;
 
 	public bool[] brainstormLagoonTutorial = new bool[5];
+	public bool brainstromLagoonFirstSticker = true;
 
 	string monster;
 
