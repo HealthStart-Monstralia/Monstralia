@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: 0
-  clipOfName: {fileID: 0}
+  clipOfName: {fileID: 8300000, guid: 40672800232a4458391e1178eead6469, type: 3}
 --- !u!212 &21274524
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -102,6 +102,10 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 41340badd6c1b4ed58d97433102e8238,
         type: 3}
+    - target: {fileID: 0}
+      propertyPath: clipOfName
+      value: 
+      objectReference: {fileID: 8300000, guid: 40672800232a4458391e1178eead6469, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 101430}
