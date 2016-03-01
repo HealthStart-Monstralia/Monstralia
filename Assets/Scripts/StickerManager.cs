@@ -9,6 +9,10 @@ public class StickerManager : MonoBehaviour {
 	public List<GameObject> stickers;
 
 
+	void Awake() {
+		SoundManager.GetInstance().ChangeBackgroundMusic(SoundManager.GetInstance().gameBackgroundMusic);
+	}
+
 	// Use this for initialization
 	void Start () {
 		List<string> activeStickers = new List<string>();
