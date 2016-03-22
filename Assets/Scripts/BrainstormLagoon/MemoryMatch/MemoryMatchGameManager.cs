@@ -10,6 +10,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	private bool gameStartup;
 	private int score;
 	private GameObject currentFoodToMatch;
+	private int numDishes;
 	private int difficultyLevel;
 	private List<GameObject> activeFoods;
 	private List<Food> matchedFoods;
@@ -23,6 +24,8 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public float foodScale;
 	public float foodToMatchScale;
 	public List<GameObject> foods;
+	public GameObject dish;
+	public Transform dishParent;
 	public List<GameObject> dishes;
 	public Timer timer;
 	public float timeLimit;
@@ -57,7 +60,19 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	void Start () {
 		score = 0;
-		scoreGauge.maxValue = difficultyLevel*3;
+
+		if(difficultyLevel == 1) {
+			numDishes = 3;
+		}
+		else if(difficultyLevel == 2) {
+			numDishes = 4;
+		}
+		else if(difficultyLevel == 3) {
+			numDishes = 6;
+		}
+
+		Debug.Log ("Num Dishes: " + numDishes);
+		scoreGauge.maxValue = numDishes;
 
 		if(timer != null) {
 			timer = Instantiate(timer);
@@ -87,7 +102,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 
 		if(gameStarted){
-			if(score >= difficultyLevel*3 || timer.TimeRemaining () < 0) {
+			if(score >= numDishes || timer.TimeRemaining () < 0) {
 				if(!animIsPlaying)
 					StartCoroutine(RunEndGameAnimation());
 				// GameOver();
@@ -152,8 +167,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 		ChooseFoodToMatch();
 
-		for(int i = 0; i < difficultyLevel*3; ++i) {
-			GameObject newFood = SpawnFood(copy, true, foodSpawnPos[i], foodParentPos[i], foodScale);
+		for(int i = 0; i < numDishes; ++i) {
+//			GameObject newFood = SpawnFood(copy, true, foodSpawnPos[i], foodParentPos[i], foodScale);
+			GameObject newFood = SpawnFood(copy, true, dishes[i].GetComponent<DishBehavior>().top.transform, dishes[i].GetComponent<DishBehavior>().bottom.transform, foodScale);
 			dishes[i].GetComponent<DishBehavior>().SetFood(newFood.GetComponent<Food>());
 		}
 
@@ -161,20 +177,31 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	void SpawnDishes() {
-		for(int i = 0; i < difficultyLevel*3; ++i) {
-			dishes[i].SetActive(true);
+//		for(int i = 0; i < difficultyLevel*3; ++i) {
+//			dishes[i].SetActive(true);
+//		}
+
+		//Mathf.Cos/Sin use radians, so the dishes are positioned 2pi/numDishes apart
+		float dishPositionAngleDelta = (2*Mathf.PI)/numDishes;
+
+		for(int i = 0; i < numDishes; ++i) {
+			GameObject newDish = Instantiate(dish);
+			newDish.transform.parent = dishParent;
+			newDish.transform.localScale = new Vector3(1, 1, 1);
+			newDish.transform.localPosition = new Vector3(270f*Mathf.Cos (dishPositionAngleDelta*i), 200f*Mathf.Sin (dishPositionAngleDelta*i) + 100, 0);
+			dishes[i] = newDish;
 		}
 	}
 
 	IEnumerator RevealDishes() {
-		for(int i = 0; i < difficultyLevel*3; ++i) {
+		for(int i = 0; i < numDishes; ++i) {
 			GameObject d = dishes[i];
 			Animation animation = d.GetComponent<DishBehavior>().top.GetComponent<Animation>();
 			d.GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (animation["DishTopRevealLift"].name);
 		}
 		yield return new WaitForSeconds(3.0f);
 
-		for(int i = 0; i < difficultyLevel*3; ++i) {
+		for(int i = 0; i < numDishes; ++i) {
 			GameObject d = dishes[i];
 			Animation animation = d.GetComponent<DishBehavior>().top.GetComponent<Animation>();
 			d.GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (animation["DishTopRevealClose"].name);
@@ -201,7 +228,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	void SelectFoods() {
 		int foodCount = 0;
-		while(foodCount < difficultyLevel*3){
+		while(foodCount < numDishes){
 			int randomIndex = Random.Range(0, foods.Count);
 			GameObject newFood = foods[randomIndex];
 			if(!activeFoods.Contains(newFood)){
@@ -252,7 +279,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		animIsPlaying = true;
 		timer.StopTimer();
 
-		for(int i = 0; i < difficultyLevel*3; ++i) {
+		for(int i = 0; i < numDishes; ++i) {
 			GameObject d = dishes[i];
 			Animation animation = d.GetComponent<DishBehavior>().bottom.GetComponent<Animation>();
 			Destroy(d.GetComponent<DishBehavior>().bottom.GetComponentInChildren<Food>().gameObject);
@@ -267,7 +294,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	void GameOver() {
 		gameStarted = false;
-		if(score >= difficultyLevel*3) {
+		if(score >= numDishes) {
 			if(difficultyLevel == 1) {
 				stickerPopupCanvas.gameObject.SetActive(true);
 				if(GameManager.GetInstance().brainstromLagoonFirstSticker) {

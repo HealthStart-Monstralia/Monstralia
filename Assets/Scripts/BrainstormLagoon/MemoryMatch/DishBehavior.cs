@@ -28,7 +28,7 @@ public class DishBehavior : MonoBehaviour {
 	 * @param food: a GameObject with a Food component attached
 	 */
 	public void SetFood(Food food) {
-		myFood = gameObject.GetComponentsInChildren<Food>()[0];
+		myFood = food;//gameObject.GetComponentsInChildren<Food>()[0];
 	}
 
 	public void Reset() {

@@ -101,7 +101,8 @@ Animation:
   m_Enabled: 1
   serializedVersion: 3
   m_Animation: {fileID: 7400000, guid: e1e8a6ccbe6614bca8c17f4f7578d02b, type: 2}
-  m_Animations: []
+  m_Animations:
+  - {fileID: 7400000, guid: e1e8a6ccbe6614bca8c17f4f7578d02b, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0
@@ -117,8 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10ec6b61e066e4d51984be8ff1f52efb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  top: {fileID: 0}
-  bottom: {fileID: 0}
+  top: {fileID: 116936}
+  bottom: {fileID: 104094}
 --- !u!212 &21205904
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -266,6 +267,14 @@ Prefab:
       propertyPath: m_AnimatePhysics
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: top
+      value: 
+      objectReference: {fileID: 116936}
+    - target: {fileID: 0}
+      propertyPath: bottom
+      value: 
+      objectReference: {fileID: 104094}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 174454}
