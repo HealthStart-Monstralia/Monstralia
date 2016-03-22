@@ -138,6 +138,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 		yield return new WaitForSeconds(instructions.length);
 		subtitlePanel.GetComponent<SubtitlePanel>().Display("Now you try!", nowYouTry);
+		for(int i = 0; i < tutorialDishes.Length; ++i) {
+			tutorialDishes[i].GetComponent<Collider2D>().enabled = true;
+		}
 
 //		StartGame ();
 	}
