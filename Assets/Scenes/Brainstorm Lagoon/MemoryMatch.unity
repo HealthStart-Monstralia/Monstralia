@@ -496,6 +496,11 @@ RectTransform:
   m_PrefabParentObject: {fileID: 22438368, guid: 7e11279daba01490d92be51dd816fa6b,
     type: 2}
   m_PrefabInternal: {fileID: 199534164}
+--- !u!223 &199534166 stripped
+Canvas:
+  m_PrefabParentObject: {fileID: 22373142, guid: 7e11279daba01490d92be51dd816fa6b,
+    type: 2}
+  m_PrefabInternal: {fileID: 199534164}
 --- !u!1 &221862827 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 104094, guid: d4aa7f1e0aade45a1ad228e455f9f9f9, type: 2}
@@ -3109,7 +3114,7 @@ MonoBehaviour:
   timerText: {fileID: 1066847707}
   scoreGauge: {fileID: 273660886}
   gameOverCanvas: {fileID: 397233140}
-  stickerPopupCanvas: {fileID: 0}
+  stickerPopupCanvas: {fileID: 199534166}
   correctSound: {fileID: 8300000, guid: 3eaacd3e8e6b0463399829b013efce26, type: 3}
   subtitlePanel: {fileID: 438895296}
   animIsPlaying: 0
