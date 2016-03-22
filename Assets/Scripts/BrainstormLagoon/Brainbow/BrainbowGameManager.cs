@@ -130,7 +130,7 @@ public class BrainbowGameManager : AbstractGameManager {
 		banana.GetComponent<SpriteRenderer> ().enabled = true;
 		banana.GetComponent<PolygonCollider2D> ().enabled = true;
 
-
+		//redOutline.SetActive(false);
 		subtitlePanel.GetComponent<SubtitlePanel>().Display("Now You Try!", nowYouTry);
 
 		bananaOrigin = tutorialOrigin;

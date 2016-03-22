@@ -106,10 +106,15 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	IEnumerator RunTutorial () {
+		print("RunTutorial");
 		runningTutorial = true;
 		instructionPopup.gameObject.SetActive(true);
 
 		currentFoodToMatch = tutorialDishes [0].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Banana").gameObject;
+		//Animation anim = tutorialDishes[0].GetComponent<DishBehavior>().top.gameObject.GetComponent<Animation> ();
+		//tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealLift"].name);
+		//anim.Count;
+		
 
 		tutorialDishes [0].GetComponent<DishBehavior> ().SetFood (tutorialDishes [0].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Banana").GetComponent<Food>());
 		tutorialDishes [1].GetComponent<DishBehavior> ().SetFood (tutorialDishes [1].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Berry").GetComponent<Food>());
