@@ -71,7 +71,6 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			numDishes = 6;
 		}
 
-		Debug.Log ("Num Dishes: " + numDishes);
 		scoreGauge.maxValue = numDishes;
 
 		if(timer != null) {
@@ -121,7 +120,6 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	IEnumerator RunTutorial () {
-		print("RunTutorial");
 		runningTutorial = true;
 		instructionPopup.gameObject.SetActive(true);
 

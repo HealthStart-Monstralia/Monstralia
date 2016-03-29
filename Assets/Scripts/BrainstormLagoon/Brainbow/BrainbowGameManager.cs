@@ -259,4 +259,8 @@ public class BrainbowGameManager : AbstractGameManager {
 	void UpdateScoreGauge() {
 		scoreGauge.value = score;
 	}
+
+	public bool GameStarted() {
+		return gameStarted;
+	}
 }

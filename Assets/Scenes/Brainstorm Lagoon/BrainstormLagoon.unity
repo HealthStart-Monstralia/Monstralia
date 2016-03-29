@@ -119,7 +119,7 @@ RectTransform:
   m_RootOrder: 3
   m_AnchorMin: {x: .5, y: .5}
   m_AnchorMax: {x: .5, y: .5}
-  m_AnchoredPosition: {x: 76, y: 87}
+  m_AnchoredPosition: {x: 22, y: 87}
   m_SizeDelta: {x: 190, y: 190}
   m_Pivot: {x: .5, y: .5}
 --- !u!114 &19703001
@@ -467,7 +467,7 @@ GameObject:
   - 4: {fileID: 120858144}
   - 212: {fileID: 120858145}
   m_Layer: 5
-  m_Name: Star1
+  m_Name: Brain1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -480,8 +480,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 120858143}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.899999976, y: -.100000001, z: 0}
-  m_LocalScale: {x: .0599999987, y: .0599999987, z: 1}
+  m_LocalPosition: {x: -.825999975, y: -.0500000007, z: 0}
+  m_LocalScale: {x: .0500000007, y: .0500000007, z: 1}
   m_Children: []
   m_Father: {fileID: 1965819019}
   m_RootOrder: 0
@@ -790,7 +790,7 @@ GameObject:
   - 4: {fileID: 458785451}
   - 212: {fileID: 458785452}
   m_Layer: 5
-  m_Name: Star3
+  m_Name: Brain3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -803,8 +803,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 458785450}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .850000024, y: -.100000001, z: 0}
-  m_LocalScale: {x: .0599999987, y: .0599999987, z: 1}
+  m_LocalPosition: {x: .760999978, y: -.0500000007, z: 0}
+  m_LocalScale: {x: .0500000007, y: .0500000007, z: 1}
   m_Children: []
   m_Father: {fileID: 1965819019}
   m_RootOrder: 2
@@ -844,7 +844,7 @@ GameObject:
   - 4: {fileID: 539082098}
   - 212: {fileID: 539082099}
   m_Layer: 5
-  m_Name: Star2
+  m_Name: Brain2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -857,8 +857,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 539082097}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -.100000001, z: 0}
-  m_LocalScale: {x: .0599999987, y: .0599999987, z: 1}
+  m_LocalPosition: {x: -.0309999995, y: -.0500000007, z: 0}
+  m_LocalScale: {x: .0500000007, y: .0500000007, z: 1}
   m_Children: []
   m_Father: {fileID: 1965819019}
   m_RootOrder: 1
@@ -898,7 +898,7 @@ GameObject:
   - 4: {fileID: 573733197}
   - 212: {fileID: 573733198}
   m_Layer: 5
-  m_Name: Star2
+  m_Name: Brain2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -911,8 +911,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 573733196}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .0199999996, y: .0100000575, z: 0}
-  m_LocalScale: {x: .850000083, y: .850000083, z: 1}
+  m_LocalPosition: {x: -.0299999993, y: -.0350000001, z: 0}
+  m_LocalScale: {x: .0500000007, y: .0500000007, z: 0}
   m_Children: []
   m_Father: {fileID: 2011258440}
   m_RootOrder: 1
@@ -940,7 +940,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 30e7e865ca1ec4dcebdaa32a88246dc8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 862ad97d679094f09b18fb3e293905e7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &645353793
 GameObject:
@@ -1726,7 +1726,7 @@ GameObject:
   - 4: {fileID: 1397837311}
   - 212: {fileID: 1397837312}
   m_Layer: 5
-  m_Name: Star3
+  m_Name: Brain3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1739,8 +1739,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1397837310}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: .889999986, y: .0100000575, z: 0}
-  m_LocalScale: {x: .850000143, y: .850000143, z: 1}
+  m_LocalPosition: {x: .763000011, y: -.0309999995, z: 0}
+  m_LocalScale: {x: .0500000007, y: .0500000007, z: 0}
   m_Children: []
   m_Father: {fileID: 2011258440}
   m_RootOrder: 2
@@ -1768,7 +1768,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 30e7e865ca1ec4dcebdaa32a88246dc8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 862ad97d679094f09b18fb3e293905e7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1426184405
 GameObject:
@@ -1818,7 +1818,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Sprite: {fileID: 21300000, guid: 71cd05496b2774decabfed1417161679, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bb5b657d80c544ae1b79fa81810bba31, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2097,7 +2097,7 @@ GameObject:
   - 4: {fileID: 1829174566}
   - 212: {fileID: 1829174567}
   m_Layer: 5
-  m_Name: Star1
+  m_Name: Brain1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2110,8 +2110,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1829174565}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -.879999995, y: .00999999978, z: 0}
-  m_LocalScale: {x: .850000024, y: .850000024, z: 1}
+  m_LocalPosition: {x: -.828000009, y: -.0270000007, z: 0}
+  m_LocalScale: {x: .0500000007, y: .0500000007, z: 0}
   m_Children: []
   m_Father: {fileID: 2011258440}
   m_RootOrder: 0
@@ -2139,7 +2139,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 30e7e865ca1ec4dcebdaa32a88246dc8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 862ad97d679094f09b18fb3e293905e7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1965819018
 GameObject:
@@ -2164,8 +2164,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1965819018}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 90.4000015, z: -9604.17383}
-  m_LocalScale: {x: 52.1412697, y: 52.1412697, z: 52.1412697}
+  m_LocalPosition: {x: 0, y: 83.7099991, z: -9604.17383}
+  m_LocalScale: {x: 65.6459198, y: 65.6459198, z: 65.6459198}
   m_Children:
   - {fileID: 120858144}
   - {fileID: 539082098}
@@ -2196,7 +2196,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7de96c86b28504c39881b2c977627536, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0b8ee70e936234f59b5c34ec3feb0535, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &2011258439
 GameObject:
@@ -2221,8 +2221,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2011258439}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.62615967, y: 71.3816299, z: -9604.17383}
-  m_LocalScale: {x: 52.1412697, y: 52.1412697, z: 52.1412697}
+  m_LocalPosition: {x: 0, y: 83.7099991, z: -9604.17383}
+  m_LocalScale: {x: 65.6459198, y: 65.6459198, z: 65.6459198}
   m_Children:
   - {fileID: 1829174566}
   - {fileID: 573733197}
@@ -2253,5 +2253,5 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7de96c86b28504c39881b2c977627536, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0b8ee70e936234f59b5c34ec3feb0535, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
