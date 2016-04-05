@@ -283,10 +283,12 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		for(int i = 0; i < numDishes; ++i) {
 			GameObject d = dishes[i];
 			Animation animation = d.GetComponent<DishBehavior>().bottom.GetComponent<Animation>();
-			Destroy(d.GetComponent<DishBehavior>().bottom.GetComponentInChildren<Food>().gameObject);
-			SoundManager.GetInstance().PlaySFXClip(munchClip);
-			d.GetComponent<DishBehavior>().bottom.GetComponent<Animation>().Play (animation["DishBottomShake"].name);
-			yield return new WaitForSeconds (1.2f);
+			if(d.GetComponent<DishBehavior>().IsMatched ()) {
+				Destroy(d.GetComponent<DishBehavior>().bottom.GetComponentInChildren<Food>().gameObject);
+				SoundManager.GetInstance().PlaySFXClip(munchClip);
+				d.GetComponent<DishBehavior>().bottom.GetComponent<Animation>().Play (animation["DishBottomShake"].name);
+				yield return new WaitForSeconds (1.2f);
+			}
 		}
 		yield return new WaitForSeconds (1f);
 		GameOver ();

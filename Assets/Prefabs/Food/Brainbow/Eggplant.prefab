@@ -140,7 +140,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 9e4d181c3366c450b9f1da9ada3ba3b9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fc9e855897dbf48b3a9777d4910969cd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!224 &22422814
 RectTransform:
@@ -194,6 +194,11 @@ Prefab:
       propertyPath: clipOfName
       value: 
       objectReference: {fileID: 8300000, guid: 5bbb44f6a8b054edc87615f14c202cd6, type: 3}
+    - target: {fileID: 0}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fc9e855897dbf48b3a9777d4910969cd,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 118518}

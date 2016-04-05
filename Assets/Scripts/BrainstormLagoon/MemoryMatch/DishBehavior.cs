@@ -13,6 +13,7 @@ public class DishBehavior : MonoBehaviour {
 	
 	private Food myFood; /*!< The food belonging to this dish. */
 	private static bool isGuessing; /*!< Flag that keeps track of whether the player made a guess. */
+	private bool matched = false;			/*!< Flag that keeps track of whether this dish has been matched. */
 
 	public GameObject top; /*!< Reference to the top part of the dish. */
 	public GameObject bottom; /*!< Reference to the bottom part of the dish. */
@@ -66,6 +67,7 @@ public class DishBehavior : MonoBehaviour {
 				MemoryMatchGameManager.GetInstance().AddToMatchedList(myFood);
 				yield return new WaitForSeconds(1.5f);
 				top.GetComponent<SpriteRenderer>().enabled = false;
+				matched = true;
 
 				MemoryMatchGameManager.GetInstance().ChooseFoodToMatch();
 			}
@@ -73,6 +75,10 @@ public class DishBehavior : MonoBehaviour {
 			MemoryMatchGameManager.GetInstance().subtitlePanel.GetComponent<SubtitlePanel>().Hide ();
 			isGuessing = false;
 		}
+	}
+
+	public bool IsMatched() {
+		return matched;
 	}
 	
 }
