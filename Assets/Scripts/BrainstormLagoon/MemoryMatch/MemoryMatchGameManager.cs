@@ -45,6 +45,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public AudioClip instructions;
 	public AudioClip letsPlay;
 	public AudioClip nowYouTry;
+	public bool hasSpawned;
 	
 	// Use this for initialization
 	void Awake () {
@@ -107,6 +108,10 @@ public class MemoryMatchGameManager : MonoBehaviour {
 				// GameOver();
 			}
 		}
+
+		if(hasSpawned)
+			RotateDishes();
+		
 	}
 
 	void FixedUpdate() {
@@ -161,7 +166,8 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		gameStartup = true;
 
 		SpawnDishes();
-
+		hasSpawned = true;
+//		RotateDishes();
 		SelectFoods();
 
 		List<GameObject> copy = new List<GameObject>(activeFoods);
@@ -341,5 +347,23 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	public void SubtractTime(float delta) {
 		timer.SubtractTime(delta);
+	}
+
+	public void RotateDishes()
+	{
+		Vector3 zAxis = new Vector3(0, 0, 1);
+		print ("Angie: In Rotate Dishes");
+		for(int i = 0; i < numDishes; ++i)
+		{
+			
+			GameObject d = dishes[i];
+			Quaternion startRotation = d.transform.rotation;
+			print("Angie: d.transform.rotation - " + d.transform.rotation);
+
+			d.transform.RotateAround(target.position, zAxis, speed);
+			d.transform.rotation = startRotation;
+
+		}
+
 	}
 }
