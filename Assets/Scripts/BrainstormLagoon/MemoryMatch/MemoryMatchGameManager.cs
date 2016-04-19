@@ -16,6 +16,8 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	private List<Food> matchedFoods;
 	private bool stickerCanvasIsUp;
 	private bool runningTutorial = false;
+	private bool rotate = false;
+	private float stopRotateTime;
 
 	public Canvas instructionPopup;
 	public Transform foodToMatchSpawnPos;
@@ -108,15 +110,18 @@ public class MemoryMatchGameManager : MonoBehaviour {
 				// GameOver();
 			}
 		}
-
-		if(hasSpawned)
-			RotateDishes();
-		
 	}
 
 	void FixedUpdate() {
 		if(gameStarted) {
 			timerText.text = "Time: " + timer.TimeRemaining();
+		}
+
+		if(hasSpawned && rotate) {
+			RotateDishes();
+			if(Time.time > stopRotateTime) {
+				rotate = false;
+			}
 		}
 	}
 
@@ -167,7 +172,6 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 		SpawnDishes();
 		hasSpawned = true;
-//		RotateDishes();
 		SelectFoods();
 
 		List<GameObject> copy = new List<GameObject>(activeFoods);
@@ -184,10 +188,6 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	void SpawnDishes() {
-//		for(int i = 0; i < difficultyLevel*3; ++i) {
-//			dishes[i].SetActive(true);
-//		}
-
 		//Mathf.Cos/Sin use radians, so the dishes are positioned 2pi/numDishes apart
 		float dishPositionAngleDelta = (2*Mathf.PI)/numDishes;
 
@@ -201,12 +201,16 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	IEnumerator RevealDishes() {
+		rotate = true;
+		float rotateTimeDelta = Random.Range (3,6);
+		stopRotateTime = Time.time + rotateTimeDelta;
+
 		for(int i = 0; i < numDishes; ++i) {
 			GameObject d = dishes[i];
 			Animation animation = d.GetComponent<DishBehavior>().top.GetComponent<Animation>();
 			d.GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (animation["DishTopRevealLift"].name);
 		}
-		yield return new WaitForSeconds(3.0f);
+		yield return new WaitForSeconds(rotateTimeDelta);
 
 		for(int i = 0; i < numDishes; ++i) {
 			GameObject d = dishes[i];
@@ -349,21 +353,17 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		timer.SubtractTime(delta);
 	}
 
-	public void RotateDishes()
-	{
-		Vector3 zAxis = new Vector3(0, 0, 1);
+	public void RotateDishes() {
+		Vector3 zAxis = Vector3.forward; //<0, 0, 1>;
 		print ("Angie: In Rotate Dishes");
-		for(int i = 0; i < numDishes; ++i)
-		{
-			
+
+		for(int i = 0; i < numDishes; ++i) {
 			GameObject d = dishes[i];
 			Quaternion startRotation = d.transform.rotation;
 			print("Angie: d.transform.rotation - " + d.transform.rotation);
 
 			d.transform.RotateAround(target.position, zAxis, speed);
 			d.transform.rotation = startRotation;
-
 		}
-
 	}
 }
