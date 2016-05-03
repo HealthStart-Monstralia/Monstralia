@@ -117,7 +117,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			timerText.text = "Time: " + timer.TimeRemaining();
 		}
 
-		if(hasSpawned && rotate) {
+		if(hasSpawned && rotate && difficultyLevel > 1) {
 			RotateDishes();
 			if(Time.time > stopRotateTime) {
 				rotate = false;
