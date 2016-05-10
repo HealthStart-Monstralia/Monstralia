@@ -132,20 +132,40 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	IEnumerator RunTutorial () {
 		runningTutorial = true;
 		instructionPopup.gameObject.SetActive(true);
-
 		currentFoodToMatch = tutorialDishes [0].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Banana").gameObject;
-		//Animation anim = tutorialDishes[0].GetComponent<DishBehavior>().top.gameObject.GetComponent<Animation> ();
-		//tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealLift"].name);
-		//anim.Count;
-		
+
+		Animation anim = tutorialDishes[0].GetComponent<DishBehavior>().top.gameObject.GetComponent<Animation> ();
+		yield return new WaitForSeconds(2f);
+
+		// Dish lift.
+		tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealLift"].name);
+		tutorialDishes[1].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[1].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealLift"].name);
+		tutorialDishes[2].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[2].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealLift"].name);
+		yield return new WaitForSeconds(4f);
+
+		// Dish close.
+		tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealClose"].name);
+		tutorialDishes[1].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[1].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealClose"].name);
+		tutorialDishes[2].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[2].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealClose"].name);
+		yield return new WaitForSeconds(2f);
+		instructionPopup.gameObject.transform.FindChild ("panelbanana").gameObject.SetActive(true);
 
 		tutorialDishes [0].GetComponent<DishBehavior> ().SetFood (tutorialDishes [0].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Banana").GetComponent<Food>());
 		tutorialDishes [1].GetComponent<DishBehavior> ().SetFood (tutorialDishes [1].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Berry").GetComponent<Food>());
 		tutorialDishes [2].GetComponent<DishBehavior> ().SetFood (tutorialDishes [2].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Brocolli").GetComponent<Food>());
 
+		yield return new WaitForSeconds(4f);
+		Animation handAnim = instructionPopup.gameObject.transform.FindChild ("TutorialAnimation").gameObject.transform.FindChild ("Hand").gameObject.GetComponent<Animation>();
+		handAnim.Play("mmhand");
+		yield return new WaitForSeconds(4f);
+		tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealLift"].name);
 
-		yield return new WaitForSeconds(instructions.length);
+
+		yield return new WaitForSeconds(instructions.length - 12f);
 		subtitlePanel.GetComponent<SubtitlePanel>().Display("Now you try!", nowYouTry);
+		tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealClose"].name);
+		instructionPopup.gameObject.transform.FindChild ("TutorialAnimation").gameObject.transform.FindChild ("Hand").gameObject.SetActive(false);
+
 		for(int i = 0; i < tutorialDishes.Length; ++i) {
 			tutorialDishes[i].GetComponent<Collider2D>().enabled = true;
 		}
