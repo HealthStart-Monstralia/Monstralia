@@ -32,6 +32,7 @@ public class SubtitlePanel : MonoBehaviour {
 			Display(toDisplay.first, toDisplay.second);
 		}
 		else {
+			if(sub != null)
 			sub.Hide (gameObject);
 		}
 	}

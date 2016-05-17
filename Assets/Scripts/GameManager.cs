@@ -10,14 +10,19 @@ public class GameManager : MonoBehaviour {
 	private List<string> brainStickers;
 	private static GameManager instance = null;
 
-	public bool[] brainstormLagoonTutorial = new bool[5];
-	public bool brainstromLagoonFirstSticker = true;
+	public bool[] LagoonTutorial = new bool[5];
+	public bool LagoonFirstSticker = true;
+	public bool LagoonReview = false;
+
+	public List<Canvas> LagoonReviewCanvases;
+	public List<Canvas> LagoonReviewGames;
+
 
 	string monster;
 
 	void Awake() {
 		for(int i = 0; i < 5; ++i) {
-			brainstormLagoonTutorial[i] = true;
+			LagoonTutorial[i] = true;
 		}
 
 		if(instance == null) {
@@ -43,6 +48,7 @@ public class GameManager : MonoBehaviour {
 		gameStars.Add("MemoryMatch", 0);
 
 		brainStickers = new List<string>();
+		LagoonReviewGames = new List<Canvas>();
 	}
 
 	public void setMonster(string color) {
@@ -85,6 +91,24 @@ public class GameManager : MonoBehaviour {
 
 	public List<string> GetStickers() {
 		return brainStickers;
+	}
+
+	public void ActivateBrainstormLagoonReview() {
+		Debug.Log ("Activating Brainstorm Lagoon review");
+		if(!LagoonReview) {
+			Debug.Log ("LagoonReview: " + LagoonReview);
+			LagoonReview = true;
+			Debug.Log ("LagoonReview: " + LagoonReview);
+		}
+	}
+
+	public void AddLagoonReviewGame(string gameName) {
+		Debug.Log ("Adding lagoon review game");
+		LagoonReviewGames.Add (LagoonReviewCanvases[0]);
+	}
+
+	public Canvas ChooseLagoonReviewGame() {
+		return LagoonReviewGames[Random.Range (0, LagoonReviewGames.Count)];
 	}
 
 }

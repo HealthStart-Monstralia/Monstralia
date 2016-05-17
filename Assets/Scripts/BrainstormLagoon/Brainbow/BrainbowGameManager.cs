@@ -16,6 +16,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	private Text nowYouTryText;
 	private BrainbowFood banana;
 	private Transform bananaOrigin;
+	public Canvas reviewCanvas;
 
 	public Canvas instructionPopup;
 	public Canvas gameoverCanvas;
@@ -65,26 +66,16 @@ public class BrainbowGameManager : AbstractGameManager {
 	}
 
 	void Start(){
-		score = 0;
-
-		scoreGauge.maxValue = scoreGoals[difficultyLevel];
-
-		if(timer != null) {
-			timer = Instantiate(timer);
-			timer.SetTimeLimit(this.timeLimit);
-		}
-		UpdateScoreGauge();
 		SoundManager.GetInstance().ChangeBackgroundMusic(backgroundMusic);
 	
 		//create enums for each part of the island that represents the games to avoid using numbers to access the arrays
 		//in GameManager. Ex: brainstormLagoonTutorial[BrainstormLagoon.BRAINBOW]
-		if(GameManager.GetInstance().brainstormLagoonTutorial[(int)Constants.BrainstormLagoonLevels.BRAINBOW]) {
-			StartCoroutine(RunTutorial());
+		if (GameManager.GetInstance ().LagoonReview) {
+			StartReview ();
 		}
 		else {
-			StartGame ();
+			PregameSetup ();
 		}
-
 	}
 
 	void Update() {
@@ -106,6 +97,32 @@ public class BrainbowGameManager : AbstractGameManager {
 	void FixedUpdate() {
 		if(gameStarted) {
 			timerText.text = "Time: " + timer.TimeRemaining();
+		}
+	}
+
+	void StartReview() {
+		reviewCanvas.gameObject.SetActive(true);
+//		reviewCanvas = (Canvas)Instantiate (GameManager.GetInstance().ChooseLagoonReviewGame());
+//		reviewCanvas.transform.SetParent (GameObject.Find ("Canvas").transform);
+//		reviewCanvas.transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
+	}
+
+	public void PregameSetup () {
+		score = 0;
+		
+		scoreGauge.maxValue = scoreGoals[difficultyLevel];
+		
+		if(timer != null) {
+			timer = Instantiate(timer);
+			timer.SetTimeLimit(this.timeLimit);
+		}
+		UpdateScoreGauge();
+
+		if (GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.BRAINBOW]) {
+			StartCoroutine (RunTutorial ());
+		}
+		else {
+			StartGame ();
 		}
 	}
 
@@ -203,17 +220,19 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	override public void GameOver() {
 		if(score >= scoreGoals[difficultyLevel]) {
+			GameManager.GetInstance().AddLagoonReviewGame("Brainbow");
 			if(difficultyLevel == 1) {
 				stickerPopupCanvas.gameObject.SetActive(true);
-				if(GameManager.GetInstance().brainstromLagoonFirstSticker) {
+				GameManager.GetInstance ().ActivateBrainstormLagoonReview();
+				if(GameManager.GetInstance().LagoonFirstSticker) {
 					stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(true);
-					GameManager.GetInstance().brainstromLagoonFirstSticker = false;
+					GameManager.GetInstance().LagoonFirstSticker = false;
 				}
 				else {
 					stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(true);
 				}
 				GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Brainbow");
-				GameManager.GetInstance ().brainstormLagoonTutorial[(int)Constants.BrainstormLagoonLevels.BRAINBOW] = false;
+				GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.BRAINBOW] = false;
 			}
 			GameManager.GetInstance().LevelUp("Brainbow");
 		}

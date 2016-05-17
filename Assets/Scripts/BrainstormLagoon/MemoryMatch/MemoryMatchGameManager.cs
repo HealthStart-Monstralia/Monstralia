@@ -18,6 +18,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	private bool runningTutorial = false;
 	private bool rotate = false;
 	private float stopRotateTime;
+	public Canvas reviewCanvas;
 
 	public Canvas instructionPopup;
 	public Transform foodToMatchSpawnPos;
@@ -62,36 +63,47 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	void Start () {
-		score = 0;
+		if(GameManager.GetInstance().LagoonReview) {
+			StartReview();
+		}
+		else {
+			PregameSetup ();
+		}
+	}
 
-		if(difficultyLevel == 1) {
+	public void PregameSetup ()
+	{
+		score = 0;
+		if (difficultyLevel == 1) {
 			numDishes = 3;
 		}
-		else if(difficultyLevel == 2) {
-			numDishes = 4;
-		}
-		else if(difficultyLevel == 3) {
-			numDishes = 6;
-		}
-
+		else
+			if (difficultyLevel == 2) {
+				numDishes = 4;
+			}
+			else
+				if (difficultyLevel == 3) {
+					numDishes = 6;
+				}
 		scoreGauge.maxValue = numDishes;
-
-		if(timer != null) {
-			timer = Instantiate(timer);
-			timer.SetTimeLimit(timeLimit);
+		if (timer != null) {
+			timer = Instantiate (timer);
+			timer.SetTimeLimit (timeLimit);
 		}
-
 		UpdateScoreGauge ();
 		activeFoods = new List<GameObject> ();
 		matchedFoods = new List<Food> ();
-
-		if(GameManager.GetInstance().brainstormLagoonTutorial[(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH]) {
-			StartCoroutine(RunTutorial());
+		if (GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH]) {
+			StartCoroutine (RunTutorial ());
 		}
 		else {
 			StartGame ();
 		}
+	}
 
+	public void StartReview() {
+		Debug.Log ("starting memory match review");
+		reviewCanvas.gameObject.SetActive(true);
 	}
 
 	// Update is called once per frame
@@ -328,17 +340,21 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	void GameOver() {
 		gameStarted = false;
 		if(score >= numDishes) {
+			GameManager.GetInstance().AddLagoonReviewGame("MemoryMatch");
 			if(difficultyLevel == 1) {
 				stickerPopupCanvas.gameObject.SetActive(true);
-				if(GameManager.GetInstance().brainstromLagoonFirstSticker) {
+				GameManager.GetInstance().ActivateBrainstormLagoonReview();
+				if(GameManager.GetInstance().LagoonFirstSticker) {
 					stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(true);
-					GameManager.GetInstance().brainstromLagoonFirstSticker = false;
+					GameManager.GetInstance().LagoonFirstSticker = false;
+					Debug.Log ("This was Brainstorm Lagoon's first sticker");
 				}
 				else {
+					Debug.Log ("This was not Brainstorm Lagoon's first sticker");
 					stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(true);
 				}
 				GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Hippocampus");
-				GameManager.GetInstance ().brainstormLagoonTutorial[(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
+				GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
 			}
 			GameManager.GetInstance().LevelUp("MemoryMatch");
 		}
@@ -352,6 +368,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	public void DisplayGameOverPopup () {
+		Debug.Log ("In DisplayGameOverPopup");
 		gameOverCanvas.gameObject.SetActive(true);
 		Text gameOverText = gameOverCanvas.GetComponentInChildren<Text> ();
 		gameOverText.text = "Great job! You matched " + score + " healthy foods!";
@@ -375,12 +392,10 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	public void RotateDishes() {
 		Vector3 zAxis = Vector3.forward; //<0, 0, 1>;
-		print ("Angie: In Rotate Dishes");
 
 		for(int i = 0; i < numDishes; ++i) {
 			GameObject d = dishes[i];
 			Quaternion startRotation = d.transform.rotation;
-			print("Angie: d.transform.rotation - " + d.transform.rotation);
 
 			d.transform.RotateAround(target.position, zAxis, speed);
 			d.transform.rotation = startRotation;

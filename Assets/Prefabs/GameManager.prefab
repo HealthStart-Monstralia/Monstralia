@@ -39,6 +39,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931ddca56b31743de8058aff3d570467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LagoonTutorial: 0000000000
+  LagoonFirstSticker: 1
+  LagoonReview: 0
+  LagoonReviewCanvases:
+  - {fileID: 22336424, guid: 1b2034ae741524b999d30a73eee322b3, type: 2}
+  LagoonReviewGames: []
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -47,10 +53,26 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 0}
+      propertyPath: LagoonReviewGames.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: LagoonReviewCanvases.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
       propertyPath: monster
       value: 
       objectReference: {fileID: 11438926, guid: a70656c38fae340f39b98737f570672e,
         type: 2}
+    - target: {fileID: 0}
+      propertyPath: LagoonReviewGames.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: LagoonReview
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 122832}
