@@ -103,6 +103,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	public void StartReview() {
 		Debug.Log ("starting memory match review");
+//		reviewCanvas = GameManager.GetInstance().ChooseLagoonReviewGame();
 		reviewCanvas.gameObject.SetActive(true);
 	}
 
@@ -340,7 +341,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	void GameOver() {
 		gameStarted = false;
 		if(score >= numDishes) {
-			GameManager.GetInstance().AddLagoonReviewGame("MemoryMatch");
+			GameManager.GetInstance().AddLagoonReviewGame("MemoryMatchReviewGame");
 			if(difficultyLevel == 1) {
 				stickerPopupCanvas.gameObject.SetActive(true);
 				GameManager.GetInstance().ActivateBrainstormLagoonReview();

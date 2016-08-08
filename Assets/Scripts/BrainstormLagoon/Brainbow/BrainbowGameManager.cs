@@ -220,7 +220,7 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	override public void GameOver() {
 		if(score >= scoreGoals[difficultyLevel]) {
-			GameManager.GetInstance().AddLagoonReviewGame("Brainbow");
+			GameManager.GetInstance().AddLagoonReviewGame("BrainbowReviewGame");
 			if(difficultyLevel == 1) {
 				stickerPopupCanvas.gameObject.SetActive(true);
 				GameManager.GetInstance ().ActivateBrainstormLagoonReview();

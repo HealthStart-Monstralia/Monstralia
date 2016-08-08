@@ -9,13 +9,15 @@ public class GameManager : MonoBehaviour {
 	private Dictionary<string, int> gameStars;
 	private List<string> brainStickers;
 	private static GameManager instance = null;
+	private List<string> LagoonReviewGames;
+	private string reviewGamePath = "ReviewGames";
 
 	public bool[] LagoonTutorial = new bool[5];
 	public bool LagoonFirstSticker = true;
 	public bool LagoonReview = false;
 
-	public List<Canvas> LagoonReviewCanvases;
-	public List<Canvas> LagoonReviewGames;
+//	public List<Canvas> LagoonReviewCanvases;
+//	public List<Canvas> LagoonReviewGames;
 
 
 	string monster;
@@ -48,7 +50,7 @@ public class GameManager : MonoBehaviour {
 		gameStars.Add("MemoryMatch", 0);
 
 		brainStickers = new List<string>();
-		LagoonReviewGames = new List<Canvas>();
+		LagoonReviewGames = new List<string>();
 	}
 
 	public void setMonster(string color) {
@@ -103,12 +105,16 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void AddLagoonReviewGame(string gameName) {
-		Debug.Log ("Adding lagoon review game");
-		LagoonReviewGames.Add (LagoonReviewCanvases[0]);
+		Debug.Log ("Adding lagoon review game " + gameName);
+		LagoonReviewGames.Add (gameName);
+		Debug.Log ("COUNT OF REVIEW GAMES ACTIVE: " + LagoonReviewGames.Count);
 	}
 
 	public Canvas ChooseLagoonReviewGame() {
-		return LagoonReviewGames[Random.Range (0, LagoonReviewGames.Count)];
+		Debug.Log("Review Game: " + LagoonReviewGames[Random.Range (0, LagoonReviewGames.Count)]);
+		Canvas reviewGame = (Canvas)Instantiate(Resources.Load("MemoryMatchReviewGame"));//"ReviewGames/LagoonReveiwGames/" + LagoonReviewGames[Random.Range (0, LagoonReviewGames.Count)]));
+		Debug.Log("ReivewGameName: " + reviewGame.name);
+		return reviewGame;//Resources.Load(reviewGamePath  + "/" + LagoonReviewGames[Random.Range (0, LagoonReviewGames.Count)]) as Canvas;
 	}
 
 }
