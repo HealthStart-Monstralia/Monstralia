@@ -7,6 +7,9 @@ public class MonsterMovement : MonoBehaviour {
 	 */
 	public SnapPointGenerator SnapGen;
 	public GameObject ArrowGUI;
+	public GameObject[] ArrowGUIIcons = new GameObject[4];
+	public LayerMask layerMaze;
+	public enum Movement {Up = 0, Down = 1, Right = 2, Left = 3};
 
 	private AudioSource audioSrc;
 
@@ -22,10 +25,68 @@ public class MonsterMovement : MonoBehaviour {
 		locationX = SnapGen.startingGridX;
 		locationY = SnapGen.startingGridY;
 		MoveToSnapPoint ();
+		CheckAllCollisions ();
+	}
+
+	public void CheckAllCollisions () {
+		RaycastHit2D hitUp = Physics2D.Raycast (transform.position, Vector2.up, 0.5f, layerMaze);
+		if (hitUp.collider)
+			ArrowGUIIcons [(int)Movement.Up].SetActive (false);
+		else
+			ArrowGUIIcons [(int)Movement.Up].SetActive (true);
+		
+		RaycastHit2D hitDown = Physics2D.Raycast (transform.position, Vector2.down, 0.5f, layerMaze);
+		if (hitDown.collider)
+			ArrowGUIIcons [(int)Movement.Down].SetActive (false);
+		else
+			ArrowGUIIcons [(int)Movement.Down].SetActive (true);
+
+		RaycastHit2D hitRight = Physics2D.Raycast (transform.position, Vector2.right, 0.5f, layerMaze);
+		if (hitRight.collider)
+			ArrowGUIIcons [(int)Movement.Right].SetActive (false);
+		else
+			ArrowGUIIcons [(int)Movement.Right].SetActive (true);
+		
+		RaycastHit2D hitLeft = Physics2D.Raycast (transform.position, Vector2.left, 0.5f, layerMaze);
+		if (hitLeft.collider)
+			ArrowGUIIcons [(int)Movement.Left].SetActive (false);
+		else
+			ArrowGUIIcons [(int)Movement.Left].SetActive (true);
+	}
+
+	public bool CheckForCollision (Movement direction) {
+		if (direction == Movement.Up) {
+			RaycastHit2D hitUp = Physics2D.Raycast (transform.position, Vector2.up, 0.5f, layerMaze);
+			if (!hitUp.collider)
+				return true;
+			else
+				return false;
+			
+		} else if (direction == Movement.Down) {
+			RaycastHit2D hitDown = Physics2D.Raycast (transform.position, Vector2.down, 0.5f, layerMaze);
+			if (!hitDown.collider)
+				return true;
+			else
+				return false;
+		} else if (direction == Movement.Right) {
+			RaycastHit2D hitRight = Physics2D.Raycast (transform.position, Vector2.right, 0.5f, layerMaze);
+			if (!hitRight.collider)
+				return true;
+			else
+				return false;
+		} else if (direction == Movement.Left) {
+			RaycastHit2D hitLeft = Physics2D.Raycast (transform.position, Vector2.left, 0.5f, layerMaze);
+			if (!hitLeft.collider)
+				return true;
+			else
+				return false;
+		} else
+			return false;
 	}
 
 	void Update () {
 		ArrowGUI.transform.position = transform.position;
+		CheckAllCollisions ();
 
 		if (Input.GetKeyDown ("up")) {
 			MoveUp ();
@@ -46,35 +107,40 @@ public class MonsterMovement : MonoBehaviour {
 	}
 
 	public void MoveUp() {
-		if (locationY > 1) {
+		bool canMove = CheckForCollision (Movement.Up);
+		if (canMove && locationY > 1) {
 			locationY -= 1;
 			MoveToSnapPoint ();
 		}
 	}
 
 	public void MoveDown() {
-		if (locationY < SnapGen.gridCountY) {
+		bool canMove = CheckForCollision (Movement.Down);
+		if (canMove && locationY < SnapGen.gridCountY) {
 			locationY += 1;
 			MoveToSnapPoint ();
 		}
 	}
 
 	public void MoveLeft() {
-		if (locationX > 1) {
+		bool canMove = CheckForCollision (Movement.Left);
+		if (canMove && locationX > 1) {
 			locationX -= 1;
 			MoveToSnapPoint ();
 		}
 	}
 
 	public void MoveRight() {
-		if (locationX < SnapGen.gridCountX) {
+		bool canMove = CheckForCollision (Movement.Right);
+		if (canMove && locationX < SnapGen.gridCountX) {
 			locationX += 1;
 			MoveToSnapPoint ();
 		}
 	}
 
 	void MoveToSnapPoint() {
-		transform.position = SnapGen.PositionSnapPoint (locationX, locationY);
+		Vector3 position = SnapGen.PositionSnapPoint (locationX, locationY);
+		transform.position = position;
 	}
 
 	public void Pickup(string obj) {

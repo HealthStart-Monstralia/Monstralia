@@ -8,7 +8,6 @@ public class ArrowInput : MonoBehaviour {
 
 	public enum Movement {Up, Down, Left, Right};
 	public Movement MoveDirection;
-
 	public MonsterMovement monster;
 
 	public void OnClick() {
