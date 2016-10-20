@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DrawGizmo : MonoBehaviour {
+public class BMaze_DrawGizmo : MonoBehaviour {
 	/* CREATED BY: Colby Tang
 	 * GAME: Brain Maze
 	 * USAGE:

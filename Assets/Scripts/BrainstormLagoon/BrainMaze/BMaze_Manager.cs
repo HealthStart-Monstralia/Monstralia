@@ -1,16 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SnapPoint : MonoBehaviour {
-	/* CREATED BY: Colby Tang
-	 * GAME: Brain Maze
-	 */
-
-	public bool Up, Left, Down, Right;
+public class BMaze_Manager : MonoBehaviour {
+	public AudioClip backgroundMusic;
 
 	// Use this for initialization
 	void Start () {
-	
+		SoundManager.GetInstance().ChangeBackgroundMusic(backgroundMusic);
 	}
 	
 	// Update is called once per frame

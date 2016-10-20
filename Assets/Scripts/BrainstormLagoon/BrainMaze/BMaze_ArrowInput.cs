@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ArrowInput : MonoBehaviour {
+public class BMaze_ArrowInput : MonoBehaviour {
 	/* CREATED BY: Colby Tang
 	 * GAME: Brain Maze
 	 */
 
 	public enum Movement {Up, Down, Left, Right};
 	public Movement MoveDirection;
-	public MonsterMovement monster;
+	public BMaze_MonsterMovement monster;
 
 	public void OnClick() {
 		if (MoveDirection == Movement.Up) {

@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class SnapPointGenerator : MonoBehaviour {
+public class BMaze_SnapPointGenerator : MonoBehaviour {
 	/* CREATED BY: Colby Tang
 	 * GAME: Brain Maze
 	 * USAGE: Place the SnapPointGenerator GameObject in the very top left corner of grid

@@ -1,23 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MonsterMovement : MonoBehaviour {
+public class BMaze_MonsterMovement : MonoBehaviour {
 	/* CREATED BY: Colby Tang
 	 * GAME: Brain Maze
 	 */
-	public SnapPointGenerator SnapGen;
+	public BMaze_SnapPointGenerator SnapGen;
 	public GameObject ArrowGUI;
 	public GameObject[] ArrowGUIIcons = new GameObject[4];
 	public LayerMask layerMaze;
 	public enum Movement {Up = 0, Down = 1, Right = 2, Left = 3};
+	public float colliderRaycastDist;
+	public bool allowMovement;
 
 	private AudioSource audioSrc;
 
 	[SerializeField] private int locationX, locationY;
 
 	void Start () {
+		allowMovement = true;
+
 		if (!SnapGen) {
-			SnapGen = GameObject.Find ("SnapPointCreator").GetComponent<SnapPointGenerator>();
+			SnapGen = GameObject.Find ("SnapPointCreator").GetComponent<BMaze_SnapPointGenerator>();
 		}
 
 		audioSrc = GetComponent<AudioSource> ();
@@ -29,59 +33,72 @@ public class MonsterMovement : MonoBehaviour {
 	}
 
 	public void CheckAllCollisions () {
-		RaycastHit2D hitUp = Physics2D.Raycast (transform.position, Vector2.up, 0.5f, layerMaze);
-		if (hitUp.collider)
-			ArrowGUIIcons [(int)Movement.Up].SetActive (false);
-		else
-			ArrowGUIIcons [(int)Movement.Up].SetActive (true);
+		if (allowMovement) {
+			RaycastHit2D hitUp = Physics2D.Raycast (transform.position, Vector2.up, colliderRaycastDist, layerMaze);
+			if (hitUp.collider)
+				ArrowGUIIcons [(int)Movement.Up].SetActive (false);
+			else
+				ArrowGUIIcons [(int)Movement.Up].SetActive (true);
 		
-		RaycastHit2D hitDown = Physics2D.Raycast (transform.position, Vector2.down, 0.5f, layerMaze);
-		if (hitDown.collider)
-			ArrowGUIIcons [(int)Movement.Down].SetActive (false);
-		else
-			ArrowGUIIcons [(int)Movement.Down].SetActive (true);
+			RaycastHit2D hitDown = Physics2D.Raycast (transform.position, Vector2.down, colliderRaycastDist, layerMaze);
+			if (hitDown.collider)
+				ArrowGUIIcons [(int)Movement.Down].SetActive (false);
+			else
+				ArrowGUIIcons [(int)Movement.Down].SetActive (true);
 
-		RaycastHit2D hitRight = Physics2D.Raycast (transform.position, Vector2.right, 0.5f, layerMaze);
-		if (hitRight.collider)
-			ArrowGUIIcons [(int)Movement.Right].SetActive (false);
-		else
-			ArrowGUIIcons [(int)Movement.Right].SetActive (true);
+			RaycastHit2D hitRight = Physics2D.Raycast (transform.position, Vector2.right, colliderRaycastDist, layerMaze);
+			if (hitRight.collider)
+				ArrowGUIIcons [(int)Movement.Right].SetActive (false);
+			else
+				ArrowGUIIcons [(int)Movement.Right].SetActive (true);
 		
-		RaycastHit2D hitLeft = Physics2D.Raycast (transform.position, Vector2.left, 0.5f, layerMaze);
-		if (hitLeft.collider)
+			RaycastHit2D hitLeft = Physics2D.Raycast (transform.position, Vector2.left, colliderRaycastDist, layerMaze);
+			if (hitLeft.collider)
+				ArrowGUIIcons [(int)Movement.Left].SetActive (false);
+			else
+				ArrowGUIIcons [(int)Movement.Left].SetActive (true);
+		} else {
+			ArrowGUIIcons [(int)Movement.Up].SetActive (false);
+			ArrowGUIIcons [(int)Movement.Down].SetActive (false);
 			ArrowGUIIcons [(int)Movement.Left].SetActive (false);
-		else
-			ArrowGUIIcons [(int)Movement.Left].SetActive (true);
+			ArrowGUIIcons [(int)Movement.Right].SetActive (false);
+		}
 	}
 
 	public bool CheckForCollision (Movement direction) {
-		if (direction == Movement.Up) {
-			RaycastHit2D hitUp = Physics2D.Raycast (transform.position, Vector2.up, 0.5f, layerMaze);
+		switch (direction) {
+		case Movement.Up:
+			RaycastHit2D hitUp = Physics2D.Raycast (transform.position, Vector2.up, colliderRaycastDist, layerMaze);
 			if (!hitUp.collider)
 				return true;
 			else
 				return false;
-			
-		} else if (direction == Movement.Down) {
-			RaycastHit2D hitDown = Physics2D.Raycast (transform.position, Vector2.down, 0.5f, layerMaze);
+			break;
+		case Movement.Down:
+			RaycastHit2D hitDown = Physics2D.Raycast (transform.position, Vector2.down, colliderRaycastDist, layerMaze);
 			if (!hitDown.collider)
 				return true;
 			else
 				return false;
-		} else if (direction == Movement.Right) {
-			RaycastHit2D hitRight = Physics2D.Raycast (transform.position, Vector2.right, 0.5f, layerMaze);
+			break;
+		case Movement.Right:
+			RaycastHit2D hitRight = Physics2D.Raycast (transform.position, Vector2.right, colliderRaycastDist, layerMaze);
 			if (!hitRight.collider)
 				return true;
 			else
 				return false;
-		} else if (direction == Movement.Left) {
-			RaycastHit2D hitLeft = Physics2D.Raycast (transform.position, Vector2.left, 0.5f, layerMaze);
+			break;
+		case Movement.Left:
+			RaycastHit2D hitLeft = Physics2D.Raycast (transform.position, Vector2.left, colliderRaycastDist, layerMaze);
 			if (!hitLeft.collider)
 				return true;
 			else
 				return false;
-		} else
+			break;
+		default:
 			return false;
+			break;
+		}
 	}
 
 	void Update () {
