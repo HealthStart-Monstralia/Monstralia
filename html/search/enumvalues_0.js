@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['green',['Green',['../class_colorable.html#ab60c02aca6867d0029ab78101eafbb55ad382816a3cbeed082c9e216e7392eed1',1,'Colorable']]]
+  ['brainbow',['BRAINBOW',['../class_constants.html#aad7563361a0ff63ab082f530a7b8cc8aa19ada93b64c6fb02b5f15565a144935d',1,'Constants']]]
 ];

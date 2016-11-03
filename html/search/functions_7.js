@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['onmousedown',['OnMouseDown',['../class_brainbow_food.html#a537897272aedfa1319f55a823db8485e',1,'BrainbowFood.OnMouseDown()'],['../class_dish_behavior.html#a612a794a4f3933fdd674a4e592153224',1,'DishBehavior.OnMouseDown()']]],
-  ['onmouseup',['OnMouseUp',['../class_brainbow_food.html#a90ae2d56e6eb04fe044f15df21ad0021',1,'BrainbowFood']]]
+  ['hide',['Hide',['../class_subtitle.html#aab3c8705fc8418719691d507e8964d05',1,'Subtitle.Hide()'],['../class_subtitle_panel.html#a31a818b54cff8abd6a99407626b04d9d',1,'SubtitlePanel.Hide()']]],
+  ['hidesubtitle',['HideSubtitle',['../class_brainbow_food.html#af105657b5c484d7f161859a2ca20352c',1,'BrainbowFood']]]
 ];

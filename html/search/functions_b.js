@@ -1,5 +1,12 @@
 var searchData=
 [
-  ['update',['Update',['../class_brainbow_food.html#a2926e84485b09f170fcd2735723f6e77',1,'BrainbowFood.Update()'],['../class_brainbow_game_manager.html#a061e668f57a4d361592befddf8b9708e',1,'BrainbowGameManager.Update()'],['../class_memory_match_food.html#a6b2c56a9a637dd526a37a789565edb27',1,'MemoryMatchFood.Update()'],['../class_memory_match_game_manager.html#a75b7075f3c23f1300ee07065be4e9d71',1,'MemoryMatchGameManager.Update()'],['../class_star_manager.html#adc7aab0bdc5207f19fa5c2280d7a7c52',1,'StarManager.Update()']]],
-  ['updatescoretext',['UpdateScoreText',['../class_memory_match_game_manager.html#af14cdfc6c42ccaf25c99058de5e0e1de',1,'MemoryMatchGameManager']]]
+  ['onclick',['OnClick',['../class_b_maze___arrow_input.html#a4505d37578dc01de899bfbc4c2916142',1,'BMaze_ArrowInput']]],
+  ['ondrawgizmos',['OnDrawGizmos',['../class_b_maze___draw_gizmo.html#a14f13301ed559f8dcde34f3745ed32c5',1,'BMaze_DrawGizmo']]],
+  ['ondrawgizmosselected',['OnDrawGizmosSelected',['../class_b_maze___draw_gizmo.html#a4e8afcda507b628dac06aca51915c808',1,'BMaze_DrawGizmo']]],
+  ['onmousedown',['OnMouseDown',['../class_brainbow_food.html#a537897272aedfa1319f55a823db8485e',1,'BrainbowFood.OnMouseDown()'],['../class_dish_behavior.html#a612a794a4f3933fdd674a4e592153224',1,'DishBehavior.OnMouseDown()'],['../class_moveable_object.html#aaa8ead3bff91fbf92ea1ba3bbeb432c6',1,'MoveableObject.OnMouseDown()'],['../class_play_audio_on_click.html#ac6eb6529295e00aed043fe21bb21644e',1,'PlayAudioOnClick.OnMouseDown()'],['../class_water_behavior.html#acbe3b8e8173b789ab9634f55ab26d7f2',1,'WaterBehavior.OnMouseDown()']]],
+  ['onmouseup',['OnMouseUp',['../class_brainbow_food.html#a90ae2d56e6eb04fe044f15df21ad0021',1,'BrainbowFood.OnMouseUp()'],['../class_moveable_object.html#ad6a73121a8e5eed61aabbfd151f2bb7a',1,'MoveableObject.OnMouseUp()']]],
+  ['ontriggerenter2d',['OnTriggerEnter2D',['../class_brainbow_food.html#aa1402f822704d1dafbeffb2d26a68c2e',1,'BrainbowFood.OnTriggerEnter2D()'],['../class_b_maze___finishline.html#ab0793db66233cc0308976cdc4e063a04',1,'BMaze_Finishline.OnTriggerEnter2D()'],['../class_b_maze___pickup.html#a16745da0c62755c64d762dc9fa022929',1,'BMaze_Pickup.OnTriggerEnter2D()']]],
+  ['opendoor',['OpenDoor',['../class_b_maze___pickup_manager.html#a3000fbcde183ce57035f69466aa7e063',1,'BMaze_PickupManager']]],
+  ['operator_21_3d',['operator!=',['../class_tuple.html#a769436f1701c49cea4ce9c17c9c67ffe',1,'Tuple']]],
+  ['operator_3d_3d',['operator==',['../class_tuple.html#ac61033a4639472d21ce4492fc39207fe',1,'Tuple']]]
 ];
