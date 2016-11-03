@@ -247,9 +247,9 @@ public class BrainbowGameManager : AbstractGameManager {
 		gameStarted = false;
 		timer.StopTimer();
 
-		if (activeFood != null) {
+		//if (activeFood != null) {
 			activeFood.StopMoving ();
-		}
+		//}
 
 		timerText.gameObject.SetActive (false);
 

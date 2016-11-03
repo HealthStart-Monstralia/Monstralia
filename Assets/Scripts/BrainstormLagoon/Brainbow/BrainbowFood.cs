@@ -94,7 +94,6 @@ public class BrainbowFood : Food {
 	}
 
 	public void StopMoving() {
-		Debug.Log ("In stop moving");
 		gameOver = true;
 		gameObject.transform.position = GetOrigin().position;
 		gameObject.GetComponent<Collider2D>().enabled = false;
