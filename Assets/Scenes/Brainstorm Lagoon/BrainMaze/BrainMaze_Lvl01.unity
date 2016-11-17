@@ -217,11 +217,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22482766, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 22482766, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11456080, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
+      propertyPath: m_Value
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
@@ -884,6 +888,12 @@ BoxCollider2D:
   m_Offset: {x: 0.017202854, y: 0.023379803}
   serializedVersion: 2
   m_Size: {x: 7.3195496, y: 0.47677064}
+--- !u!114 &564256545 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11456080, guid: 2efdf726b620a467184ef2e5a4ba4e0b,
+    type: 2}
+  m_PrefabInternal: {fileID: 131389956}
+  m_Script: {fileID: -113659843, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &575924179 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1000014216096610, guid: 9413daca6aedfb242b1afd850fba088e,
@@ -1351,22 +1361,22 @@ Prefab:
     - target: {fileID: 224000012796004894, guid: f52796ea7e17f674a8e34c9d1a449469,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 387.3
+      value: 344.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000012796004894, guid: f52796ea7e17f674a8e34c9d1a449469,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 154
+      value: 459.5
       objectReference: {fileID: 0}
     - target: {fileID: 224000012796004894, guid: f52796ea7e17f674a8e34c9d1a449469,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 743
+      value: 689
       objectReference: {fileID: 0}
     - target: {fileID: 224000012796004894, guid: f52796ea7e17f674a8e34c9d1a449469,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 271
+      value: 919
       objectReference: {fileID: 0}
     - target: {fileID: 224000012796004894, guid: f52796ea7e17f674a8e34c9d1a449469,
         type: 2}
@@ -1812,6 +1822,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   door: {fileID: 575924179}
+  scoreGauge: {fileID: 564256545}
   pickupList: []
 --- !u!4 &1431180128
 Transform:

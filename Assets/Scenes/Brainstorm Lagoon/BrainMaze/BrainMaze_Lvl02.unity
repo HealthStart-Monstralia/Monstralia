@@ -235,6 +235,12 @@ RectTransform:
   m_PrefabParentObject: {fileID: 22466504, guid: 2efdf726b620a467184ef2e5a4ba4e0b,
     type: 2}
   m_PrefabInternal: {fileID: 131389956}
+--- !u!114 &131389958 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 11456080, guid: 2efdf726b620a467184ef2e5a4ba4e0b,
+    type: 2}
+  m_PrefabInternal: {fileID: 131389956}
+  m_Script: {fileID: -113659843, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &155124483
 GameObject:
   m_ObjectHideFlags: 0
@@ -2030,6 +2036,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   door: {fileID: 1760115601}
+  scoreGauge: {fileID: 131389958}
   pickupList: []
 --- !u!4 &1431180128
 Transform:
