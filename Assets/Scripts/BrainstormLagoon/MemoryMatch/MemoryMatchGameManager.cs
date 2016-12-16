@@ -228,7 +228,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			GameObject newDish = Instantiate(dish);
 			newDish.transform.parent = dishParent;
 			newDish.transform.localScale = new Vector3(1, 1, 1);
-			newDish.transform.localPosition = new Vector3(270f*Mathf.Cos (dishPositionAngleDelta*i), 200f*Mathf.Sin (dishPositionAngleDelta*i) + 100, 0);
+			newDish.transform.localPosition = new Vector3(200f*Mathf.Cos (dishPositionAngleDelta*i + Mathf.PI / 2), 200f*Mathf.Sin (dishPositionAngleDelta*i + Mathf.PI / 2) + 40, 0);
 			dishes[i] = newDish;
 		}
 	}

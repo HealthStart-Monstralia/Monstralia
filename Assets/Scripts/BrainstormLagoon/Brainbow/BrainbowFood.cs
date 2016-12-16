@@ -10,7 +10,7 @@ public class BrainbowFood : Food {
 	private Transform origin;
 	private bool busy;
 	private bool moving;
-	private static bool gameOver;
+	//private static bool gameOver;
 
 	public LayerMask layerMask;
 	
@@ -18,11 +18,11 @@ public class BrainbowFood : Food {
 	void Start () {
 		busy = false;
 		moving = false;
-		gameOver = false;
+		//gameOver = false;
 	}
 
 	void OnMouseDown() {
-		if(!busy && !gameOver) {
+		if(!busy && !BrainbowGameManager.GetInstance().isGameOver()) {
 			moving = true;
 			BrainbowGameManager.GetInstance().SetActiveFood(this);
 			offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
@@ -34,7 +34,7 @@ public class BrainbowFood : Food {
 	}
 	
 	void FixedUpdate() {
-		if(moving && !gameOver) {
+		if(moving && !BrainbowGameManager.GetInstance().isGameOver()) {
 			Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
 			Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
 			gameObject.GetComponent<Rigidbody2D>().MovePosition(curPosition);
@@ -94,7 +94,7 @@ public class BrainbowFood : Food {
 	}
 
 	public void StopMoving() {
-		gameOver = true;
+		//gameOver = true;
 		gameObject.transform.position = GetOrigin().position;
 		gameObject.GetComponent<Collider2D>().enabled = false;
 	}

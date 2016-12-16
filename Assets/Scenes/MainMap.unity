@@ -427,11 +427,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22435558, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
       propertyPath: m_Pivot.x
-      value: .5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 22435558, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
       propertyPath: m_Pivot.y
-      value: .5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 22435558, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
       propertyPath: m_LocalScale.x
@@ -506,7 +506,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22417426, guid: 9a3ad3a0c7f34456887f3e999bc5f187, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 532.869568
+      value: 532.86957
       objectReference: {fileID: 0}
     - target: {fileID: 22417426, guid: 9a3ad3a0c7f34456887f3e999bc5f187, type: 2}
       propertyPath: m_SizeDelta.x
@@ -514,7 +514,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22417426, guid: 9a3ad3a0c7f34456887f3e999bc5f187, type: 2}
       propertyPath: m_SizeDelta.y
-      value: 1065.73914
+      value: 1065.7391
       objectReference: {fileID: 0}
     - target: {fileID: 22417426, guid: 9a3ad3a0c7f34456887f3e999bc5f187, type: 2}
       propertyPath: m_AnchorMin.x
@@ -534,11 +534,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22417426, guid: 9a3ad3a0c7f34456887f3e999bc5f187, type: 2}
       propertyPath: m_Pivot.x
-      value: .5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 22417426, guid: 9a3ad3a0c7f34456887f3e999bc5f187, type: 2}
       propertyPath: m_Pivot.y
-      value: .5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 22326070, guid: 9a3ad3a0c7f34456887f3e999bc5f187, type: 2}
       propertyPath: m_Camera
@@ -1057,6 +1057,7 @@ GameObject:
   - 92: {fileID: 1159670185}
   - 124: {fileID: 1159670184}
   - 81: {fileID: 1159670183}
+  - 114: {fileID: 1159670188}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1132,6 +1133,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!114 &1159670188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1159670182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 843821420522b4451b7ec39f2cfc21f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  introAudio: {fileID: 8300000, guid: 05f9f34b2b7a544249d121af15d1f30e, type: 3}
 --- !u!1 &1425475523
 GameObject:
   m_ObjectHideFlags: 0
@@ -1267,7 +1280,7 @@ RectTransform:
 --- !u!1 &1451755556 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 127970, guid: 026b9d737f4a242c197e125197976783, type: 2}
-  m_PrefabInternal: {fileID: 1937839416}
+  m_PrefabInternal: {fileID: 2124082663}
 --- !u!1 &1876931331
 GameObject:
   m_ObjectHideFlags: 0
@@ -1410,7 +1423,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
---- !u!1001 &1937839416
+--- !u!1001 &2124082663
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1500,3 +1513,34 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 026b9d737f4a242c197e125197976783, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &2124082664 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1000012545467198, guid: 026b9d737f4a242c197e125197976783,
+    type: 2}
+  m_PrefabInternal: {fileID: 2124082663}
+--- !u!114 &2124082665
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2124082664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9b88b8decc2d4c1192072fc24d6c160, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clip: {fileID: 8300000, guid: b24e99fa0112142c79cc477b3a50ad46, type: 3}
+--- !u!61 &2124082666
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2124082664}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 4.88, y: 5.12}

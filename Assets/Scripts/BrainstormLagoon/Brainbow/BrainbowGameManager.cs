@@ -16,9 +16,11 @@ public class BrainbowGameManager : AbstractGameManager {
 	private Text nowYouTryText;
 	private BrainbowFood banana;
 	private Transform bananaOrigin;
-	public Canvas reviewCanvas;
+	private bool gameOver = false;
 
+	public Canvas reviewCanvas;
 	public Canvas instructionPopup;
+	public Text gameTitle;
 	public Canvas gameoverCanvas;
 	public Canvas stickerPopupCanvas;
 	public List<GameObject> foods;
@@ -40,9 +42,15 @@ public class BrainbowGameManager : AbstractGameManager {
 	public AudioClip[] wrongMatchClips;
 	public Transform tutorialOrigin;
 
+	public AudioClip intro;
 	public AudioClip instructions;
 	public AudioClip nowYouTry;
 	public AudioClip letsPlay;
+	public AudioClip waterTip;
+	public AudioClip level1Complete;
+	public AudioClip stickerbook;
+	public AudioClip reviewGame;
+	public AudioClip finalFeedback;
 	
 	void Awake() {
 		if(instance == null) {
@@ -67,9 +75,10 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	void Start(){
 		SoundManager.GetInstance().ChangeBackgroundMusic(backgroundMusic);
-	
 		//create enums for each part of the island that represents the games to avoid using numbers to access the arrays
 		//in GameManager. Ex: brainstormLagoonTutorial[BrainstormLagoon.BRAINBOW]
+
+
 		if (GameManager.GetInstance ().LagoonReview) {
 			StartReview ();
 		}
@@ -101,6 +110,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	}
 
 	void StartReview() {
+		SoundManager.GetInstance().PlayVoiceOverClip(reviewGame);
 		reviewCanvas.gameObject.SetActive(true);
 //		reviewCanvas = (Canvas)Instantiate (GameManager.GetInstance().ChooseLagoonReviewGame());
 //		reviewCanvas.transform.SetParent (GameObject.Find ("Canvas").transform);
@@ -129,7 +139,8 @@ public class BrainbowGameManager : AbstractGameManager {
 	IEnumerator RunTutorial() {
 		runningTutorial = true;
 		instructionPopup.gameObject.SetActive(true);
-
+		SoundManager.GetInstance().PlayVoiceOverClip(intro);
+		yield return new WaitForSeconds(6f);
 		SoundManager.GetInstance().PlayVoiceOverClip(instructions);
 		yield return new WaitForSeconds(3.5f);	// Replace with generic time of intro audio (after splitting track)
 		GameObject redOutline = instructionPopup.gameObject.transform.FindChild ("RedFlashingOutline").gameObject;
@@ -144,8 +155,9 @@ public class BrainbowGameManager : AbstractGameManager {
 		anim.gameObject.SetActive (false);
 
 		GameObject banana = instructionPopup.transform.FindChild ("Banana").gameObject;
-		banana.GetComponent<SpriteRenderer> ().enabled = true;
-		banana.GetComponent<PolygonCollider2D> ().enabled = true;
+		banana.SetActive(true);
+//		banana.GetComponent<SpriteRenderer> ().enabled = true;
+//		banana.GetComponent<PolygonCollider2D> ().enabled = true;
 
 		//redOutline.SetActive(false);
 		subtitlePanel.GetComponent<SubtitlePanel>().Display("Now You Try!", nowYouTry);
@@ -163,6 +175,7 @@ public class BrainbowGameManager : AbstractGameManager {
 		yield return new WaitForSeconds(letsPlay.length);
 		subtitlePanel.GetComponent<SubtitlePanel>().Hide ();
 		instructionPopup.gameObject.SetActive(false);
+		gameTitle.gameObject.SetActive(false);
 		StartGame ();
 	}
 
@@ -180,12 +193,16 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	public IEnumerator DisplayGo () {
 		StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
-		yield return new WaitForSeconds (4.0f);
+		yield return new WaitForSeconds (5.0f);
 		PostCountdownSetup ();
 	}
 
 	void PostCountdownSetup ()
 	{
+		if(difficultyLevel == 1){
+			SoundManager.GetInstance().PlayVoiceOverClip(waterTip);
+
+		}
 		gameStarted = true;
 		for (int i = 0; i < 4; ++i) {
 			SpawnFood (spawnPoints [i]);
@@ -222,6 +239,7 @@ public class BrainbowGameManager : AbstractGameManager {
 		if(score >= scoreGoals[difficultyLevel]) {
 			GameManager.GetInstance().AddLagoonReviewGame("BrainbowReviewGame");
 			if(difficultyLevel == 1) {
+				SoundManager.GetInstance().PlayVoiceOverClip(stickerbook);
 				stickerPopupCanvas.gameObject.SetActive(true);
 				GameManager.GetInstance ().ActivateBrainstormLagoonReview();
 				if(GameManager.GetInstance().LagoonFirstSticker) {
@@ -246,8 +264,11 @@ public class BrainbowGameManager : AbstractGameManager {
 		subtitlePanel.GetComponent<SubtitlePanel>().Hide ();
 		gameStarted = false;
 		timer.StopTimer();
+		gameOver = true;
 
-		activeFood.StopMoving ();
+		if(activeFood != null) {
+			activeFood.StopMoving ();
+		}
 
 		timerText.gameObject.SetActive (false);
 
@@ -261,6 +282,7 @@ public class BrainbowGameManager : AbstractGameManager {
 			food.GetComponent<Collider2D>().enabled = true;
 		}
 
+		SoundManager.GetInstance().PlayVoiceOverClip(finalFeedback);
 		GameObject animation = (GameObject)Instantiate(endGameAnimation);
 		animation.gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameManager.GetInstance().getMonster());
 		yield return new WaitForSeconds (endGameAnimation.gameObject.GetComponent<Animator> ().runtimeAnimatorController.animationClips [0].length);
@@ -279,5 +301,9 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	public bool GameStarted() {
 		return gameStarted;
+	}
+
+	public bool isGameOver() {
+		return gameOver;
 	}
 }

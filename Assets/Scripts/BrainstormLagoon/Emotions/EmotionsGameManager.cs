@@ -6,7 +6,7 @@ public class EmotionsGameManager : AbstractGameManager {
 
 	private string currentEmotionToMatch;
 	private int score = 0;
-	private string[] emotions = {"red", "blue", "yellow", "green"};
+	private string[] emotions = {"worried", "happy", "afraid", "thoughtful"};
 
 	public Text scoreText;
 	public Canvas gameOverCanvas;
