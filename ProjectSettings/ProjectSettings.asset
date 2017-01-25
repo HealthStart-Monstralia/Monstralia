@@ -4,13 +4,13 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  productGUID: d803595cf47644935b27c21dfb0e786a
+  productGUID: a159f569d241a44ae955fb93823dfebf
   AndroidProfiler: 0
-  defaultScreenOrientation: 0
+  defaultScreenOrientation: 4
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: HealthStart Foundation
+  companyName: DefaultCompany
   productName: Monstralia
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -50,8 +50,8 @@ PlayerSettings:
   m_ActiveColorSpace: 0
   m_MTRendering: 1
   m_MobileMTRendering: 0
-  m_StackTraceTypes: 020000000200000002000000020000000200000001000000
-  iosShowActivityIndicatorOnLoading: 2
+  m_StackTraceTypes: 010000000100000001000000010000000100000001000000
+  iosShowActivityIndicatorOnLoading: -1
   androidShowActivityIndicatorOnLoading: -1
   tizenShowActivityIndicatorOnLoading: -1
   iosAppInBackgroundBehavior: 0
@@ -66,7 +66,7 @@ PlayerSettings:
   disableDepthAndStencilBuffers: 0
   defaultIsFullScreen: 1
   defaultIsNativeResolution: 1
-  runInBackground: 1
+  runInBackground: 0
   captureSingleScreen: 0
   muteOtherAudioSources: 0
   Prepare IOS For Recording: 0
@@ -118,7 +118,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleIdentifier: com.HealthStartFoundation.Monstralia
+  bundleIdentifier: com.Company.ProductName
   bundleVersion: 1.0
   preloadedAssets: []
   metroInputSource: 0
@@ -144,16 +144,16 @@ PlayerSettings:
     serializedVersion: 2
     m_Bits: 238
   iPhoneSdkVersion: 988
-  iOSTargetOSVersionString: 6.0
+  iOSTargetOSVersionString: 
   tvOSSdkVersion: 0
   tvOSRequireExtendedGameController: 0
-  tvOSTargetOSVersionString: 9.0
+  tvOSTargetOSVersionString: 
   uIPrerenderedIcon: 0
   uIRequiresPersistentWiFi: 0
   uIRequiresFullScreen: 1
-  uIStatusBarHidden: 0
+  uIStatusBarHidden: 1
   uIExitOnSuspend: 0
-  uIStatusBarStyle: 2
+  uIStatusBarStyle: 0
   iPhoneSplashScreen: {fileID: 0}
   iPhoneHighResSplashScreen: {fileID: 0}
   iPhoneTallHighResSplashScreen: {fileID: 0}
@@ -174,7 +174,7 @@ PlayerSettings:
   iOSLaunchScreenLandscape: {fileID: 0}
   iOSLaunchScreenBackgroundColor:
     serializedVersion: 2
-    rgba: 4294967040
+    rgba: 0
   iOSLaunchScreenFillPct: 100
   iOSLaunchScreenSize: 100
   iOSLaunchScreenCustomXibPath: 
@@ -205,73 +205,10 @@ PlayerSettings:
     banner: {fileID: 0}
   androidGamepadSupportLevel: 0
   resolutionDialogBanner: {fileID: 0}
-  m_BuildTargetIcons:
-  - m_BuildTarget: 
-    m_Icons:
-    - serializedVersion: 2
-      m_Icon: {fileID: 0}
-      m_Width: 0
-      m_Height: 0
+  m_BuildTargetIcons: []
   m_BuildTargetBatching: []
-  m_BuildTargetGraphicsAPIs:
-  - m_BuildTarget: AndroidPlayer
-    m_APIs: 08000000
-    m_Automatic: 0
-  m_BuildTargetVRSettings:
-  - m_BuildTarget: Android
-    m_Enabled: 0
-    m_Devices:
-    - Oculus
-  - m_BuildTarget: Metro
-    m_Enabled: 0
-    m_Devices: []
-  - m_BuildTarget: N3DS
-    m_Enabled: 0
-    m_Devices: []
-  - m_BuildTarget: PS3
-    m_Enabled: 0
-    m_Devices: []
-  - m_BuildTarget: PS4
-    m_Enabled: 0
-    m_Devices:
-    - PlayStationVR
-  - m_BuildTarget: PSM
-    m_Enabled: 0
-    m_Devices: []
-  - m_BuildTarget: PSP2
-    m_Enabled: 0
-    m_Devices: []
-  - m_BuildTarget: SamsungTV
-    m_Enabled: 0
-    m_Devices: []
-  - m_BuildTarget: Standalone
-    m_Enabled: 0
-    m_Devices:
-    - Oculus
-  - m_BuildTarget: Tizen
-    m_Enabled: 0
-    m_Devices: []
-  - m_BuildTarget: WebGL
-    m_Enabled: 0
-    m_Devices: []
-  - m_BuildTarget: WebPlayer
-    m_Enabled: 0
-    m_Devices: []
-  - m_BuildTarget: WiiU
-    m_Enabled: 0
-    m_Devices: []
-  - m_BuildTarget: Xbox360
-    m_Enabled: 0
-    m_Devices: []
-  - m_BuildTarget: XboxOne
-    m_Enabled: 0
-    m_Devices: []
-  - m_BuildTarget: iOS
-    m_Enabled: 0
-    m_Devices: []
-  - m_BuildTarget: tvOS
-    m_Enabled: 0
-    m_Devices: []
+  m_BuildTargetGraphicsAPIs: []
+  m_BuildTargetVRSettings: []
   openGLRequireES31: 0
   openGLRequireES31AEP: 0
   webPlayerTemplate: APPLICATION:Default
@@ -295,9 +232,9 @@ PlayerSettings:
   wiiUDrcBufferDisabled: 0
   wiiUProfilerLibPath: 
   actionOnDotNetUnhandledException: 1
-  enableInternalProfiler: 1
+  enableInternalProfiler: 0
   logObjCUncaughtExceptions: 1
-  enableCrashReportAPI: 1
+  enableCrashReportAPI: 0
   cameraUsageDescription: 
   locationUsageDescription: 
   microphoneUsageDescription: 
@@ -389,7 +326,7 @@ PlayerSettings:
   psp2LiveAreaTrialPath: 
   psp2PatchChangeInfoPath: 
   psp2PatchOriginalPackage: 
-  psp2PackagePassword: 5PN2qmWqBlQ9wQj99nsQzldVI5ZuGXbE
+  psp2PackagePassword: WRK5RhRXdCdG5nG5azdNMK66MuCV6GXi
   psp2KeystoneFile: 
   psp2MemoryExpansionMode: 0
   psp2DRMType: 0
@@ -435,26 +372,20 @@ PlayerSettings:
   webGLUseWasm: 0
   webGLCompressionFormat: 1
   scriptingDefineSymbols: {}
-  platformArchitecture:
-    iOS: 2
-  scriptingBackend:
-    Android: 0
-    Standalone: 0
-    WebGL: 1
-    iOS: 1
-  incrementalIl2cppBuild:
-    iOS: 0
+  platformArchitecture: {}
+  scriptingBackend: {}
+  incrementalIl2cppBuild: {}
   additionalIl2CppArgs: 
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: 2DRoguelike
+  metroPackageName: Monstralia
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: 2DRoguelike
+  metroApplicationDescription: Monstralia
   wsaImages: {}
   metroTileShortName: 
   metroCommandLineArgsFile: 
@@ -463,9 +394,10 @@ PlayerSettings:
   metroLargeTileShowName: 0
   metroWideTileShowName: 0
   metroDefaultTileSize: 1
-  metroTileForegroundText: 1
-  metroTileBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
-  metroSplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
+  metroTileForegroundText: 2
+  metroTileBackgroundColor: {r: 0.13333334, g: 0.17254902, b: 0.21568628, a: 0}
+  metroSplashScreenBackgroundColor: {r: 0.12941177, g: 0.17254902, b: 0.21568628,
+    a: 1}
   metroSplashScreenUseBackgroundColor: 0
   platformCapabilities: {}
   metroFTAName: 
@@ -478,7 +410,7 @@ PlayerSettings:
   tizenGPSPermissions: 0
   tizenMicrophonePermissions: 0
   tizenDeploymentTarget: 
-  tizenDeploymentTargetType: -825836804
+  tizenDeploymentTargetType: -219157252
   tizenMinOSVersion: 0
   n3dsUseExtSaveData: 0
   n3dsCompressStaticMem: 1
@@ -520,16 +452,7 @@ PlayerSettings:
   XboxOneAllowedProductIds: []
   XboxOnePersistentLocalStorageSize: 0
   vrEditorSettings: {}
-  cloudServicesEnabled:
-    Analytics: 0
-    Build: 0
-    Collab: 0
-    ErrorHub: 0
-    Game_Performance: 0
-    Hub: 0
-    Purchasing: 0
-    UNet: 0
-    Unity_Ads: 0
+  cloudServicesEnabled: {}
   cloudProjectId: 
   projectName: 
   organizationId: 

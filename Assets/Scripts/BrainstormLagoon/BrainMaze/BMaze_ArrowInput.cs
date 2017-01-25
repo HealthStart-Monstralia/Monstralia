@@ -6,18 +6,18 @@ public class BMaze_ArrowInput : MonoBehaviour {
 	 * GAME: Brain Maze
 	 */
 
-	public enum Movement {Up, Down, Left, Right};
-	public Movement MoveDirection;
+	//public enum Movement {Up, Down, Left, Right};
+	public BMaze_MonsterMovement.Movement MoveDirection;
 	public BMaze_MonsterMovement monster;
 
 	public void OnClick() {
-		if (MoveDirection == Movement.Up) {
+		if (MoveDirection == BMaze_MonsterMovement.Movement.Up) {
 			monster.MoveUp ();
-		} else if (MoveDirection == Movement.Down) {
+		} else if (MoveDirection == BMaze_MonsterMovement.Movement.Down) {
 			monster.MoveDown ();
-		} else if (MoveDirection == Movement.Left) {
+		} else if (MoveDirection == BMaze_MonsterMovement.Movement.Left) {
 			monster.MoveLeft ();
-		} else if (MoveDirection == Movement.Right) {
+		} else if (MoveDirection == BMaze_MonsterMovement.Movement.Right) {
 			monster.MoveRight ();
 		}
 	}
