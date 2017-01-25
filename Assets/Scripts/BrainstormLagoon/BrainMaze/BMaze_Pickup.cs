@@ -6,7 +6,8 @@ public class BMaze_Pickup : MonoBehaviour {
 	 * GAME: Brain Maze
 	 */
 
-	public string TypeOfPickup;
+	public enum TypeOfPickup { Water = 0, Jogging = 1};
+	public TypeOfPickup pickup;
 
 	private BMaze_PickupManager pickupMan;
 
@@ -16,7 +17,9 @@ public class BMaze_Pickup : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.GetComponent<BMaze_MonsterMovement>())
-			col.GetComponent<BMaze_MonsterMovement>().Pickup (TypeOfPickup);
+			col.GetComponent<BMaze_MonsterMovement>().Pickup (pickup);
+		if (pickup == TypeOfPickup.Water)
+			GetComponent<BMaze_WaterPickup> ().IncreaseTime ();
 		pickupMan.pickupList.Remove (gameObject);
 		Destroy(gameObject);
 	}

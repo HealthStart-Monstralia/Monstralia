@@ -66,39 +66,34 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 	}
 
 	public bool CheckForCollision (Movement direction) {
+		bool canMove = false;
+
 		switch (direction) {
 		case Movement.Up:
 			RaycastHit2D hitUp = Physics2D.Raycast (transform.position, Vector2.up, colliderRaycastDist, layerMaze);
 			if (!hitUp.collider)
-				return true;
-			else
-				return false;
+				canMove = true;
 			break;
 		case Movement.Down:
 			RaycastHit2D hitDown = Physics2D.Raycast (transform.position, Vector2.down, colliderRaycastDist, layerMaze);
 			if (!hitDown.collider)
-				return true;
-			else
-				return false;
+				canMove = true;
 			break;
 		case Movement.Right:
 			RaycastHit2D hitRight = Physics2D.Raycast (transform.position, Vector2.right, colliderRaycastDist, layerMaze);
 			if (!hitRight.collider)
-				return true;
-			else
-				return false;
+				canMove = true;
 			break;
 		case Movement.Left:
 			RaycastHit2D hitLeft = Physics2D.Raycast (transform.position, Vector2.left, colliderRaycastDist, layerMaze);
 			if (!hitLeft.collider)
-				return true;
-			else
-				return false;
+				canMove = true;
 			break;
 		default:
-			return false;
 			break;
 		}
+
+		return canMove;
 	}
 
 	void Update () {
@@ -160,7 +155,7 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 		transform.position = position;
 	}
 
-	public void Pickup(string obj) {
+	public void Pickup(BMaze_Pickup.TypeOfPickup obj) {
 		audioSrc.Play ();
 	}
 }

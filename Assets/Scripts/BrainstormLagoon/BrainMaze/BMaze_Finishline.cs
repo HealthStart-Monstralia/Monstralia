@@ -20,6 +20,7 @@ public class BMaze_Finishline : MonoBehaviour {
 		if (!door && !finished) {
 			finished = true;
 			audioSrc.Play ();
+			BMaze_Manager.GameEnd ();
 			Invoke ("ChangeScene", 3f);
 		}
 	}

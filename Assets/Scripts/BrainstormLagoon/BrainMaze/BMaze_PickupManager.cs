@@ -14,7 +14,6 @@ public class BMaze_PickupManager : MonoBehaviour {
 
 	private AudioSource audioSrc;
 	private int initialPickupCount;
-	private int pickupCount;
 
 	void Start () {
 		audioSrc = GetComponent<AudioSource> ();
@@ -22,19 +21,11 @@ public class BMaze_PickupManager : MonoBehaviour {
 			pickupList.Add (transform.GetChild (count).gameObject);
 		}
 		initialPickupCount = pickupList.Count;
-		scoreGauge.value = 0f;
 	}
 
 	void Update () {
 		if (pickupList.Count <= 0 && door.gameObject) {
 			OpenDoor ();
-		}
-
-		if (pickupList.Count != 0 && pickupList.Count != pickupCount) {
-			pickupCount = pickupList.Count;
-			scoreGauge.value = 1 - ((float)pickupCount / (float)initialPickupCount);
-		} else if (pickupList.Count == 0 && pickupList.Count != pickupCount) {
-			scoreGauge.value = 1;
 		}
 	}
 
