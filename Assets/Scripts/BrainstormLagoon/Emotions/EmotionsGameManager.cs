@@ -10,12 +10,17 @@ public class EmotionsGameManager : AbstractGameManager {
 	private int score = 0;
 	private List<GameObject> activeEmotions;
 	private GameObject currentEmotionToMatch;
-	//private string[] emotions = {"worried", "happy", "afraid", "thoughtful"};
+	private float scale = 40f;
 
 	public Text scoreText;
 	public List<GameObject> emotions;
+	public List<GameObject> blueEmotions;
+	public List<GameObject> greenEmotions;
+	public List<GameObject> redEmotions;
+	public List<GameObject> yellowEmotions;
 	public Transform[] emotionSpawnLocs;
 	public Transform emotionSpawnParent;
+	public Transform emotionToMatchSpawnParent;
 	public Canvas gameOverCanvas;
 
 	void Awake() {
@@ -24,6 +29,19 @@ public class EmotionsGameManager : AbstractGameManager {
 		}
 		else if(instance != this) {
 			Destroy(gameObject);
+		}
+
+		if(GameManager.GetInstance().getMonster().Contains("Blue")) {
+			emotions = blueEmotions;
+		}
+		else if(GameManager.GetInstance().getMonster().Contains("Green")) {
+			emotions = greenEmotions;
+		}
+		else if(GameManager.GetInstance().getMonster().Contains("Red")) {
+			emotions = redEmotions;
+		}
+		else if(GameManager.GetInstance().getMonster().Contains("Yellow")) {
+			emotions = yellowEmotions;
 		}
 	}
 
@@ -37,10 +55,9 @@ public class EmotionsGameManager : AbstractGameManager {
 	void Start () {
 		activeEmotions = new List<GameObject>();
 
-
 		UpdateScore();
-		ChooseEmotion();
-		SpawnEmotions(40f);
+		ChooseEmotions();
+		SpawnEmotions(scale);
 		ChooseActiveEmotion();
 	}
 	
@@ -52,19 +69,26 @@ public class EmotionsGameManager : AbstractGameManager {
 	}
 
 	public void CheckEmotion(GameObject emotion){
-		Debug.Log("IN CHECK EMOTION " + currentEmotionToMatch.name);
 		if(emotion.name == currentEmotionToMatch.name){
-			Debug.Log("----------MATCH-----------");
 			++score;
 			UpdateScore();
-			// generate new currentEmotionToMatch
-			// currentEmotionToMatch = ChooseEmotion();
+
+			Destroy(currentEmotionToMatch);
+
+			for(int i = 0; i < emotionSpawnLocs.Length; ++i) {
+				GameObject tmp = emotionSpawnParent.FindChild(activeEmotions[i].name).gameObject;
+				Destroy(tmp);
+			}
+
+			activeEmotions.Clear();
+			ChooseEmotions();
 			ChooseActiveEmotion();
+			SpawnEmotions(scale);
 		}
 			
 	}
 
-	private void ChooseEmotion(){
+	private void ChooseEmotions(){
 		int emotionCount = 0;
 		while(emotionCount < 4){
 			int randomIndex = Random.Range(0, emotions.Count);
@@ -73,13 +97,12 @@ public class EmotionsGameManager : AbstractGameManager {
 				activeEmotions.Add(newEmotion);
 				++emotionCount;
 			}
-		//GameObject.Find("EmotionsMatchPanel").GetComponentInChildren<Text>().text = emotions[Random.Range(0,4)];
-		//currentEmotionToMatch = GameObject.Find("EmotionsMatchPanel").GetComponentInChildren<Text>().text;
+
 		}
 	}
 
 	private void SpawnEmotions(float scale) {
-		Debug.Log("In Spawn, size of active: " + activeEmotions.Count);
+		int spawnCount = 0;
 		for(int i = 0; i < activeEmotions.Count; ++i) {
 			GameObject newEmotion = Instantiate(activeEmotions[i]);
 			newEmotion.name = activeEmotions[i].name;
@@ -87,23 +110,23 @@ public class EmotionsGameManager : AbstractGameManager {
 			newEmotion.transform.localPosition = emotionSpawnLocs[i].localPosition;
 			newEmotion.transform.localScale = new Vector3(scale, scale, 1f);
 			newEmotion.GetComponent<SpriteRenderer>().sortingOrder = 1;
+			++spawnCount;
+			Debug.Log("Spawn count: " + spawnCount);
 		}
 
 	}
 
 	private void ChooseActiveEmotion() {
-//		if(GameObject.Find ("EmotionsMatchPanel").transform.childCount > 0)
-//			Destroy(currentEmotionToMatch);
+		int tmp = Random.Range(0, activeEmotions.Count);
+		currentEmotionToMatch = Instantiate(activeEmotions[tmp]);
+		currentEmotionToMatch.name = activeEmotions[tmp].name;
+		currentEmotionToMatch.transform.SetParent(emotionToMatchSpawnParent);
+		currentEmotionToMatch.transform.localPosition = new Vector3(0f, 0f, 0f);
+		currentEmotionToMatch.transform.localScale = new Vector3(40f, 40f, 1f);
+		currentEmotionToMatch.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
-//		if(activeEmotions.Count > 0) {
-			int tmp = Random.Range(0, activeEmotions.Count);
-			currentEmotionToMatch = Instantiate(activeEmotions[tmp]);
-			currentEmotionToMatch.name = activeEmotions[tmp].name;
-		Debug.Log("CurrentEmotionToMatch " + currentEmotionToMatch.name);
-			currentEmotionToMatch.transform.SetParent(emotionSpawnParent);
-			currentEmotionToMatch.transform.localPosition = GameObject.Find("EmotionsMatchPanel").transform.localPosition;
-			currentEmotionToMatch.transform.localScale = new Vector3(27f, 27f, 1f);
-			currentEmotionToMatch.GetComponent<SpriteRenderer>().sortingOrder = 1;
+		currentEmotionToMatch.GetComponent<BoxCollider2D>().enabled = false;
+		currentEmotionToMatch.GetComponent<EmotionBehavior>().enabled = false;
 
 //		}
 
