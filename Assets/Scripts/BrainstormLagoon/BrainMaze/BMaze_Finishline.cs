@@ -18,6 +18,7 @@ public class BMaze_Finishline : MonoBehaviour {
 
 	void OnTriggerEnter2D (Collider2D col) {
 		if (!door && !finished) {
+			col.GetComponentInChildren<Animator> ().Play ("BMaze_Dance");
 			finished = true;
 			audioSrc.Play ();
 			BMaze_Manager.GameEnd ();

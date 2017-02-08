@@ -16,14 +16,14 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000013770452502}
-  - 212: {fileID: 212000011560564114}
-  - 61: {fileID: 61000012990565914}
-  - 82: {fileID: 82000012008192490}
-  - 114: {fileID: 114000012279048134}
-  - 114: {fileID: 114000011271259098}
+  - component: {fileID: 4000013770452502}
+  - component: {fileID: 212000011560564114}
+  - component: {fileID: 61000012990565914}
+  - component: {fileID: 82000012008192490}
+  - component: {fileID: 114000012279048134}
+  - component: {fileID: 114000011271259098}
   m_Layer: 0
   m_Name: FinishLine
   m_TagString: Untagged
@@ -40,10 +40,10 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.98, y: 1.54, z: 0}
   m_LocalScale: {x: 1.4525685, y: 0.7166854, z: 0.5119184}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!61 &61000012990565914
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -55,9 +55,9 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0.14598666}
+  m_Offset: {x: 0.0000034878872, y: 0.9761285}
   serializedVersion: 2
-  m_Size: {x: 1.54, y: 1.4019207}
+  m_Size: {x: 1.54, y: 3.0621533}
 --- !u!82 &82000012008192490
 AudioSource:
   m_ObjectHideFlags: 1
@@ -74,6 +74,7 @@ AudioSource:
   Loop: 0
   Mute: 0
   Spatialize: 0
+  SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
@@ -86,12 +87,14 @@ AudioSource:
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
-    - time: 1
+    - serializedVersion: 2
+      time: 1
       value: 0
       inSlope: 0
       outSlope: 0
@@ -102,7 +105,8 @@ AudioSource:
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 0
       inSlope: 0
       outSlope: 0
@@ -113,7 +117,8 @@ AudioSource:
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 0
       inSlope: 0
       outSlope: 0
@@ -124,7 +129,8 @@ AudioSource:
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
-    - time: 0
+    - serializedVersion: 2
+      time: 0
       value: 1
       inSlope: 0
       outSlope: 0
@@ -143,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70955650897f8422da0c5875e43541f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: BrainMaze_Lvl05
+  sceneToLoad: BrainstormLagoon
   loadingScreen: {fileID: 0}
 --- !u!114 &114000012279048134
 MonoBehaviour:
@@ -153,7 +159,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1000011677758560}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7caa14018e0aa6b41bf239bbfe90479a, type: 3}
+  m_Script: {fileID: 11500000, guid: bd69a1c1dd5bbca4187f39455bd33bf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   door: {fileID: 0}
@@ -171,7 +177,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 0
   m_Materials:
   - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_SubsetIndices: 
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
@@ -179,7 +187,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_SelectedWireframeHidden: 1
+  m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
