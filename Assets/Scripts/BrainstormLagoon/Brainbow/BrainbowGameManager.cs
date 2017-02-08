@@ -65,7 +65,9 @@ public class BrainbowGameManager : AbstractGameManager {
 		{
 			{1, 8},
 			{2, 12},
-			{3, 20}
+			{3, 20},
+			{4, 20},
+			{5, 20}
 		};
 	}
 

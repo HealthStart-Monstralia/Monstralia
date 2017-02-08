@@ -7,13 +7,18 @@ public class EmotionsGameManager : AbstractGameManager {
 
 	//private string currentEmotionToMatch;
 	private static EmotionsGameManager instance;
-	private int score = 0;
+	private int score;
+	private List<GameObject> primaryEmotions;
+	private List<GameObject> secondaryEmotions;
 	private List<GameObject> activeEmotions;
 	private GameObject currentEmotionToMatch;
 	private float scale = 40f;
+	private int difficultyLevel;
+	private Dictionary<int, Tuple<int, int>> emotionsSetup;
+	private Tuple<int, int> numEmotions;
+	private bool gameOver = false;
 
 	public Text scoreText;
-	public List<GameObject> emotions;
 	public List<GameObject> blueEmotions;
 	public List<GameObject> greenEmotions;
 	public List<GameObject> redEmotions;
@@ -31,18 +36,43 @@ public class EmotionsGameManager : AbstractGameManager {
 			Destroy(gameObject);
 		}
 
+		secondaryEmotions = new List<GameObject>();
+
 		if(GameManager.GetInstance().getMonster().Contains("Blue")) {
-			emotions = blueEmotions;
+			primaryEmotions = blueEmotions;
 		}
-		else if(GameManager.GetInstance().getMonster().Contains("Green")) {
-			emotions = greenEmotions;
+		else {
+			secondaryEmotions.AddRange(blueEmotions);
 		}
-		else if(GameManager.GetInstance().getMonster().Contains("Red")) {
-			emotions = redEmotions;
+		if(GameManager.GetInstance().getMonster().Contains("Green")) {
+			primaryEmotions = greenEmotions;
 		}
-		else if(GameManager.GetInstance().getMonster().Contains("Yellow")) {
-			emotions = yellowEmotions;
+		else {
+			secondaryEmotions.AddRange(greenEmotions);
 		}
+		if(GameManager.GetInstance().getMonster().Contains("Red")) {
+			primaryEmotions = redEmotions;
+		}
+		else {
+			secondaryEmotions.AddRange(redEmotions);
+		}
+		if(GameManager.GetInstance().getMonster().Contains("Yellow")) {
+			primaryEmotions = yellowEmotions;
+		}
+		else {
+			secondaryEmotions.AddRange(yellowEmotions);
+		}
+			
+		difficultyLevel = GameManager.GetInstance().GetLevel("MonsterEmotions");
+
+		emotionsSetup = new Dictionary<int, Tuple<int, int>>()
+		{
+			{1, new Tuple<int, int>(2, 0)},
+			{2, new Tuple<int, int>(3, 0)},
+			{3, new Tuple<int, int>(4, 0)},
+			{4, new Tuple<int, int>(3, 1)},
+			{5, new Tuple<int, int>(2, 2)}
+		};
 	}
 
 	public static EmotionsGameManager GetInstance() {
@@ -53,18 +83,37 @@ public class EmotionsGameManager : AbstractGameManager {
 
 	// Use this for initialization
 	void Start () {
-		activeEmotions = new List<GameObject>();
 
-		UpdateScore();
-		ChooseEmotions();
-		SpawnEmotions(scale);
-		ChooseActiveEmotion();
+//		if(GameManager.GetInstance().LagoonReview) {
+//			StartReview();
+//		}
+//		else {
+			PregameSetup();
+//		}
+
+	}
+
+	void PregameSetup ()
+	{
+		score = 0;
+		numEmotions = emotionsSetup[difficultyLevel];
+		activeEmotions = new List<GameObject> ();
+		UpdateScore ();
+
+		for(int i = 0; i < numEmotions.first + numEmotions.second; ++i) {
+			emotionSpawnLocs[i].gameObject.SetActive(true);
+		}
+
+		ChooseEmotions (primaryEmotions, numEmotions.first);
+		ChooseEmotions(secondaryEmotions, numEmotions.second);
+		SpawnEmotions (scale);
+		ChooseActiveEmotion ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
-		if(score >= 10)
+		if(score >= 10 && !gameOver)
 			GameOver();
 	}
 
@@ -75,22 +124,23 @@ public class EmotionsGameManager : AbstractGameManager {
 
 			Destroy(currentEmotionToMatch);
 
-			for(int i = 0; i < emotionSpawnLocs.Length; ++i) {
+			for(int i = 0; i < activeEmotions.Count; ++i) {
 				GameObject tmp = emotionSpawnParent.FindChild(activeEmotions[i].name).gameObject;
 				Destroy(tmp);
 			}
 
 			activeEmotions.Clear();
-			ChooseEmotions();
+			ChooseEmotions(primaryEmotions, numEmotions.first);
+			ChooseEmotions(secondaryEmotions, numEmotions.second);
 			ChooseActiveEmotion();
 			SpawnEmotions(scale);
 		}
 			
 	}
 
-	private void ChooseEmotions(){
+	private void ChooseEmotions(List<GameObject> emotions, int num){
 		int emotionCount = 0;
-		while(emotionCount < 4){
+		while(emotionCount < num){
 			int randomIndex = Random.Range(0, emotions.Count);
 			GameObject newEmotion = emotions[randomIndex];
 			if(!activeEmotions.Contains(newEmotion)){
@@ -109,15 +159,14 @@ public class EmotionsGameManager : AbstractGameManager {
 			newEmotion.transform.SetParent(emotionSpawnParent);
 			newEmotion.transform.localPosition = emotionSpawnLocs[i].localPosition;
 			newEmotion.transform.localScale = new Vector3(scale, scale, 1f);
-			newEmotion.GetComponent<SpriteRenderer>().sortingOrder = 1;
+			newEmotion.GetComponent<SpriteRenderer>().sortingOrder = 2;
 			++spawnCount;
-			Debug.Log("Spawn count: " + spawnCount);
 		}
 
 	}
 
 	private void ChooseActiveEmotion() {
-		int tmp = Random.Range(0, activeEmotions.Count);
+		int tmp = Random.Range(0, numEmotions.first);
 		currentEmotionToMatch = Instantiate(activeEmotions[tmp]);
 		currentEmotionToMatch.name = activeEmotions[tmp].name;
 		currentEmotionToMatch.transform.SetParent(emotionToMatchSpawnParent);
@@ -138,6 +187,26 @@ public class EmotionsGameManager : AbstractGameManager {
 		
 
 	override public void GameOver(){
+		gameOver = true;
+		//GameManager.GetInstance().AddLagoonReviewGame("MonsterEmotionsReviewGame");
+		if(difficultyLevel == 1) {
+//			stickerPopupCanvas.gameObject.SetActive(true);
+//			GameManager.GetInstance().ActivateBrainstormLagoonReview();
+//			if(GameManager.GetInstance().LagoonFirstSticker) {
+//				stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(true);
+//				GameManager.GetInstance().LagoonFirstSticker = false;
+//				Debug.Log ("This was Brainstorm Lagoon's first sticker");
+//			}
+//			else {
+//				Debug.Log ("This was not Brainstorm Lagoon's first sticker");
+//				stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(true);
+//			}
+//			GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "");
+//			GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.MONSTER_EMOTIONS] = false;
+		}
+			
+		GameManager.GetInstance().LevelUp("MonsterEmotions");
+
 		DisplayGameOverPopup();
 	}
 
