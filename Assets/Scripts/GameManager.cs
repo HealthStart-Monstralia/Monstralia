@@ -44,10 +44,12 @@ public class GameManager : MonoBehaviour {
 		gameLevels = new Dictionary<string, int>();
 		gameLevels.Add("Brainbow", 1);
 		gameLevels.Add("MemoryMatch", 1);
+		gameLevels.Add("MonsterEmotions", 1);
 
 		gameStars = new Dictionary<string, int>();
 		gameStars.Add ("Brainbow", 0);
 		gameStars.Add("MemoryMatch", 0);
+		gameStars.Add("MonsterEmotions", 0);
 
 		brainStickers = new List<string>();
 		LagoonReviewGames = new List<string>();
@@ -66,10 +68,9 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public bool LevelUp(string gameName) {
-		print("leveling up");
 		if(gameStars[gameName] <= 3) {
 			gameStars[gameName] += 1;
-			if(gameLevels[gameName] != 3){
+			if(gameLevels[gameName] != 5){
 				gameLevels[gameName] += 1;
 			}
 			return true;

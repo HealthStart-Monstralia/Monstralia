@@ -82,7 +82,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 				numDishes = 4;
 			}
 			else
-				if (difficultyLevel == 3) {
+				if (difficultyLevel >= 3) {
 					numDishes = 6;
 				}
 		scoreGauge.maxValue = numDishes;
