@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class BMaze_PickupManager : MonoBehaviour {
-	/* CREATED BY: Colby Tang
+	/* CREATED BY: Colby Tang.
 	 * GAME: Brain Maze
 	 */
 
