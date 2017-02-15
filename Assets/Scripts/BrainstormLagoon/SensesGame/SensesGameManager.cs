@@ -91,22 +91,22 @@ public class SensesGameManager : AbstractGameManager {
 			activeSenses.Add(currentSenseToMatch);
 		}
 		else if(senseToMatch == "hear") {
-			int randomIndex = Random.Range(0, see.Count);
+			int randomIndex = Random.Range(0, hear.Count);
 			currentSenseToMatch = hear[randomIndex];
 			activeSenses.Add(currentSenseToMatch);
 		}
 		else if(senseToMatch == "taste") {
-			int randomIndex = Random.Range(0, see.Count);
+			int randomIndex = Random.Range(0, taste.Count);
 			currentSenseToMatch = taste[randomIndex];
 			activeSenses.Add(currentSenseToMatch);
 		}
 		else if(senseToMatch == "feel") {
-			int randomIndex = Random.Range(0, see.Count);
+			int randomIndex = Random.Range(0, feel.Count);
 			currentSenseToMatch = feel[randomIndex];
 			activeSenses.Add(currentSenseToMatch);
 		}
 		else if(senseToMatch == "smell") {
-			int randomIndex = Random.Range(0, see.Count);
+			int randomIndex = Random.Range(0, smell.Count);
 			currentSenseToMatch = smell[randomIndex];
 			activeSenses.Add(currentSenseToMatch);
 		}

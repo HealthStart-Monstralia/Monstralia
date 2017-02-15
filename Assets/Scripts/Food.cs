@@ -24,6 +24,6 @@ public abstract class Food : Colorable {
 		}
 		gameObject.transform.localPosition = spawnPos.localPosition;
 		gameObject.transform.localScale = new Vector3(scale, scale, 1);
-		gameObject.GetComponent<SpriteRenderer>().sortingOrder = 2;
+		gameObject.GetComponent<SpriteRenderer>().sortingOrder = 3;
 	}
 }
