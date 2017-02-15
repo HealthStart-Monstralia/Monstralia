@@ -45,11 +45,13 @@ public class GameManager : MonoBehaviour {
 		gameLevels.Add("Brainbow", 1);
 		gameLevels.Add("MemoryMatch", 1);
 		gameLevels.Add("MonsterEmotions", 1);
+		gameLevels.Add("MonsterSenses", 1);
 
 		gameStars = new Dictionary<string, int>();
 		gameStars.Add ("Brainbow", 0);
 		gameStars.Add("MemoryMatch", 0);
 		gameStars.Add("MonsterEmotions", 0);
+		gameStars.Add("MonsterSenses", 0);
 
 		brainStickers = new List<string>();
 		LagoonReviewGames = new List<string>();
