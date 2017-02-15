@@ -19,14 +19,10 @@ public class BMaze_Finishline : MonoBehaviour {
 	void OnTriggerEnter2D (Collider2D col) {
 		if (!door && !finished) {
 			col.GetComponentInChildren<Animator> ().Play ("BMaze_Dance");
+			col.GetComponent<BMaze_MonsterMovement> ().allowMovement = false;
 			finished = true;
 			audioSrc.Play ();
 			BMaze_Manager.GameEnd ();
-			Invoke ("ChangeScene", 3f);
 		}
-	}
-
-	void ChangeScene () {
-		GetComponent<SwitchScene> ().loadScene ();
 	}
 }

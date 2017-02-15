@@ -9,17 +9,17 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1000010352554638}
+  m_RootGameObject: {fileID: 1600404163335258}
   m_IsPrefabParent: 1
---- !u!1 &1000010352554638
+--- !u!1 &1600404163335258
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 4
+  serializedVersion: 5
   m_Component:
-  - 4: {fileID: 4000012180658438}
-  - 114: {fileID: 114000011222960050}
+  - component: {fileID: 4108918457755190}
+  - component: {fileID: 114695344986805258}
   m_Layer: 0
   m_Name: SnapPointCreator
   m_TagString: Untagged
@@ -27,33 +27,34 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4000012180658438
+--- !u!4 &4108918457755190
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010352554638}
+  m_GameObject: {fileID: 1600404163335258}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.404, y: 1.571, z: 0}
+  m_LocalPosition: {x: -3.412, y: 2.213, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
---- !u!114 &114000011222960050
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114695344986805258
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010352554638}
+  m_GameObject: {fileID: 1600404163335258}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fd6ee0cf56be5048a7bea30a1467881, type: 3}
+  m_Script: {fileID: 11500000, guid: 2aa1f221b0999194da524f0e600338e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   snapPoint: {fileID: 1000010477957604, guid: a853a8b2e047f214ea062e4dc23716f5, type: 2}
-  gridCountX: 7
-  gridCountY: 6
-  startingLocation: {x: 4, y: 6}
-  gridSize: 0.978
+  gridCountX: 3
+  gridCountY: 3
+  startingGridX: 3
+  startingGridY: 3
   snapPointList: []
+  gridSize: 2.293

@@ -8,7 +8,15 @@ public class BMaze_ArrowInput : MonoBehaviour {
 
 	//public enum Movement {Up, Down, Left, Right};
 	public BMaze_MonsterMovement.Movement MoveDirection;
-	public BMaze_MonsterMovement monster;
+
+	private BMaze_MonsterMovement monster;
+
+	void Start () {
+		if (BMaze_Manager.monsterObject)
+			monster = BMaze_Manager.monsterObject.GetComponent<BMaze_MonsterMovement> ();
+		else
+			monster = GameObject.Find ("Monster").GetComponent<BMaze_MonsterMovement> ();
+	}
 
 	public void OnClick() {
 		if (MoveDirection == BMaze_MonsterMovement.Movement.Up) {

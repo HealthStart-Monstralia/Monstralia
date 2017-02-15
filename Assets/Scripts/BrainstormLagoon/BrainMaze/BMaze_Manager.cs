@@ -7,14 +7,29 @@ public class BMaze_Manager : MonoBehaviour {
 	 * GAME: Brain Maze
 	 */
 
+	public static GameObject monsterObject;
+	public static BMaze_Manager manager;
 	public AudioClip backgroundMusic;
 	public GameObject scoreSlider;
 	public Text timerText;
 	public float timeLimit;
 	public static float timeLeft;
+	public static int sceneSelect = 1;
+	public int currentScene;
+	public string[] sceneList = new string[5];
 
 	protected static bool gameStarted = false;
 	private Slider scoreSliderComponent;
+
+	void Awake () {
+		manager = this;
+		if (sceneSelect != currentScene) {
+			manager.GetComponent<SwitchScene> ().sceneToLoad = (sceneList [sceneSelect - 1]);
+			ChangeScene ();
+		} else {
+			monsterObject = GameObject.Find ("Monster");
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -25,7 +40,8 @@ public class BMaze_Manager : MonoBehaviour {
 		if (timerText == null)
 			Debug.LogError ("No Timer Found!");
 		timerText.text = Mathf.Round(timeLeft).ToString();
-		SoundManager.GetInstance().ChangeBackgroundMusic(backgroundMusic);
+		if (SoundManager.GetInstance())
+			SoundManager.GetInstance().ChangeBackgroundMusic(backgroundMusic);
 	}
 	
 	// Update is called once per frame
@@ -47,5 +63,12 @@ public class BMaze_Manager : MonoBehaviour {
 
 	public static void GameEnd () {
 		gameStarted = false;
+		if (sceneSelect < 5)
+			sceneSelect += 1;
+		manager.Invoke ("ChangeScene", 3f);
+	}
+
+	public void ChangeScene () {
+		GetComponent<SwitchScene> ().loadScene ();
 	}
 }

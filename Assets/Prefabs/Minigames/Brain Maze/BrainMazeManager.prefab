@@ -56,6 +56,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4271431878242314}
   - component: {fileID: 114376317727064802}
+  - component: {fileID: 114592024327917108}
   m_Layer: 0
   m_Name: BrainMazeManager
   m_TagString: Untagged
@@ -261,6 +262,13 @@ MonoBehaviour:
   scoreSlider: {fileID: 1432862962371342}
   timerText: {fileID: 114261941132611860}
   timeLimit: 15
+  currentScene: 1
+  sceneList:
+  - BrainMaze_Lvl01
+  - BrainMaze_Lvl02
+  - BrainMaze_Lvl03
+  - BrainMaze_Lvl04
+  - BrainMaze_Lvl05
 --- !u!114 &114415667750129432
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -308,6 +316,19 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.09411765}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &114592024327917108
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1322689063143702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70955650897f8422da0c5875e43541f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneToLoad: BrainstormLagoon
+  loadingScreen: {fileID: 0}
 --- !u!114 &114671887783021350
 MonoBehaviour:
   m_ObjectHideFlags: 1

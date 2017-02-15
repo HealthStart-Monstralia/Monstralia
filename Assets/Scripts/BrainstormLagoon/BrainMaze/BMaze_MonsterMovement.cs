@@ -8,7 +8,7 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 	public BMaze_SnapPointGenerator SnapGen;
 	public GameObject ArrowGUI;
 	public GameObject[] ArrowGUIIcons = new GameObject[4];
-	public LayerMask layerMaze;
+	public LayerMask layerMaze, layerTile;
 	public enum Movement {Up = 0, Down = 1, Right = 2, Left = 3};
 	public float colliderRaycastDist;
 	public bool allowMovement;
@@ -35,14 +35,17 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 	public void CheckAllCollisions () {
 		if (allowMovement) {
 			RaycastHit2D hitUp = Physics2D.Raycast (transform.position, Vector2.up, colliderRaycastDist, layerMaze);
-			if (hitUp.collider)
+			if (hitUp.collider) {
 				ArrowGUIIcons [(int)Movement.Up].SetActive (false);
-			else
+			} else {
 				ArrowGUIIcons [(int)Movement.Up].SetActive (true);
+			}
 		
 			RaycastHit2D hitDown = Physics2D.Raycast (transform.position, Vector2.down, colliderRaycastDist, layerMaze);
-			if (hitDown.collider)
+			if (hitDown.collider) {
+				RaycastHit2D tileSelect = Physics2D.Raycast (transform.position, Vector2.down, colliderRaycastDist, layerTile);
 				ArrowGUIIcons [(int)Movement.Down].SetActive (false);
+			}
 			else
 				ArrowGUIIcons [(int)Movement.Down].SetActive (true);
 
@@ -71,8 +74,9 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 		switch (direction) {
 		case Movement.Up:
 			RaycastHit2D hitUp = Physics2D.Raycast (transform.position, Vector2.up, colliderRaycastDist, layerMaze);
-			if (!hitUp.collider)
+			if (!hitUp.collider) {
 				canMove = true;
+			}
 			break;
 		case Movement.Down:
 			RaycastHit2D hitDown = Physics2D.Raycast (transform.position, Vector2.down, colliderRaycastDist, layerMaze);
@@ -153,6 +157,11 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 	void MoveToSnapPoint() {
 		Vector3 position = SnapGen.PositionSnapPoint (locationX, locationY);
 		transform.position = position;
+	}
+
+	public void SetLocationGrid (int locX, int locY) {
+		locationX = locX;
+		locationY = locY;
 	}
 
 	public void Pickup(BMaze_Pickup.TypeOfPickup obj) {
