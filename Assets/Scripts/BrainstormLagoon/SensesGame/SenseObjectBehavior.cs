@@ -13,4 +13,9 @@ public class SenseObjectBehavior : MonoBehaviour {
 	};
 
 	public Sense sense;
+
+
+	void OnMouseDown() {
+		SensesGameManager.GetInstance().CheckSense(this.gameObject);
+	}
 }

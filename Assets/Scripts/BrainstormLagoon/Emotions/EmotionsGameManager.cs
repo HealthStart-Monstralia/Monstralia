@@ -126,7 +126,7 @@ public class EmotionsGameManager : AbstractGameManager {
 
 			for(int i = 0; i < activeEmotions.Count; ++i) {
 				GameObject tmp = emotionSpawnParent.FindChild(activeEmotions[i].name).gameObject;
-				Destroy(tmp);
+				Destroy(tmp.gameObject);
 			}
 
 			activeEmotions.Clear();

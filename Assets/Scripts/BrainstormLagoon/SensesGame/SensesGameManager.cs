@@ -27,7 +27,8 @@ public class SensesGameManager : AbstractGameManager {
 	public List<GameObject> allSenses;
 	public Transform[] senseSpawnLocs;
 	public Transform senseSpawnParent;
-	public Transform senseToMatchSpawnParent;
+	public GameObject senseToMatchSprite;
+	public Text senseToMatchText;
 
 	void Awake() {
 		if(instance == null) {
@@ -60,8 +61,8 @@ public class SensesGameManager : AbstractGameManager {
 
 	void PregameSetup ()
 	{
+		Debug.Log("In Pregame Setup");
 		score = 0;
-		Debug.Log("difficultyLEvel: " + difficultyLevel);
 		numSenses = sensesSetup[difficultyLevel];
 		activeSenses = new List<GameObject> ();
 		UpdateScore ();
@@ -85,6 +86,15 @@ public class SensesGameManager : AbstractGameManager {
 	private string ChooseActiveSense() {
 		string senseToMatch = senses[Random.Range(0, senses.Length)];
 
+		senseToMatchText.text = "Which image can you " + senseToMatch + "?";
+
+		for(int i = 0; i < sensesSprites.Count; ++i) {
+			if(sensesSprites[i].name.ToLower() == senseToMatch) {
+				senseToMatchSprite.GetComponent<SpriteRenderer>().sprite = sensesSprites[i];
+				senseToMatchSprite.SetActive(true);
+			}
+		}
+			
 		if(senseToMatch == "see") {
 			int randomIndex = Random.Range(0, see.Count);
 			currentSenseToMatch = see[randomIndex];
@@ -120,7 +130,8 @@ public class SensesGameManager : AbstractGameManager {
 		while(senseCount < num){
 			int randomIndex = Random.Range(0, allSenses.Count);
 			GameObject newEmotion = allSenses[randomIndex];
-			if(!activeSenses.Contains(newEmotion) && newEmotion.GetComponent<SenseObjectBehavior>().sense.ToString() != activeSense){
+			Debug.Log("activeSense: " + activeSense + " newEmotion.sense: " + newEmotion.GetComponent<SenseObjectBehavior>().sense.ToString().ToLower());
+			if(!activeSenses.Contains(newEmotion) && newEmotion.GetComponent<SenseObjectBehavior>().sense.ToString().ToLower() != activeSense.ToLower()){
 				activeSenses.Add(newEmotion);
 				++senseCount;
 			}
@@ -138,6 +149,24 @@ public class SensesGameManager : AbstractGameManager {
 			newEmotion.transform.localScale = new Vector3(scale, scale, 1f);
 			newEmotion.GetComponent<SpriteRenderer>().sortingOrder = 2;
 			++spawnCount;
+		}
+
+	}
+
+	public void CheckSense(GameObject other) {
+		if(other.name == currentSenseToMatch.name){
+			++score;
+			UpdateScore();
+
+			for(int i = 0; i < activeSenses.Count; ++i) {
+				GameObject tmp = senseSpawnParent.FindChild(activeSenses[i].name).gameObject;
+				Destroy(tmp);
+			}
+
+			activeSenses.Clear();
+			string activeSense = ChooseActiveSense();
+			ChooseSenses(activeSense, numSenses-1);
+			SpawnSenses(scale);
 		}
 
 	}
