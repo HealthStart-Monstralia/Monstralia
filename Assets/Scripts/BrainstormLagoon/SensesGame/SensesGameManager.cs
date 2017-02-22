@@ -28,7 +28,7 @@ public class SensesGameManager : AbstractGameManager {
 	public List<GameObject> smell;
 	public List<GameObject> hear;
 	public List<GameObject> taste;
-	public List<GameObject> feel;
+	public List<GameObject> touch;
 	public List<GameObject> allSenses;
 	public Transform[] senseSpawnLocs;
 	public Transform senseSpawnParent;
@@ -152,8 +152,8 @@ public class SensesGameManager : AbstractGameManager {
 			activeSenses.Add(currentSenseToMatch);
 		}
 		else if(senseToMatch == "touch") {
-			int randomIndex = Random.Range(0, feel.Count);
-			currentSenseToMatch = feel[randomIndex];
+			int randomIndex = Random.Range(0, touch.Count);
+			currentSenseToMatch = touch[randomIndex];
 			activeSenses.Add(currentSenseToMatch);
 		}
 		else if(senseToMatch == "smell") {
