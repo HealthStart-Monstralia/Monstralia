@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class EmotionsGameManager : AbstractGameManager {
 
-	//private string currentEmotionToMatch;
 	private static EmotionsGameManager instance;
 	private int score;
+	private int scoreGoal = 10;
 	private List<GameObject> primaryEmotions;
 	private List<GameObject> secondaryEmotions;
 	private List<GameObject> activeEmotions;
@@ -17,8 +17,12 @@ public class EmotionsGameManager : AbstractGameManager {
 	private Dictionary<int, Tuple<int, int>> emotionsSetup;
 	private Tuple<int, int> numEmotions;
 	private bool gameOver = false;
+	private float timeLimit = 30;
 
-	public Text scoreText;
+	public bool gameStarted = false;
+	public Text timerText;
+	public Slider scoreGauge;
+	public Timer timer;
 	public List<GameObject> blueEmotions;
 	public List<GameObject> greenEmotions;
 	public List<GameObject> redEmotions;
@@ -96,10 +100,26 @@ public class EmotionsGameManager : AbstractGameManager {
 	void PregameSetup ()
 	{
 		score = 0;
+		scoreGauge.maxValue = scoreGoal;
+		if(timer != null) {
+			timer = Instantiate(timer);
+			timer.SetTimeLimit(this.timeLimit);
+		}
+
 		numEmotions = emotionsSetup[difficultyLevel];
 		activeEmotions = new List<GameObject> ();
-		UpdateScore ();
+		UpdateScoreGauge ();
 
+		StartCoroutine(DisplayGo());
+	}
+
+	public IEnumerator DisplayGo() {
+		StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
+		yield return new WaitForSeconds (5.0f);
+		PostCountdownSetup ();
+	}
+
+	private void PostCountdownSetup() {
 		for(int i = 0; i < numEmotions.first + numEmotions.second; ++i) {
 			emotionSpawnLocs[i].gameObject.SetActive(true);
 		}
@@ -108,19 +128,34 @@ public class EmotionsGameManager : AbstractGameManager {
 		ChooseEmotions(secondaryEmotions, numEmotions.second);
 		SpawnEmotions (scale);
 		ChooseActiveEmotion ();
+
+		timer.StartTimer();
+		StartGame();
 	}
-	
+
+	private void StartGame () {
+		scoreGauge.gameObject.SetActive(true);
+		timerText.gameObject.SetActive(true);
+		gameStarted = true;
+	}
+
 	// Update is called once per frame
 	void Update () {
 		
-		if(score >= 10 && !gameOver)
+		if((score >= 10 && !gameOver) || timer.TimeRemaining() <= 0.0f)
 			GameOver();
+	}
+
+	void FixedUpdate() {
+		if(gameStarted) {
+			timerText.text = "Time: " + timer.TimeRemaining();
+		}
 	}
 
 	public void CheckEmotion(GameObject emotion){
 		if(emotion.name == currentEmotionToMatch.name){
 			++score;
-			UpdateScore();
+			UpdateScoreGauge();
 
 			Destroy(currentEmotionToMatch);
 
@@ -181,8 +216,8 @@ public class EmotionsGameManager : AbstractGameManager {
 
 	}
 
-	private void UpdateScore(){
-		scoreText.text = "Score: " + score;
+	private void UpdateScoreGauge(){
+		scoreGauge.value = score;
 	}
 		
 

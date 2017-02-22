@@ -34,7 +34,7 @@ public class SensesGameManager : AbstractGameManager {
 	public Transform senseSpawnParent;
 	public GameObject senseToMatchSprite;
 	public Text senseToMatchText;
-	public AudioClip waterTip;
+//	public AudioClip waterTip;
 
 	void Awake() {
 		if(instance == null) {
@@ -78,22 +78,7 @@ public class SensesGameManager : AbstractGameManager {
 		activeSenses = new List<GameObject> ();
 		UpdateScoreGauge ();
 
-		for(int i = 0; i < numSenses; ++i) {
-			senseSpawnLocs[i].gameObject.SetActive(true);
-		}
-
-		string activeSense = ChooseActiveSense();
-		ChooseSenses (activeSense, numSenses-1);
-		SpawnSenses (scale);
-
 		StartCoroutine(DisplayGo ());
-	}
-
-	private void StartGame ()
-	{
-		scoreGauge.gameObject.SetActive(true);
-		timerText.gameObject.SetActive(true);
-		gameStarted = true;
 	}
 
 	public IEnumerator DisplayGo () {
@@ -108,8 +93,23 @@ public class SensesGameManager : AbstractGameManager {
 //			SoundManager.GetInstance().PlayVoiceOverClip(waterTip);
 //
 //		}
+		for(int i = 0; i < numSenses; ++i) {
+			senseSpawnLocs[i].gameObject.SetActive(true);
+		}
+
+		string activeSense = ChooseActiveSense();
+		ChooseSenses (activeSense, numSenses-1);
+		SpawnSenses (scale);
+
+		senseToMatchText.enabled = true;
 		timer.StartTimer ();
 		StartGame();
+	}
+
+	private void StartGame () {
+		scoreGauge.gameObject.SetActive(true);
+		timerText.gameObject.SetActive(true);
+		gameStarted = true;
 	}
 	
 	// Update is called once per frame
