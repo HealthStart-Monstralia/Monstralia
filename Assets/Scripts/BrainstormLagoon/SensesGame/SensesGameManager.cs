@@ -7,8 +7,8 @@ public class SensesGameManager : AbstractGameManager {
 
 	private static SensesGameManager instance;
 	private int difficultyLevel;
-	private bool gameStarted = false;
 	private int score;
+	private int scoreGoal = 10;
 	private bool gameOver = false;
 	private string[] senses = {"touch", "taste", "smell", "see", "hear"};
 	private Dictionary<int, int> sensesSetup;
@@ -18,6 +18,7 @@ public class SensesGameManager : AbstractGameManager {
 	private float scale = 40;
 	private  float timeLimit = 30;
 
+	public bool gameStarted = false;
 	public Slider scoreGauge;
 	public Text timerText;
 	public Timer timer;
@@ -67,6 +68,7 @@ public class SensesGameManager : AbstractGameManager {
 	void PregameSetup ()
 	{
 		score = 0;
+		scoreGauge.maxValue = scoreGoal;
 		if(timer != null) {
 			timer = Instantiate(timer);
 			timer.SetTimeLimit(this.timeLimit);
