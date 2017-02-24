@@ -13,6 +13,7 @@ public class EmotionsGameManager : AbstractGameManager {
 	private List<GameObject> activeEmotions;
 	private GameObject currentEmotionToMatch;
 	private float scale = 40f;
+	private float toMatchScale = 70f;
 	private int difficultyLevel;
 	private Dictionary<int, Tuple<int, int>> emotionsSetup;
 	private Tuple<int, int> numEmotions;
@@ -207,7 +208,7 @@ public class EmotionsGameManager : AbstractGameManager {
 		currentEmotionToMatch.name = activeEmotions[tmp].name;
 		currentEmotionToMatch.transform.SetParent(emotionToMatchSpawnParent);
 		currentEmotionToMatch.transform.localPosition = new Vector3(0f, 0f, 0f);
-		currentEmotionToMatch.transform.localScale = new Vector3(40f, 40f, 1f);
+		currentEmotionToMatch.transform.localScale = new Vector3(toMatchScale, toMatchScale, 1f);
 		currentEmotionToMatch.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
 		currentEmotionToMatch.GetComponent<BoxCollider2D>().enabled = false;

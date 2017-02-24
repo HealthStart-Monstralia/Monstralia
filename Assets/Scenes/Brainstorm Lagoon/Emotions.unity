@@ -159,6 +159,7 @@ MonoBehaviour:
   - {fileID: 1139182226280748, guid: 266ead26b57814d719e607def118e672, type: 2}
   - {fileID: 1238989961619888, guid: 08387863c00c54f85978064f46d0fd39, type: 2}
   - {fileID: 1554290010007440, guid: d0badd24448094b19b71ebc9b97ede23, type: 2}
+  subtitlePanel: {fileID: 2008636179}
   emotionSpawnLocs:
   - {fileID: 1642429978}
   - {fileID: 2062933447}
@@ -941,7 +942,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 80}
+  m_AnchoredPosition: {x: 0, y: 150}
   m_SizeDelta: {x: 173.6, y: 106.5}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &1395112801
@@ -1380,7 +1381,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 411130, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -267
+      value: -219
       objectReference: {fileID: 0}
     - target: {fileID: 411130, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1416,6 +1417,10 @@ Prefab:
 --- !u!4 &2008636178 stripped
 Transform:
   m_PrefabParentObject: {fileID: 411130, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
+  m_PrefabInternal: {fileID: 2008636177}
+--- !u!1 &2008636179 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 187716, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
   m_PrefabInternal: {fileID: 2008636177}
 --- !u!1 &2062933446
 GameObject:
