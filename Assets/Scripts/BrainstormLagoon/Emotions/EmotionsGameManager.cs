@@ -27,6 +27,7 @@ public class EmotionsGameManager : AbstractGameManager {
 	public List<GameObject> greenEmotions;
 	public List<GameObject> redEmotions;
 	public List<GameObject> yellowEmotions;
+	public GameObject subtitlePanel;
 	public Transform[] emotionSpawnLocs;
 	public Transform emotionSpawnParent;
 	public Transform emotionToMatchSpawnParent;
