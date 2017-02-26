@@ -8,27 +8,33 @@ public class SensesGameManager : AbstractGameManager {
 	private static SensesGameManager instance;
 	private int difficultyLevel;
 	private int score;
+	private int scoreGoal = 10;
 	private bool gameOver = false;
-	private string[] senses = {"feel", "taste", "smell", "see", "hear"};
+	private string[] senses = {"touch", "taste", "smell", "see", "hear"};
 	private Dictionary<int, int> sensesSetup;
 	private int numSenses;
 	private List<GameObject> activeSenses;
 	private GameObject currentSenseToMatch;
-	public float scale = 40;
+	private float scale = 40;
+	private  float timeLimit = 30;
 
-	public Text scoreText;
+	public bool gameStarted = false;
+	public Slider scoreGauge;
+	public Text timerText;
+	public Timer timer;
 	public Canvas gameOverCanvas;
 	public List<Sprite> sensesSprites;
 	public List<GameObject> see;
 	public List<GameObject> smell;
 	public List<GameObject> hear;
 	public List<GameObject> taste;
-	public List<GameObject> feel;
+	public List<GameObject> touch;
 	public List<GameObject> allSenses;
 	public Transform[] senseSpawnLocs;
 	public Transform senseSpawnParent;
 	public GameObject senseToMatchSprite;
 	public Text senseToMatchText;
+//	public AudioClip waterTip;
 
 	void Awake() {
 		if(instance == null) {
@@ -61,12 +67,32 @@ public class SensesGameManager : AbstractGameManager {
 
 	void PregameSetup ()
 	{
-		Debug.Log("In Pregame Setup");
 		score = 0;
+		scoreGauge.maxValue = scoreGoal;
+		if(timer != null) {
+			timer = Instantiate(timer);
+			timer.SetTimeLimit(this.timeLimit);
+		}
+
 		numSenses = sensesSetup[difficultyLevel];
 		activeSenses = new List<GameObject> ();
-		UpdateScore ();
+		UpdateScoreGauge ();
 
+		StartCoroutine(DisplayGo ());
+	}
+
+	public IEnumerator DisplayGo () {
+		StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
+		yield return new WaitForSeconds (5.0f);
+		PostCountdownSetup ();
+	}
+
+	void PostCountdownSetup ()
+	{
+//		if(difficultyLevel == 1){
+//			SoundManager.GetInstance().PlayVoiceOverClip(waterTip);
+//
+//		}
 		for(int i = 0; i < numSenses; ++i) {
 			senseSpawnLocs[i].gameObject.SetActive(true);
 		}
@@ -74,13 +100,28 @@ public class SensesGameManager : AbstractGameManager {
 		string activeSense = ChooseActiveSense();
 		ChooseSenses (activeSense, numSenses-1);
 		SpawnSenses (scale);
-//		ChooseActiveEmotion ();
+
+		senseToMatchText.enabled = true;
+		timer.StartTimer ();
+		StartGame();
+	}
+
+	private void StartGame () {
+		scoreGauge.gameObject.SetActive(true);
+		timerText.gameObject.SetActive(true);
+		gameStarted = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(score >= 10 && !gameOver)
+		if((score >= 10 && !gameOver) || timer.TimeRemaining() <= 0.0f)
 			GameOver();
+	}
+
+	void FixedUpdate() {
+		if(gameStarted) {
+			timerText.text = "Time: " + timer.TimeRemaining();
+		}
 	}
 
 	private string ChooseActiveSense() {
@@ -110,9 +151,9 @@ public class SensesGameManager : AbstractGameManager {
 			currentSenseToMatch = taste[randomIndex];
 			activeSenses.Add(currentSenseToMatch);
 		}
-		else if(senseToMatch == "feel") {
-			int randomIndex = Random.Range(0, feel.Count);
-			currentSenseToMatch = feel[randomIndex];
+		else if(senseToMatch == "touch") {
+			int randomIndex = Random.Range(0, touch.Count);
+			currentSenseToMatch = touch[randomIndex];
 			activeSenses.Add(currentSenseToMatch);
 		}
 		else if(senseToMatch == "smell") {
@@ -130,7 +171,6 @@ public class SensesGameManager : AbstractGameManager {
 		while(senseCount < num){
 			int randomIndex = Random.Range(0, allSenses.Count);
 			GameObject newEmotion = allSenses[randomIndex];
-			Debug.Log("activeSense: " + activeSense + " newEmotion.sense: " + newEmotion.GetComponent<SenseObjectBehavior>().sense.ToString().ToLower());
 			if(!activeSenses.Contains(newEmotion) && newEmotion.GetComponent<SenseObjectBehavior>().sense.ToString().ToLower() != activeSense.ToLower()){
 				activeSenses.Add(newEmotion);
 				++senseCount;
@@ -141,13 +181,18 @@ public class SensesGameManager : AbstractGameManager {
 
 	private void SpawnSenses(float scale) {
 		int spawnCount = 0;
-		for(int i = 0; i < activeSenses.Count; ++i) {
-			GameObject newEmotion = Instantiate(activeSenses[i]);
-			newEmotion.name = activeSenses[i].name;
+		List<GameObject> copy = new List<GameObject>(activeSenses);
+		int numSensesToSpawn = activeSenses.Count;
+		while(spawnCount < numSensesToSpawn) {
+			int rndIndex = Random.Range(0, copy.Count);
+			GameObject newEmotion = Instantiate(copy[rndIndex]);
+			newEmotion.name = copy[rndIndex].name;
 			newEmotion.transform.SetParent(senseSpawnParent);
-			newEmotion.transform.localPosition = senseSpawnLocs[i].localPosition;
+			newEmotion.transform.localPosition = senseSpawnLocs[spawnCount].localPosition;
 			newEmotion.transform.localScale = new Vector3(scale, scale, 1f);
 			newEmotion.GetComponent<SpriteRenderer>().sortingOrder = 2;
+
+			copy.RemoveAt(rndIndex);
 			++spawnCount;
 		}
 
@@ -156,7 +201,7 @@ public class SensesGameManager : AbstractGameManager {
 	public void CheckSense(GameObject other) {
 		if(other.name == currentSenseToMatch.name){
 			++score;
-			UpdateScore();
+			UpdateScoreGauge();
 
 			for(int i = 0; i < activeSenses.Count; ++i) {
 				GameObject tmp = senseSpawnParent.FindChild(activeSenses[i].name).gameObject;
@@ -171,8 +216,8 @@ public class SensesGameManager : AbstractGameManager {
 
 	}
 
-	private void UpdateScore(){
-		scoreText.text = "Score: " + score;
+	private void UpdateScoreGauge(){
+		scoreGauge.value =  score;
 	}
 
 	override public void GameOver(){
