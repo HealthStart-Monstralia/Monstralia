@@ -125,8 +125,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 22, y: 87}
-  m_SizeDelta: {x: 190, y: 190}
+  m_AnchoredPosition: {x: 17.4, y: 119.4}
+  m_SizeDelta: {x: 142.9, y: 128.4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &19703001
 MonoBehaviour:
@@ -210,7 +210,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 6c4e104e25cdc452198b26f8da4e2114, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e12415ea789d4432dbdc3fe6423311f8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -944,6 +944,10 @@ Prefab:
       propertyPath: m_SortingOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 11431832, guid: 026b9d737f4a242c197e125197976783, type: 2}
+      propertyPath: loadingScreen
+      value: 
+      objectReference: {fileID: 1768646229}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 026b9d737f4a242c197e125197976783, type: 2}
   m_IsPrefabParent: 0
@@ -1718,7 +1722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bfbb99635be347fbae0198511149999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clipToPlay: {fileID: 8300000, guid: 8b5afad8c5047402c95674965e7883aa, type: 3}
+  clipToPlay: {fileID: 8300000, guid: 6bddd9124c13d4baa88cd8b99415d601, type: 3}
 --- !u!1 &1136182173
 GameObject:
   m_ObjectHideFlags: 0
@@ -1989,8 +1993,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 100, y: 220}
-  m_SizeDelta: {x: 135, y: 135}
+  m_AnchoredPosition: {x: 100, y: 236}
+  m_SizeDelta: {x: 135, y: 168}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1395639288
 MonoBehaviour:
@@ -2066,6 +2070,39 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1395639290
@@ -2087,7 +2124,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 4fca046e1d5aa43be937387922beb850, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 29f1569be9f6446e6bbbd0d5eaf835d4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2268,8 +2305,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 300, y: -5}
-  m_SizeDelta: {x: 190, y: 190}
+  m_AnchoredPosition: {x: 290.4, y: 2.2}
+  m_SizeDelta: {x: 143.9, y: 143.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1603299299
 MonoBehaviour:
@@ -2375,7 +2412,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 6c4e104e25cdc452198b26f8da4e2114, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9bf12ca9f7f4f406797d084aad5bcef8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
