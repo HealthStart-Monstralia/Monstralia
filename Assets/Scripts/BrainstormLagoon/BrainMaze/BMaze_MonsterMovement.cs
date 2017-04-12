@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections;
 
 public class BMaze_MonsterMovement : MonoBehaviour {
@@ -14,10 +15,14 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 	public bool allowMovement;
 
 	private AudioSource audioSrc;
+	private Vector3 pointerOffset;
+	private Vector3 cursorPos;
+	private Rigidbody2D rigBody;
 
 	[SerializeField] private int locationX, locationY;
 
 	void Start () {
+		rigBody = GetComponent<Rigidbody2D> ();
 		allowMovement = true;
 
 		if (!SnapGen) {
@@ -31,6 +36,22 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 		MoveToSnapPoint ();
 		CheckAllCollisions ();
 	}
+
+
+	public void OnMouseDown() {
+		cursorPos = Input.mousePosition;
+		cursorPos.z -= (Camera.main.transform.position.z + 10f);
+		pointerOffset = Camera.main.ScreenToWorldPoint (cursorPos) - transform.position;
+	}
+
+	public void OnMouseDrag() {
+		if (allowMovement) {
+			cursorPos = Input.mousePosition;
+			cursorPos.z -= (Camera.main.transform.position.z + 10f);
+			rigBody.MovePosition (Camera.main.ScreenToWorldPoint (cursorPos) - pointerOffset);
+		}
+	}
+
 
 	public void CheckAllCollisions () {
 		if (allowMovement) {

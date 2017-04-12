@@ -63,12 +63,16 @@ public class BMaze_Manager : MonoBehaviour {
 
 	public static void GameEnd () {
 		gameStarted = false;
-		if (sceneSelect < 5)
-			sceneSelect += 1;
-		manager.Invoke ("ChangeScene", 3f);
+		manager.NextSceneSelect ();
 	}
 
 	public void ChangeScene () {
 		GetComponent<SwitchScene> ().loadScene ();
+	}
+
+	public void NextSceneSelect () {
+		if (sceneSelect < 5)
+			sceneSelect += 1;
+		manager.Invoke ("ChangeScene", 3f);
 	}
 }

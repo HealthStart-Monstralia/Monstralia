@@ -23,9 +23,23 @@ GameObject:
   - component: {fileID: 61000012990565914}
   - component: {fileID: 82000012008192490}
   - component: {fileID: 114000012279048134}
-  - component: {fileID: 114000011271259098}
   m_Layer: 0
   m_Name: FinishLine
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1343884806420646
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4152726427347582}
+  m_Layer: 0
+  m_Name: Finish Spot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,10 +54,24 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0.98, y: 1.54, z: 0}
   m_LocalScale: {x: 1.4525685, y: 0.7166854, z: 0.5119184}
-  m_Children: []
+  m_Children:
+  - {fileID: 4152726427347582}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!4 &4152726427347582
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1343884806420646}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.237, y: 1.36, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4000013770452502}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &61000012990565914
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -55,9 +83,9 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_Offset: {x: 0.0000034878872, y: 0.9761285}
+  m_Offset: {x: 0.0000035289213, y: 1.3678567}
   serializedVersion: 2
-  m_Size: {x: 1.54, y: 3.0621533}
+  m_Size: {x: 1.54, y: 2.2787313}
 --- !u!82 &82000012008192490
 AudioSource:
   m_ObjectHideFlags: 1
@@ -138,19 +166,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &114000011271259098
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000011677758560}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70955650897f8422da0c5875e43541f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneToLoad: BrainstormLagoon
-  loadingScreen: {fileID: 0}
 --- !u!114 &114000012279048134
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -163,6 +178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   door: {fileID: 0}
+  finishSpot: {fileID: 1343884806420646}
 --- !u!212 &212000011560564114
 SpriteRenderer:
   m_ObjectHideFlags: 1
