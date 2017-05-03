@@ -56,7 +56,7 @@ public class SoundManager : MonoBehaviour {
 	public static SoundManager GetInstance() {
 		return instance;
 	}
-
+		
 	/**
 	 * \brief Mute the game music.
 	 */ 

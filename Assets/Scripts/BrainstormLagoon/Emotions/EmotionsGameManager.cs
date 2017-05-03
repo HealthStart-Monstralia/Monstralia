@@ -44,33 +44,39 @@ public class EmotionsGameManager : AbstractGameManager {
 
 		secondaryEmotions = new List<GameObject>();
 
-		if(GameManager.GetInstance().getMonster().Contains("Blue")) {
-			primaryEmotions = blueEmotions;
-		}
-		else {
-			secondaryEmotions.AddRange(blueEmotions);
-		}
-		if(GameManager.GetInstance().getMonster().Contains("Green")) {
-			primaryEmotions = greenEmotions;
-		}
-		else {
-			secondaryEmotions.AddRange(greenEmotions);
-		}
-		if(GameManager.GetInstance().getMonster().Contains("Red")) {
-			primaryEmotions = redEmotions;
-		}
-		else {
-			secondaryEmotions.AddRange(redEmotions);
-		}
-		if(GameManager.GetInstance().getMonster().Contains("Yellow")) {
-			primaryEmotions = yellowEmotions;
-		}
-		else {
-			secondaryEmotions.AddRange(yellowEmotions);
-		}
-			
-		difficultyLevel = GameManager.GetInstance().GetLevel("MonsterEmotions");
 
+		// Checks if game manager exists, if not default values are chosen for testing simplicity
+		if (GameManager.GetInstance ()) {
+
+			if (GameManager.GetInstance ().getMonster ().Contains ("Blue")) {
+				primaryEmotions = blueEmotions;
+			} else {
+				secondaryEmotions.AddRange (blueEmotions);
+			}
+			if (GameManager.GetInstance ().getMonster ().Contains ("Green")) {
+				primaryEmotions = greenEmotions;
+			} else {
+				secondaryEmotions.AddRange (greenEmotions);
+			}
+			if (GameManager.GetInstance ().getMonster ().Contains ("Red")) {
+				primaryEmotions = redEmotions;
+			} else {
+				secondaryEmotions.AddRange (redEmotions);
+			}
+			if (GameManager.GetInstance ().getMonster ().Contains ("Yellow")) {
+				primaryEmotions = yellowEmotions;
+			} else {
+				secondaryEmotions.AddRange (yellowEmotions);
+			}
+
+			difficultyLevel = GameManager.GetInstance ().GetLevel ("MonsterEmotions");
+		} else {
+			primaryEmotions = greenEmotions;
+			secondaryEmotions.AddRange (blueEmotions);
+			secondaryEmotions.AddRange (redEmotions);
+			secondaryEmotions.AddRange (yellowEmotions);
+			difficultyLevel = 1;
+		}
 		emotionsSetup = new Dictionary<int, Tuple<int, int>>()
 		{
 			{1, new Tuple<int, int>(2, 0)},
@@ -138,6 +144,7 @@ public class EmotionsGameManager : AbstractGameManager {
 	private void StartGame () {
 		scoreGauge.gameObject.SetActive(true);
 		timerText.gameObject.SetActive(true);
+		subtitlePanel.SetActive (true); // Added by CT
 		gameStarted = true;
 	}
 

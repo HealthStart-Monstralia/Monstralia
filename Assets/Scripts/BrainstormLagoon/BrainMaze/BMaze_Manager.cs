@@ -75,4 +75,10 @@ public class BMaze_Manager : MonoBehaviour {
 			sceneSelect += 1;
 		manager.Invoke ("ChangeScene", 3f);
 	}
+
+	public void NextSceneSelectFast () {
+		if (sceneSelect < 5)
+			sceneSelect += 1;
+		manager.Invoke ("ChangeScene", 0.25f);
+	}
 }
