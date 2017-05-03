@@ -14,8 +14,6 @@ public class BMaze_ArrowInput : MonoBehaviour {
 	void Start () {
 		if (BMaze_Manager.monsterObject)
 			monster = BMaze_Manager.monsterObject.GetComponent<BMaze_MonsterMovement> ();
-		else
-			monster = GameObject.Find ("Monster").GetComponent<BMaze_MonsterMovement> ();
 	}
 
 	public void OnClick() {

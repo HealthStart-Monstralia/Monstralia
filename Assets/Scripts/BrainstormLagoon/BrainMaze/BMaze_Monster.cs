@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class BMaze_Monster : MonoBehaviour {
 
+
 	// Use this for initialization
-	void Start () {
-		
+	void Awake () {
+
 	}
 	
 	// Update is called once per frame

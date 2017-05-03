@@ -8,12 +8,19 @@ public class BMaze_Shadow : MonoBehaviour {
 	 */
 
 	public GameObject objectToFollow;
+	public float offset;
 
 	void Start () {
-		transform.position = objectToFollow.transform.position;
+		transform.position = new Vector3 (
+			objectToFollow.transform.position.x, 
+			objectToFollow.transform.position.y - offset, 
+			objectToFollow.transform.position.z);
 	}
 	
-	void Update () {
-		transform.position = objectToFollow.transform.position;
+	void FixedUpdate () {
+		transform.position = new Vector3 (
+			objectToFollow.transform.position.x, 
+			objectToFollow.transform.position.y - offset, 
+			objectToFollow.transform.position.z);
 	}
 }

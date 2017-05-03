@@ -128,6 +128,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1710951673590374
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4513886421087948}
+  m_Layer: 0
+  m_Name: Starting Location
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1864856083532324
 GameObject:
   m_ObjectHideFlags: 1
@@ -165,13 +180,27 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1322689063143702}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 24.897554, y: -29.882215, z: -7899}
+  m_LocalPosition: {x: 24.897554, y: -29.882215, z: 0}
   m_LocalScale: {x: 102.4, y: 102.4, z: 102.4}
   m_Children:
   - {fileID: 224025743806181754}
   - {fileID: 224876924737628046}
+  - {fileID: 4513886421087948}
   m_Father: {fileID: 0}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4513886421087948
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1710951673590374}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.84, y: -3.15, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4271431878242314}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114151815800899704
 MonoBehaviour:
@@ -258,6 +287,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b911668798bcede469625e39ffb233ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typeOfMonster: 0
+  monsterList:
+  - {fileID: 1000010047442250, guid: 1d7370fd27e64554db1e19af9ce62b59, type: 2}
+  - {fileID: 1000010047442250, guid: 52b85add49cd00e4da6e87e3278b637b, type: 2}
+  - {fileID: 1000010047442250, guid: ca3b2a66d1cfdf342b3d2c5637aa7391, type: 2}
+  - {fileID: 1000010047442250, guid: 8473edbdd19a37e44b119a673223a66f, type: 2}
+  monsterScale: 0.4
+  monsterShadow: {fileID: 1330169251572182, guid: f80783169adbb1a48ae40312f98dfabd,
+    type: 2}
+  startingLocation: {fileID: 1710951673590374}
   backgroundMusic: {fileID: 8300000, guid: 3265aca7dd7cb4256a906218743de845, type: 3}
   scoreSlider: {fileID: 1432862962371342}
   timerText: {fileID: 114261941132611860}
@@ -434,11 +473,16 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ba94d7b826a4f4826a5447415e87823e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
 --- !u!222 &222323404344992296
 CanvasRenderer:
   m_ObjectHideFlags: 1
