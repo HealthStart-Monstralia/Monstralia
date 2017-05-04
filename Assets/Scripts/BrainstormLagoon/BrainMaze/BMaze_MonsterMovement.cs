@@ -6,9 +6,9 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 	/* CREATED BY: Colby Tang
 	 * GAME: Brain Maze
 	 */
-	public BMaze_SnapPointGenerator SnapGen;
-	public GameObject ArrowGUI;
-	public GameObject[] ArrowGUIIcons = new GameObject[4];
+	//public BMaze_SnapPointGenerator SnapGen;
+	//public GameObject ArrowGUI;
+	//public GameObject[] ArrowGUIIcons = new GameObject[4];
 	public LayerMask layerMaze, layerTile;
 	public enum Movement {Up = 0, Down = 1, Right = 2, Left = 3};
 	public float colliderRaycastDist;
@@ -25,19 +25,20 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 		rigBody = GetComponent<Rigidbody2D> ();
 		allowMovement = true;
 
+		/*
 		if (!SnapGen) {
 			SnapGen = GameObject.Find ("SnapPointCreator").GetComponent<BMaze_SnapPointGenerator>();
 		}
+		*/
 
 		audioSrc = GetComponent<AudioSource> ();
 
-		locationX = SnapGen.startingGridX;
-		locationY = SnapGen.startingGridY;
-		MoveToSnapPoint ();
-		CheckAllCollisions ();
+		//locationX = SnapGen.startingGridX;
+		//locationY = SnapGen.startingGridY;
+		//MoveToSnapPoint ();
+		//CheckAllCollisions ();
 	}
-
-
+		
 	public void OnMouseDown() {
 		cursorPos = Input.mousePosition;
 		cursorPos.z -= (Camera.main.transform.position.z + 10f);
@@ -52,7 +53,11 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 		}
 	}
 
+	public void Pickup(BMaze_Pickup.TypeOfPickup obj) {
+		audioSrc.Play ();
+	}
 
+	/*
 	public void CheckAllCollisions () {
 		if (allowMovement) {
 			RaycastHit2D hitUp = Physics2D.Raycast (transform.position, Vector2.up, colliderRaycastDist, layerMaze);
@@ -88,7 +93,9 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 			ArrowGUIIcons [(int)Movement.Right].SetActive (false);
 		}
 	}
+	*/
 
+	/*
 	public bool CheckForCollision (Movement direction) {
 		bool canMove = false;
 
@@ -120,10 +127,12 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 
 		return canMove;
 	}
+	*/
 
+	/*
 	void Update () {
-		ArrowGUI.transform.position = transform.position;
-		CheckAllCollisions ();
+		//ArrowGUI.transform.position = transform.position;
+		//CheckAllCollisions ();
 
 		if (Input.GetKeyDown ("up")) {
 			MoveUp ();
@@ -184,8 +193,5 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 		locationX = locX;
 		locationY = locY;
 	}
-
-	public void Pickup(BMaze_Pickup.TypeOfPickup obj) {
-		audioSrc.Play ();
-	}
+	*/
 }

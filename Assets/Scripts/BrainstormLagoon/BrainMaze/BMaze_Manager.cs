@@ -16,6 +16,7 @@ public class BMaze_Manager : MonoBehaviour {
 	public GameObject monsterShadow;
 
 	public static BMaze_Manager manager;
+	private static BMaze_Manager instance = null;
 	public GameObject startingLocation;
 	public AudioClip backgroundMusic;
 	public GameObject scoreSlider;
@@ -32,6 +33,14 @@ public class BMaze_Manager : MonoBehaviour {
 
 	void Awake () {
 		manager = this;
+
+		if(instance == null) {
+			instance = this;
+		}
+		else if(instance != this) {
+			Destroy(gameObject);
+		}
+
 		DetermineMonster ();
 		CreateMonster ();
 		if (sceneSelect != currentScene) {
@@ -111,27 +120,59 @@ public class BMaze_Manager : MonoBehaviour {
 	void CreateMonster() {
 		switch (typeOfMonster) {
 		case MonsterType.Blue:
-			monsterObject = Instantiate (monsterList [0], startingLocation.transform.position, startingLocation.transform.rotation) as GameObject;
+			monsterObject = Instantiate (
+				monsterList [0], 
+				new Vector3(
+					startingLocation.transform.position.x,
+					startingLocation.transform.position.y,
+					0f),
+				startingLocation.transform.rotation) as GameObject;
 			monsterObject.transform.localScale = new Vector3 (monsterScale, monsterScale, monsterScale);
 			monsterObject.GetComponent<CircleCollider2D> ().radius = (monsterScale * 2) + 0.5f;
 			break;
 		case MonsterType.Green:
-			monsterObject = Instantiate (monsterList [1], startingLocation.transform.position, startingLocation.transform.rotation) as GameObject;
+			monsterObject = Instantiate (
+				monsterList [1], 
+				new Vector3(
+					startingLocation.transform.position.x,
+					startingLocation.transform.position.y,
+					0f),
+				startingLocation.transform.rotation) as GameObject;
 			monsterObject.transform.localScale = new Vector3(monsterScale, monsterScale, monsterScale);
 			monsterObject.GetComponent<CircleCollider2D> ().radius = (monsterScale * 2) + 0.5f;
 			break;
 		case MonsterType.Red:
-			monsterObject = Instantiate (monsterList [2], startingLocation.transform.position, startingLocation.transform.rotation) as GameObject;
+			monsterObject = Instantiate (
+				monsterList [2], 
+				new Vector3(
+					startingLocation.transform.position.x,
+					startingLocation.transform.position.y,
+					0f),
+				startingLocation.transform.rotation) as GameObject;
 			monsterObject.transform.localScale = new Vector3(monsterScale, monsterScale, monsterScale);
 			monsterObject.GetComponent<CircleCollider2D> ().radius = (monsterScale * 2) + 0.5f;
 			break;
 		case MonsterType.Yellow:
-			monsterObject = Instantiate (monsterList [3], startingLocation.transform.position, startingLocation.transform.rotation) as GameObject;
+			monsterObject = Instantiate (
+				monsterList [3], 
+				new Vector3(
+					startingLocation.transform.position.x,
+					startingLocation.transform.position.y,
+					0f),
+				startingLocation.transform.rotation) as GameObject;
 			monsterObject.transform.localScale = new Vector3(monsterScale, monsterScale, monsterScale);
 			monsterObject.GetComponent<CircleCollider2D> ().radius = (monsterScale * 2) + 0.5f;
 			break;
 		}
+
+	}
+
+	public void CreateShadowObject () {
 		GameObject shadow = Instantiate (monsterShadow, startingLocation.transform.position, startingLocation.transform.rotation) as GameObject;
 		shadow.GetComponent<BMaze_Shadow> ().objectToFollow = monsterObject;
+	}
+
+	public static BMaze_Manager GetInstance() {
+		return instance;
 	}
 }

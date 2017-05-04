@@ -15,7 +15,7 @@ public class BMaze_ArrowInput : MonoBehaviour {
 		if (BMaze_Manager.monsterObject)
 			monster = BMaze_Manager.monsterObject.GetComponent<BMaze_MonsterMovement> ();
 	}
-
+	/*
 	public void OnClick() {
 		if (MoveDirection == BMaze_MonsterMovement.Movement.Up) {
 			monster.MoveUp ();
@@ -27,4 +27,5 @@ public class BMaze_ArrowInput : MonoBehaviour {
 			monster.MoveRight ();
 		}
 	}
+	*/
 }

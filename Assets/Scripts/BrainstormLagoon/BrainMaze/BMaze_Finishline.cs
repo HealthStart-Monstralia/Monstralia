@@ -18,7 +18,7 @@ public class BMaze_Finishline : MonoBehaviour {
 
 	void OnTriggerEnter2D (Collider2D col) {
 		if (!door && !finished) {
-			col.GetComponentInChildren<Animator> ().Play ("BMaze_Dance");
+			col.GetComponentInChildren<BMaze_Monster> ().PlayDance ();
 			col.GetComponent<BMaze_MonsterMovement> ().allowMovement = false;
 			col.transform.position = finishSpot.transform.position;
 			finished = true;
