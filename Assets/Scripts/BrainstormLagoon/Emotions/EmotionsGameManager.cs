@@ -33,6 +33,8 @@ public class EmotionsGameManager : AbstractGameManager {
 	public Transform emotionSpawnParent;
 	public Transform emotionToMatchSpawnParent;
 	public Canvas gameOverCanvas;
+	public float waitDuration = 3f;
+	public static bool inputAllowed = false;
 
 	void Awake() {
 		if(instance == null) {
@@ -91,8 +93,6 @@ public class EmotionsGameManager : AbstractGameManager {
 		return instance;
 	}
 
-
-
 	// Use this for initialization
 	void Start () {
 
@@ -144,8 +144,8 @@ public class EmotionsGameManager : AbstractGameManager {
 	private void StartGame () {
 		scoreGauge.gameObject.SetActive(true);
 		timerText.gameObject.SetActive(true);
-		subtitlePanel.SetActive (true); // Added by CT
 		gameStarted = true;
+		inputAllowed = true;
 	}
 
 	// Update is called once per frame
@@ -163,23 +163,32 @@ public class EmotionsGameManager : AbstractGameManager {
 
 	public void CheckEmotion(GameObject emotion){
 		if(emotion.name == currentEmotionToMatch.name){
+			timer.StopTimer ();
+			inputAllowed = false;
 			++score;
 			UpdateScoreGauge();
-
-			Destroy(currentEmotionToMatch);
-
-			for(int i = 0; i < activeEmotions.Count; ++i) {
-				GameObject tmp = emotionSpawnParent.FindChild(activeEmotions[i].name).gameObject;
-				Destroy(tmp.gameObject);
-			}
-
-			activeEmotions.Clear();
-			ChooseEmotions(primaryEmotions, numEmotions.first);
-			ChooseEmotions(secondaryEmotions, numEmotions.second);
-			ChooseActiveEmotion();
-			SpawnEmotions(scale);
+			StartCoroutine (CreateNextEmotions (waitDuration));
 		}
 			
+	}
+
+	public IEnumerator CreateNextEmotions(float duration) {
+		yield return new WaitForSeconds (duration + 0.5f);
+
+		Destroy(currentEmotionToMatch);
+
+		for(int i = 0; i < activeEmotions.Count; ++i) {
+			GameObject tmp = emotionSpawnParent.FindChild(activeEmotions[i].name).gameObject;
+			Destroy(tmp.gameObject);
+		}
+
+		activeEmotions.Clear();
+		ChooseEmotions(primaryEmotions, numEmotions.first);
+		ChooseEmotions(secondaryEmotions, numEmotions.second);
+		ChooseActiveEmotion();
+		SpawnEmotions(scale);
+		timer.StartTimer ();
+		inputAllowed = true;
 	}
 
 	private void ChooseEmotions(List<GameObject> emotions, int num){
@@ -250,7 +259,7 @@ public class EmotionsGameManager : AbstractGameManager {
 		}
 			
 		GameManager.GetInstance().LevelUp("MonsterEmotions");
-
+		inputAllowed = false;
 		DisplayGameOverPopup();
 	}
 

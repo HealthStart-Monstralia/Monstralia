@@ -10,4 +10,9 @@ public class SwitchScene: MonoBehaviour {
 		loadingScreen.SetActive(true);
 		Application.LoadLevel(sceneToLoad);
 	}
+
+	public void loadScene(string name) {
+		loadingScreen.SetActive(true);
+		Application.LoadLevel(name);
+	}
 }

@@ -8,29 +8,27 @@ public class BMaze_PickupManager : MonoBehaviour {
 	 * GAME: Brain Maze
 	 */
 
-	public GameObject door;
-	public Slider scoreGauge;
 	public List<GameObject> pickupList = new List<GameObject> ();
 
 	private AudioSource audioSrc;
-	private int initialPickupCount;
+	private bool achieved = false;
 
 	void Start () {
 		audioSrc = GetComponent<AudioSource> ();
 		for (int count = 0; count < transform.childCount; count++) {
 			pickupList.Add (transform.GetChild (count).gameObject);
 		}
-		initialPickupCount = pickupList.Count;
 	}
 
 	void Update () {
-		if (pickupList.Count <= 0 && door.gameObject) {
-			OpenDoor ();
+		if (BMaze_Manager.GetGameStarted() && pickupList.Count <= 0 && !achieved) {
+			achieved = true;
+			GoalAchieved ();
 		}
 	}
 
-	void OpenDoor () {
+	void GoalAchieved () {
 		audioSrc.Play ();
-		Destroy (door, 0.5f);
+		BMaze_Manager.UnlockDoor ();
 	}
 }

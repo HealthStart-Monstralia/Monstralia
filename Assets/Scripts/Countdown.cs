@@ -14,8 +14,9 @@ public class Countdown : MonoBehaviour {
 	public AudioClip countGoClip;
 
 	public IEnumerator RunCountdown() {
-		if (!SoundManager.GetInstance ())
+		//if (!SoundManager.GetInstance ())
 			//Instantiate (SoundManager);
+		SoundManager.GetInstance().StopPlayingVoiceOver();
 		SoundManager.GetInstance().PlayVoiceOverClip(countdownClip);
 		yield return new WaitForSeconds (1.0f);
 

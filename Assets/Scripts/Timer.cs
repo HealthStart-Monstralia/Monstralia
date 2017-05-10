@@ -19,7 +19,7 @@ public class Timer : MonoBehaviour {
 	}
 	
 	void FixedUpdate () {
-		if(timing) {
+		if(timing && timeRemaining >= 0f) {
 			timeRemaining -= Time.deltaTime;
 		}
 	

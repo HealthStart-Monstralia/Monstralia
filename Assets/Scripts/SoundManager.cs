@@ -96,6 +96,12 @@ public class SoundManager : MonoBehaviour {
 		}
 	}
 
+	// CT
+	public void StopPlayingVoiceOver() {
+		if (voiceOverSource.isPlaying)
+			voiceOverSource.Stop();
+	}
+
 	/**
 	 * \brief Change the background music volume.
 	 * @param newVolume: the float value of the new volume.

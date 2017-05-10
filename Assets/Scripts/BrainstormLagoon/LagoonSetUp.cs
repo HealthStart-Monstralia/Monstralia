@@ -16,6 +16,7 @@ public class LagoonSetUp : MonoBehaviour {
 	}
 
 	public void Teardown(bool toMainMap) {
+		GameManager.GetInstance ().PlayLagoonVoiceOver = true;
 		SoundManager.GetInstance().LagoonTearDown (toMainMap);
 	}
 }

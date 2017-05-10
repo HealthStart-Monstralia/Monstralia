@@ -7,8 +7,26 @@ public class BMaze_Monster : MonoBehaviour {
 	private Animator animComp;
 	private BMaze_Manager.MonsterType monster;
 
-	void Start() {
+	void Awake() {
 		animComp = GetComponentInChildren<Animator> ();
+	}
+
+	public void PlaySpawn() {
+		monster = BMaze_Manager.GetInstance ().typeOfMonster;
+		switch (monster) {
+		case BMaze_Manager.MonsterType.Blue:
+			animComp.Play ("BMaze_BlueBabySpawn");
+			break;
+		case BMaze_Manager.MonsterType.Green:
+			animComp.Play ("BMaze_GreenBabySpawn");
+			break;
+		case BMaze_Manager.MonsterType.Red:
+			animComp.Play ("BMaze_RedBabySpawn");
+			break;
+		case BMaze_Manager.MonsterType.Yellow:
+			animComp.Play ("BMaze_YellowBabySpawn");
+			break;
+		}
 	}
 
 	public void PlayDance() {

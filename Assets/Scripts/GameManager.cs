@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
 	public bool[] LagoonTutorial = new bool[5];
 	public bool LagoonFirstSticker = true;
 	public bool LagoonReview = false;
+	public bool PlayLagoonVoiceOver = true; // Prevents voiceover clip from playing when returning from a game inside Brainstorm Lagoon - CT
 
 //	public List<Canvas> LagoonReviewCanvases;
 //	public List<Canvas> LagoonReviewGames;
@@ -45,12 +46,14 @@ public class GameManager : MonoBehaviour {
 		gameLevels = new Dictionary<string, int>();
 		gameLevels.Add("Brainbow", 1);
 		gameLevels.Add("MemoryMatch", 1);
+		gameLevels.Add("BrainMaze", 1);
 		gameLevels.Add("MonsterEmotions", 1);
 		gameLevels.Add("MonsterSenses", 1);
 
 		gameStars = new Dictionary<string, int>();
 		gameStars.Add ("Brainbow", 0);
 		gameStars.Add("MemoryMatch", 0);
+		gameStars.Add("BrainMaze", 0);
 		gameStars.Add("MonsterEmotions", 0);
 		gameStars.Add("MonsterSenses", 0);
 
@@ -78,6 +81,16 @@ public class GameManager : MonoBehaviour {
 			}
 			return true;
 		}
+		return false;
+	}
+
+	// I don't want to mess with stars or the LevelUp function for Brain Maze - CT
+	public bool LevelUpNoStars(string gameName) {
+		if(gameLevels[gameName] != 5) {
+			gameLevels[gameName] += 1;
+		return true;
+		}
+
 		return false;
 	}
 

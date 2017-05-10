@@ -5,25 +5,30 @@ public class BMaze_Finishline : MonoBehaviour {
 	/* CREATED BY: Colby Tang
 	 * GAME: Brain Maze
 	 */
-	public GameObject door, finishSpot;
+	public GameObject finishSpot;
 
 	private AudioSource audioSrc;
-	private bool finished;
+	private bool finished = false;
 
 	void Start () {
-		if (door)
-			finished = false;
 		audioSrc = GetComponent<AudioSource> ();
 	}
 
+	public void UnlockFinishline () {
+		finished = true;
+	}
+
 	void OnTriggerEnter2D (Collider2D col) {
-		if (!door && !finished) {
+		print ("Finish");
+		if (finished) {
 			col.GetComponentInChildren<BMaze_Monster> ().PlayDance ();
 			col.GetComponent<BMaze_MonsterMovement> ().allowMovement = false;
-			col.transform.position = finishSpot.transform.position;
-			finished = true;
+			col.GetComponent<BMaze_MonsterMovement> ().finished = true;
+			col.GetComponent<BMaze_MonsterMovement> ().gotoPos = finishSpot.transform.position;
+			//col.transform.position = finishSpot.transform.position;
+
 			audioSrc.Play ();
-			BMaze_Manager.GameEnd ();
+			BMaze_Manager.GameEnd (true);
 		}
 	}
 }

@@ -17,7 +17,9 @@ public class EmotionBehavior : MonoBehaviour {
 	}
 
 	void OnMouseDown() {
-		EmotionsGameManager.GetInstance().CheckEmotion(this.gameObject);
-		EmotionsGameManager.GetInstance().subtitlePanel.GetComponent<SubtitlePanel>().Display(this.gameObject.name, this.clipOfName);
+		if (EmotionsGameManager.inputAllowed) {
+			EmotionsGameManager.GetInstance ().CheckEmotion (this.gameObject);
+			EmotionsGameManager.GetInstance ().subtitlePanel.GetComponent<SubtitlePanel> ().Display (this.gameObject.name, this.clipOfName);
+		}
 	}
 }

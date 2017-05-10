@@ -18,12 +18,16 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 	private Vector3 pointerOffset;
 	private Vector3 cursorPos;
 	private Rigidbody2D rigBody;
+	private BMaze_Manager manager;
+	public Vector2 gotoPos;
+	public bool finished = false;
 
 	[SerializeField] private int locationX, locationY;
 
 	void Start () {
 		rigBody = GetComponent<Rigidbody2D> ();
 		allowMovement = true;
+		manager = BMaze_Manager.GetInstance ();
 
 		/*
 		if (!SnapGen) {
@@ -38,23 +42,40 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 		//MoveToSnapPoint ();
 		//CheckAllCollisions ();
 	}
+
+	void FixedUpdate () {
+		if (finished)
+			FinishMove (gotoPos);
+	}
 		
 	public void OnMouseDown() {
-		cursorPos = Input.mousePosition;
-		cursorPos.z -= (Camera.main.transform.position.z + 10f);
-		pointerOffset = Camera.main.ScreenToWorldPoint (cursorPos) - transform.position;
+		if (manager.inputAllowed) {
+			cursorPos = Input.mousePosition;
+			cursorPos.z -= (Camera.main.transform.position.z + 10f);
+			pointerOffset = Camera.main.ScreenToWorldPoint (cursorPos) - transform.position;
+		}
 	}
 
 	public void OnMouseDrag() {
-		if (allowMovement) {
+		if (manager.inputAllowed && allowMovement) {
 			cursorPos = Input.mousePosition;
 			cursorPos.z -= (Camera.main.transform.position.z + 10f);
-			rigBody.MovePosition (Camera.main.ScreenToWorldPoint (cursorPos) - pointerOffset);
+			MoveTowards (Camera.main.ScreenToWorldPoint (cursorPos) - pointerOffset);
 		}
 	}
 
 	public void Pickup(BMaze_Pickup.TypeOfPickup obj) {
 		audioSrc.Play ();
+	}
+
+	public void MoveTowards (Vector2 pos) {
+		rigBody.MovePosition (Vector2.MoveTowards (rigBody.position, pos, 0.8f));
+	}
+
+	public void FinishMove (Vector2 pos) {
+		transform.position = Vector2.MoveTowards (transform.position, pos, 0.3f);
+		if (transform.position.x == pos.x && transform.position.y == pos.y)
+			finished = false;
 	}
 
 	/*

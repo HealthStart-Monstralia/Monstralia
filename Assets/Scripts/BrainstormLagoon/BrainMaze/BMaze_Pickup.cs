@@ -6,7 +6,13 @@ public class BMaze_Pickup : MonoBehaviour {
 	 * GAME: Brain Maze
 	 */
 
-	public enum TypeOfPickup { Water = 0, Jogging = 1};
+	public enum TypeOfPickup { 
+		Water = 0, 
+		Jogging = 1,
+		Swimming = 2,
+		Hiking = 3,
+		Biking = 4
+	};
 	public TypeOfPickup pickup;
 
 	private BMaze_PickupManager pickupMan;
