@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class MemoryMatchGameManager : MonoBehaviour {
-
 	private static MemoryMatchGameManager instance;
 	private bool gameStarted;
 	private bool gameStartup;
@@ -44,6 +43,10 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public float speed;
 	public AudioClip[] wrongMatchClips;
 
+	public GameManager.MonsterType typeOfMonster;
+	public MMMonster monsterObject;
+	public GameObject[] monsterList;
+
 	public GameObject[] tutorialDishes;
 	public AudioClip instructions;
 	public AudioClip letsPlay;
@@ -60,6 +63,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		}
 
 		difficultyLevel = GameManager.GetInstance ().GetLevel ("MemoryMatch");
+		typeOfMonster = GameManager.GetMonster ();
+		CreateMonster ();
+		monsterObject.PlaySpawn ();
 	}
 
 	void Start () {
@@ -115,12 +121,12 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			}
 		}
 
-
 		if(gameStarted){
-			if(score >= numDishes || timer.TimeRemaining () < 0) {
-				if(!animIsPlaying)
+			if(score >= numDishes || timer.TimeRemaining () <= 0) {
+				if(!animIsPlaying) {
 					StartCoroutine(RunEndGameAnimation());
 				// GameOver();
+				}
 			}
 		}
 	}
@@ -143,6 +149,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	IEnumerator RunTutorial () {
+		print ("RunTutorial");
 		runningTutorial = true;
 		instructionPopup.gameObject.SetActive(true);
 		currentFoodToMatch = tutorialDishes [0].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Banana").gameObject;
@@ -167,26 +174,37 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		tutorialDishes [1].GetComponent<DishBehavior> ().SetFood (tutorialDishes [1].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Berry").GetComponent<Food>());
 		tutorialDishes [2].GetComponent<DishBehavior> ().SetFood (tutorialDishes [2].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Brocolli").GetComponent<Food>());
 
-		yield return new WaitForSeconds(4f);
-		Animation handAnim = instructionPopup.gameObject.transform.FindChild ("TutorialAnimation").gameObject.transform.FindChild ("Hand").gameObject.GetComponent<Animation>();
-		handAnim.Play("mmhand");
+		yield return new WaitForSeconds(5f);
+		Animator handAnim = instructionPopup.gameObject.transform.FindChild ("TutorialAnimation").gameObject.transform.FindChild ("Hand").gameObject.GetComponent<Animator>();
+		handAnim.Play("mmhand_5_12");
 		yield return new WaitForSeconds(4f);
 		tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealLift"].name);
 
+		if (runningTutorial) {
+			yield return new WaitForSeconds (instructions.length - 12f);
+			subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Now you try!", nowYouTry);
+			tutorialDishes [0].GetComponent<DishBehavior> ().top.GetComponent<Animation> ().Play (tutorialDishes [0].GetComponent<DishBehavior> ().top.GetComponent<Animation> () ["DishTopRevealClose"].name);
+			instructionPopup.gameObject.transform.FindChild ("TutorialAnimation").gameObject.transform.FindChild ("Hand").gameObject.SetActive (false);
 
-		yield return new WaitForSeconds(instructions.length - 12f);
-		subtitlePanel.GetComponent<SubtitlePanel>().Display("Now you try!", nowYouTry);
-		tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealClose"].name);
-		instructionPopup.gameObject.transform.FindChild ("TutorialAnimation").gameObject.transform.FindChild ("Hand").gameObject.SetActive(false);
-
-		for(int i = 0; i < tutorialDishes.Length; ++i) {
-			tutorialDishes[i].GetComponent<Collider2D>().enabled = true;
+			for (int i = 0; i < tutorialDishes.Length; ++i) {
+				tutorialDishes [i].GetComponent<Collider2D> ().enabled = true;
+			}
 		}
-
 //		StartGame ();
 	}
 
+	public void SkipReviewButton(GameObject button) {
+		SkipReview ();
+		Destroy (button);
+	}
+
+	public void SkipReview() {
+		StopCoroutine (RunTutorial ());
+		StartCoroutine (TutorialTearDown ());
+	}
+
 	IEnumerator TutorialTearDown() {
+		print ("TutorialTearDown");
 		score = 0;
 		runningTutorial = false;
 		subtitlePanel.GetComponent<SubtitlePanel>().Display("Perfect!", letsPlay);
@@ -199,6 +217,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public void StartGame() {
 		scoreGauge.gameObject.SetActive (true);
 		timerText.gameObject.SetActive (true);
+		timerText.text = "Time: " + timer.TimeRemaining();
 		UpdateScoreGauge ();
 
 		gameStartup = true;
@@ -226,7 +245,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 		for(int i = 0; i < numDishes; ++i) {
 			GameObject newDish = Instantiate(dish);
-			newDish.transform.parent = dishParent;
+			newDish.transform.SetParent(dishParent);
 			newDish.transform.localScale = new Vector3(1, 1, 1);
 			newDish.transform.localPosition = new Vector3(200f*Mathf.Cos (dishPositionAngleDelta*i + Mathf.PI / 2), 200f*Mathf.Sin (dishPositionAngleDelta*i + Mathf.PI / 2) + 40, 0);
 			dishes[i] = newDish;
@@ -294,6 +313,8 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 		if(activeFoods.Count > 0) {
 			currentFoodToMatch = SpawnFood(activeFoods, false, foodToMatchSpawnPos, foodToMatchSpawnPos, foodToMatchScale);
+			currentFoodToMatch.GetComponent<SpriteRenderer> ().sortingLayerName = "UI";
+			currentFoodToMatch.GetComponent<SpriteRenderer> ().sortingOrder = 5;
 		}
 	}
 
@@ -330,41 +351,44 @@ public class MemoryMatchGameManager : MonoBehaviour {
 				Destroy(d.GetComponent<DishBehavior>().bottom.GetComponentInChildren<Food>().gameObject);
 				SoundManager.GetInstance().PlaySFXClip(munchClip);
 				d.GetComponent<DishBehavior>().bottom.GetComponent<Animation>().Play (animation["DishBottomShake"].name);
+				monsterObject.PlayEat ();
 				yield return new WaitForSeconds (1.2f);
 			}
 		}
+		monsterObject.PlayDance ();
 		yield return new WaitForSeconds (1f);
 		GameOver ();
 	}
-	
 
 	void GameOver() {
 		gameStarted = false;
-		if(score >= numDishes) {
-			GameManager.GetInstance().AddLagoonReviewGame("MemoryMatchReviewGame");
-			if(difficultyLevel == 1) {
-				stickerPopupCanvas.gameObject.SetActive(true);
-				GameManager.GetInstance().ActivateBrainstormLagoonReview();
-				if(GameManager.GetInstance().LagoonFirstSticker) {
-					stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(true);
-					GameManager.GetInstance().LagoonFirstSticker = false;
-					Debug.Log ("This was Brainstorm Lagoon's first sticker");
-				}
-				else {
-					Debug.Log ("This was not Brainstorm Lagoon's first sticker");
-					stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(true);
-				}
-				GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Hippocampus");
-				GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
-			}
-			GameManager.GetInstance().LevelUp("MemoryMatch");
-		}
-
-		// timer.StopTimer();
 		timerText.gameObject.SetActive(false);
 		scoreGauge.gameObject.SetActive(false);
-		if(difficultyLevel > 1) {
-			DisplayGameOverPopup();
+		if (currentFoodToMatch)
+			currentFoodToMatch.SetActive (false);
+
+		if (score >= numDishes) {
+			GameManager.GetInstance ().AddLagoonReviewGame ("MemoryMatchReviewGame");
+			if (difficultyLevel == 1) {
+				stickerPopupCanvas.gameObject.SetActive (true);
+				GameManager.GetInstance ().ActivateBrainstormLagoonReview ();
+				if (GameManager.GetInstance ().LagoonFirstSticker) {
+					stickerPopupCanvas.transform.FindChild ("StickerbookButton").gameObject.SetActive (true);
+					GameManager.GetInstance ().LagoonFirstSticker = false;
+					Debug.Log ("This was Brainstorm Lagoon's first sticker");
+				} else {
+					Debug.Log ("This was not Brainstorm Lagoon's first sticker");
+					stickerPopupCanvas.transform.FindChild ("BackButton").gameObject.SetActive (true);
+				}
+				GameManager.GetInstance ().ActivateSticker ("BrainstormLagoon", "Hippocampus");
+				GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
+			}
+			GameManager.GetInstance ().LevelUp ("MemoryMatch");
+		} else {
+			if(difficultyLevel >= 1) {
+				GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
+				DisplayGameOverPopup();
+			}
 		}
 	}
 
@@ -372,7 +396,13 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		Debug.Log ("In DisplayGameOverPopup");
 		gameOverCanvas.gameObject.SetActive(true);
 		Text gameOverText = gameOverCanvas.GetComponentInChildren<Text> ();
-		gameOverText.text = "Great job! You matched " + score + " healthy foods!";
+		if (score > 1) {
+			gameOverText.text = "Great job! You matched " + score + " healthy foods!";
+		} else if (score == 1) {
+			gameOverText.text = "Great job! You matched " + score + " healthy food!";
+		} else {
+			gameOverText.text = "You matched " + score + " healthy foods! Let's try again!";
+		}
 	}
 
 	public bool isGameStarted() {
@@ -401,5 +431,32 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			d.transform.RotateAround(target.position, zAxis, speed);
 			d.transform.rotation = startRotation;
 		}
+	}
+
+	void CreateMonster() {
+		// Blue = 0, Green = 1, Red = 2, Yellow = 3
+
+		switch (typeOfMonster) {
+		case GameManager.MonsterType.Blue:
+			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Blue]);
+			break;
+		case GameManager.MonsterType.Green:
+			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Green]);
+			break;
+		case GameManager.MonsterType.Red:
+			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Red]);
+			break;
+		case GameManager.MonsterType.Yellow:
+			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Yellow]);
+			break;
+		}
+	}
+
+	void InstantiateMonster(GameObject monster) {
+		GameObject monsterSpawn = Instantiate (
+			monster, 
+			Vector3.zero,
+			Quaternion.identity) as GameObject;
+		monsterObject = monsterSpawn.GetComponent<MMMonster> ();
 	}
 }

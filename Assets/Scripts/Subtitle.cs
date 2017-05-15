@@ -14,5 +14,4 @@ public class Subtitle {
 		subtitlePanel.GetComponent<Animator> ().Play ("Subtitle_Out"); // Animation has SetActive(false)
 	}
 
-
 }

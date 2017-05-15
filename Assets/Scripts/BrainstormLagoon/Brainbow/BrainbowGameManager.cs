@@ -42,6 +42,11 @@ public class BrainbowGameManager : AbstractGameManager {
 	public AudioClip[] wrongMatchClips;
 	public Transform tutorialOrigin;
 
+	public GameManager.MonsterType typeOfMonster;
+	public BBMonster monsterObject;
+	public GameObject[] monsterList;
+	public GameObject spawnPoint;
+
 	public AudioClip intro;
 	public AudioClip instructions;
 	public AudioClip nowYouTry;
@@ -123,7 +128,11 @@ public class BrainbowGameManager : AbstractGameManager {
 		score = 0;
 		
 		scoreGauge.maxValue = scoreGoals[difficultyLevel];
-		
+
+		typeOfMonster = GameManager.GetMonster ();
+		CreateMonster ();
+		monsterObject.PlaySpawn ();
+
 		if(timer != null) {
 			timer = Instantiate(timer);
 			timer.SetTimeLimit(this.timeLimit);
@@ -188,6 +197,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	public void StartGame() {
 		scoreGauge.gameObject.SetActive(true);
 		timerText.gameObject.SetActive(true);
+		timerText.text = "Time: " + timer.TimeRemaining();
 
 		StartCoroutine (DisplayGo());
 
@@ -285,9 +295,17 @@ public class BrainbowGameManager : AbstractGameManager {
 		}
 
 		SoundManager.GetInstance().PlayVoiceOverClip(finalFeedback);
+		/*
 		GameObject animation = (GameObject)Instantiate(endGameAnimation);
 		animation.gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameManager.GetInstance().getMonster());
-		yield return new WaitForSeconds (endGameAnimation.gameObject.GetComponent<Animator> ().runtimeAnimatorController.animationClips [0].length);
+		*/
+		monsterObject.PlayEat ();
+
+		Animator monsterAnim = monsterObject.gameObject.GetComponent<Animator> ();
+
+		yield return new WaitForSeconds (14f);
+		//yield return new WaitForSeconds (endGameAnimation.gameObject.GetComponent<Animator> ().runtimeAnimatorController.animationClips [0].length);
+
 		GameOver ();
 	}
 
@@ -307,5 +325,32 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	public bool isGameOver() {
 		return gameOver;
+	}
+
+	void CreateMonster() {
+		// Blue = 0, Green = 1, Red = 2, Yellow = 3
+
+		switch (typeOfMonster) {
+		case GameManager.MonsterType.Blue:
+			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Blue]);
+			break;
+		case GameManager.MonsterType.Green:
+			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Green]);
+			break;
+		case GameManager.MonsterType.Red:
+			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Red]);
+			break;
+		case GameManager.MonsterType.Yellow:
+			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Yellow]);
+			break;
+		}
+	}
+
+	void InstantiateMonster(GameObject monster) {
+		GameObject monsterSpawn = Instantiate (
+			monster, 
+			spawnPoint.transform.position,
+			Quaternion.identity) as GameObject;
+		monsterObject = monsterSpawn.GetComponent<BBMonster> ();
 	}
 }

@@ -13,7 +13,7 @@ public class BMaze_Manager : MonoBehaviour {
 		Yellow = 3
 	};
 
-	public MonsterType typeOfMonster;
+	public GameManager.MonsterType typeOfMonster;
 	public GameObject[] monsterList = new GameObject[4];
 	[Range(0.1f,1.0f)]
 	public float[] monsterScale;
@@ -69,7 +69,7 @@ public class BMaze_Manager : MonoBehaviour {
 		if (GameManager.GetInstance())
 			level = GameManager.GetInstance ().GetLevel ("BrainMaze") - 1;
 		SetupMaze (level);
-		DetermineMonster ();
+		typeOfMonster = GameManager.GetMonster();
 		CreateMonster ();
 	}
 
@@ -140,6 +140,7 @@ public class BMaze_Manager : MonoBehaviour {
 	}
 	*/
 
+	/*
 	void DetermineMonster() {
 		// Determines what kind of monster is chosen
 		if (GameManager.GetInstance ()) {
@@ -160,6 +161,7 @@ public class BMaze_Manager : MonoBehaviour {
 			typeOfMonster = MonsterType.Green;
 		}
 	}
+	*/
 
 	void CreateMonster() {
 		GameObject startingLocation = assetList [level].GetStartLocation();
@@ -172,28 +174,28 @@ public class BMaze_Manager : MonoBehaviour {
 		Quaternion monsterRotation = startingLocation.transform.rotation;
 
 		switch (typeOfMonster) {
-		case MonsterType.Blue:
+		case GameManager.MonsterType.Blue:
 			monsterObject = Instantiate (
 				monsterList [0], 
 				monsterPosition,
 				monsterRotation) as GameObject;
 			ScaleMonster ();
 			break;
-		case MonsterType.Green:
+		case GameManager.MonsterType.Green:
 			monsterObject = Instantiate (
 				monsterList [1], 
 				monsterPosition,
 				monsterRotation) as GameObject;
 			ScaleMonster ();
 			break;
-		case MonsterType.Red:
+		case GameManager.MonsterType.Red:
 			monsterObject = Instantiate (
 				monsterList [2], 
 				monsterPosition,
 				monsterRotation) as GameObject;
 			ScaleMonster ();
 			break;
-		case MonsterType.Yellow:
+		case GameManager.MonsterType.Yellow:
 			monsterObject = Instantiate (
 				monsterList [3], 
 				monsterPosition,

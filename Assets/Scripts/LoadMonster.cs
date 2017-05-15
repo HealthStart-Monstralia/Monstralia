@@ -8,4 +8,5 @@ public class LoadMonster : MonoBehaviour {
 		Sprite monsterSprite = Resources.Load<Sprite>(GameManager.GetInstance().getMonster());
 		gameObject.GetComponent<SpriteRenderer>().sprite = monsterSprite;
 	}
+
 }

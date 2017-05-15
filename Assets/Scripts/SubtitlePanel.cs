@@ -20,16 +20,20 @@ public class SubtitlePanel : MonoBehaviour {
 		}
 
 		if(!queue || !isDisplaying) {
-			print ("if !queue || !isDisplaying");
 			isDisplaying = true;
 			sub.Display(gameObject, textComp, subtitle, clip);
-			if (EmotionsGameManager.GetInstance())
-				StartCoroutine (WaitTillHide(EmotionsGameManager.GetInstance().waitDuration));
-			else if (MemoryMatchGameManager.GetInstance())
-				StartCoroutine (WaitTillHide(3f));
+			if (EmotionsGameManager.GetInstance ()) {
+				StopCoroutine (WaitTillHide (3f));
+				StartCoroutine (WaitTillHide (EmotionsGameManager.GetInstance ().waitDuration));
+			} 
+			/*
+			else if (MemoryMatchGameManager.GetInstance ()) {
+				StopCoroutine (WaitTillHide(3f));
+				StartCoroutine (WaitTillHide (3f));
+			}
+			*/
 		}
 		else {
-			print ("else");
 			Tuple<string, AudioClip> t = new Tuple<string, AudioClip>(subtitle, clip);
 			displayQueue.Enqueue(t);
 			t.ToString();
@@ -38,7 +42,6 @@ public class SubtitlePanel : MonoBehaviour {
 
 	public void Hide() {
 		isDisplaying = false;
-		Debug.Log ("In Hide! ");
 		if(displayQueue.Count > 0) {
 			Tuple<string, AudioClip> toDisplay = displayQueue.Dequeue();
 			Display(toDisplay.first, toDisplay.second);

@@ -101,10 +101,12 @@ public class BrainbowFood : Food {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		// Destroy(this.gameObject);
-		if (other.name == "EndGameAnimation(Clone)") {
-			//Destroy (this.gameObject);
-			gameObject.SetActive (false);
-			SoundManager.GetInstance().PlaySFXClip(BrainbowGameManager.GetInstance().munchSound);
+		if (BrainbowGameManager.GetInstance ().isGameOver()) {
+			if (other.tag == "Player") {
+				//Destroy (this.gameObject);
+				gameObject.SetActive (false);
+				SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().munchSound);
+			}
 		}
 	}
 	

@@ -10,7 +10,7 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 	//public GameObject ArrowGUI;
 	//public GameObject[] ArrowGUIIcons = new GameObject[4];
 	public LayerMask layerMaze, layerTile;
-	public enum Movement {Up = 0, Down = 1, Right = 2, Left = 3};
+	//public enum Movement {Up = 0, Down = 1, Right = 2, Left = 3};
 	public float colliderRaycastDist;
 	public bool allowMovement;
 

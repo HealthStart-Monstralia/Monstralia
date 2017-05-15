@@ -4,6 +4,12 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
+	public enum MonsterType {
+		Blue = 0, 
+		Green = 1, 
+		Red = 2, 
+		Yellow = 3
+	};
 
 	private Dictionary<string, int> gameLevels;
 	private Dictionary<string, int> gameStars;
@@ -16,10 +22,10 @@ public class GameManager : MonoBehaviour {
 	public bool LagoonFirstSticker = true;
 	public bool LagoonReview = false;
 	public bool PlayLagoonVoiceOver = true; // Prevents voiceover clip from playing when returning from a game inside Brainstorm Lagoon - CT
+	public static MonsterType monsterType;
 
 //	public List<Canvas> LagoonReviewCanvases;
 //	public List<Canvas> LagoonReviewGames;
-
 
 	string monster;
 
@@ -63,6 +69,7 @@ public class GameManager : MonoBehaviour {
 
 	public void setMonster(string color) {
 		this.monster = color;
+		DetermineMonster ();
 	}
 	
 	public string getMonster() {
@@ -134,4 +141,28 @@ public class GameManager : MonoBehaviour {
 		return reviewGame;//Resources.Load(reviewGamePath  + "/" + LagoonReviewGames[Random.Range (0, LagoonReviewGames.Count)]) as Canvas;
 	}
 
+	void DetermineMonster() {
+		// Determines what kind of monster is chosen - CT
+		if (GameManager.GetInstance ()) {
+			if (GameManager.GetInstance ().getMonster ().Contains ("Blue")) {
+				monsterType = MonsterType.Blue;
+			} else {
+				if (GameManager.GetInstance ().getMonster ().Contains ("Green")) {
+					monsterType = MonsterType.Green;
+				} else {
+					if (GameManager.GetInstance ().getMonster ().Contains ("Red")) {
+						monsterType = MonsterType.Red;
+					} else {
+						monsterType = MonsterType.Yellow;
+					}
+				}
+			}
+		} else {
+			monsterType = MonsterType.Green;
+		}
+	}
+
+	public static MonsterType GetMonster() {
+		return monsterType;
+	}
 }

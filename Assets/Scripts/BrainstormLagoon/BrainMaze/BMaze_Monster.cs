@@ -5,43 +5,43 @@ using UnityEngine;
 public class BMaze_Monster : MonoBehaviour {
 
 	private Animator animComp;
-	private BMaze_Manager.MonsterType monster;
+	private GameManager.MonsterType monster;
 
 	void Awake() {
 		animComp = GetComponentInChildren<Animator> ();
 	}
 
 	public void PlaySpawn() {
-		monster = BMaze_Manager.GetInstance ().typeOfMonster;
+		monster = GameManager.GetMonster();
 		switch (monster) {
-		case BMaze_Manager.MonsterType.Blue:
+		case GameManager.MonsterType.Blue:
 			animComp.Play ("BMaze_BlueBabySpawn");
 			break;
-		case BMaze_Manager.MonsterType.Green:
+		case GameManager.MonsterType.Green:
 			animComp.Play ("BMaze_GreenBabySpawn");
 			break;
-		case BMaze_Manager.MonsterType.Red:
+		case GameManager.MonsterType.Red:
 			animComp.Play ("BMaze_RedBabySpawn");
 			break;
-		case BMaze_Manager.MonsterType.Yellow:
+		case GameManager.MonsterType.Yellow:
 			animComp.Play ("BMaze_YellowBabySpawn");
 			break;
 		}
 	}
 
 	public void PlayDance() {
-		monster = BMaze_Manager.GetInstance ().typeOfMonster;
+		monster = GameManager.GetMonster();
 		switch (monster) {
-		case BMaze_Manager.MonsterType.Blue:
+		case GameManager.MonsterType.Blue:
 			animComp.Play ("BMaze_BlueBabyDance");
 			break;
-		case BMaze_Manager.MonsterType.Green:
+		case GameManager.MonsterType.Green:
 			animComp.Play ("BMaze_GreenBabyDance");
 			break;
-		case BMaze_Manager.MonsterType.Red:
+		case GameManager.MonsterType.Red:
 			animComp.Play ("BMaze_RedBabyDance");
 			break;
-		case BMaze_Manager.MonsterType.Yellow:
+		case GameManager.MonsterType.Yellow:
 			animComp.Play ("BMaze_YellowBabyDance");
 			break;
 		}

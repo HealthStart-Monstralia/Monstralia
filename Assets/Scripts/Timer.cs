@@ -20,7 +20,7 @@ public class Timer : MonoBehaviour {
 	
 	void FixedUpdate () {
 		if(timing && timeRemaining >= 0f) {
-			timeRemaining -= Time.deltaTime;
+			timeRemaining -= Time.fixedDeltaTime;
 		}
 	
 	}
@@ -58,7 +58,11 @@ public class Timer : MonoBehaviour {
 	}
 
 	public void SubtractTime(float delta) {
-		timeRemaining -= delta;
+		print ("function call: subtract time");
+		if (timeRemaining > 0) {
+			print ("subtracted time");
+			timeRemaining -= delta;
+		}
 	}
 
 	public void AddTime(float delta) {
