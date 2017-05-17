@@ -15,16 +15,16 @@ public class BMaze_Monster : MonoBehaviour {
 		monster = GameManager.GetMonster();
 		switch (monster) {
 		case GameManager.MonsterType.Blue:
-			animComp.Play ("BMaze_BlueBabySpawn");
+			animComp.Play ("BMaze_BlueBabySpawn", -1, 0f);
 			break;
 		case GameManager.MonsterType.Green:
-			animComp.Play ("BMaze_GreenBabySpawn");
+			animComp.Play ("BMaze_GreenBabySpawn", -1, 0f);
 			break;
 		case GameManager.MonsterType.Red:
-			animComp.Play ("BMaze_RedBabySpawn");
+			animComp.Play ("BMaze_RedBabySpawn", -1, 0f);
 			break;
 		case GameManager.MonsterType.Yellow:
-			animComp.Play ("BMaze_YellowBabySpawn");
+			animComp.Play ("BMaze_YellowBabySpawn", -1, 0f);
 			break;
 		}
 	}

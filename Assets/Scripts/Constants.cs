@@ -5,6 +5,9 @@ public static class Constants {
 
 	public enum BrainstormLagoonLevels {
 		BRAINBOW,
-		MEMORY_MATCH
+		MEMORY_MATCH,
+		EMOTIONS,
+		BRAINMAZE,
+		SENSES
 	};
 }

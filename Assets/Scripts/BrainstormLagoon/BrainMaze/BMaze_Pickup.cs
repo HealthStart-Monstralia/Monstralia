@@ -27,6 +27,11 @@ public class BMaze_Pickup : MonoBehaviour {
 		if (pickup == TypeOfPickup.Water)
 			GetComponent<BMaze_WaterPickup> ().IncreaseTime ();
 		pickupMan.pickupList.Remove (gameObject);
-		Destroy(gameObject);
+		gameObject.SetActive (false);
+	}
+
+	public void ReActivate() {
+		pickupMan.pickupList.Add (gameObject);
+		gameObject.SetActive (true);
 	}
 }

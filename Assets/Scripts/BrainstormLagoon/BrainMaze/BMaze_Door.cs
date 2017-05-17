@@ -6,12 +6,19 @@ public class BMaze_Door : MonoBehaviour {
 
 	public void OpenDoor() {
 		AudioSource audio = GetComponent<AudioSource> ();
-		audio.Play ();
+		if (BMaze_Manager.isTutorialRunning)
+			BMaze_Manager.GetInstance ().DoorIsUnlockedVO ();
+		else
+			audio.Play ();
 		Invoke ("Hide", 0.5f);
 		//Destroy(gameObject, 0.5f);
 	}
 
 	public void Hide() {
 		gameObject.SetActive (false);
+	}
+
+	public void Show() {
+		gameObject.SetActive (true);
 	}
 }

@@ -21,14 +21,17 @@ public class BMaze_PickupManager : MonoBehaviour {
 	}
 
 	void Update () {
-		if (BMaze_Manager.GetGameStarted() && pickupList.Count <= 0 && !achieved) {
+		if (pickupList.Count <= 0 && !achieved) {
 			achieved = true;
 			GoalAchieved ();
 		}
 	}
 
 	void GoalAchieved () {
-		audioSrc.Play ();
+		if (BMaze_Manager.isTutorialRunning)
+			BMaze_Manager.GetInstance ().AllItemsCollectedVO ();
+		else
+			audioSrc.Play ();
 		BMaze_Manager.UnlockDoor ();
 	}
 }

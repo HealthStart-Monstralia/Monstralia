@@ -28,7 +28,11 @@ public class BMaze_Finishline : MonoBehaviour {
 			//col.transform.position = finishSpot.transform.position;
 
 			audioSrc.Play ();
-			BMaze_Manager.GameEnd (true);
+			if (!BMaze_Manager.isTutorialRunning)
+				BMaze_Manager.GameEnd (true);
+			else {
+				BMaze_Manager.GetInstance ().TutorialFinished ();
+			}
 		}
 	}
 }

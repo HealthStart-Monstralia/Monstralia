@@ -99,6 +99,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		UpdateScoreGauge ();
 		activeFoods = new List<GameObject> ();
 		matchedFoods = new List<Food> ();
+
 		if (GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH]) {
 			StartCoroutine (RunTutorial ());
 		}
