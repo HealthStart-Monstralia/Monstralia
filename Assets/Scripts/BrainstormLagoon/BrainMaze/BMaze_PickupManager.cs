@@ -28,10 +28,7 @@ public class BMaze_PickupManager : MonoBehaviour {
 	}
 
 	void GoalAchieved () {
-		if (BMaze_Manager.isTutorialRunning)
-			BMaze_Manager.GetInstance ().AllItemsCollectedVO ();
-		else
-			audioSrc.Play ();
+		audioSrc.Play ();
 		BMaze_Manager.UnlockDoor ();
 	}
 }

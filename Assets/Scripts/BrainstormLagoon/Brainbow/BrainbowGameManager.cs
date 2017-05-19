@@ -17,6 +17,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	private BrainbowFood banana;
 	private Transform bananaOrigin;
 	private bool gameOver = false;
+	private bool isInputAllowed = false;
 
 	public Canvas reviewCanvas;
 	public Canvas instructionPopup;
@@ -129,7 +130,7 @@ public class BrainbowGameManager : AbstractGameManager {
 		
 		scoreGauge.maxValue = scoreGoals[difficultyLevel];
 
-		typeOfMonster = GameManager.GetMonster ();
+		typeOfMonster = GameManager.GetMonsterType ();
 		CreateMonster ();
 		monsterObject.PlaySpawn ();
 
@@ -149,6 +150,7 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	IEnumerator RunTutorial() {
 		runningTutorial = true;
+		isInputAllowed = false;
 		instructionPopup.gameObject.SetActive(true);
 		SoundManager.GetInstance().PlayVoiceOverClip(intro);
 		yield return new WaitForSeconds(6f);
@@ -171,14 +173,17 @@ public class BrainbowGameManager : AbstractGameManager {
 //		banana.GetComponent<PolygonCollider2D> ().enabled = true;
 
 		//redOutline.SetActive(false);
-		subtitlePanel.GetComponent<SubtitlePanel>().Display("Now You Try!", nowYouTry);
-
-		bananaOrigin = tutorialOrigin;
-		banana.GetComponent<BrainbowFood>().SetOrigin(bananaOrigin);
+		if (runningTutorial) {
+			subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Now You Try!", nowYouTry);
+			isInputAllowed = true;
+			bananaOrigin = tutorialOrigin;
+			banana.GetComponent<BrainbowFood> ().SetOrigin (bananaOrigin);
+		}
 	}
 
 	IEnumerator TutorialTearDown ()
 	{
+		isInputAllowed = false;
 		score = 0;
 		UpdateScoreGauge();
 		runningTutorial = false;
@@ -204,13 +209,14 @@ public class BrainbowGameManager : AbstractGameManager {
 	}
 
 	public IEnumerator DisplayGo () {
-		StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
+		GameManager.GetInstance ().Countdown ();
 		yield return new WaitForSeconds (5.0f);
 		PostCountdownSetup ();
 	}
 
 	void PostCountdownSetup ()
 	{
+		isInputAllowed = true;
 		if(difficultyLevel == 1){
 			SoundManager.GetInstance().PlayVoiceOverClip(waterTip);
 
@@ -254,13 +260,17 @@ public class BrainbowGameManager : AbstractGameManager {
 				SoundManager.GetInstance().PlayVoiceOverClip(stickerbook);
 				stickerPopupCanvas.gameObject.SetActive(true);
 				GameManager.GetInstance ().ActivateBrainstormLagoonReview();
+
 				if(GameManager.GetInstance().LagoonFirstSticker) {
+					stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(false);
 					stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(true);
 					GameManager.GetInstance().LagoonFirstSticker = false;
 				}
 				else {
+					stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(false);
 					stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(true);
 				}
+
 				GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Brainbow");
 				GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.BRAINBOW] = false;
 			}
@@ -353,4 +363,9 @@ public class BrainbowGameManager : AbstractGameManager {
 			Quaternion.identity) as GameObject;
 		monsterObject = monsterSpawn.GetComponent<BBMonster> ();
 	}
+
+	public bool GetIsInputAllowed () {
+		return isInputAllowed;
+	}
+
 }

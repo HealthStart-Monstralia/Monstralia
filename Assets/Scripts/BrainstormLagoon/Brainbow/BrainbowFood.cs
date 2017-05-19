@@ -22,7 +22,7 @@ public class BrainbowFood : Food {
 	}
 
 	void OnMouseDown() {
-		if(!busy && !BrainbowGameManager.GetInstance().isGameOver()) {
+		if(!busy && !BrainbowGameManager.GetInstance().isGameOver() && BrainbowGameManager.GetInstance().GetIsInputAllowed()) {
 			moving = true;
 			BrainbowGameManager.GetInstance().SetActiveFood(this);
 			offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
@@ -42,37 +42,38 @@ public class BrainbowFood : Food {
 	}
 
 	void OnMouseUp() {
-		if(!busy && moving) {
-			busy = true;
+		if (BrainbowGameManager.GetInstance ().GetIsInputAllowed ()) {
+			if (!busy && moving) {
+				busy = true;
 
-			RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up, 1.0f, layerMask);
+				RaycastHit2D hit = Physics2D.Raycast (transform.position, -Vector2.up, 1.0f, layerMask);
 
-			if(hit.collider != null && hit.collider.gameObject.GetComponent<ColorDetector>().color == this.color) {
-				BrainbowGameManager.GetInstance().SetActiveFood(null);
+				if (hit.collider != null && hit.collider.gameObject.GetComponent<ColorDetector> ().color == this.color) {
+					BrainbowGameManager.GetInstance ().SetActiveFood (null);
 
-				ColorDetector detector = hit.collider.gameObject.GetComponent<ColorDetector>();
-				SoundManager.GetInstance().PlaySFXClip(BrainbowGameManager.GetInstance().correctSound);
-				Vector3 oldPos = gameObject.transform.position;
-				detector.AddFood(gameObject);
+					ColorDetector detector = hit.collider.gameObject.GetComponent<ColorDetector> ();
+					SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().correctSound);
+					Vector3 oldPos = gameObject.transform.position;
+					detector.AddFood (gameObject);
 
-				if(Random.value < 0.3f) {
-					int randomClipIndex = Random.Range(0, BrainbowGameManager.GetInstance().correctMatchClips.Length);
-					SoundManager.GetInstance().PlayVoiceOverClip(BrainbowGameManager.GetInstance().correctMatchClips[randomClipIndex]);
+					if (Random.value < 0.3f) {
+						int randomClipIndex = Random.Range (0, BrainbowGameManager.GetInstance ().correctMatchClips.Length);
+						SoundManager.GetInstance ().PlayVoiceOverClip (BrainbowGameManager.GetInstance ().correctMatchClips [randomClipIndex]);
+					}
+
+					gameObject.GetComponent<Collider2D> ().enabled = false;
+					BrainbowGameManager.GetInstance ().Replace (gameObject);
+				} else {
+					MoveBack ();
+					int randomClipIndex = Random.Range (0, BrainbowGameManager.GetInstance ().wrongMatchClips.Length);
+					SoundManager.GetInstance ().PlayVoiceOverClip (BrainbowGameManager.GetInstance ().wrongMatchClips [randomClipIndex]);
 				}
-
-				gameObject.GetComponent<Collider2D>().enabled = false;
-				BrainbowGameManager.GetInstance().Replace(gameObject);
 			}
-			else {
-				MoveBack ();
-				int randomClipIndex = Random.Range(0, BrainbowGameManager.GetInstance().wrongMatchClips.Length);
-				SoundManager.GetInstance().PlayVoiceOverClip(BrainbowGameManager.GetInstance().wrongMatchClips[randomClipIndex]);
-			}
+			moving = false;
+			busy = false;
+			Debug.Log ("About to hide sutitle");
+			StartCoroutine (HideSubtitle ());
 		}
-		moving = false;
-		busy = false;
-		Debug.Log ("About to hide sutitle");
-		StartCoroutine(HideSubtitle());
 	}
 
 	IEnumerator HideSubtitle() {
@@ -101,11 +102,13 @@ public class BrainbowFood : Food {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		// Destroy(this.gameObject);
-		if (BrainbowGameManager.GetInstance ().isGameOver()) {
-			if (other.tag == "Player") {
-				//Destroy (this.gameObject);
-				gameObject.SetActive (false);
-				SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().munchSound);
+		if (BrainbowGameManager.GetInstance ()) {
+			if (BrainbowGameManager.GetInstance ().isGameOver ()) {
+				if (other.tag == "Player") {
+					//Destroy (this.gameObject);
+					gameObject.SetActive (false);
+					SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().munchSound);
+				}
 			}
 		}
 	}

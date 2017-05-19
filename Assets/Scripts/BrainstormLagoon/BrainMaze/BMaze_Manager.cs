@@ -1,26 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
 
 public class BMaze_Manager : MonoBehaviour {
 	/* CREATED BY: Colby Tang
 	 * GAME: Brain Maze
 	 */
-
-	/*
-	* Voice Over List
-	* 0 -
-	* 1 -
-	* 2 -
-	* 3 - 
-	*/
-
-	public enum MonsterType {
-		Blue = 0, 
-		Green = 1, 
-		Red = 2, 
-		Yellow = 3
-	};
 
 	public GameManager.MonsterType typeOfMonster;
 	public GameObject[] monsterList = new GameObject[4];
@@ -42,6 +28,9 @@ public class BMaze_Manager : MonoBehaviour {
 	public bool inputAllowed = false;
 	public GameObject subtitlePanel;
 	public AudioClip[] instructionVOList;
+	public GameObject stickerPopupCanvas;
+	public GameObject gameOverCanvas;
+	public GameObject backButton;
 	public BMaze_SceneAssets tutorialAssets;
 	public GameObject tutorialHand;
 	public GameObject tutorialPickup;
@@ -49,9 +38,9 @@ public class BMaze_Manager : MonoBehaviour {
 
 	private static bool gameStarted = false;
 	private static BMaze_Manager instance = null;
+	private Coroutine tutorialCoroutine;
 
 	void SetupMaze(int level) {
-		print (level);
 		beachBackgroundObj.GetComponent<BMaze_BeachBackgrounds> ().ChangeBackground (level);
 		mazeGraphicObj.GetComponent<BMaze_MazeGraphics> ().ChangeMaze (level);
 		for (int i = 0; i < mazeColliders.Length; i++) {
@@ -73,6 +62,9 @@ public class BMaze_Manager : MonoBehaviour {
 				*/
 			}
 		}
+		if (monsterObject)
+			RemoveMonster ();
+		CreateMonster ();
 		StartCoroutine (Countdown ());
 	}
 
@@ -83,14 +75,22 @@ public class BMaze_Manager : MonoBehaviour {
 		else if(instance != this) {
 			Destroy(gameObject);
 		}
-		if (GameManager.GetInstance())
+		if (GameManager.GetInstance ()) {
 			level = GameManager.GetInstance ().GetLevel ("BrainMaze") - 1;
+			if (level > 2) {
+				level = 2;
+			}
+		}
 
 		if (SoundManager.GetInstance ()) {
 			SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
 			SoundManager.GetInstance ().StopPlayingVoiceOver ();
 		}
 
+		backButton.SetActive (true);
+		stickerPopupCanvas.SetActive (false);
+		gameOverCanvas.SetActive (false);
+		subtitlePanel.SetActive (false);
 		tutorialHand.SetActive (false);
 		ChangeSlider (0f);
 		timeLeft = timeLimit;
@@ -99,17 +99,17 @@ public class BMaze_Manager : MonoBehaviour {
 		timerText.text = Mathf.Round(timeLeft).ToString();
 
 		if (GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.BRAINMAZE]) {
-			StartCoroutine (RunTutorial ());
+			tutorialCoroutine = StartCoroutine (RunTutorial ());
 		}
 		else {
 			SetupMaze (level);
 		}
 
-		typeOfMonster = GameManager.GetMonster();
+		typeOfMonster = GameManager.GetMonsterType();
 	}
 
 	void Start () {
-
+		
 	}
 
 	void Update () {
@@ -118,21 +118,34 @@ public class BMaze_Manager : MonoBehaviour {
 			timerText.text = Mathf.Round (timeLeft).ToString ();
 			ChangeSlider(timeLeft / timeLimit);
 		}
+
+		if (Input.GetMouseButtonDown (0)) {
+			print ("Mouse down");
+			RaycastHit2D hit = Physics2D.Raycast( Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero);
+
+			if (hit) {
+				print ("Hit: " + hit.collider.name);
+			}
+		}
 	}
 
 	IEnumerator RunTutorial () {
 		isTutorialRunning = true;
 		instance.tutorialAssets.gameObject.SetActive (true);
 		print ("RunTutorial");
-		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Welcome to Brain Maze!", null);
 		mazeColliders [0].SetActive (true);
 		instance.inputAllowed = false;
 		scoreSlider.gameObject.SetActive (false);
 		timer.SetActive (false);
 
+		yield return new WaitForSeconds(0.5f);
+		subtitlePanel.SetActive (true);
+		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Welcome to Brain Maze!", null);
+
 		SoundManager.GetInstance().StopPlayingVoiceOver();
 		SoundManager.GetInstance().PlayVoiceOverClip(instructionVOList[0]);
 		yield return new WaitForSeconds(instructionVOList[0].length);
+		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
 
 		CreateMonster ();
 		SoundManager.GetInstance().StopPlayingVoiceOver();
@@ -158,35 +171,38 @@ public class BMaze_Manager : MonoBehaviour {
 		tutorialPickup.GetComponent<BMaze_Pickup>().ReActivate ();
 		instance.inputAllowed = true;
 		yield return new WaitForSeconds(instructionVOList[3].length);
+		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
+		yield return new WaitForSeconds(2f);
 		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Get all the pickups!", null);
+		yield return new WaitForSeconds(5f);
+		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
 	}
 
 	public void TutorialFinished() {
 		instance.inputAllowed = false;
+		tutorialHand.SetActive (false);
 		GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.BRAINMAZE] = false;
-		StopCoroutine (RunTutorial ());
+		StopCoroutine (tutorialCoroutine);
 		StartCoroutine(TutorialTearDown ());
 	}
 
-	public void AllItemsCollectedVO() {
+	public IEnumerator TutorialDoorUnlockedVO () {
 		SoundManager.GetInstance().StopPlayingVoiceOver();
 		SoundManager.GetInstance().PlayVoiceOverClip(instructionVOList[4]);
-	}
-
-	public void DoorIsUnlockedVO() {
-		SoundManager.GetInstance().StopPlayingVoiceOver();
+		yield return new WaitForSeconds(instructionVOList[4].length);
 		SoundManager.GetInstance().PlayVoiceOverClip(instructionVOList[5]);
+		yield return new WaitForSeconds(instructionVOList[5].length);
 	}
 
 	IEnumerator TutorialTearDown() {
 		print ("TutorialTearDown");
 		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Let's play!", null);
 		yield return new WaitForSeconds(2.0f);
-		SetupMaze (level);
-		RemoveMonster ();
-		CreateMonster ();
 		isTutorialRunning = false;
-		yield return new WaitForSeconds(2.0f);
+		yield return new WaitForSeconds(1.0f);
+		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
+		instance.tutorialAssets.gameObject.SetActive (false);
+		SetupMaze (level);
 	}
 
 	public void ChangeSlider(float value) {
@@ -194,7 +210,7 @@ public class BMaze_Manager : MonoBehaviour {
 	}
 
 	IEnumerator Countdown() {
-		StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
+		GameManager.GetInstance ().Countdown ();
 		scoreSlider.gameObject.SetActive (true);
 		timer.SetActive (true);
 		yield return new WaitForSeconds (4.0f);
@@ -207,15 +223,45 @@ public class BMaze_Manager : MonoBehaviour {
 	}
 
 	public static void GameEnd (bool playerWin) {
-		gameStarted = false;
-
 		if (playerWin) {
-			if (!isTutorialRunning) {
+			if (!isTutorialRunning && gameStarted ) {
+				gameStarted = false;
 				if (GameManager.GetInstance ())
-					GameManager.GetInstance ().LevelUpNoStars ("BrainMaze");
-				instance.Invoke ("ChangeScene", 3f);
+					GameManager.GetInstance ().LevelUp ("BrainMaze");
+				if (level == 0)
+					instance.Invoke ("UnlockSticker", 3f);
+				else {
+					instance.Invoke ("ShowGameOver", 3f);
+				}
+				//instance.Invoke ("ChangeScene", 3f);
 			}
 		}
+	}
+
+	public void ShowGameOver() {
+		backButton.SetActive (false);
+		gameOverCanvas.SetActive (true);
+		Text gameoverScore = gameOverCanvas.GetComponentInChildren<Text> ();
+		gameoverScore.text = "Good job! You led your monster through the maze and collected all the pickups!";
+	}
+
+	public void UnlockSticker() {
+		backButton.SetActive (false);
+		SoundManager.GetInstance().PlayUnlockStickerVO();
+		stickerPopupCanvas.gameObject.SetActive(true);
+		GameManager.GetInstance ().ActivateBrainstormLagoonReview();
+
+		if(GameManager.GetInstance().LagoonFirstSticker) {
+			stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(false);
+			stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(true);
+			GameManager.GetInstance().LagoonFirstSticker = false;
+		}
+		else {
+			stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(false);
+			stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(true);
+		}
+
+		GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "BrainMaze");
 	}
 
 	public void ChangeScene () {
@@ -223,10 +269,14 @@ public class BMaze_Manager : MonoBehaviour {
 	}
 
 	public void SkipLevel () {
-		gameStarted = false;
-		if (GameManager.GetInstance())
-			GameManager.GetInstance ().LevelUpNoStars ("BrainMaze");
-		instance.ChangeScene ();
+		if (isTutorialRunning) {
+			TutorialFinished ();
+		} else {
+			gameStarted = false;
+			if (GameManager.GetInstance())
+				GameManager.GetInstance ().LevelUp ("BrainMaze");
+			instance.ChangeScene ();
+		}
 	}
 
 	/*
@@ -352,5 +402,9 @@ public class BMaze_Manager : MonoBehaviour {
 			instance.assetList [level].GetFinishline ().UnlockFinishline ();
 		}
 
+	}
+
+	public void ShowSubtitle(string text) {
+		subtitlePanel.GetComponent<SubtitlePanel> ().Display (text, null);
 	}
 }

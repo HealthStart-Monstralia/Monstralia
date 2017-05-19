@@ -1817,7 +1817,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 60919670219414efd90bc0344e8bc283, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f7cfc78558a624d3cb68eb2e32e9aa22, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -3497,7 +3497,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 187716, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 187716, guid: 492505b4bd94444da9dc68c453fe5998, type: 2}
       propertyPath: m_Layer
@@ -3861,7 +3861,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 60919670219414efd90bc0344e8bc283, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f7cfc78558a624d3cb68eb2e32e9aa22, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -4206,7 +4206,7 @@ Prefab:
         type: 2}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 60919670219414efd90bc0344e8bc283, type: 3}
+      objectReference: {fileID: 8300000, guid: f7cfc78558a624d3cb68eb2e32e9aa22, type: 3}
     - target: {fileID: 82000011854023668, guid: d5f0d12204c6753459f58fbf343fa829,
         type: 2}
       propertyPath: spreadCustomCurve.m_RotationOrder
@@ -4215,6 +4215,21 @@ Prefab:
     - target: {fileID: 1000012509202670, guid: d5f0d12204c6753459f58fbf343fa829, type: 2}
       propertyPath: m_Name
       value: Lvl01 Pickup Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 114192483190035308, guid: d5f0d12204c6753459f58fbf343fa829,
+        type: 2}
+      propertyPath: pickup
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114154596762329754, guid: d5f0d12204c6753459f58fbf343fa829,
+        type: 2}
+      propertyPath: pickup
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114706195707868552, guid: d5f0d12204c6753459f58fbf343fa829,
+        type: 2}
+      propertyPath: pickup
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d5f0d12204c6753459f58fbf343fa829, type: 2}
@@ -5568,6 +5583,10 @@ Prefab:
 RectTransform:
   m_PrefabParentObject: {fileID: 22438368, guid: 7e11279daba01490d92be51dd816fa6b,
     type: 2}
+  m_PrefabInternal: {fileID: 887802587}
+--- !u!1 &887802589 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 174098, guid: 7e11279daba01490d92be51dd816fa6b, type: 2}
   m_PrefabInternal: {fileID: 887802587}
 --- !u!1 &891332756
 GameObject:
@@ -7114,6 +7133,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: deaf9294d46e14aba899a6e18a7f2989, type: 3}
   - {fileID: 8300000, guid: b0605add40db94defa637d00798f6b29, type: 3}
   - {fileID: 8300000, guid: f7cfc78558a624d3cb68eb2e32e9aa22, type: 3}
+  stickerPopupCanvas: {fileID: 887802589}
+  gameOverCanvas: {fileID: 1477555475}
+  backButton: {fileID: 1282871122}
   tutorialAssets: {fileID: 1532925901}
   tutorialHand: {fileID: 311970469}
   tutorialPickup: {fileID: 719895412}
@@ -7246,6 +7268,8 @@ GameObject:
   - component: {fileID: 1282871126}
   - component: {fileID: 1282871125}
   - component: {fileID: 1282871124}
+  - component: {fileID: 1282871128}
+  - component: {fileID: 1282871129}
   m_Layer: 5
   m_Name: Back Button
   m_TagString: Untagged
@@ -7369,6 +7393,42 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1282871122}
+--- !u!223 &1282871128
+Canvas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1282871122}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: -608095089
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &1282871129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1282871122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &1284754256
 GameObject:
   m_ObjectHideFlags: 0
@@ -7422,7 +7482,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 60919670219414efd90bc0344e8bc283, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f7cfc78558a624d3cb68eb2e32e9aa22, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -8234,10 +8294,10 @@ RectTransform:
   m_Father: {fileID: 435759904}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 60.5}
-  m_SizeDelta: {x: 0, y: 61}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 104, y: -39.5}
+  m_SizeDelta: {x: 208, y: 61}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1454811634
 GameObject:
@@ -8391,7 +8451,7 @@ Prefab:
     - target: {fileID: 11409750, guid: 4644d7eaf153e425a8a362d8e7daf15b, type: 2}
       propertyPath: loadingScreen
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 24299201}
     - target: {fileID: 11422106, guid: 4644d7eaf153e425a8a362d8e7daf15b, type: 2}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
       value: 6
@@ -8800,7 +8860,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 60919670219414efd90bc0344e8bc283, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f7cfc78558a624d3cb68eb2e32e9aa22, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -11427,7 +11487,6 @@ GameObject:
   - component: {fileID: 1977119406}
   - component: {fileID: 1248414991}
   - component: {fileID: 1977119407}
-  - component: {fileID: 1977119408}
   m_Layer: 0
   m_Name: BrainMazeManager
   m_TagString: Manager
@@ -11464,26 +11523,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneToLoad: BrainstormLagoon
   loadingScreen: {fileID: 24299201}
---- !u!114 &1977119408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1977119405}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad9f712cae2dc4de9946dd4080fdb975, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  countdownClip: {fileID: 8300000, guid: 2fb3b41a5b5084c9fa47ebabfe29aede, type: 3}
-  countdown1: {fileID: 111596, guid: c63a14c9bb6014332b9242277d8812e4, type: 2}
-  count1Clip: {fileID: 8300000, guid: e225b339188024323a6c9cde59c078c3, type: 3}
-  countdown2: {fileID: 149756, guid: 4b0e633b26fdf46fda29d9cb8418636f, type: 2}
-  count2Clip: {fileID: 8300000, guid: 02bad7043b34d492cbff3bc311bb6604, type: 3}
-  countdown3: {fileID: 162434, guid: 03e4996be2e744e4a91f59168acb0c04, type: 2}
-  count3Clip: {fileID: 8300000, guid: 8aebbe868483445329c045c4be782599, type: 3}
-  countdownGo: {fileID: 108608, guid: 4aff7b1d991234e578dabe4dcaf36f5b, type: 2}
-  countGoClip: {fileID: 8300000, guid: 768ada77c2a3e4289992c90393b6b229, type: 3}
 --- !u!1 &1978507681
 GameObject:
   m_ObjectHideFlags: 0
@@ -11985,7 +12024,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 60919670219414efd90bc0344e8bc283, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f7cfc78558a624d3cb68eb2e32e9aa22, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -12246,6 +12285,8 @@ GameObject:
   - component: {fileID: 2101632491}
   - component: {fileID: 2101632490}
   - component: {fileID: 2101632489}
+  - component: {fileID: 2101632492}
+  - component: {fileID: 2101632493}
   m_Layer: 5
   m_Name: Skip Button
   m_TagString: Untagged
@@ -12357,6 +12398,42 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2101632487}
+--- !u!223 &2101632492
+Canvas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2101632487}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: -608095089
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &2101632493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2101632487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1301386320, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &2118111221
 GameObject:
   m_ObjectHideFlags: 0

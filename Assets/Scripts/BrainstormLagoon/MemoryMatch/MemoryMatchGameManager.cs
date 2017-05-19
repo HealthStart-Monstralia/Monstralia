@@ -63,7 +63,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		}
 
 		difficultyLevel = GameManager.GetInstance ().GetLevel ("MemoryMatch");
-		typeOfMonster = GameManager.GetMonster ();
+		typeOfMonster = GameManager.GetMonsterType ();
 		CreateMonster ();
 		monsterObject.PlaySpawn ();
 	}
@@ -79,31 +79,37 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	public void PregameSetup ()
 	{
-		score = 0;
-		if (difficultyLevel == 1) {
-			numDishes = 3;
-		}
-		else
-			if (difficultyLevel == 2) {
-				numDishes = 4;
-			}
-			else
-				if (difficultyLevel >= 3) {
-					numDishes = 6;
-				}
-		scoreGauge.maxValue = numDishes;
-		if (timer != null) {
-			timer = Instantiate (timer);
-			timer.SetTimeLimit (timeLimit);
-		}
-		UpdateScoreGauge ();
-		activeFoods = new List<GameObject> ();
-		matchedFoods = new List<Food> ();
-
 		if (GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH]) {
 			StartCoroutine (RunTutorial ());
 		}
 		else {
+			score = 0;
+
+			switch (difficultyLevel) {
+			case (1):
+				numDishes = 3;
+				break;
+			case (2):
+				numDishes = 4;
+				break;
+			case (3):
+				numDishes = 6;
+				break;
+			default:
+				numDishes = 6;
+				break;
+			}
+
+			scoreGauge.maxValue = numDishes;
+
+			if (timer != null) {
+				timer = Instantiate (timer);
+				timer.SetTimeLimit (timeLimit);
+			}
+
+			UpdateScoreGauge ();
+			activeFoods = new List<GameObject> ();
+			matchedFoods = new List<Food> ();
 			StartGame ();
 		}
 	}
@@ -212,7 +218,8 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		yield return new WaitForSeconds(2.0f);
 		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
 		instructionPopup.gameObject.SetActive (false);
-		StartGame ();
+		GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
+		PregameSetup ();
 	}
 
 	public void StartGame() {
@@ -274,7 +281,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		gameStartup = false;
 
 		if(!runningTutorial) {
-			StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
+			GameManager.GetInstance ().Countdown ();
 
 			yield return new WaitForSeconds (4.0f);
 			gameStarted = true;
@@ -370,6 +377,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 		if (score >= numDishes) {
 			GameManager.GetInstance ().AddLagoonReviewGame ("MemoryMatchReviewGame");
+
 			if (difficultyLevel == 1) {
 				stickerPopupCanvas.gameObject.SetActive (true);
 				GameManager.GetInstance ().ActivateBrainstormLagoonReview ();
@@ -382,12 +390,14 @@ public class MemoryMatchGameManager : MonoBehaviour {
 					stickerPopupCanvas.transform.FindChild ("BackButton").gameObject.SetActive (true);
 				}
 				GameManager.GetInstance ().ActivateSticker ("BrainstormLagoon", "Hippocampus");
-				GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
+				//GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
+			} else {
+				DisplayGameOverPopup ();
 			}
 			GameManager.GetInstance ().LevelUp ("MemoryMatch");
 		} else {
 			if(difficultyLevel >= 1) {
-				GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
+				//GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
 				DisplayGameOverPopup();
 			}
 		}

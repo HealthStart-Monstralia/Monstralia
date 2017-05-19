@@ -18,8 +18,8 @@ public class EmotionsGameManager : AbstractGameManager {
 	private Dictionary<int, Tuple<int, int>> emotionsSetup;
 	private Tuple<int, int> numEmotions;
 	private bool gameOver = false;
-	private float timeLimit = 30;
 
+	public float timeLimit = 30;
 	public bool gameStarted = false;
 	public Text timerText;
 	public Slider scoreGauge;
@@ -35,6 +35,7 @@ public class EmotionsGameManager : AbstractGameManager {
 	public Canvas gameOverCanvas;
 	public float waitDuration = 3f;
 	public static bool inputAllowed = false;
+	public AudioClip[] answerSounds;
 
 	void Awake() {
 		if(instance == null) {
@@ -122,7 +123,7 @@ public class EmotionsGameManager : AbstractGameManager {
 	}
 
 	public IEnumerator DisplayGo() {
-		StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
+		GameManager.GetInstance ().Countdown ();
 		yield return new WaitForSeconds (5.0f);
 		PostCountdownSetup ();
 	}
@@ -162,14 +163,17 @@ public class EmotionsGameManager : AbstractGameManager {
 	}
 
 	public void CheckEmotion(GameObject emotion){
-		if(emotion.name == currentEmotionToMatch.name){
-			timer.StopTimer ();
-			inputAllowed = false;
+		timer.StopTimer ();
+		inputAllowed = false;
+		if (emotion.name == currentEmotionToMatch.name) {
+			SoundManager.GetInstance ().PlaySFXClip (answerSounds [1]);
+			//SoundManager.GetInstance ().PlayVoiceOverClip (answerSounds [1]);
 			++score;
-			UpdateScoreGauge();
+			UpdateScoreGauge ();
 			StartCoroutine (CreateNextEmotions (waitDuration));
+		} else {
+			StartCoroutine (WrongAnswerWait (waitDuration));
 		}
-			
 	}
 
 	public IEnumerator CreateNextEmotions(float duration) {
@@ -187,6 +191,12 @@ public class EmotionsGameManager : AbstractGameManager {
 		ChooseEmotions(secondaryEmotions, numEmotions.second);
 		ChooseActiveEmotion();
 		SpawnEmotions(scale);
+		timer.StartTimer ();
+		inputAllowed = true;
+	}
+
+	public IEnumerator WrongAnswerWait (float duration) {
+		yield return new WaitForSeconds (duration);
 		timer.StartTimer ();
 		inputAllowed = true;
 	}
@@ -240,9 +250,11 @@ public class EmotionsGameManager : AbstractGameManager {
 		
 
 	override public void GameOver(){
-		gameOver = true;
-		//GameManager.GetInstance().AddLagoonReviewGame("MonsterEmotionsReviewGame");
-		if(difficultyLevel == 1) {
+		if (!gameOver) {
+			print ("GameOver");
+			gameOver = true;
+			//GameManager.GetInstance().AddLagoonReviewGame("MonsterEmotionsReviewGame");
+			if (difficultyLevel == 1) {
 //			stickerPopupCanvas.gameObject.SetActive(true);
 //			GameManager.GetInstance().ActivateBrainstormLagoonReview();
 //			if(GameManager.GetInstance().LagoonFirstSticker) {
@@ -256,11 +268,12 @@ public class EmotionsGameManager : AbstractGameManager {
 //			}
 //			GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "");
 //			GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.MONSTER_EMOTIONS] = false;
-		}
+			}
 			
-		GameManager.GetInstance().LevelUp("MonsterEmotions");
-		inputAllowed = false;
-		DisplayGameOverPopup();
+			GameManager.GetInstance ().LevelUp ("MonsterEmotions");
+			inputAllowed = false;
+			DisplayGameOverPopup ();
+		}
 	}
 
 	public void DisplayGameOverPopup () {

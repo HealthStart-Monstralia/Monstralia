@@ -26,6 +26,7 @@ public class SoundManager : MonoBehaviour {
 	public Slider SFXslider;						/*!< The Slider that controls the sound effects volume */
 	public AudioClip voiceTestClip;					/*!< AudioClip used to test ChangeVoiceOverVolume */
 	public Slider VoiceOverSlider;					/*!< The Slider that controls the voice-over volume */
+	public AudioClip stickerVO;						/*!< AudioClip used to tell the player they unlocked a sticker */
 
 	/** \cond */
 	void Awake () {
@@ -166,4 +167,7 @@ public class SoundManager : MonoBehaviour {
 			ChangeBackgroundMusic(gameBackgroundMusic);
 	}
 
+	public void PlayUnlockStickerVO() {
+		PlayVoiceOverClip (stickerVO);
+	}
 }

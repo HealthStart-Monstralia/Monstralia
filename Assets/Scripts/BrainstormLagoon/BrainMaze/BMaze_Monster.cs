@@ -12,7 +12,7 @@ public class BMaze_Monster : MonoBehaviour {
 	}
 
 	public void PlaySpawn() {
-		monster = GameManager.GetMonster();
+		monster = GameManager.GetMonsterType();
 		switch (monster) {
 		case GameManager.MonsterType.Blue:
 			animComp.Play ("BMaze_BlueBabySpawn", -1, 0f);
@@ -30,7 +30,7 @@ public class BMaze_Monster : MonoBehaviour {
 	}
 
 	public void PlayDance() {
-		monster = GameManager.GetMonster();
+		monster = GameManager.GetMonsterType();
 		switch (monster) {
 		case GameManager.MonsterType.Blue:
 			animComp.Play ("BMaze_BlueBabyDance");

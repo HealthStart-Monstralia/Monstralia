@@ -26,6 +26,7 @@ public class BMaze_Pickup : MonoBehaviour {
 			col.GetComponent<BMaze_MonsterMovement>().Pickup (pickup);
 		if (pickup == TypeOfPickup.Water)
 			GetComponent<BMaze_WaterPickup> ().IncreaseTime ();
+		BMaze_Manager.GetInstance ().ShowSubtitle (pickup.ToString ());
 		pickupMan.pickupList.Remove (gameObject);
 		gameObject.SetActive (false);
 	}

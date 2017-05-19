@@ -82,7 +82,7 @@ public class SensesGameManager : AbstractGameManager {
 	}
 
 	public IEnumerator DisplayGo () {
-		StartCoroutine(gameObject.GetComponent<Countdown>().RunCountdown());
+		GameManager.GetInstance ().Countdown ();
 		yield return new WaitForSeconds (5.0f);
 		PostCountdownSetup ();
 	}
@@ -221,27 +221,29 @@ public class SensesGameManager : AbstractGameManager {
 	}
 
 	override public void GameOver(){
-		gameOver = true;
-		//GameManager.GetInstance().AddLagoonReviewGame("MonsterEmotionsReviewGame");
-		if(difficultyLevel == 1) {
-			//			stickerPopupCanvas.gameObject.SetActive(true);
-			//			GameManager.GetInstance().ActivateBrainstormLagoonReview();
-			//			if(GameManager.GetInstance().LagoonFirstSticker) {
-			//				stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(true);
-			//				GameManager.GetInstance().LagoonFirstSticker = false;
-			//				Debug.Log ("This was Brainstorm Lagoon's first sticker");
-			//			}
-			//			else {
-			//				Debug.Log ("This was not Brainstorm Lagoon's first sticker");
-			//				stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(true);
-			//			}
-			//			GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "");
-			//			GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.MONSTER_EMOTIONS] = false;
+		if (!gameOver) {
+			gameOver = true;
+			//GameManager.GetInstance().AddLagoonReviewGame("MonsterEmotionsReviewGame");
+			if (difficultyLevel == 1) {
+				//			stickerPopupCanvas.gameObject.SetActive(true);
+				//			GameManager.GetInstance().ActivateBrainstormLagoonReview();
+				//			if(GameManager.GetInstance().LagoonFirstSticker) {
+				//				stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(true);
+				//				GameManager.GetInstance().LagoonFirstSticker = false;
+				//				Debug.Log ("This was Brainstorm Lagoon's first sticker");
+				//			}
+				//			else {
+				//				Debug.Log ("This was not Brainstorm Lagoon's first sticker");
+				//				stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(true);
+				//			}
+				//			GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "");
+				//			GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.MONSTER_EMOTIONS] = false;
+			}
+
+			GameManager.GetInstance ().LevelUp ("MonsterSenses");
+
+			DisplayGameOverPopup ();
 		}
-
-		GameManager.GetInstance().LevelUp("MonsterSenses");
-
-		DisplayGameOverPopup();
 	}
 
 	public void DisplayGameOverPopup () {

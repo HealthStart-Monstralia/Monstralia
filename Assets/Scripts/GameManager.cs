@@ -108,6 +108,7 @@ public class GameManager : MonoBehaviour {
 	//temporary solution
 	public void ActivateSticker(string region, string stickerName) {
 		if(region == "BrainstormLagoon") {
+			print ("sticker added: " + stickerName);
 			brainStickers.Add(stickerName);
 		}
 		else {
@@ -162,7 +163,12 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public static MonsterType GetMonster() {
+	public static MonsterType GetMonsterType() {
 		return monsterType;
 	}
+
+	public void Countdown() {
+		GetComponent<CreateCountdown>().SpawnCountdown();
+	}
+
 }

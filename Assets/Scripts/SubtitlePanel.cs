@@ -23,8 +23,10 @@ public class SubtitlePanel : MonoBehaviour {
 			isDisplaying = true;
 			sub.Display(gameObject, textComp, subtitle, clip);
 			if (EmotionsGameManager.GetInstance ()) {
-				StopCoroutine (WaitTillHide (3f));
 				StartCoroutine (WaitTillHide (EmotionsGameManager.GetInstance ().waitDuration));
+			}
+			else if (BMaze_Manager.GetInstance ()) {
+				StartCoroutine (WaitTillHide (2f));
 			} 
 			/*
 			else if (MemoryMatchGameManager.GetInstance ()) {

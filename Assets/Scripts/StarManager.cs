@@ -12,7 +12,10 @@ public class StarManager : MonoBehaviour {
 	void Awake () {
 		baseToGame = new Dictionary<string, string>();
 		baseToGame.Add("BrainbowStarBase", "Brainbow");
-		baseToGame.Add ("MemoryMatchStarBase", "MemoryMatch");
+		baseToGame.Add("MemoryMatchStarBase", "MemoryMatch");
+		baseToGame.Add("BrainMazeStarBase", "BrainMaze");
+		baseToGame.Add("MeetYourFeelingsStarBase", "MonsterEmotions");
+		baseToGame.Add("SensesSensationStarBase", "MonsterSenses");
 
 		foreach(GameObject starBase in starBases) {
 			int numStars = GameManager.GetInstance().GetNumStars(baseToGame[starBase.name]);
@@ -22,11 +25,7 @@ public class StarManager : MonoBehaviour {
 				starBase.transform.GetChild(i).gameObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
 			}
 		}
-	
+
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
 }

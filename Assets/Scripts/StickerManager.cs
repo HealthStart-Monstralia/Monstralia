@@ -25,13 +25,15 @@ public class StickerManager : MonoBehaviour {
 		}
 
 		foreach(string sticker in activeStickers) {
+			print ("foreach sticker: " + sticker);
 			if(sticker == "Amygdala") {
 				stickers[0].SetActive(true);
 			}
 			else if (sticker == "Cerebellum") {
 				stickers[1].SetActive(true);
 			}
-			else if (sticker == "Frontal") {
+			else if (sticker == "Frontal" || sticker == "BrainMaze") {
+				print ("Got frontal");
 				stickers[2].SetActive(true);
 			}
 			else if (sticker == "Hippocampus") {
