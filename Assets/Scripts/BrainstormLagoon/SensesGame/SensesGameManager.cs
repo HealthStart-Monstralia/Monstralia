@@ -204,7 +204,7 @@ public class SensesGameManager : AbstractGameManager {
 			UpdateScoreGauge();
 
 			for(int i = 0; i < activeSenses.Count; ++i) {
-				GameObject tmp = senseSpawnParent.FindChild(activeSenses[i].name).gameObject;
+				GameObject tmp = senseSpawnParent.Find(activeSenses[i].name).gameObject;
 				Destroy(tmp);
 			}
 

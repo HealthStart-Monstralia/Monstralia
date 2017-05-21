@@ -159,9 +159,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		print ("RunTutorial");
 		runningTutorial = true;
 		instructionPopup.gameObject.SetActive(true);
-		currentFoodToMatch = tutorialDishes [0].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Banana").gameObject;
+		currentFoodToMatch = tutorialDishes [0].GetComponent<DishBehavior> ().bottom.transform.Find ("Banana").gameObject;
 
-		Animation anim = tutorialDishes[0].GetComponent<DishBehavior>().top.gameObject.GetComponent<Animation> ();
+		//Animation anim = tutorialDishes[0].GetComponent<DishBehavior>().top.gameObject.GetComponent<Animation> ();
 		yield return new WaitForSeconds(2f);
 
 		// Dish lift.
@@ -175,14 +175,14 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		tutorialDishes[1].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[1].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealClose"].name);
 		tutorialDishes[2].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[2].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealClose"].name);
 		yield return new WaitForSeconds(2f);
-		instructionPopup.gameObject.transform.FindChild ("panelbanana").gameObject.SetActive(true);
+		instructionPopup.gameObject.transform.Find ("panelbanana").gameObject.SetActive(true);
 
-		tutorialDishes [0].GetComponent<DishBehavior> ().SetFood (tutorialDishes [0].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Banana").GetComponent<Food>());
-		tutorialDishes [1].GetComponent<DishBehavior> ().SetFood (tutorialDishes [1].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Berry").GetComponent<Food>());
-		tutorialDishes [2].GetComponent<DishBehavior> ().SetFood (tutorialDishes [2].GetComponent<DishBehavior> ().bottom.transform.FindChild ("Brocolli").GetComponent<Food>());
+		tutorialDishes [0].GetComponent<DishBehavior> ().SetFood (tutorialDishes [0].GetComponent<DishBehavior> ().bottom.transform.Find ("Banana").GetComponent<Food>());
+		tutorialDishes [1].GetComponent<DishBehavior> ().SetFood (tutorialDishes [1].GetComponent<DishBehavior> ().bottom.transform.Find ("Berry").GetComponent<Food>());
+		tutorialDishes [2].GetComponent<DishBehavior> ().SetFood (tutorialDishes [2].GetComponent<DishBehavior> ().bottom.transform.Find ("Brocolli").GetComponent<Food>());
 
 		yield return new WaitForSeconds(5f);
-		Animator handAnim = instructionPopup.gameObject.transform.FindChild ("TutorialAnimation").gameObject.transform.FindChild ("Hand").gameObject.GetComponent<Animator>();
+		Animator handAnim = instructionPopup.gameObject.transform.Find ("TutorialAnimation").gameObject.transform.Find ("Hand").gameObject.GetComponent<Animator>();
 		handAnim.Play("mmhand_5_12");
 		yield return new WaitForSeconds(4f);
 		tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealLift"].name);
@@ -191,7 +191,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			yield return new WaitForSeconds (instructions.length - 12f);
 			subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Now you try!", nowYouTry);
 			tutorialDishes [0].GetComponent<DishBehavior> ().top.GetComponent<Animation> ().Play (tutorialDishes [0].GetComponent<DishBehavior> ().top.GetComponent<Animation> () ["DishTopRevealClose"].name);
-			instructionPopup.gameObject.transform.FindChild ("TutorialAnimation").gameObject.transform.FindChild ("Hand").gameObject.SetActive (false);
+			instructionPopup.gameObject.transform.Find ("TutorialAnimation").gameObject.transform.Find ("Hand").gameObject.SetActive (false);
 
 			for (int i = 0; i < tutorialDishes.Length; ++i) {
 				tutorialDishes [i].GetComponent<Collider2D> ().enabled = true;
@@ -382,12 +382,12 @@ public class MemoryMatchGameManager : MonoBehaviour {
 				stickerPopupCanvas.gameObject.SetActive (true);
 				GameManager.GetInstance ().ActivateBrainstormLagoonReview ();
 				if (GameManager.GetInstance ().LagoonFirstSticker) {
-					stickerPopupCanvas.transform.FindChild ("StickerbookButton").gameObject.SetActive (true);
+					stickerPopupCanvas.transform.Find ("StickerbookButton").gameObject.SetActive (true);
 					GameManager.GetInstance ().LagoonFirstSticker = false;
 					Debug.Log ("This was Brainstorm Lagoon's first sticker");
 				} else {
 					Debug.Log ("This was not Brainstorm Lagoon's first sticker");
-					stickerPopupCanvas.transform.FindChild ("BackButton").gameObject.SetActive (true);
+					stickerPopupCanvas.transform.Find ("BackButton").gameObject.SetActive (true);
 				}
 				GameManager.GetInstance ().ActivateSticker ("BrainstormLagoon", "Hippocampus");
 				//GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;

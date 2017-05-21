@@ -26,7 +26,7 @@ public class StickerManager : MonoBehaviour {
 
 		foreach(string sticker in activeStickers) {
 			print ("foreach sticker: " + sticker);
-			if(sticker == "Amygdala") {
+			if (sticker == "Amygdala" || sticker == "MonsterEmotions") {
 				stickers[0].SetActive(true);
 			}
 			else if (sticker == "Cerebellum") {

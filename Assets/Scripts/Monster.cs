@@ -11,7 +11,7 @@ public class Monster : MonoBehaviour {
 	//private int yPos;
 	
 	void Awake() {
-		SpriteLibrary.LoadSprite(color);
+		//SpriteLibrary.LoadSprite(color);
 	}
 
 	//getters... remove if possible

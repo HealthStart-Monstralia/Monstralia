@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EmotionBehavior : MonoBehaviour {
-
+	public EmotionsGameManager.MonsterEmotions emotions;
 	public AudioClip clipOfName;
 
 	// Use this for initialization
@@ -19,7 +19,7 @@ public class EmotionBehavior : MonoBehaviour {
 	void OnMouseDown() {
 		if (EmotionsGameManager.inputAllowed) {
 			EmotionsGameManager.GetInstance ().CheckEmotion (this.gameObject);
-			EmotionsGameManager.GetInstance ().subtitlePanel.GetComponent<SubtitlePanel> ().Display (this.gameObject.name, this.clipOfName);
+			EmotionsGameManager.GetInstance ().subtitlePanel.GetComponent<SubtitlePanel> ().Display (emotions.ToString(), this.clipOfName);
 		}
 	}
 }

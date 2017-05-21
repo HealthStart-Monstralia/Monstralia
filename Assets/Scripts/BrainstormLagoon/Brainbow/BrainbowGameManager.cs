@@ -156,18 +156,18 @@ public class BrainbowGameManager : AbstractGameManager {
 		yield return new WaitForSeconds(6f);
 		SoundManager.GetInstance().PlayVoiceOverClip(instructions);
 		yield return new WaitForSeconds(3.5f);	// Replace with generic time of intro audio (after splitting track)
-		GameObject redOutline = instructionPopup.gameObject.transform.FindChild ("RedFlashingOutline").gameObject;
+		GameObject redOutline = instructionPopup.gameObject.transform.Find ("RedFlashingOutline").gameObject;
 		redOutline.SetActive(true);
 
 		yield return new WaitForSeconds(instructions.length-4.5f);
 
-		Animation anim = instructionPopup.gameObject.transform.FindChild ("TutorialAnimation").gameObject.GetComponent<Animation> ();
+		Animation anim = instructionPopup.gameObject.transform.Find ("TutorialAnimation").gameObject.GetComponent<Animation> ();
 		anim.Play ("DragToStripe");
 
 		yield return new WaitForSeconds(anim.clip.length);
 		anim.gameObject.SetActive (false);
 
-		GameObject banana = instructionPopup.transform.FindChild ("Banana").gameObject;
+		GameObject banana = instructionPopup.transform.Find ("Banana").gameObject;
 		banana.SetActive(true);
 //		banana.GetComponent<SpriteRenderer> ().enabled = true;
 //		banana.GetComponent<PolygonCollider2D> ().enabled = true;
@@ -262,13 +262,13 @@ public class BrainbowGameManager : AbstractGameManager {
 				GameManager.GetInstance ().ActivateBrainstormLagoonReview();
 
 				if(GameManager.GetInstance().LagoonFirstSticker) {
-					stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(false);
-					stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(true);
+					stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(false);
+					stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(true);
 					GameManager.GetInstance().LagoonFirstSticker = false;
 				}
 				else {
-					stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(false);
-					stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(true);
+					stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(false);
+					stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(true);
 				}
 
 				GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Brainbow");

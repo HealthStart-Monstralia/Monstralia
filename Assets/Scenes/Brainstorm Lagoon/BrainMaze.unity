@@ -680,7 +680,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12e2945a42d69174f8d8ed01f556da09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickup: 1
+  pickup: 2
 --- !u!58 &86485269
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4795,7 +4795,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12e2945a42d69174f8d8ed01f556da09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickup: 1
+  pickup: 3
 --- !u!58 &719895415
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -5575,6 +5575,10 @@ Prefab:
     - target: {fileID: 107984, guid: 7e11279daba01490d92be51dd816fa6b, type: 2}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 22373142, guid: 7e11279daba01490d92be51dd816fa6b, type: 2}
+      propertyPath: m_SortingLayerID
+      value: -608095089
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7e11279daba01490d92be51dd816fa6b, type: 2}

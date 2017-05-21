@@ -4,7 +4,17 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class EmotionsGameManager : AbstractGameManager {
-
+	public enum MonsterEmotions	{
+		Happy = 0,
+		Afraid = 1,
+		Disgusted = 2,
+		Joyous = 3,
+		Mad = 4,
+		Sad = 5,
+		Thoughtful = 6,
+		Worried = 7
+	};
+			
 	private static EmotionsGameManager instance;
 	private int score;
 	private int scoreGoal = 10;
@@ -18,12 +28,14 @@ public class EmotionsGameManager : AbstractGameManager {
 	private Dictionary<int, Tuple<int, int>> emotionsSetup;
 	private Tuple<int, int> numEmotions;
 	private bool gameOver = false;
+	private Coroutine tutorialCoroutine;
 
 	public float timeLimit = 30;
 	public bool gameStarted = false;
 	public Text timerText;
 	public Slider scoreGauge;
 	public Timer timer;
+	public GameManager.MonsterType monsterType;
 	public List<GameObject> blueEmotions;
 	public List<GameObject> greenEmotions;
 	public List<GameObject> redEmotions;
@@ -33,9 +45,15 @@ public class EmotionsGameManager : AbstractGameManager {
 	public Transform emotionSpawnParent;
 	public Transform emotionToMatchSpawnParent;
 	public Canvas gameOverCanvas;
+	public Canvas stickerPopupCanvas;
+	public GameObject backButton;
 	public float waitDuration = 3f;
 	public static bool inputAllowed = false;
 	public AudioClip[] answerSounds;
+	public AudioClip[] instructionsVO;
+	public bool isTutorialRunning = false;
+	public GameObject tutorialHand;
+	public Canvas tutorialCanvas;
 
 	void Awake() {
 		if(instance == null) {
@@ -45,28 +63,31 @@ public class EmotionsGameManager : AbstractGameManager {
 			Destroy(gameObject);
 		}
 
+		tutorialCanvas.gameObject.SetActive (false);
+		tutorialHand.SetActive (false);
+
 		secondaryEmotions = new List<GameObject>();
 
-
-		// Checks if game manager exists, if not default values are chosen for testing simplicity
+		// Checks if game manager exists, if not default values are chosen
 		if (GameManager.GetInstance ()) {
+			monsterType = GameManager.GetMonsterType ();
 
-			if (GameManager.GetInstance ().getMonster ().Contains ("Blue")) {
+			if (monsterType == GameManager.MonsterType.Blue) {
 				primaryEmotions = blueEmotions;
 			} else {
 				secondaryEmotions.AddRange (blueEmotions);
 			}
-			if (GameManager.GetInstance ().getMonster ().Contains ("Green")) {
+			if (monsterType == GameManager.MonsterType.Green) {
 				primaryEmotions = greenEmotions;
 			} else {
 				secondaryEmotions.AddRange (greenEmotions);
 			}
-			if (GameManager.GetInstance ().getMonster ().Contains ("Red")) {
+			if (monsterType == GameManager.MonsterType.Red) {
 				primaryEmotions = redEmotions;
 			} else {
 				secondaryEmotions.AddRange (redEmotions);
 			}
-			if (GameManager.GetInstance ().getMonster ().Contains ("Yellow")) {
+			if (monsterType == GameManager.MonsterType.Yellow) {
 				primaryEmotions = yellowEmotions;
 			} else {
 				secondaryEmotions.AddRange (yellowEmotions);
@@ -74,12 +95,14 @@ public class EmotionsGameManager : AbstractGameManager {
 
 			difficultyLevel = GameManager.GetInstance ().GetLevel ("MonsterEmotions");
 		} else {
+			monsterType = GameManager.GetMonsterType ();
 			primaryEmotions = greenEmotions;
 			secondaryEmotions.AddRange (blueEmotions);
 			secondaryEmotions.AddRange (redEmotions);
 			secondaryEmotions.AddRange (yellowEmotions);
 			difficultyLevel = 1;
 		}
+
 		emotionsSetup = new Dictionary<int, Tuple<int, int>>()
 		{
 			{1, new Tuple<int, int>(2, 0)},
@@ -88,30 +111,27 @@ public class EmotionsGameManager : AbstractGameManager {
 			{4, new Tuple<int, int>(3, 1)},
 			{5, new Tuple<int, int>(2, 2)}
 		};
+
+		if (GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.EMOTIONS]) {
+			tutorialCoroutine = StartCoroutine (RunTutorial ());
+		}
+
+		else {
+			PregameSetup();
+		}
 	}
 
 	public static EmotionsGameManager GetInstance() {
 		return instance;
 	}
 
-	// Use this for initialization
-	void Start () {
-
-//		if(GameManager.GetInstance().LagoonReview) {
-//			StartReview();
-//		}
-//		else {
-			PregameSetup();
-//		}
-
-	}
 
 	void PregameSetup ()
 	{
 		score = 0;
 		scoreGauge.maxValue = scoreGoal;
 		if(timer != null) {
-			timer = Instantiate(timer);
+			//timer = Instantiate(timer);
 			timer.SetTimeLimit(this.timeLimit);
 		}
 
@@ -128,13 +148,88 @@ public class EmotionsGameManager : AbstractGameManager {
 		PostCountdownSetup ();
 	}
 
+	IEnumerator RunTutorial () { 
+		print ("RunTutorial");
+		isTutorialRunning = true;
+		tutorialCanvas.gameObject.SetActive (true);
+		inputAllowed = false;
+		scoreGauge.gameObject.SetActive (false);
+		timer.gameObject.SetActive (false);
+
+		yield return new WaitForSeconds(0.5f);
+		subtitlePanel.SetActive (true);
+
+		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Welcome to Monster Feelings!", null);
+		SoundManager.GetInstance().StopPlayingVoiceOver();
+		SoundManager.GetInstance().PlayVoiceOverClip(instructionsVO[0]);
+
+		yield return new WaitForSeconds(instructionsVO [0].length);
+		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
+
+		GameObject matchEmotion = tutorialCanvas.gameObject.transform.Find ("Tutorial Emotions").Find ("Green_Joyous").gameObject;
+
+		currentEmotionToMatch = Instantiate(matchEmotion);
+		currentEmotionToMatch.name = matchEmotion.name;
+		currentEmotionToMatch.transform.SetParent(emotionToMatchSpawnParent);
+		currentEmotionToMatch.transform.localPosition = new Vector3(0f, 0f, 0f);
+		currentEmotionToMatch.transform.localScale = new Vector3(toMatchScale, toMatchScale, 1f);
+		currentEmotionToMatch.GetComponent<BoxCollider2D>().enabled = false;
+		currentEmotionToMatch.GetComponent<EmotionBehavior>().enabled = false;
+
+		SoundManager.GetInstance().StopPlayingVoiceOver();
+		SoundManager.GetInstance().PlayVoiceOverClip(instructionsVO[1]);
+		yield return new WaitForSeconds(instructionsVO[1].length - 2.5f);
+
+		tutorialHand.SetActive (true);
+		tutorialHand.GetComponent<Animator> ().Play ("EM_HandMoveMonster");
+		yield return new WaitForSeconds(1.75f);
+		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Joyous", null);
+		SoundManager.GetInstance ().PlaySFXClip (answerSounds [1]);
+		yield return new WaitForSeconds(2.0f);
+		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
+
+		SoundManager.GetInstance().StopPlayingVoiceOver();
+		SoundManager.GetInstance().PlayVoiceOverClip(instructionsVO[2]);
+		yield return new WaitForSeconds(instructionsVO[2].length);
+
+		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Now you try!", null);
+		inputAllowed = true;
+		SoundManager.GetInstance().StopPlayingVoiceOver();
+		SoundManager.GetInstance().PlayVoiceOverClip(instructionsVO[3]);
+		yield return new WaitForSeconds(instructionsVO[3].length);
+	}
+
+	public void TutorialFinished() {
+		inputAllowed = false;
+		tutorialHand.SetActive (false);
+		GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.EMOTIONS] = false;
+		StopCoroutine (tutorialCoroutine);
+		StartCoroutine(TutorialTearDown ());
+	}
+
+	IEnumerator TutorialTearDown() {
+		print ("TutorialTearDown");
+		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Let's play!", null);
+		yield return new WaitForSeconds(3.0f);
+
+		if (currentEmotionToMatch)
+			Destroy(currentEmotionToMatch);
+		isTutorialRunning = false;
+		tutorialCanvas.gameObject.SetActive (false);
+
+		yield return new WaitForSeconds(1.0f);
+		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
+
+		PregameSetup ();
+	}
+
 	private void PostCountdownSetup() {
 		for(int i = 0; i < numEmotions.first + numEmotions.second; ++i) {
 			emotionSpawnLocs[i].gameObject.SetActive(true);
 		}
 
 		ChooseEmotions (primaryEmotions, numEmotions.first);
-		ChooseEmotions(secondaryEmotions, numEmotions.second);
+		ChooseEmotions (secondaryEmotions, numEmotions.second);
 		SpawnEmotions (scale);
 		ChooseActiveEmotion ();
 
@@ -152,7 +247,7 @@ public class EmotionsGameManager : AbstractGameManager {
 	// Update is called once per frame
 	void Update () {
 		
-		if((score >= 10 && !gameOver) || timer.TimeRemaining() <= 0.0f)
+		if( gameStarted && timer.TimeRemaining() <= 0.0f)
 			GameOver();
 	}
 
@@ -168,9 +263,14 @@ public class EmotionsGameManager : AbstractGameManager {
 		if (emotion.name == currentEmotionToMatch.name) {
 			SoundManager.GetInstance ().PlaySFXClip (answerSounds [1]);
 			//SoundManager.GetInstance ().PlayVoiceOverClip (answerSounds [1]);
-			++score;
-			UpdateScoreGauge ();
-			StartCoroutine (CreateNextEmotions (waitDuration));
+			if (isTutorialRunning) {
+				TutorialFinished ();
+			} else {
+				++score;
+				UpdateScoreGauge ();
+				StartCoroutine (CreateNextEmotions (waitDuration));
+			}
+
 		} else {
 			StartCoroutine (WrongAnswerWait (waitDuration));
 		}
@@ -182,7 +282,7 @@ public class EmotionsGameManager : AbstractGameManager {
 		Destroy(currentEmotionToMatch);
 
 		for(int i = 0; i < activeEmotions.Count; ++i) {
-			GameObject tmp = emotionSpawnParent.FindChild(activeEmotions[i].name).gameObject;
+			GameObject tmp = emotionSpawnParent.Find(activeEmotions[i].name).gameObject;
 			Destroy(tmp.gameObject);
 		}
 
@@ -253,8 +353,10 @@ public class EmotionsGameManager : AbstractGameManager {
 		if (!gameOver) {
 			print ("GameOver");
 			gameOver = true;
+			inputAllowed = false;
 			//GameManager.GetInstance().AddLagoonReviewGame("MonsterEmotionsReviewGame");
 			if (difficultyLevel == 1) {
+				UnlockSticker ();
 //			stickerPopupCanvas.gameObject.SetActive(true);
 //			GameManager.GetInstance().ActivateBrainstormLagoonReview();
 //			if(GameManager.GetInstance().LagoonFirstSticker) {
@@ -268,12 +370,32 @@ public class EmotionsGameManager : AbstractGameManager {
 //			}
 //			GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "");
 //			GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.MONSTER_EMOTIONS] = false;
+			} else {
+				DisplayGameOverPopup ();
 			}
 			
 			GameManager.GetInstance ().LevelUp ("MonsterEmotions");
-			inputAllowed = false;
-			DisplayGameOverPopup ();
+
 		}
+	}
+
+	public void UnlockSticker() {
+		backButton.SetActive (false);
+		SoundManager.GetInstance().PlayUnlockStickerVO();
+		stickerPopupCanvas.gameObject.SetActive(true);
+		GameManager.GetInstance ().ActivateBrainstormLagoonReview();
+
+		if(GameManager.GetInstance().LagoonFirstSticker) {
+			stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(false);
+			stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(true);
+			GameManager.GetInstance().LagoonFirstSticker = false;
+		}
+		else {
+			stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(false);
+			stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(true);
+		}
+
+		GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "MonsterEmotions");
 	}
 
 	public void DisplayGameOverPopup () {

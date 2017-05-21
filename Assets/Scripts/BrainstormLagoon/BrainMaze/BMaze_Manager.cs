@@ -246,19 +246,19 @@ public class BMaze_Manager : MonoBehaviour {
 	}
 
 	public void UnlockSticker() {
-		backButton.SetActive (false);
+		ShowGameOver ();
 		SoundManager.GetInstance().PlayUnlockStickerVO();
 		stickerPopupCanvas.gameObject.SetActive(true);
 		GameManager.GetInstance ().ActivateBrainstormLagoonReview();
 
 		if(GameManager.GetInstance().LagoonFirstSticker) {
-			stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(false);
-			stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(true);
+			stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(false);
+			stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(true);
 			GameManager.GetInstance().LagoonFirstSticker = false;
 		}
 		else {
-			stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(false);
-			stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(true);
+			stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(false);
+			stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(true);
 		}
 
 		GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "BrainMaze");
