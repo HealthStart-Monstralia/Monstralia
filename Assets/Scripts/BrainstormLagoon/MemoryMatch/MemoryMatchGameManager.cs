@@ -296,13 +296,16 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		float rotateTimeDelta = Random.Range (3,6);
 		stopRotateTime = Time.time + rotateTimeDelta;
 
+		/*
 		for(int i = 0; i < numDishes; ++i) {
 			dishes[i].GetComponent<DishObject>().OpenLid();
 		}
+		*/
 		yield return new WaitForSeconds(rotateTimeDelta);
 
 		for (int i = 0; i < numDishes; ++i) {
-			dishes [i].GetComponent<DishObject> ().CloseLid ();
+			dishes [i].GetComponent<DishObject> ().SpawnLids (true);
+			yield return new WaitForSeconds(0.25f);
 		}
 
 		gameStartup = false;
