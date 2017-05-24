@@ -36,6 +36,7 @@ public class BMaze_Manager : MonoBehaviour {
 	public GameObject tutorialPickup;
 	public static bool isTutorialRunning = false;
 
+	private GameObject skipButton;
 	private static bool gameStarted = false;
 	private static BMaze_Manager instance = null;
 	private Coroutine tutorialCoroutine;
@@ -107,25 +108,12 @@ public class BMaze_Manager : MonoBehaviour {
 
 		typeOfMonster = GameManager.GetMonsterType();
 	}
-
-	void Start () {
 		
-	}
-
 	void Update () {
 		if (timeLeft > 0f && gameStarted) {
 			timeLeft -= Time.deltaTime;
 			timerText.text = Mathf.Round (timeLeft).ToString ();
 			ChangeSlider(timeLeft / timeLimit);
-		}
-
-		if (Input.GetMouseButtonDown (0)) {
-			print ("Mouse down");
-			RaycastHit2D hit = Physics2D.Raycast( Camera.main.ScreenToWorldPoint (Input.mousePosition), Vector2.zero);
-
-			if (hit) {
-				print ("Hit: " + hit.collider.name);
-			}
 		}
 	}
 
@@ -220,6 +208,7 @@ public class BMaze_Manager : MonoBehaviour {
 	public static void GameStart () {
 		gameStarted = true;
 		instance.inputAllowed = true;
+		instance.skipButton.SetActive (true);
 	}
 
 	public static void GameEnd (bool playerWin) {
@@ -268,7 +257,7 @@ public class BMaze_Manager : MonoBehaviour {
 		GetComponent<SwitchScene> ().loadScene ();
 	}
 
-	public void SkipLevel () {
+	public void SkipLevel (GameObject button) {
 		if (isTutorialRunning) {
 			TutorialFinished ();
 		} else {
@@ -277,6 +266,8 @@ public class BMaze_Manager : MonoBehaviour {
 				GameManager.GetInstance ().LevelUp ("BrainMaze");
 			instance.ChangeScene ();
 		}
+		skipButton = button;
+		button.SetActive (false);
 	}
 
 	/*

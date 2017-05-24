@@ -17,43 +17,46 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	private bool runningTutorial = false;
 	private bool rotate = false;
 	private float stopRotateTime;
-	public Canvas reviewCanvas;
+	private Coroutine tutorialCoroutine;
 
+	public Canvas reviewCanvas;
 	public Canvas instructionPopup;
+	public Canvas gameOverCanvas;
+	public Canvas stickerPopupCanvas;
+	public Canvas mainCanvas;
+
+	public Timer timer;
+	public float timeLimit;
+	public Text timerText;
+
 	public Transform foodToMatchSpawnPos;
-	public Transform[] foodSpawnPos;
-	public Transform[] foodParentPos;
 	public float foodScale;
 	public float foodToMatchScale;
 	public List<GameObject> foods;
 	public GameObject dish;
-	public Transform dishParent;
 	public List<GameObject> dishes;
-	public Timer timer;
-	public float timeLimit;
-	public Text timerText;
+
 	public Slider scoreGauge;
-	public Canvas gameOverCanvas;
-	public Canvas stickerPopupCanvas;
-	public AudioClip correctSound;
-	public GameObject subtitlePanel;
-	public bool animIsPlaying = false;
-	public AudioClip munchClip;
-	public Transform target;
-	public float speed;
-	public AudioClip[] wrongMatchClips;
+	public SubtitlePanel subtitlePanel;
+	[HideInInspector] public bool animIsPlaying = false;
+	[HideInInspector] public bool inputAllowed = false;
+
+	public Transform rotationTarget;
+	public float rotationalSpeed;
 
 	public GameManager.MonsterType typeOfMonster;
-	public MMMonster monsterObject;
+	[HideInInspector] public MMMonster monsterObject;
 	public GameObject[] monsterList;
 
-	public GameObject[] tutorialDishes;
+	public DishObject[] tutorialDishes;
+	public AudioClip[] wrongMatchClips;
+	public AudioClip munchClip;
+
 	public AudioClip instructions;
 	public AudioClip letsPlay;
 	public AudioClip nowYouTry;
 	public bool hasSpawned;
-	
-	// Use this for initialization
+
 	void Awake () {
 		if(instance == null) {
 			instance = this;
@@ -62,25 +65,33 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			Destroy(gameObject);
 		}
 
-		difficultyLevel = GameManager.GetInstance ().GetLevel ("MemoryMatch");
-		typeOfMonster = GameManager.GetMonsterType ();
-		CreateMonster ();
-		monsterObject.PlaySpawn ();
-	}
+		if (!GameManager.GetInstance ()) {
+			SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
+			switchScene.loadScene ("Start");
+		} else {
 
-	void Start () {
-		if(GameManager.GetInstance().LagoonReview) {
-			StartReview();
-		}
-		else {
-			PregameSetup ();
+			difficultyLevel = GameManager.GetInstance ().GetLevel ("MemoryMatch");
+			typeOfMonster = GameManager.GetMonsterType ();
+			CreateMonster ();
+			monsterObject.PlaySpawn ();
+
+			if(GameManager.GetInstance().LagoonReview) {
+				StartReview();
+			}
+			else {
+				PregameSetup ();
+			}
 		}
 	}
 
 	public void PregameSetup ()
 	{
+		activeFoods = new List<GameObject> ();
+		matchedFoods = new List<Food> ();
+		inputAllowed = false;
+
 		if (GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH]) {
-			StartCoroutine (RunTutorial ());
+			tutorialCoroutine = StartCoroutine (RunTutorial ());
 		}
 		else {
 			score = 0;
@@ -102,14 +113,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 			scoreGauge.maxValue = numDishes;
 
-			if (timer != null) {
-				timer = Instantiate (timer);
-				timer.SetTimeLimit (timeLimit);
-			}
-
 			UpdateScoreGauge ();
-			activeFoods = new List<GameObject> ();
-			matchedFoods = new List<Food> ();
 			StartGame ();
 		}
 	}
@@ -120,7 +124,6 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		reviewCanvas.gameObject.SetActive(true);
 	}
 
-	// Update is called once per frame
 	void Update () {
 		if(runningTutorial) {
 			if(score == 1) {
@@ -159,43 +162,66 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		print ("RunTutorial");
 		runningTutorial = true;
 		instructionPopup.gameObject.SetActive(true);
-		currentFoodToMatch = tutorialDishes [0].GetComponent<DishBehavior> ().bottom.transform.Find ("Banana").gameObject;
 
-		//Animation anim = tutorialDishes[0].GetComponent<DishBehavior>().top.gameObject.GetComponent<Animation> ();
-		yield return new WaitForSeconds(2f);
+		DishObject tutDish1 = tutorialDishes[0];
+		DishObject tutDish2 = tutorialDishes[1];
+		DishObject tutDish3 = tutorialDishes[2];
+
+		GameObject tutFood1 = tutorialDishes[0].transform.Find ("Banana").gameObject;
+		GameObject tutFood2 = tutorialDishes[1].transform.Find ("Berry").gameObject;
+		GameObject tutFood3 = tutorialDishes[2].transform.Find ("Brocolli").gameObject;
+		currentFoodToMatch = tutFood1;
+
+		tutorialDishes [0].SetFood (tutFood1);
+		tutorialDishes [1].SetFood (tutFood2);
+		tutorialDishes [2].SetFood (tutFood3);
+
+		tutFood1.transform.localPosition = new Vector3 (0, 1.25f, 0);
+		tutFood2.transform.localPosition = new Vector3 (0, 1.25f, 0);
+		tutFood3.transform.localPosition = new Vector3 (0, 1.25f, 0);
+
+		tutFood1.transform.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
+		tutFood2.transform.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
+		tutFood3.transform.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
+
+		tutDish1.SpawnLids(true);
+		yield return new WaitForSeconds(0.25f);
+		tutDish2.SpawnLids(true);
+		yield return new WaitForSeconds(0.25f);
+		tutDish3.SpawnLids(true);
+
+		yield return new WaitForSeconds(1.5f);
 
 		// Dish lift.
-		tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealLift"].name);
-		tutorialDishes[1].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[1].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealLift"].name);
-		tutorialDishes[2].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[2].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealLift"].name);
+		foreach (DishObject dish in tutorialDishes) {
+			dish.OpenLid ();
+		}
 		yield return new WaitForSeconds(4f);
 
 		// Dish close.
-		tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealClose"].name);
-		tutorialDishes[1].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[1].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealClose"].name);
-		tutorialDishes[2].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[2].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealClose"].name);
+		foreach (DishObject dish in tutorialDishes) {
+			dish.CloseLid ();
+		}
+
 		yield return new WaitForSeconds(2f);
 		instructionPopup.gameObject.transform.Find ("panelbanana").gameObject.SetActive(true);
 
-		tutorialDishes [0].GetComponent<DishBehavior> ().SetFood (tutorialDishes [0].GetComponent<DishBehavior> ().bottom.transform.Find ("Banana").GetComponent<Food>());
-		tutorialDishes [1].GetComponent<DishBehavior> ().SetFood (tutorialDishes [1].GetComponent<DishBehavior> ().bottom.transform.Find ("Berry").GetComponent<Food>());
-		tutorialDishes [2].GetComponent<DishBehavior> ().SetFood (tutorialDishes [2].GetComponent<DishBehavior> ().bottom.transform.Find ("Brocolli").GetComponent<Food>());
-
-		yield return new WaitForSeconds(5f);
+		yield return new WaitForSeconds(3f);
 		Animator handAnim = instructionPopup.gameObject.transform.Find ("TutorialAnimation").gameObject.transform.Find ("Hand").gameObject.GetComponent<Animator>();
 		handAnim.Play("mmhand_5_12");
 		yield return new WaitForSeconds(4f);
-		tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (tutorialDishes[0].GetComponent<DishBehavior>().top.GetComponent<Animation>()["DishTopRevealLift"].name);
+		SoundManager.GetInstance ().PlayCorrectSFX ();
+		tutorialDishes[0].OpenLid();
+		yield return new WaitForSeconds(2f);
+		tutorialDishes [0].CloseLid ();
 
-		if (runningTutorial) {
-			yield return new WaitForSeconds (instructions.length - 12f);
-			subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Now you try!", nowYouTry);
-			tutorialDishes [0].GetComponent<DishBehavior> ().top.GetComponent<Animation> ().Play (tutorialDishes [0].GetComponent<DishBehavior> ().top.GetComponent<Animation> () ["DishTopRevealClose"].name);
-			instructionPopup.gameObject.transform.Find ("TutorialAnimation").gameObject.transform.Find ("Hand").gameObject.SetActive (false);
+		yield return new WaitForSeconds (instructions.length - 14f);
+		subtitlePanel.Display ("Now you try!", nowYouTry);
+		inputAllowed = true;
+		handAnim.gameObject.SetActive (false);
 
-			for (int i = 0; i < tutorialDishes.Length; ++i) {
-				tutorialDishes [i].GetComponent<Collider2D> ().enabled = true;
-			}
+		for (int i = 0; i < tutorialDishes.Length; ++i) {
+			tutorialDishes [i].GetComponent<Collider2D> ().enabled = true;
 		}
 //		StartGame ();
 	}
@@ -206,17 +232,17 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	public void SkipReview() {
-		StopCoroutine (RunTutorial ());
+		StopCoroutine (tutorialCoroutine);
 		StartCoroutine (TutorialTearDown ());
 	}
 
 	IEnumerator TutorialTearDown() {
 		print ("TutorialTearDown");
-		score = 0;
 		runningTutorial = false;
-		subtitlePanel.GetComponent<SubtitlePanel>().Display("Perfect!", letsPlay);
+		score = 0;
+		subtitlePanel.Display("Perfect!", letsPlay);
 		yield return new WaitForSeconds(2.0f);
-		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
+		subtitlePanel.Hide ();
 		instructionPopup.gameObject.SetActive (false);
 		GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
 		PregameSetup ();
@@ -225,6 +251,8 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public void StartGame() {
 		scoreGauge.gameObject.SetActive (true);
 		timerText.gameObject.SetActive (true);
+
+		timer.SetTimeLimit (timeLimit);
 		timerText.text = "Time: " + timer.TimeRemaining();
 		UpdateScoreGauge ();
 
@@ -239,9 +267,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		ChooseFoodToMatch();
 
 		for(int i = 0; i < numDishes; ++i) {
-//			GameObject newFood = SpawnFood(copy, true, foodSpawnPos[i], foodParentPos[i], foodScale);
-			GameObject newFood = SpawnFood(copy, true, dishes[i].GetComponent<DishBehavior>().top.transform, dishes[i].GetComponent<DishBehavior>().bottom.transform, foodScale);
-			dishes[i].GetComponent<DishBehavior>().SetFood(newFood.GetComponent<Food>());
+			DishObject dishComponent = dishes[i].GetComponent<DishObject>();
+			GameObject newFood = SpawnFood(copy, true, dishComponent.lid.transform, dishComponent.dish.transform, foodScale);
+			dishComponent.SetFood(newFood);
 		}
 
 		StartCoroutine(RevealDishes());
@@ -253,9 +281,12 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 		for(int i = 0; i < numDishes; ++i) {
 			GameObject newDish = Instantiate(dish);
-			newDish.transform.SetParent(dishParent);
-			newDish.transform.localScale = new Vector3(1, 1, 1);
-			newDish.transform.localPosition = new Vector3(200f*Mathf.Cos (dishPositionAngleDelta*i + Mathf.PI / 2), 200f*Mathf.Sin (dishPositionAngleDelta*i + Mathf.PI / 2) + 40, 0);
+			float offset = 200f;
+			newDish.transform.SetParent (mainCanvas.transform);
+			newDish.transform.localPosition = new Vector3(
+				offset * Mathf.Cos (dishPositionAngleDelta*i + Mathf.PI / 2), 
+				offset * Mathf.Sin (dishPositionAngleDelta*i + Mathf.PI / 2), 
+				0);
 			dishes[i] = newDish;
 		}
 	}
@@ -266,17 +297,13 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		stopRotateTime = Time.time + rotateTimeDelta;
 
 		for(int i = 0; i < numDishes; ++i) {
-			GameObject d = dishes[i];
-			Animation animation = d.GetComponent<DishBehavior>().top.GetComponent<Animation>();
-			d.GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (animation["DishTopRevealLift"].name);
+			dishes[i].GetComponent<DishObject>().OpenLid();
 		}
 		yield return new WaitForSeconds(rotateTimeDelta);
 
-		for(int i = 0; i < numDishes; ++i) {
-			GameObject d = dishes[i];
-			Animation animation = d.GetComponent<DishBehavior>().top.GetComponent<Animation>();
-			d.GetComponent<DishBehavior>().top.GetComponent<Animation>().Play (animation["DishTopRevealClose"].name);
-		} 
+		for (int i = 0; i < numDishes; ++i) {
+			dishes [i].GetComponent<DishObject> ().CloseLid ();
+		}
 
 		gameStartup = false;
 
@@ -285,7 +312,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 			yield return new WaitForSeconds (4.0f);
 			gameStarted = true;
-
+			inputAllowed = true;
 			timer.StartTimer();
 		}
 	}
@@ -293,7 +320,19 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	void ResetDishes() {
 		for(int i = 0; i < difficultyLevel*3; ++i) {
 			GameObject dish = dishes[i];
-			dish.GetComponent<DishBehavior>().Reset ();
+			dish.GetComponent<DishObject>().Reset ();
+		}
+	}
+
+	public void RotateDishes() {
+		Vector3 zAxis = Vector3.forward; //<0, 0, 1>;
+
+		for(int i = 0; i < numDishes; ++i) {
+			GameObject d = dishes[i];
+			Quaternion startRotation = d.transform.rotation;
+
+			d.transform.RotateAround(rotationTarget.position, zAxis, rotationalSpeed);
+			d.transform.rotation = startRotation;
 		}
 	}
 
@@ -334,9 +373,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		if(setAnchor) {
 			newFood.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1f);
 			newFood.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1f);
-
 		}
 		foodsList.RemoveAt(randomIndex);
+		newFood.GetComponent<SpriteRenderer> ().sortingOrder = 4;
 		return newFood;
 	}
 
@@ -345,6 +384,9 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	}
 
 	public void AddToMatchedList(Food food) {
+		print ("AddToMatchedList: " + food);
+		matchedFoods.Add (food);
+		print ("matchedFoods: " + matchedFoods);
 		matchedFoods.Add (food);
 	}
 
@@ -353,12 +395,10 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		timer.StopTimer();
 
 		for(int i = 0; i < numDishes; ++i) {
-			GameObject d = dishes[i];
-			Animation animation = d.GetComponent<DishBehavior>().bottom.GetComponent<Animation>();
-			if(d.GetComponent<DishBehavior>().IsMatched ()) {
-				Destroy(d.GetComponent<DishBehavior>().bottom.GetComponentInChildren<Food>().gameObject);
+			if(dishes[i].GetComponent<DishObject>().IsMatched ()) {
+				Destroy(dishes[i].GetComponent<DishObject>().foodObject.gameObject);
 				SoundManager.GetInstance().PlaySFXClip(munchClip);
-				d.GetComponent<DishBehavior>().bottom.GetComponent<Animation>().Play (animation["DishBottomShake"].name);
+				dishes[i].GetComponent<DishObject>().Shake(true);
 				monsterObject.PlayEat ();
 				yield return new WaitForSeconds (1.2f);
 			}
@@ -430,18 +470,6 @@ public class MemoryMatchGameManager : MonoBehaviour {
 
 	public void SubtractTime(float delta) {
 		timer.SubtractTime(delta);
-	}
-
-	public void RotateDishes() {
-		Vector3 zAxis = Vector3.forward; //<0, 0, 1>;
-
-		for(int i = 0; i < numDishes; ++i) {
-			GameObject d = dishes[i];
-			Quaternion startRotation = d.transform.rotation;
-
-			d.transform.RotateAround(target.position, zAxis, speed);
-			d.transform.rotation = startRotation;
-		}
 	}
 
 	void CreateMonster() {

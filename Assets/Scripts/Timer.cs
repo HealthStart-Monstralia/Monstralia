@@ -20,8 +20,7 @@ public class Timer : MonoBehaviour {
 	
 	void FixedUpdate () {
 		if(timing && timeRemaining >= 0f) {
-			print ("timer");
-			timeRemaining -= Time.fixedDeltaTime;
+			timeRemaining -= Time.deltaTime;
 		}
 	
 	}
@@ -32,7 +31,6 @@ public class Timer : MonoBehaviour {
 	 * @param timeLimit: a float that the timer will count down from
 	 */
 	public void SetTimeLimit(float timeLimit) {
-		print ("SetTimeLimit");
 		this.timeLimit = timeLimit;
 		timeRemaining = timeLimit;
 	}
@@ -41,7 +39,6 @@ public class Timer : MonoBehaviour {
 	 * \brief Tell the timer to start counting down
 	 */
 	public void StartTimer() {
-		print ("Start Timer");
 		timing = true;
 	}
 
@@ -50,7 +47,7 @@ public class Timer : MonoBehaviour {
 	 * @return The timeRemaining without the decimal
 	 */
 	public int TimeRemaining() {
-		return (int)timeRemaining;
+		return Mathf.CeilToInt(timeRemaining);
 	}
 
 	/**

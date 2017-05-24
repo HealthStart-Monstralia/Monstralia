@@ -126,19 +126,20 @@ public class EmotionsGameManager : AbstractGameManager {
 	}
 
 
-	void PregameSetup ()
-	{
+	void PregameSetup () {
 		score = 0;
 		scoreGauge.maxValue = scoreGoal;
 		if(timer != null) {
-			//timer = Instantiate(timer);
+			timerText.gameObject.SetActive(true);
 			timer.SetTimeLimit(this.timeLimit);
+			timer.StopTimer ();
 		}
 
 		numEmotions = emotionsSetup[difficultyLevel];
 		activeEmotions = new List<GameObject> ();
 		UpdateScoreGauge ();
 
+		timerText.text = "Time: " + timer.TimeRemaining();
 		StartCoroutine(DisplayGo());
 	}
 
@@ -187,10 +188,7 @@ public class EmotionsGameManager : AbstractGameManager {
 		SoundManager.GetInstance ().PlaySFXClip (answerSounds [1]);
 		yield return new WaitForSeconds(2.0f);
 		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
-
-		SoundManager.GetInstance().StopPlayingVoiceOver();
-		SoundManager.GetInstance().PlayVoiceOverClip(instructionsVO[2]);
-		yield return new WaitForSeconds(instructionsVO[2].length);
+		yield return new WaitForSeconds(1.0f);
 
 		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Now you try!", null);
 		inputAllowed = true;
@@ -210,7 +208,9 @@ public class EmotionsGameManager : AbstractGameManager {
 	IEnumerator TutorialTearDown() {
 		print ("TutorialTearDown");
 		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Let's play!", null);
-		yield return new WaitForSeconds(3.0f);
+		SoundManager.GetInstance().StopPlayingVoiceOver();
+		SoundManager.GetInstance().PlayVoiceOverClip(instructionsVO[2]);
+		yield return new WaitForSeconds(instructionsVO[2].length);
 
 		if (currentEmotionToMatch)
 			Destroy(currentEmotionToMatch);
@@ -223,6 +223,16 @@ public class EmotionsGameManager : AbstractGameManager {
 		PregameSetup ();
 	}
 
+	public void SkipReviewButton(GameObject button) {
+		SkipReview ();
+		Destroy (button);
+	}
+
+	public void SkipReview() {
+		StopCoroutine (tutorialCoroutine);
+		StartCoroutine (TutorialTearDown ());
+	}
+
 	private void PostCountdownSetup() {
 		for(int i = 0; i < numEmotions.first + numEmotions.second; ++i) {
 			emotionSpawnLocs[i].gameObject.SetActive(true);
@@ -232,21 +242,22 @@ public class EmotionsGameManager : AbstractGameManager {
 		ChooseEmotions (secondaryEmotions, numEmotions.second);
 		SpawnEmotions (scale);
 		ChooseActiveEmotion ();
-
-		timer.StartTimer();
+	
 		StartGame();
 	}
 
 	private void StartGame () {
 		scoreGauge.gameObject.SetActive(true);
-		timerText.gameObject.SetActive(true);
+
+		timer.StopTimer ();
+		timer.StartTimer();
+		print (timer);
 		gameStarted = true;
 		inputAllowed = true;
 	}
 
 	// Update is called once per frame
 	void Update () {
-		
 		if( gameStarted && timer.TimeRemaining() <= 0.0f)
 			GameOver();
 	}
@@ -292,6 +303,7 @@ public class EmotionsGameManager : AbstractGameManager {
 		ChooseActiveEmotion();
 		SpawnEmotions(scale);
 		timer.StartTimer ();
+		print (timer);
 		inputAllowed = true;
 	}
 
@@ -380,7 +392,7 @@ public class EmotionsGameManager : AbstractGameManager {
 	}
 
 	public void UnlockSticker() {
-		backButton.SetActive (false);
+		backButton.SetActive (true);
 		SoundManager.GetInstance().PlayUnlockStickerVO();
 		stickerPopupCanvas.gameObject.SetActive(true);
 		GameManager.GetInstance ().ActivateBrainstormLagoonReview();

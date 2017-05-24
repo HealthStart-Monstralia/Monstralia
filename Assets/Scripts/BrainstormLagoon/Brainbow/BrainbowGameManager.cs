@@ -18,10 +18,15 @@ public class BrainbowGameManager : AbstractGameManager {
 	private Transform bananaOrigin;
 	private bool gameOver = false;
 	private bool isInputAllowed = false;
+	private Coroutine tutorialCoroutine;
 
+	private float waterSpawnTime = 0.0f;
+	private bool spawnWater = false;
+
+	public Text gameTitle;
+	public Canvas mainCanvas;
 	public Canvas reviewCanvas;
 	public Canvas instructionPopup;
-	public Text gameTitle;
 	public Canvas gameoverCanvas;
 	public Canvas stickerPopupCanvas;
 	public List<GameObject> foods;
@@ -33,21 +38,26 @@ public class BrainbowGameManager : AbstractGameManager {
 	public Text timerText;
 	public float timeLimit;
 	public Timer timer;
-	public AudioClip backgroundMusic;
-	public AudioClip correctSound;
-	public AudioClip incorrectSound;
+
 	public GameObject endGameAnimation;
-	public AudioClip munchSound;
 	public GameObject subtitlePanel;
-	public AudioClip[] correctMatchClips;
-	public AudioClip[] wrongMatchClips;
 	public Transform tutorialOrigin;
 
-	public GameManager.MonsterType typeOfMonster;
-	public BBMonster monsterObject;
+	public GameObject waterBottle;
+	public GameObject[] waterSpawnLocations;
+	public List<GameObject> waterBottleList = new List<GameObject> ();
+
+	[HideInInspector] public GameManager.MonsterType typeOfMonster;
+	[HideInInspector] public BBMonster monsterObject;
 	public GameObject[] monsterList;
 	public GameObject spawnPoint;
 
+	public AudioClip[] correctMatchClips;
+	public AudioClip[] wrongMatchClips;
+	public AudioClip munchSound;
+	public AudioClip backgroundMusic;
+	public AudioClip correctSound;
+	public AudioClip incorrectSound;
 	public AudioClip intro;
 	public AudioClip instructions;
 	public AudioClip nowYouTry;
@@ -65,16 +75,21 @@ public class BrainbowGameManager : AbstractGameManager {
 		else if(instance != this) {
 			Destroy(gameObject);
 		}
-		difficultyLevel = GameManager.GetInstance().GetLevel("Brainbow");
 
-		scoreGoals = new Dictionary<int, int>()
-		{
-			{1, 8},
-			{2, 12},
-			{3, 20},
-			{4, 20},
-			{5, 20}
-		};
+		if (!GameManager.GetInstance ()) {
+			SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
+			switchScene.loadScene ("Start");
+		} else {
+			difficultyLevel = GameManager.GetInstance ().GetLevel ("Brainbow");
+
+			scoreGoals = new Dictionary<int, int> () {
+				{ 1, 8 },
+				{ 2, 12 },
+				{ 3, 20 },
+				{ 4, 20 },
+				{ 5, 20 }
+			};
+		}
 	}
 
 	public static BrainbowGameManager GetInstance() {
@@ -96,7 +111,6 @@ public class BrainbowGameManager : AbstractGameManager {
 	}
 
 	void Update() {
-
 		if(runningTutorial && score == 1) {
 			StartCoroutine(TutorialTearDown());
 		}
@@ -106,6 +120,20 @@ public class BrainbowGameManager : AbstractGameManager {
 				// Animation.
 				if(!animIsPlaying) {
 					EndGameTearDown();
+				}
+			}
+
+			if(waterSpawnTime > 0f && spawnWater) {
+				if (waterBottleList.Count < 1) {
+					waterSpawnTime -= Time.deltaTime;
+				}
+			}
+
+			// Create water bottle when waterSpawnTime is 0
+			else if (waterSpawnTime <= 0f && spawnWater) {
+				if (spawnWater && waterBottleList.Count < 1) {
+					waterSpawnTime = Random.Range (10f, 15f);
+					CreateWater ();
 				}
 			}
 		}
@@ -134,14 +162,10 @@ public class BrainbowGameManager : AbstractGameManager {
 		CreateMonster ();
 		monsterObject.PlaySpawn ();
 
-		if(timer != null) {
-			timer = Instantiate(timer);
-			timer.SetTimeLimit(this.timeLimit);
-		}
 		UpdateScoreGauge();
 
 		if (GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.BRAINBOW]) {
-			StartCoroutine (RunTutorial ());
+			tutorialCoroutine = StartCoroutine (RunTutorial ());
 		}
 		else {
 			StartGame ();
@@ -181,8 +205,8 @@ public class BrainbowGameManager : AbstractGameManager {
 		}
 	}
 
-	IEnumerator TutorialTearDown ()
-	{
+	IEnumerator TutorialTearDown ()	{
+		StopCoroutine (tutorialCoroutine);
 		isInputAllowed = false;
 		score = 0;
 		UpdateScoreGauge();
@@ -199,13 +223,34 @@ public class BrainbowGameManager : AbstractGameManager {
 		return runningTutorial;
 	}
 
+	public void SkipTutorialButton(GameObject button) {
+		SkipTutorial ();
+		Destroy (button);
+	}
+
+	public void SkipTutorial() {
+		StopCoroutine (tutorialCoroutine);
+		StartCoroutine (TutorialTearDown ());
+	}
+
 	public void StartGame() {
 		scoreGauge.gameObject.SetActive(true);
 		timerText.gameObject.SetActive(true);
+		timer.SetTimeLimit (timeLimit);
 		timerText.text = "Time: " + timer.TimeRemaining();
+		waterSpawnTime = Random.Range(5, 10);
 
 		StartCoroutine (DisplayGo());
+	}
 
+	public void CreateWater() {
+		print ("Create Water");
+		int selection = Random.Range (0, 4);
+		GameObject water = Instantiate(
+			waterBottle,
+			mainCanvas.transform
+		);
+		water.transform.position = waterSpawnLocations [selection].transform.position;
 	}
 
 	public IEnumerator DisplayGo () {
@@ -226,6 +271,7 @@ public class BrainbowGameManager : AbstractGameManager {
 			SpawnFood (spawnPoints [i]);
 		}
 		timer.StartTimer ();
+		spawnWater = true;
 	}
 
 	public void Replace(GameObject toReplace) {
@@ -254,6 +300,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	}
 
 	override public void GameOver() {
+		spawnWater = false;
 		if(score >= scoreGoals[difficultyLevel]) {
 			GameManager.GetInstance().AddLagoonReviewGame("BrainbowReviewGame");
 			if(difficultyLevel == 1) {

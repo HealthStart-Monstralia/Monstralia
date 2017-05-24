@@ -14,7 +14,8 @@ public class SwitchScene: MonoBehaviour {
 	}
 
 	public void loadScene(string name) {
-		loadingScreen.SetActive(true);
+		if(loadingScreen)
+			loadingScreen.SetActive(true);
 		SceneManager.LoadScene (name);
 	}
 }
