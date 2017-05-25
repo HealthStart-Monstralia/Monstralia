@@ -13,7 +13,9 @@ public class GameManager : MonoBehaviour {
 
 	private Dictionary<string, int> gameLevels;
 	private Dictionary<string, int> gameStars;
-	private List<string> brainStickers;
+	private Dictionary<StickerManager.StickerType, bool> stickers;
+	private Dictionary<StickerManager.StickerType, bool> stickersPlaced;
+
 	private static GameManager instance = null;
 	private List<string> LagoonReviewGames;
 	private string reviewGamePath = "ReviewGames";
@@ -63,7 +65,20 @@ public class GameManager : MonoBehaviour {
 		gameStars.Add("MonsterEmotions", 0);
 		gameStars.Add("MonsterSenses", 0);
 
-		brainStickers = new List<string>();
+		stickers = new Dictionary<StickerManager.StickerType, bool> ();
+		stickers.Add (StickerManager.StickerType.Amygdala, false);
+		stickers.Add (StickerManager.StickerType.Cerebellum, false);
+		stickers.Add (StickerManager.StickerType.Frontal, false);
+		stickers.Add (StickerManager.StickerType.Hippocampus, false);
+		stickers.Add (StickerManager.StickerType.RainbowBrain, false);
+
+		stickersPlaced = new Dictionary<StickerManager.StickerType, bool> ();
+		stickersPlaced.Add (StickerManager.StickerType.Amygdala, false);
+		stickersPlaced.Add (StickerManager.StickerType.Cerebellum, false);
+		stickersPlaced.Add (StickerManager.StickerType.Frontal, false);
+		stickersPlaced.Add (StickerManager.StickerType.Hippocampus, false);
+		stickersPlaced.Add (StickerManager.StickerType.RainbowBrain, false);
+
 		LagoonReviewGames = new List<string>();
 	}
 
@@ -91,33 +106,13 @@ public class GameManager : MonoBehaviour {
 		return false;
 	}
 
-	// I don't want to mess with stars or the LevelUp function for Brain Maze - CT
-	public bool LevelUpNoStars(string gameName) {
-		if(gameLevels[gameName] != 5) {
-			gameLevels[gameName] += 1;
-		return true;
-		}
-
-		return false;
-	}
-
 	public int GetNumStars(string gameName) {
 		return gameStars[gameName];
 	}
 
 	//temporary solution
-	public void ActivateSticker(string region, string stickerName) {
-		if(region == "BrainstormLagoon") {
-			print ("sticker added: " + stickerName);
-			brainStickers.Add(stickerName);
-		}
-		else {
-			print("That region isn't implemented yet");
-		}
-	}
-
-	public List<string> GetStickers() {
-		return brainStickers;
+	public void ActivateSticker(StickerManager.StickerType typeOfSticker) {
+		stickers [typeOfSticker] = true;
 	}
 
 	public void ActivateBrainstormLagoonReview() {
@@ -142,8 +137,8 @@ public class GameManager : MonoBehaviour {
 		return reviewGame;//Resources.Load(reviewGamePath  + "/" + LagoonReviewGames[Random.Range (0, LagoonReviewGames.Count)]) as Canvas;
 	}
 
+	// Determines what kind of monster is chosen\
 	void DetermineMonster() {
-		// Determines what kind of monster is chosen - CT
 		if (GameManager.GetInstance ()) {
 			if (GameManager.GetInstance ().getMonster ().Contains ("Blue")) {
 				monsterType = MonsterType.Blue;
@@ -169,6 +164,25 @@ public class GameManager : MonoBehaviour {
 
 	public void Countdown() {
 		GetComponent<CreateCountdown>().SpawnCountdown();
+	}
+
+	public void FetchStickers() {
+		foreach (StickerManager.StickerType sticker in stickers.Keys) {
+			if (stickers [sticker])
+				StickerManager.GetInstance ().SpawnSticker (sticker, stickersPlaced[sticker]);
+		}
+	}
+
+	public void OnStickerPlaced(StickerManager.StickerType typeOfSticker) {
+		stickersPlaced [typeOfSticker] = true;
+	}
+
+	public void DebugStickers() {
+		stickers [StickerManager.StickerType.Amygdala] = true;
+		stickers [StickerManager.StickerType.Cerebellum] = true;
+		stickers [StickerManager.StickerType.Frontal] = true;
+		stickers [StickerManager.StickerType.Hippocampus] = true;
+		stickers [StickerManager.StickerType.RainbowBrain] = true;
 	}
 
 }

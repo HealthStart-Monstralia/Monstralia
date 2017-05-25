@@ -258,7 +258,7 @@ public class EmotionsGameManager : AbstractGameManager {
 
 	// Update is called once per frame
 	void Update () {
-		if( gameStarted && timer.TimeRemaining() <= 0.0f)
+		if( gameStarted && (timer.TimeRemaining() <= 0.0f || score >= scoreGoal))
 			GameOver();
 	}
 
@@ -407,7 +407,8 @@ public class EmotionsGameManager : AbstractGameManager {
 			stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(true);
 		}
 
-		GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "MonsterEmotions");
+		//GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "MonsterEmotions");
+		GameManager.GetInstance().ActivateSticker(StickerManager.StickerType.Amygdala);
 	}
 
 	public void DisplayGameOverPopup () {

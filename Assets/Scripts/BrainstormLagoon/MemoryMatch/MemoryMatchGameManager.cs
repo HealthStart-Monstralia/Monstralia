@@ -226,12 +226,12 @@ public class MemoryMatchGameManager : MonoBehaviour {
 //		StartGame ();
 	}
 
-	public void SkipReviewButton(GameObject button) {
-		SkipReview ();
+	public void SkipTutorialButton(GameObject button) {
+		SkipTutorial ();
 		Destroy (button);
 	}
 
-	public void SkipReview() {
+	public void SkipTutorial() {
 		StopCoroutine (tutorialCoroutine);
 		StartCoroutine (TutorialTearDown ());
 	}
@@ -432,7 +432,8 @@ public class MemoryMatchGameManager : MonoBehaviour {
 					Debug.Log ("This was not Brainstorm Lagoon's first sticker");
 					stickerPopupCanvas.transform.Find ("BackButton").gameObject.SetActive (true);
 				}
-				GameManager.GetInstance ().ActivateSticker ("BrainstormLagoon", "Hippocampus");
+				//GameManager.GetInstance ().ActivateSticker ("BrainstormLagoon", "Hippocampus");
+				GameManager.GetInstance().ActivateSticker(StickerManager.StickerType.Hippocampus);
 				//GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
 			} else {
 				DisplayGameOverPopup ();

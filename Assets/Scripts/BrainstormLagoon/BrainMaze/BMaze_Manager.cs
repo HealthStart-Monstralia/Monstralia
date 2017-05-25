@@ -250,7 +250,8 @@ public class BMaze_Manager : MonoBehaviour {
 			stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(true);
 		}
 
-		GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "BrainMaze");
+		//GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "BrainMaze");
+		GameManager.GetInstance().ActivateSticker(StickerManager.StickerType.Frontal);
 	}
 
 	public void ChangeScene () {

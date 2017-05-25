@@ -23,6 +23,9 @@ public class SensesGameManager : AbstractGameManager {
 	public Text timerText;
 	public Timer timer;
 	public Canvas gameOverCanvas;
+	public Canvas mainCanvas;
+	public Canvas stickerPopupCanvas;
+	public GameObject backButton;
 	public List<Sprite> sensesSprites;
 	public List<GameObject> see;
 	public List<GameObject> smell;
@@ -225,25 +228,32 @@ public class SensesGameManager : AbstractGameManager {
 			gameOver = true;
 			//GameManager.GetInstance().AddLagoonReviewGame("MonsterEmotionsReviewGame");
 			if (difficultyLevel == 1) {
-				//			stickerPopupCanvas.gameObject.SetActive(true);
-				//			GameManager.GetInstance().ActivateBrainstormLagoonReview();
-				//			if(GameManager.GetInstance().LagoonFirstSticker) {
-				//				stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(true);
-				//				GameManager.GetInstance().LagoonFirstSticker = false;
-				//				Debug.Log ("This was Brainstorm Lagoon's first sticker");
-				//			}
-				//			else {
-				//				Debug.Log ("This was not Brainstorm Lagoon's first sticker");
-				//				stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(true);
-				//			}
-				//			GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "");
-				//			GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.MONSTER_EMOTIONS] = false;
+				UnlockSticker ();
 			}
 
 			GameManager.GetInstance ().LevelUp ("MonsterSenses");
 
 			DisplayGameOverPopup ();
 		}
+	}
+
+	public void UnlockSticker() {
+		backButton.SetActive (true);
+		SoundManager.GetInstance().PlayUnlockStickerVO();
+		stickerPopupCanvas.gameObject.SetActive(true);
+		GameManager.GetInstance ().ActivateBrainstormLagoonReview();
+
+		if(GameManager.GetInstance().LagoonFirstSticker) {
+			stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(false);
+			stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(true);
+			GameManager.GetInstance().LagoonFirstSticker = false;
+		}
+		else {
+			stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(false);
+			stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(true);
+		}
+
+		GameManager.GetInstance().ActivateSticker(StickerManager.StickerType.Cerebellum);
 	}
 
 	public void DisplayGameOverPopup () {

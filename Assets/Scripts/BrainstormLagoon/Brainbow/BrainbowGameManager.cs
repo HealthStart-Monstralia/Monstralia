@@ -318,7 +318,8 @@ public class BrainbowGameManager : AbstractGameManager {
 					stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(true);
 				}
 
-				GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Brainbow");
+				//GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Brainbow");
+				GameManager.GetInstance().ActivateSticker(StickerManager.StickerType.RainbowBrain);
 				GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.BRAINBOW] = false;
 			}
 			GameManager.GetInstance().LevelUp("Brainbow");
