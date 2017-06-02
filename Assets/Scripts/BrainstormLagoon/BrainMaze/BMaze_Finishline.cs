@@ -29,7 +29,7 @@ public class BMaze_Finishline : MonoBehaviour {
 
 			audioSrc.Play ();
 			if (!BMaze_Manager.isTutorialRunning)
-				BMaze_Manager.GameEnd (true);
+				StartCoroutine(BMaze_Manager.GetInstance().EndGameWait (3f));
 			else {
 				BMaze_Manager.GetInstance ().TutorialFinished ();
 			}

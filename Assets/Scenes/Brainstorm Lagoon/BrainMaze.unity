@@ -5588,9 +5588,10 @@ RectTransform:
   m_PrefabParentObject: {fileID: 22438368, guid: 7e11279daba01490d92be51dd816fa6b,
     type: 2}
   m_PrefabInternal: {fileID: 887802587}
---- !u!1 &887802589 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 174098, guid: 7e11279daba01490d92be51dd816fa6b, type: 2}
+--- !u!223 &887802589 stripped
+Canvas:
+  m_PrefabParentObject: {fileID: 22373142, guid: 7e11279daba01490d92be51dd816fa6b,
+    type: 2}
   m_PrefabInternal: {fileID: 887802587}
 --- !u!1 &891332756
 GameObject:
@@ -7097,6 +7098,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b911668798bcede469625e39ffb233ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stickerPopupCanvas: {fileID: 887802589}
   typeOfMonster: 0
   monsterList:
   - {fileID: 1000010047442250, guid: 1d7370fd27e64554db1e19af9ce62b59, type: 2}
@@ -7137,7 +7139,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: deaf9294d46e14aba899a6e18a7f2989, type: 3}
   - {fileID: 8300000, guid: b0605add40db94defa637d00798f6b29, type: 3}
   - {fileID: 8300000, guid: f7cfc78558a624d3cb68eb2e32e9aa22, type: 3}
-  stickerPopupCanvas: {fileID: 887802589}
   gameOverCanvas: {fileID: 1477555475}
   backButton: {fileID: 1282871122}
   tutorialAssets: {fileID: 1532925901}
@@ -9145,7 +9146,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1532925901
 MonoBehaviour:
   m_ObjectHideFlags: 0

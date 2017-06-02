@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class MemoryMatchGameManager : MonoBehaviour {
+public class MemoryMatchGameManager : AbstractGameManager {
 	private static MemoryMatchGameManager instance;
 	private bool gameStarted;
 	private bool gameStartup;
@@ -22,7 +22,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 	public Canvas reviewCanvas;
 	public Canvas instructionPopup;
 	public Canvas gameOverCanvas;
-	public Canvas stickerPopupCanvas;
+
 	public Canvas mainCanvas;
 
 	public Timer timer;
@@ -84,8 +84,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		}
 	}
 
-	public void PregameSetup ()
-	{
+	public void PregameSetup () {
 		activeFoods = new List<GameObject> ();
 		matchedFoods = new List<Food> ();
 		inputAllowed = false;
@@ -184,19 +183,25 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		tutFood2.transform.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
 		tutFood3.transform.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
 
+		yield return new WaitForSeconds (1f);
+
+		SoundManager.GetInstance ().PlayVoiceOverClip (instructions);
+
+		yield return new WaitForSeconds (1f);
+
 		tutDish1.SpawnLids(true);
 		yield return new WaitForSeconds(0.25f);
 		tutDish2.SpawnLids(true);
 		yield return new WaitForSeconds(0.25f);
 		tutDish3.SpawnLids(true);
 
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(1.15f);
 
 		// Dish lift.
 		foreach (DishObject dish in tutorialDishes) {
 			dish.OpenLid ();
 		}
-		yield return new WaitForSeconds(4f);
+		yield return new WaitForSeconds(3.5f);
 
 		// Dish close.
 		foreach (DishObject dish in tutorialDishes) {
@@ -411,7 +416,7 @@ public class MemoryMatchGameManager : MonoBehaviour {
 		GameOver ();
 	}
 
-	void GameOver() {
+	public override void GameOver() {
 		gameStarted = false;
 		timerText.gameObject.SetActive(false);
 		scoreGauge.gameObject.SetActive(false);
@@ -422,22 +427,11 @@ public class MemoryMatchGameManager : MonoBehaviour {
 			GameManager.GetInstance ().AddLagoonReviewGame ("MemoryMatchReviewGame");
 
 			if (difficultyLevel == 1) {
-				stickerPopupCanvas.gameObject.SetActive (true);
-				GameManager.GetInstance ().ActivateBrainstormLagoonReview ();
-				if (GameManager.GetInstance ().LagoonFirstSticker) {
-					stickerPopupCanvas.transform.Find ("StickerbookButton").gameObject.SetActive (true);
-					GameManager.GetInstance ().LagoonFirstSticker = false;
-					Debug.Log ("This was Brainstorm Lagoon's first sticker");
-				} else {
-					Debug.Log ("This was not Brainstorm Lagoon's first sticker");
-					stickerPopupCanvas.transform.Find ("BackButton").gameObject.SetActive (true);
-				}
-				//GameManager.GetInstance ().ActivateSticker ("BrainstormLagoon", "Hippocampus");
-				GameManager.GetInstance().ActivateSticker(StickerManager.StickerType.Hippocampus);
-				//GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
+				UnlockSticker (StickerManager.StickerType.Hippocampus);	// Calling from AbstractGameManager
 			} else {
 				DisplayGameOverPopup ();
 			}
+
 			GameManager.GetInstance ().LevelUp ("MemoryMatch");
 		} else {
 			if(difficultyLevel >= 1) {

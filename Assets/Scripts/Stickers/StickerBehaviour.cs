@@ -9,17 +9,22 @@ public class StickerBehaviour : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 	private bool isSticked = false;
 	private Vector2 pointerOffset;
 	private CanvasGroup canvasGroup;
+	private int sortLayer;
 
 	public StickerManager.StickerType typeOfSticker;
 
 	public void OnPointerDown (PointerEventData eventData) {
-		if (!isSticked)
+		if (!isSticked) {
 			GetComponent<CanvasGroup> ().blocksRaycasts = false;
+			StickerManager.GetInstance ().DisableOtherStickerSlots (typeOfSticker);
+		}
 	}
 
 	public void OnPointerUp (PointerEventData eventData) {
-		if (!isSticked)
+		if (!isSticked) {
 			GetComponent<CanvasGroup> ().blocksRaycasts = true;
+			StickerManager.GetInstance ().EnableOtherStickerSlots (typeOfSticker);
+		}
 	}
 
 	public void OnBeginDrag (PointerEventData eventData) {

@@ -28,7 +28,6 @@ public class BrainbowGameManager : AbstractGameManager {
 	public Canvas reviewCanvas;
 	public Canvas instructionPopup;
 	public Canvas gameoverCanvas;
-	public Canvas stickerPopupCanvas;
 	public List<GameObject> foods;
 	public List<GameObject> inGameFoods = new List<GameObject>();
 	public Transform[] spawnPoints;
@@ -64,7 +63,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	public AudioClip letsPlay;
 	public AudioClip waterTip;
 	public AudioClip level1Complete;
-	public AudioClip stickerbook;
+	//public AudioClip stickerbook;
 	public AudioClip reviewGame;
 	public AudioClip finalFeedback;
 	
@@ -207,6 +206,7 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	IEnumerator TutorialTearDown ()	{
 		StopCoroutine (tutorialCoroutine);
+		GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.BRAINBOW] = false;
 		isInputAllowed = false;
 		score = 0;
 		UpdateScoreGauge();
@@ -304,23 +304,7 @@ public class BrainbowGameManager : AbstractGameManager {
 		if(score >= scoreGoals[difficultyLevel]) {
 			GameManager.GetInstance().AddLagoonReviewGame("BrainbowReviewGame");
 			if(difficultyLevel == 1) {
-				SoundManager.GetInstance().PlayVoiceOverClip(stickerbook);
-				stickerPopupCanvas.gameObject.SetActive(true);
-				GameManager.GetInstance ().ActivateBrainstormLagoonReview();
-
-				if(GameManager.GetInstance().LagoonFirstSticker) {
-					stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(false);
-					stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(true);
-					GameManager.GetInstance().LagoonFirstSticker = false;
-				}
-				else {
-					stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(false);
-					stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(true);
-				}
-
-				//GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "Brainbow");
-				GameManager.GetInstance().ActivateSticker(StickerManager.StickerType.RainbowBrain);
-				GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.BRAINBOW] = false;
+				UnlockSticker (StickerManager.StickerType.RainbowBrain);
 			}
 			GameManager.GetInstance().LevelUp("Brainbow");
 		}
@@ -329,6 +313,7 @@ public class BrainbowGameManager : AbstractGameManager {
 			DisplayGameOverCanvas ();
 		}
 	}
+
 
 	void EndGameTearDown () {
 		subtitlePanel.GetComponent<SubtitlePanel>().Hide ();

@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: 167823417}
   - component: {fileID: 167823419}
   - component: {fileID: 167823418}
+  - component: {fileID: 167823420}
   m_Layer: 5
   m_Name: TimeRemaining
   m_TagString: Untagged
@@ -256,6 +257,18 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 167823416}
+--- !u!114 &167823420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 167823416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b65642c1317794b74b959bf50b89a41b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeLimit: 0
 --- !u!1 &201509189
 GameObject:
   m_ObjectHideFlags: 0
@@ -1912,13 +1925,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a76cb87678b4081ab32ac6cbb8222e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stickerPopupCanvas: {fileID: 291257517}
   gameStarted: 0
   scoreGauge: {fileID: 2106313777}
   timerText: {fileID: 167823418}
-  timer: {fileID: 11425286, guid: acd22bf20657649ccb1fd20c60347a24, type: 2}
+  timer: {fileID: 167823420}
   gameOverCanvas: {fileID: 1560120827}
   mainCanvas: {fileID: 627347615}
-  stickerPopupCanvas: {fileID: 291257517}
   backButton: {fileID: 201509189}
   sensesSprites:
   - {fileID: 21300000, guid: 4a4ca0629ca2a44df817b1ed43a90408, type: 3}

@@ -16,7 +16,7 @@ public class StickerManager : MonoBehaviour {
 
 	public bool debug;
 	public GameObject[] stickersSpawnList;
-	public GameObject[] stickersSlotList;
+	public StickerSlot[] stickersSlotList;
 	public GameObject location;
 	public Canvas mainCanvas;
 
@@ -27,7 +27,14 @@ public class StickerManager : MonoBehaviour {
 		else if(instance != this) {
 			Destroy(gameObject);
 		}
-		SoundManager.GetInstance().ChangeBackgroundMusic(SoundManager.GetInstance().gameBackgroundMusic);
+
+		if (!GameManager.GetInstance ()) {
+			SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
+			switchScene.loadScene ("Start");
+		}
+
+		if (SoundManager.GetInstance())
+			SoundManager.GetInstance().ChangeBackgroundMusic(SoundManager.GetInstance().gameBackgroundMusic);
 	}
 
 	public static StickerManager GetInstance() {
@@ -38,7 +45,23 @@ public class StickerManager : MonoBehaviour {
 		GameObject stickerObject;
 		stickerObject = Instantiate (stickersSpawnList [(int)stickerSelection], location.transform.position, Quaternion.identity, mainCanvas.transform);
 		if (isPlaced)
-			stickersSlotList [(int)stickerSelection].GetComponent<StickerSlot> ().ReceiveSticker (stickerObject.GetComponent<StickerBehaviour>());
+			stickersSlotList [(int)stickerSelection].ReceiveSticker (stickerObject.GetComponent<StickerBehaviour>());
+	}
+
+	public void DisableOtherStickerSlots(StickerType type) {
+		foreach (StickerSlot stickerSlot in stickersSlotList) {
+			if (stickerSlot.typeOfSticker != type) {
+				stickerSlot.DisableInput (true);
+			} else {
+				stickerSlot.DisableInput (false);
+			}
+		}
+	}
+
+	public void EnableOtherStickerSlots(StickerType type) {
+		foreach (StickerSlot stickerSlot in stickersSlotList) {
+			stickerSlot.DisableInput (false);
+		}
 	}
 
 	void Start () {

@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 
-public class BMaze_Manager : MonoBehaviour {
+public class BMaze_Manager : AbstractGameManager {
 	/* CREATED BY: Colby Tang
 	 * GAME: Brain Maze
 	 */
@@ -28,7 +28,7 @@ public class BMaze_Manager : MonoBehaviour {
 	public bool inputAllowed = false;
 	public GameObject subtitlePanel;
 	public AudioClip[] instructionVOList;
-	public GameObject stickerPopupCanvas;
+
 	public GameObject gameOverCanvas;
 	public GameObject backButton;
 	public BMaze_SceneAssets tutorialAssets;
@@ -89,7 +89,7 @@ public class BMaze_Manager : MonoBehaviour {
 		}
 
 		backButton.SetActive (true);
-		stickerPopupCanvas.SetActive (false);
+		stickerPopupCanvas.gameObject.SetActive (false);
 		gameOverCanvas.SetActive (false);
 		subtitlePanel.SetActive (false);
 		tutorialHand.SetActive (false);
@@ -205,26 +205,31 @@ public class BMaze_Manager : MonoBehaviour {
 		GameStart ();
 	}
 
-	public static void GameStart () {
+	public void GameStart () {
 		gameStarted = true;
 		instance.inputAllowed = true;
-		instance.skipButton.SetActive (true);
+		if (instance.skipButton)
+			instance.skipButton.SetActive (true);
 	}
 
-	public static void GameEnd (bool playerWin) {
-		if (playerWin) {
-			if (!isTutorialRunning && gameStarted ) {
-				gameStarted = false;
-				if (GameManager.GetInstance ())
-					GameManager.GetInstance ().LevelUp ("BrainMaze");
-				if (level == 0)
-					instance.Invoke ("UnlockSticker", 3f);
-				else {
-					instance.Invoke ("ShowGameOver", 3f);
-				}
-				//instance.Invoke ("ChangeScene", 3f);
+	public override void GameOver () {
+		if (!isTutorialRunning && gameStarted ) {
+			gameStarted = false;
+
+			if (level == 0)
+				UnlockSticker(StickerManager.StickerType.Frontal);
+			else {
+				ShowGameOver ();
 			}
+
+			if (GameManager.GetInstance ())
+				GameManager.GetInstance ().LevelUp ("BrainMaze");
 		}
+	}
+
+	public IEnumerator EndGameWait (float duration) {
+		yield return new WaitForSeconds (duration);
+		GameOver ();
 	}
 
 	public void ShowGameOver() {
@@ -232,26 +237,6 @@ public class BMaze_Manager : MonoBehaviour {
 		gameOverCanvas.SetActive (true);
 		Text gameoverScore = gameOverCanvas.GetComponentInChildren<Text> ();
 		gameoverScore.text = "Good job! You led your monster through the maze and collected all the pickups!";
-	}
-
-	public void UnlockSticker() {
-		ShowGameOver ();
-		SoundManager.GetInstance().PlayUnlockStickerVO();
-		stickerPopupCanvas.gameObject.SetActive(true);
-		GameManager.GetInstance ().ActivateBrainstormLagoonReview();
-
-		if(GameManager.GetInstance().LagoonFirstSticker) {
-			stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(false);
-			stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(true);
-			GameManager.GetInstance().LagoonFirstSticker = false;
-		}
-		else {
-			stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(false);
-			stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(true);
-		}
-
-		//GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "BrainMaze");
-		GameManager.GetInstance().ActivateSticker(StickerManager.StickerType.Frontal);
 	}
 
 	public void ChangeScene () {

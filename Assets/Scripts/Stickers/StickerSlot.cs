@@ -16,7 +16,6 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
 	}
 
 	public void OnDrop (PointerEventData eventData) {
-		print ("Ondrop");
 		if (eventData.pointerDrag.GetComponent<StickerBehaviour> ()) {
 			StickerBehaviour sticker = eventData.pointerDrag.GetComponent<StickerBehaviour> ();
 			if (!isStickerFilled && sticker.typeOfSticker == typeOfSticker) {
@@ -26,13 +25,24 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
 		}
 	}
 
+	public void DisableInput(bool disable) {
+		if (!isStickerFilled) {
+			//GetComponent<Image> ().raycastTarget = disable;
+			GetComponent<Image> ().enabled = !disable;
+		}
+	}
+
 	public void ReceiveSticker(StickerBehaviour sticker) {
 		sticker.OnSticked ();
 		isStickerFilled = true;
 		sticker.gameObject.transform.position = transform.position;
+		sticker.transform.SetParent (transform);
 		GetComponent<Image> ().raycastTarget = false;
 		sticker.GetComponent<CanvasGroup> ().blocksRaycasts = false;
 		GameManager.GetInstance ().OnStickerPlaced(sticker.typeOfSticker);
+		Canvas can = gameObject.AddComponent<Canvas> ();
+		can.overrideSorting = true;
+		can.sortingOrder = -1;
 		Destroy (sticker);
 	}
 

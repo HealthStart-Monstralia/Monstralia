@@ -45,7 +45,7 @@ public class EmotionsGameManager : AbstractGameManager {
 	public Transform emotionSpawnParent;
 	public Transform emotionToMatchSpawnParent;
 	public Canvas gameOverCanvas;
-	public Canvas stickerPopupCanvas;
+	//public Canvas stickerPopupCanvas;
 	public GameObject backButton;
 	public float waitDuration = 3f;
 	public static bool inputAllowed = false;
@@ -368,7 +368,7 @@ public class EmotionsGameManager : AbstractGameManager {
 			inputAllowed = false;
 			//GameManager.GetInstance().AddLagoonReviewGame("MonsterEmotionsReviewGame");
 			if (difficultyLevel == 1) {
-				UnlockSticker ();
+				UnlockSticker (StickerManager.StickerType.Amygdala);
 //			stickerPopupCanvas.gameObject.SetActive(true);
 //			GameManager.GetInstance().ActivateBrainstormLagoonReview();
 //			if(GameManager.GetInstance().LagoonFirstSticker) {
@@ -391,11 +391,10 @@ public class EmotionsGameManager : AbstractGameManager {
 		}
 	}
 
-	public void UnlockSticker() {
+	public override void UnlockSticker(StickerManager.StickerType stickerType) {
+		base.UnlockSticker (stickerType);
 		backButton.SetActive (true);
-		SoundManager.GetInstance().PlayUnlockStickerVO();
 		stickerPopupCanvas.gameObject.SetActive(true);
-		GameManager.GetInstance ().ActivateBrainstormLagoonReview();
 
 		if(GameManager.GetInstance().LagoonFirstSticker) {
 			stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(false);
@@ -403,11 +402,10 @@ public class EmotionsGameManager : AbstractGameManager {
 			GameManager.GetInstance().LagoonFirstSticker = false;
 		}
 		else {
-			stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(false);
-			stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(true);
+			stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(false);
+			stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(true);
 		}
 
-		//GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "MonsterEmotions");
 		GameManager.GetInstance().ActivateSticker(StickerManager.StickerType.Amygdala);
 	}
 
@@ -417,6 +415,4 @@ public class EmotionsGameManager : AbstractGameManager {
 		Text gameOverText = gameOverCanvas.GetComponentInChildren<Text> ();
 		gameOverText.text = "Great job! You matched " + score + " emotions!";
 	}
-
-
 }
