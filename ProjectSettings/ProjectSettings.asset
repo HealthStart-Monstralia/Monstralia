@@ -157,9 +157,6 @@ PlayerSettings:
   APKExpansionFiles: 0
   keepLoadedShadersAlive: 0
   StripUnusedMeshComponents: 0
-  VertexChannelCompressionMask:
-    serializedVersion: 2
-    m_Bits: 238
   iPhoneSdkVersion: 988
   iOSTargetOSVersionString: 
   tvOSSdkVersion: 0
@@ -193,7 +190,6 @@ PlayerSettings:
     serializedVersion: 2
     rgba: 0
   iOSLaunchScreenFillPct: 100
-  iOSLaunchScreenSize: 100
   iOSLaunchScreenCustomXibPath: 
   iOSLaunchScreeniPadType: 0
   iOSLaunchScreeniPadImage: {fileID: 0}
@@ -215,7 +211,6 @@ PlayerSettings:
   appleEnableAutomaticSigning: 0
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
-  androidSplashScreen: {fileID: 0}
   AndroidKeystoreName: 
   AndroidKeyaliasName: 
   AndroidTVCompatibility: 1
@@ -225,7 +220,6 @@ PlayerSettings:
   - width: 320
     height: 180
     banner: {fileID: 0}
-  androidGamepadSupportLevel: 0
   resolutionDialogBanner: {fileID: 0}
   m_BuildTargetIcons: []
   m_BuildTargetBatching: []
@@ -391,8 +385,6 @@ PlayerSettings:
   ps4SdkOverride: 
   ps4BGMPath: 
   ps4ShareFilePath: 
-  ps4ShareOverlayImagePath: 
-  ps4PrivacyGuardImagePath: 
   ps4NPtitleDatPath: 
   ps4RemotePlayKeyAssignment: -1
   ps4RemotePlayKeyMappingDir: 
@@ -439,7 +431,6 @@ PlayerSettings:
   psp2NPTrophyPackPath: 
   psp2NPSupportGBMorGJP: 0
   psp2NPAgeRating: 12
-  psp2NPTitleDatPath: 
   psp2NPCommsID: 
   psp2NPCommunicationsID: 
   psp2NPCommsPassphrase: 
@@ -454,7 +445,6 @@ PlayerSettings:
   psp2PatchOriginalPackage: 
   psp2PackagePassword: WRK5RhRXdCdG5nG5azdNMK66MuCV6GXi
   psp2KeystoneFile: 
-  psp2MemoryExpansionMode: 0
   psp2DRMType: 0
   psp2StorageType: 0
   psp2MediaCapacity: 0
@@ -534,7 +524,8 @@ PlayerSettings:
   metroCompilationOverrides: 1
   tizenProductDescription: 
   tizenProductURL: 
-  tizenSigningProfileName: 
+  tizenCertificatePath: 
+  tizenCertificatePassword: 
   tizenGPSPermissions: 0
   tizenMicrophonePermissions: 0
   tizenDeploymentTarget: 
@@ -567,7 +558,6 @@ PlayerSettings:
   XboxOnePackagingOverridePath: 
   XboxOneAppManifestOverridePath: 
   XboxOnePackageEncryption: 0
-  XboxOnePackageUpdateGranularity: 2
   XboxOneDescription: 
   XboxOneLanguage:
   - enus
