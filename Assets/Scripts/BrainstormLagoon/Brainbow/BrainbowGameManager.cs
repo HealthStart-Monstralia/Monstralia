@@ -17,7 +17,6 @@ public class BrainbowGameManager : AbstractGameManager {
 	private BrainbowFood banana;
 	private Transform bananaOrigin;
 	private bool gameOver = false;
-	private bool isInputAllowed = false;
 	private Coroutine tutorialCoroutine;
 
 	private float waterSpawnTime = 0.0f;
@@ -27,19 +26,23 @@ public class BrainbowGameManager : AbstractGameManager {
 	public Canvas mainCanvas;
 	public Canvas reviewCanvas;
 	public Canvas instructionPopup;
+	public GameObject tutorialHand;
+	public GameObject tutorialBanana;
+	public GameObject tutorialPlayerBanana;
 	public Canvas gameoverCanvas;
 	public List<GameObject> foods;
 	public List<GameObject> inGameFoods = new List<GameObject>();
 	public Transform[] spawnPoints;
 	public Transform spawnParent;
 	public int foodScale;
+	public LayerMask foodLayerMask;
 	public Slider scoreGauge;
 	public Text timerText;
 	public float timeLimit;
 	public Timer timer;
 
 	public GameObject endGameAnimation;
-	public GameObject subtitlePanel;
+	public SubtitlePanel subtitlePanel;
 	public Transform tutorialOrigin;
 
 	public GameObject waterBottle;
@@ -63,7 +66,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	public AudioClip letsPlay;
 	public AudioClip waterTip;
 	public AudioClip level1Complete;
-	//public AudioClip stickerbook;
+
 	public AudioClip reviewGame;
 	public AudioClip finalFeedback;
 	
@@ -80,7 +83,6 @@ public class BrainbowGameManager : AbstractGameManager {
 			switchScene.loadScene ("Start");
 		} else {
 			difficultyLevel = GameManager.GetInstance ().GetLevel ("Brainbow");
-
 			scoreGoals = new Dictionary<int, int> () {
 				{ 1, 8 },
 				{ 2, 12 },
@@ -95,11 +97,11 @@ public class BrainbowGameManager : AbstractGameManager {
 		return instance;
 	}
 
-	void Start(){
+	void Start() {
 		SoundManager.GetInstance().ChangeBackgroundMusic(backgroundMusic);
-		//create enums for each part of the island that represents the games to avoid using numbers to access the arrays
-		//in GameManager. Ex: brainstormLagoonTutorial[BrainstormLagoon.BRAINBOW]
-
+		instructionPopup.gameObject.SetActive(false);
+		tutorialHand.SetActive (false);
+		ChooseFoodsFromManager ();
 
 		if (GameManager.GetInstance ().LagoonReview) {
 			StartReview ();
@@ -154,14 +156,12 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	public void PregameSetup () {
 		score = 0;
-		
 		scoreGauge.maxValue = scoreGoals[difficultyLevel];
+		UpdateScoreGauge();
 
 		typeOfMonster = GameManager.GetMonsterType ();
 		CreateMonster ();
 		monsterObject.PlaySpawn ();
-
-		UpdateScoreGauge();
 
 		if (GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.BRAINBOW]) {
 			tutorialCoroutine = StartCoroutine (RunTutorial ());
@@ -173,7 +173,7 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	IEnumerator RunTutorial() {
 		runningTutorial = true;
-		isInputAllowed = false;
+		GameManager.GetInstance ().SetIsInputAllowed (false);
 		instructionPopup.gameObject.SetActive(true);
 		SoundManager.GetInstance().PlayVoiceOverClip(intro);
 		yield return new WaitForSeconds(6f);
@@ -184,36 +184,41 @@ public class BrainbowGameManager : AbstractGameManager {
 
 		yield return new WaitForSeconds(instructions.length-4.5f);
 
-		Animation anim = instructionPopup.gameObject.transform.Find ("TutorialAnimation").gameObject.GetComponent<Animation> ();
-		anim.Play ("DragToStripe");
+		Animator anim = tutorialHand.GetComponent<Animator> ();
+		tutorialHand.SetActive (true);
+		anim.Play ("DragToStripe", -1, 0f);
 
-		yield return new WaitForSeconds(anim.clip.length);
-		anim.gameObject.SetActive (false);
+		yield return new WaitForSeconds(1.5f);
+		tutorialBanana.transform.SetParent (tutorialHand.transform);
+		yield return new WaitForSeconds(1.5f);
+		tutorialBanana.transform.SetParent (tutorialHand.transform.parent);
+		RaycastHit2D hit = Physics2D.Raycast (tutorialBanana.transform.position, -Vector2.up, 1.0f, foodLayerMask);
+		tutorialBanana.transform.position = hit.collider.GetComponent<ColorDetector> ().destinations [0].position;
+		yield return new WaitForSeconds(3f);
+		tutorialHand.SetActive (false);
+		tutorialBanana.SetActive (false);
+		redOutline.SetActive(false);
 
-		GameObject banana = instructionPopup.transform.Find ("Banana").gameObject;
-		banana.SetActive(true);
-//		banana.GetComponent<SpriteRenderer> ().enabled = true;
-//		banana.GetComponent<PolygonCollider2D> ().enabled = true;
-
-		//redOutline.SetActive(false);
 		if (runningTutorial) {
-			subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Now You Try!", nowYouTry);
-			isInputAllowed = true;
+			subtitlePanel.Display ("Now You Try!", nowYouTry);
+			tutorialPlayerBanana.SetActive(true);
+			GameManager.GetInstance ().SetIsInputAllowed (true);
 			bananaOrigin = tutorialOrigin;
-			banana.GetComponent<BrainbowFood> ().SetOrigin (bananaOrigin);
+			print (tutorialPlayerBanana);
+			tutorialPlayerBanana.GetComponent<BrainbowFood> ().SetOrigin (bananaOrigin);
 		}
 	}
 
 	IEnumerator TutorialTearDown ()	{
 		StopCoroutine (tutorialCoroutine);
 		GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.BRAINBOW] = false;
-		isInputAllowed = false;
+		GameManager.GetInstance ().SetIsInputAllowed (false);
 		score = 0;
 		UpdateScoreGauge();
 		runningTutorial = false;
-		subtitlePanel.GetComponent<SubtitlePanel>().Display("Perfect!", letsPlay, true);
+		subtitlePanel.Display("Perfect!", letsPlay, true);
 		yield return new WaitForSeconds(letsPlay.length);
-		subtitlePanel.GetComponent<SubtitlePanel>().Hide ();
+		subtitlePanel.Hide ();
 		instructionPopup.gameObject.SetActive(false);
 		gameTitle.gameObject.SetActive(false);
 		StartGame ();
@@ -248,9 +253,11 @@ public class BrainbowGameManager : AbstractGameManager {
 		int selection = Random.Range (0, 4);
 		GameObject water = Instantiate(
 			waterBottle,
-			mainCanvas.transform
+			waterSpawnLocations [selection].transform
+			//mainCanvas.transform
 		);
-		water.transform.position = waterSpawnLocations [selection].transform.position;
+		water.transform.localPosition = new Vector3 (0f,0f,0f);
+		water.transform.localScale = new Vector3 (0.25f, 0.25f, 0.25f);
 	}
 
 	public IEnumerator DisplayGo () {
@@ -259,9 +266,8 @@ public class BrainbowGameManager : AbstractGameManager {
 		PostCountdownSetup ();
 	}
 
-	void PostCountdownSetup ()
-	{
-		isInputAllowed = true;
+	void PostCountdownSetup () {
+		GameManager.GetInstance ().SetIsInputAllowed (true);
 		if(difficultyLevel == 1){
 			SoundManager.GetInstance().PlayVoiceOverClip(waterTip);
 
@@ -284,13 +290,39 @@ public class BrainbowGameManager : AbstractGameManager {
 		}
 	}
 
+	void ChooseFoodsFromManager() {
+		FoodList listOfFoods = GameManager.GetInstance ().GetComponent<FoodList> ();
+		List<GameObject> redFoodsList = new List<GameObject>(listOfFoods.GetBrainbowFoods (Colorable.Color.Red));
+		List<GameObject> yellowFoodsList = new List<GameObject>(listOfFoods.GetBrainbowFoods (Colorable.Color.Yellow));
+		List<GameObject> greenFoodsList = new List<GameObject>(listOfFoods.GetBrainbowFoods (Colorable.Color.Green));
+		List<GameObject> purpleFoodsList = new List<GameObject>(listOfFoods.GetBrainbowFoods (Colorable.Color.Purple));
+
+		AddFoodsToList (redFoodsList);
+		AddFoodsToList (yellowFoodsList);
+		AddFoodsToList (greenFoodsList);
+		AddFoodsToList (purpleFoodsList);
+	}
+
+	void AddFoodsToList(List<GameObject> goList) {
+		int randomIndex;
+		for (int i = 0; i < 5; i++) {
+			print ("goList: " + goList);
+			randomIndex = Random.Range (0, goList.Count);
+			print ("goList.Count: " + goList.Count);
+			print ("randomIndex: " + randomIndex);
+			foods.Add (goList [randomIndex]);
+			goList.RemoveAt(randomIndex);
+		}
+	}
+
 	void SpawnFood(Transform spawnPos) {
 		int randomIndex = Random.Range (0, foods.Count);
 		GameObject newFood = Instantiate(foods[randomIndex]);
 		newFood.name = foods[randomIndex].name;
-		newFood.GetComponent<BrainbowFood>().SetOrigin(spawnPos);
-		newFood.GetComponent<BrainbowFood>().Spawn(spawnPos, spawnParent, foodScale);
-		SetActiveFood(newFood.GetComponent<BrainbowFood>());
+		BrainbowFood brainbowComponent = newFood.AddComponent<BrainbowFood> ();
+		brainbowComponent.SetOrigin(spawnPos);
+		newFood.GetComponent<Food>().Spawn(spawnPos, spawnParent, foodScale);
+		SetActiveFood(brainbowComponent);
 		inGameFoods.Add (newFood);
 		foods.RemoveAt(randomIndex);
 	}
@@ -316,7 +348,7 @@ public class BrainbowGameManager : AbstractGameManager {
 
 
 	void EndGameTearDown () {
-		subtitlePanel.GetComponent<SubtitlePanel>().Hide ();
+		subtitlePanel.Hide ();
 		gameStarted = false;
 		timer.StopTimer();
 		gameOver = true;
@@ -338,17 +370,9 @@ public class BrainbowGameManager : AbstractGameManager {
 		}
 
 		SoundManager.GetInstance().PlayVoiceOverClip(finalFeedback);
-		/*
-		GameObject animation = (GameObject)Instantiate(endGameAnimation);
-		animation.gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameManager.GetInstance().getMonster());
-		*/
 		monsterObject.PlayEat ();
 
-		//Animator monsterAnim = monsterObject.gameObject.GetComponent<Animator> ();
-
 		yield return new WaitForSeconds (14f);
-		//yield return new WaitForSeconds (endGameAnimation.gameObject.GetComponent<Animator> ().runtimeAnimatorController.animationClips [0].length);
-
 		GameOver ();
 	}
 
@@ -397,8 +421,11 @@ public class BrainbowGameManager : AbstractGameManager {
 		monsterObject = monsterSpawn.GetComponent<BBMonster> ();
 	}
 
-	public bool GetIsInputAllowed () {
-		return isInputAllowed;
+	public void ShowSubtitles(string subtitle, AudioClip clip = null, bool queue = false) {
+		subtitlePanel.Display (subtitle, clip, queue);
 	}
 
+	public void HideSubtitles() {
+		subtitlePanel.Hide ();
+	}
 }

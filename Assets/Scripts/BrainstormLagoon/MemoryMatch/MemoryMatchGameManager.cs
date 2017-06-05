@@ -74,6 +74,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 			typeOfMonster = GameManager.GetMonsterType ();
 			CreateMonster ();
 			monsterObject.PlaySpawn ();
+			RetrieveFoodsFromManager ();
 
 			if(GameManager.GetInstance().LagoonReview) {
 				StartReview();
@@ -167,7 +168,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		DishObject tutDish3 = tutorialDishes[2];
 
 		GameObject tutFood1 = tutorialDishes[0].transform.Find ("Banana").gameObject;
-		GameObject tutFood2 = tutorialDishes[1].transform.Find ("Berry").gameObject;
+		GameObject tutFood2 = tutorialDishes[1].transform.Find ("Raspberry").gameObject;
 		GameObject tutFood3 = tutorialDishes[2].transform.Find ("Brocolli").gameObject;
 		currentFoodToMatch = tutFood1;
 
@@ -344,6 +345,10 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		}
 	}
 
+	void RetrieveFoodsFromManager() {
+		foods = GameManager.GetInstance ().GetComponent<FoodList> ().goodFoods;
+	}
+
 	void SelectFoods() {
 		int foodCount = 0;
 		while(foodCount < numDishes){
@@ -353,7 +358,6 @@ public class MemoryMatchGameManager : AbstractGameManager {
 				activeFoods.Add(newFood);
 				++foodCount;
 			}
-
 		}
 	}
 
@@ -383,7 +387,8 @@ public class MemoryMatchGameManager : AbstractGameManager {
 			newFood.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1f);
 		}
 		foodsList.RemoveAt(randomIndex);
-		newFood.GetComponent<SpriteRenderer> ().sortingOrder = 4;
+		newFood.GetComponent<Collider2D> ().enabled = false;
+		//newFood.GetComponent<SpriteRenderer> ().sortingOrder = 4;
 		return newFood;
 	}
 

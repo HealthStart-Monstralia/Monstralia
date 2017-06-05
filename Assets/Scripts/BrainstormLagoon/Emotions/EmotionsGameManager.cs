@@ -258,8 +258,8 @@ public class EmotionsGameManager : AbstractGameManager {
 
 	// Update is called once per frame
 	void Update () {
-		if( gameStarted && (timer.TimeRemaining() <= 0.0f || score >= scoreGoal))
-			GameOver();
+		if (gameStarted && (timer.TimeRemaining () <= 0.0f || score >= scoreGoal))
+			PostGame ();
 	}
 
 	void FixedUpdate() {
@@ -352,36 +352,25 @@ public class EmotionsGameManager : AbstractGameManager {
 		currentEmotionToMatch.GetComponent<BoxCollider2D>().enabled = false;
 		currentEmotionToMatch.GetComponent<EmotionBehavior>().enabled = false;
 
-//		}
-
 	}
 
 	private void UpdateScoreGauge(){
 		scoreGauge.value = score;
 	}
-		
+
+	IEnumerator PostGame () {
+		gameOver = true;
+		inputAllowed = false;
+		yield return new WaitForSeconds (0.3f);
+	}
 
 	override public void GameOver(){
 		if (!gameOver) {
 			print ("GameOver");
-			gameOver = true;
-			inputAllowed = false;
 			//GameManager.GetInstance().AddLagoonReviewGame("MonsterEmotionsReviewGame");
+			backButton.SetActive (true);
 			if (difficultyLevel == 1) {
 				UnlockSticker (StickerManager.StickerType.Amygdala);
-//			stickerPopupCanvas.gameObject.SetActive(true);
-//			GameManager.GetInstance().ActivateBrainstormLagoonReview();
-//			if(GameManager.GetInstance().LagoonFirstSticker) {
-//				stickerPopupCanvas.transform.FindChild("StickerbookButton").gameObject.SetActive(true);
-//				GameManager.GetInstance().LagoonFirstSticker = false;
-//				Debug.Log ("This was Brainstorm Lagoon's first sticker");
-//			}
-//			else {
-//				Debug.Log ("This was not Brainstorm Lagoon's first sticker");
-//				stickerPopupCanvas.transform.FindChild("BackButton").gameObject.SetActive(true);
-//			}
-//			GameManager.GetInstance().ActivateSticker("BrainstormLagoon", "");
-//			GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.MONSTER_EMOTIONS] = false;
 			} else {
 				DisplayGameOverPopup ();
 			}
@@ -389,24 +378,6 @@ public class EmotionsGameManager : AbstractGameManager {
 			GameManager.GetInstance ().LevelUp ("MonsterEmotions");
 
 		}
-	}
-
-	public override void UnlockSticker(StickerManager.StickerType stickerType) {
-		base.UnlockSticker (stickerType);
-		backButton.SetActive (true);
-		stickerPopupCanvas.gameObject.SetActive(true);
-
-		if(GameManager.GetInstance().LagoonFirstSticker) {
-			stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(false);
-			stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(true);
-			GameManager.GetInstance().LagoonFirstSticker = false;
-		}
-		else {
-			stickerPopupCanvas.transform.Find("BackButton").gameObject.SetActive(false);
-			stickerPopupCanvas.transform.Find("StickerbookButton").gameObject.SetActive(true);
-		}
-
-		GameManager.GetInstance().ActivateSticker(StickerManager.StickerType.Amygdala);
 	}
 
 	public void DisplayGameOverPopup () {

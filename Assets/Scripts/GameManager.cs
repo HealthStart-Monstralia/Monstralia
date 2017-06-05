@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour {
 	private static GameManager instance = null;
 	private List<string> LagoonReviewGames;
 	private string reviewGamePath = "ReviewGames";
+	private bool allowInput = true;
 
 	public bool[] LagoonTutorial = new bool[5];
 	public bool LagoonFirstSticker = true;
@@ -183,6 +184,15 @@ public class GameManager : MonoBehaviour {
 		stickers [StickerManager.StickerType.Frontal] = true;
 		stickers [StickerManager.StickerType.Hippocampus] = true;
 		stickers [StickerManager.StickerType.RainbowBrain] = true;
+	}
+
+	public bool GetIsInputAllowed() {
+		return allowInput;
+	}
+
+	public void SetIsInputAllowed(bool boolean) {
+		allowInput = boolean;
+		print ("Input Allowed: " + boolean);
 	}
 
 }

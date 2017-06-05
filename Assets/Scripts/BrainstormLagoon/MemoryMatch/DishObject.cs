@@ -8,19 +8,34 @@ public class DishObject : MonoBehaviour {
 	private static bool isGuessing = false;
 	private bool matched = false;
 	private Animator dishAnim;
+	private SpriteRenderer lidSpriteComponent, dishSpriteComponent, foodSpriteComponent;
+	private int initialSortingLayer;
 
 	[HideInInspector] public GameObject dish, lid, foodObject;
+	public AudioClip lidSfx;
 
 	void Awake() {
 		dish = gameObject;
 		lid = gameObject.transform.Find ("DishLid").gameObject;
 		dishAnim = GetComponent<Animator> ();
 		dishAnim.Play ("Dish_NoLid");
+		lidSpriteComponent = lid.GetComponent<SpriteRenderer> ();
+		dishSpriteComponent = dish.GetComponent<SpriteRenderer> ();
+		initialSortingLayer = dishSpriteComponent.sortingOrder;
+	}
+
+	void LateUpdate() {
+		lidSpriteComponent.sortingOrder = (initialSortingLayer + 15) + ((-(int)transform.position.y) * 10);
+		dishSpriteComponent.sortingOrder = (initialSortingLayer + 13) + ((-(int)transform.position.y) * 10);
+		if (foodObject)
+			foodSpriteComponent.sortingOrder = (initialSortingLayer + 14) + ((-(int)transform.position.y) * 10);
 	}
 
 	public void SetFood(GameObject food) {
+		print ("SetFood");
 		foodObject = food;
 		myFood = foodObject.GetComponent<Food>();
+		foodSpriteComponent = foodObject.GetComponent<SpriteRenderer> ();
 	}
 
 	public void Reset() {
@@ -79,7 +94,6 @@ public class DishObject : MonoBehaviour {
 		if(manager.inputAllowed && !isGuessing && (manager.isGameStarted() || manager.isRunningTutorial())) {
 			isGuessing = true;
 
-			//Reveal the food underneath the dish by setting the sprite renderer to disabled.
 			OpenLid();
 			manager.subtitlePanel.Display(myFood.name, myFood.clipOfName);
 
@@ -104,5 +118,10 @@ public class DishObject : MonoBehaviour {
 
 	public bool IsMatched() {
 		return matched;
+	}
+
+	/* Used in Dish_Correct animation event */
+	public void PlayLidWoosh() {
+		SoundManager.GetInstance ().PlaySFXClip (lidSfx);
 	}
 }

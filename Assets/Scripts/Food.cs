@@ -8,9 +8,9 @@ using System.Collections;
  * The abstract Food class handles spawning the food into the scene.
  * Everything else is handled by the individual Food scripts.
  */
-public abstract class Food : Colorable {
-
-	public AudioClip clipOfName;	/*!< audio clip of the food's name to be used with subtitles */
+public class Food : Colorable {
+	public string foodName;			/*!< Food's name to be used with subtitles */
+	public AudioClip clipOfName;	/*!< Audio clip of the food's name to be used with subtitles */
 
 	/**
 	 * \brief Spawn the food into the scene at the spcified location

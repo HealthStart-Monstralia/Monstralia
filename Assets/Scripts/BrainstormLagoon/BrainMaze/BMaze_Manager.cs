@@ -13,7 +13,6 @@ public class BMaze_Manager : AbstractGameManager {
 	[Range(0.1f,1.0f)]
 	public float[] monsterScale;
 	public static GameObject monsterObject;
-	//public GameObject monsterShadow;
 
 	public AudioClip backgroundMusic;
 	public Slider scoreSlider;
@@ -41,6 +40,50 @@ public class BMaze_Manager : AbstractGameManager {
 	private static BMaze_Manager instance = null;
 	private Coroutine tutorialCoroutine;
 
+	void Awake () {
+		if(instance == null) {
+			instance = this;
+		}
+		else if(instance != this) {
+			Destroy(gameObject);
+		}
+
+		if (!GameManager.GetInstance ()) {
+			SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
+			switchScene.loadScene ("Start");
+		} else {
+			level = GameManager.GetInstance ().GetLevel ("BrainMaze") - 1;
+			if (level > 2) {
+				level = 2;
+
+			}
+
+			if (SoundManager.GetInstance ()) {
+				SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
+				SoundManager.GetInstance ().StopPlayingVoiceOver ();
+			}
+
+			backButton.SetActive (true);
+			stickerPopupCanvas.gameObject.SetActive (false);
+			gameOverCanvas.SetActive (false);
+			subtitlePanel.SetActive (false);
+			tutorialHand.SetActive (false);
+			ChangeSlider (0f);
+			timeLeft = timeLimit;
+			if (timerText == null)
+				Debug.LogError ("No Timer Found!");
+			timerText.text = Mathf.Round (timeLeft).ToString ();
+
+			if (GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.BRAINMAZE]) {
+				tutorialCoroutine = StartCoroutine (RunTutorial ());
+			} else {
+				SetupMaze (level);
+			}
+
+			typeOfMonster = GameManager.GetMonsterType ();
+		}
+	}
+
 	void SetupMaze(int level) {
 		beachBackgroundObj.GetComponent<BMaze_BeachBackgrounds> ().ChangeBackground (level);
 		mazeGraphicObj.GetComponent<BMaze_MazeGraphics> ().ChangeMaze (level);
@@ -67,46 +110,6 @@ public class BMaze_Manager : AbstractGameManager {
 			RemoveMonster ();
 		CreateMonster ();
 		StartCoroutine (Countdown ());
-	}
-
-	void Awake () {
-		if(instance == null) {
-			instance = this;
-		}
-		else if(instance != this) {
-			Destroy(gameObject);
-		}
-		if (GameManager.GetInstance ()) {
-			level = GameManager.GetInstance ().GetLevel ("BrainMaze") - 1;
-			if (level > 2) {
-				level = 2;
-			}
-		}
-
-		if (SoundManager.GetInstance ()) {
-			SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
-			SoundManager.GetInstance ().StopPlayingVoiceOver ();
-		}
-
-		backButton.SetActive (true);
-		stickerPopupCanvas.gameObject.SetActive (false);
-		gameOverCanvas.SetActive (false);
-		subtitlePanel.SetActive (false);
-		tutorialHand.SetActive (false);
-		ChangeSlider (0f);
-		timeLeft = timeLimit;
-		if (timerText == null)
-			Debug.LogError ("No Timer Found!");
-		timerText.text = Mathf.Round(timeLeft).ToString();
-
-		if (GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.BRAINMAZE]) {
-			tutorialCoroutine = StartCoroutine (RunTutorial ());
-		}
-		else {
-			SetupMaze (level);
-		}
-
-		typeOfMonster = GameManager.GetMonsterType();
 	}
 		
 	void Update () {
