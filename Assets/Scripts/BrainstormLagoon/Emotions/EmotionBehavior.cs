@@ -17,7 +17,7 @@ public class EmotionBehavior : MonoBehaviour {
 	}
 
 	void OnMouseDown() {
-		if (EmotionsGameManager.inputAllowed) {
+		if (EmotionsGameManager.inputAllowed && (EmotionsGameManager.GetInstance().isTutorialRunning || EmotionsGameManager.GetInstance().gameStarted)) {
 			EmotionsGameManager.GetInstance ().CheckEmotion (this.gameObject);
 			EmotionsGameManager.GetInstance ().subtitlePanel.GetComponent<SubtitlePanel> ().Display (emotions.ToString(), this.clipOfName);
 		}
