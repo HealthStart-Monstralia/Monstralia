@@ -19,7 +19,7 @@ public class Timer : MonoBehaviour {
 	}
 	
 	void FixedUpdate () {
-		if(timing) {
+		if(timing && timeRemaining >= 0f) {
 			timeRemaining -= Time.deltaTime;
 		}
 	
@@ -47,7 +47,7 @@ public class Timer : MonoBehaviour {
 	 * @return The timeRemaining without the decimal
 	 */
 	public int TimeRemaining() {
-		return (int)timeRemaining;
+		return Mathf.CeilToInt(timeRemaining);
 	}
 
 	/**
@@ -55,5 +55,17 @@ public class Timer : MonoBehaviour {
 	 */
 	public void StopTimer() {
 		timing = false;
+	}
+
+	public void SubtractTime(float delta) {
+		print ("function call: subtract time");
+		if (timeRemaining > 0) {
+			print ("subtracted time");
+			timeRemaining -= delta;
+		}
+	}
+
+	public void AddTime(float delta) {
+		timeRemaining += delta;
 	}
 }

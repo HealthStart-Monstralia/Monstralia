@@ -7,7 +7,11 @@ public class Colorable : MonoBehaviour {
 		Red,
 		Yellow,
 		Green,
-		Purple
+		Purple,
+		Blue,
+		White,
+		Orange,
+		Other
 	};
 
 	public Color color;

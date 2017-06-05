@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['changespriteimage',['changeSpriteImage',['../class_change_sprite.html#a47152d1ec779fb0f6579185ea8558a45',1,'ChangeSprite']]],
-  ['choosefoodtomatch',['ChooseFoodToMatch',['../class_memory_match_game_manager.html#a79d4233e97ef5f01970cd0e7219507ec',1,'MemoryMatchGameManager']]]
+  ['begincountdown',['BeginCountdown',['../class_countdown_manager.html#a1b2462bf5c2e334fe348e8b121b94198',1,'CountdownManager']]]
 ];

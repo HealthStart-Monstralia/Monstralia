@@ -1,12 +1,6 @@
 var searchData=
 [
-  ['scenetoload',['sceneToLoad',['../class_switch_scene.html#aaeba08e750b6ec4f312d13c3e5ccef92',1,'SwitchScene']]],
-  ['score',['score',['../class_brainbow_game_manager.html#ab00964daf5fc1554977ae59f95eca5ff',1,'BrainbowGameManager.score()'],['../class_memory_match_game_manager.html#a211b26591ea6c0d0e29485ba4dd693a6',1,'MemoryMatchGameManager.score()']]],
-  ['scoregoals',['scoreGoals',['../class_brainbow_game_manager.html#a86c0fab165415ec1eb9854dd6d099033',1,'BrainbowGameManager']]],
-  ['scoretext',['scoreText',['../class_brainbow_game_manager.html#a6ca1874d83124c8df4bdb511e7264bfb',1,'BrainbowGameManager.scoreText()'],['../class_memory_match_game_manager.html#a9566403e19731cc648ea930cf6f56305',1,'MemoryMatchGameManager.scoreText()']]],
-  ['screenpoint',['screenPoint',['../class_brainbow_food.html#a6dfeed286ebefa8ee73510df587c2b37',1,'BrainbowFood']]],
-  ['singleton',['singleton',['../class_loader.html#a6c35d15c9cd5b8d5ca3168b8edffb50d',1,'Loader']]],
-  ['spawnparent',['spawnParent',['../class_brainbow_game_manager.html#a020087a37ab88c8890062e381b296b3c',1,'BrainbowGameManager']]],
-  ['spawnpoints',['spawnPoints',['../class_brainbow_game_manager.html#a6f968f93c8fe8a893866d758f0f0d3b3',1,'BrainbowGameManager']]],
-  ['starbases',['starBases',['../class_star_manager.html#a614163d43d49aaca09b60dc5b1049909',1,'StarManager']]]
+  ['offset',['offset',['../class_brainbow_food.html#a7d400ee232436b63eeb7bdefcd59b90c',1,'BrainbowFood.offset()'],['../class_b_maze___snap_point_generator.html#aa98151c0b9078560f2e0446f3f992c6f',1,'BMaze_SnapPointGenerator.offset()'],['../class_moveable_object.html#a2e92ce81b50183611f7da6409c85add9',1,'MoveableObject.offset()']]],
+  ['oldsprite',['oldSprite',['../class_change_sprite.html#a7b5c25205dfa147936742c13d8655a75',1,'ChangeSprite']]],
+  ['origin',['origin',['../class_brainbow_food.html#acdd4e19ac78ac106fe1ffd1d5caf7f51',1,'BrainbowFood']]]
 ];

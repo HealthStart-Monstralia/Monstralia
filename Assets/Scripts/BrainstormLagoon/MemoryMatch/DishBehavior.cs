@@ -13,6 +13,7 @@ public class DishBehavior : MonoBehaviour {
 	
 	private Food myFood; /*!< The food belonging to this dish. */
 	private static bool isGuessing; /*!< Flag that keeps track of whether the player made a guess. */
+	private bool matched = false;			/*!< Flag that keeps track of whether this dish has been matched. */
 
 	public GameObject top; /*!< Reference to the top part of the dish. */
 	public GameObject bottom; /*!< Reference to the bottom part of the dish. */
@@ -28,7 +29,15 @@ public class DishBehavior : MonoBehaviour {
 	 * @param food: a GameObject with a Food component attached
 	 */
 	public void SetFood(Food food) {
-		myFood = gameObject.GetComponentsInChildren<Food>()[0];
+		myFood = food;//gameObject.GetComponentsInChildren<Food>()[0];
+	}
+
+	public void Reset() {
+		Destroy(myFood.gameObject);
+		if(top.activeSelf == false) {
+			top.SetActive(true);
+			top.GetComponent<Animation>().Play (top.GetComponent<Animation>()["DishTopRevealClose"].name);
+		}
 	}
 
 	/**
@@ -39,23 +48,40 @@ public class DishBehavior : MonoBehaviour {
 	 * @return WaitForSeconds for a delay.
 	 */
 	IEnumerator OnMouseDown() {
-		if(!isGuessing && MemoryMatchGameManager.GetInstance().isGameStarted()) {
+		Animation animation = top.GetComponent<Animation>();
+		if(!isGuessing && (MemoryMatchGameManager.GetInstance().isGameStarted() || MemoryMatchGameManager.GetInstance().isRunningTutorial())) {
 			isGuessing = true;
+
 			//Reveal the food underneath the dish by setting the sprite renderer to disabled.
-			top.GetComponent<SpriteRenderer>().enabled = false;
+			top.GetComponent<Animation>().Play (animation["DishTopRevealLift"].name);
+			MemoryMatchGameManager.GetInstance().subtitlePanel.Display(myFood.name, myFood.clipOfName);
+
 			if(MemoryMatchGameManager.GetInstance().GetFoodToMatch().name != myFood.name) {
-				yield return new WaitForSeconds(1.5f);
-				top.GetComponent<SpriteRenderer>().enabled = true;
+				if (!matched) {
+					MemoryMatchGameManager.GetInstance ().SubtractTime (3.0f);
+					yield return new WaitForSeconds (2f);
+				}
+
+				top.GetComponent<Animation>().Play (animation["DishTopRevealClose"].name);
 			}
 			else {
-				//top.GetComponent<SpriteRenderer>().enabled = false;
-				SoundManager.GetInstance().PlayClip(MemoryMatchGameManager.GetInstance().correctSound);
-				yield return new WaitForSeconds(.5f);
+				top.GetComponent<Animation>().Play (animation["DishTopRevealLift"].name);
+				SoundManager.GetInstance().PlayCorrectSFX();
+				MemoryMatchGameManager.GetInstance().AddToMatchedList(myFood);
+				yield return new WaitForSeconds(1.5f);
+				top.GetComponent<SpriteRenderer>().enabled = false;
+				matched = true;
+
 				MemoryMatchGameManager.GetInstance().ChooseFoodToMatch();
 			}
 			//The player can now guess again.
+			MemoryMatchGameManager.GetInstance().subtitlePanel.Hide ();
 			isGuessing = false;
-			return true;
 		}
 	}
+
+	public bool IsMatched() {
+		return matched;
+	}
+	
 }

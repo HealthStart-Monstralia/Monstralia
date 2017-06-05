@@ -3,7 +3,7 @@ using System.Collections;
 
 public class LagoonSetUp : MonoBehaviour {
 
-	public AudioClip[] clips;
+	public AudioClip lagoonBGMusic;
 
 	// Use this for initialization
 	void Awake () {
@@ -12,10 +12,11 @@ public class LagoonSetUp : MonoBehaviour {
 
 	void Setup ()
 	{
-		SoundManager.GetInstance().LagoonSetup (clips);
+		SoundManager.GetInstance().LagoonSetup (lagoonBGMusic);
 	}
 
 	public void Teardown(bool toMainMap) {
+		GameManager.GetInstance ().PlayLagoonVoiceOver = true;
 		SoundManager.GetInstance().LagoonTearDown (toMainMap);
 	}
 }
