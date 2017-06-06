@@ -25,6 +25,8 @@ public class GameManager : MonoBehaviour {
 	public bool LagoonFirstSticker = true;
 	public bool LagoonReview = false;
 	public bool PlayLagoonVoiceOver = true; // Prevents voiceover clip from playing when returning from a game inside Brainstorm Lagoon - CT
+	public bool PlayIntro = true;
+	public Canvas introObject;
 	public static MonsterType monsterType;
 
 //	public List<Canvas> LagoonReviewCanvases;
@@ -81,6 +83,10 @@ public class GameManager : MonoBehaviour {
 		stickersPlaced.Add (StickerManager.StickerType.RainbowBrain, false);
 
 		LagoonReviewGames = new List<string>();
+
+		if (PlayIntro) {
+			Instantiate (introObject);
+		}
 	}
 
 	public void setMonster(string color) {
