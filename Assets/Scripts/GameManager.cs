@@ -105,7 +105,19 @@ public class GameManager : MonoBehaviour {
 	public bool LevelUp(string gameName) {
 		if(gameStars[gameName] <= 3) {
 			gameStars[gameName] += 1;
-			if(gameLevels[gameName] != 5){
+            if (gameStars[gameName] == 1 || gameStars[gameName] == 3) {
+                if (gameName == "MemoryMatch")
+                    ReviewManager.GetInstance().levelToReview = "MemoryMatchReviewGame";
+                else if (gameName == "Brainbow")
+                    ReviewManager.GetInstance().levelToReview = "BrainbowReviewGame";
+                else if (gameName == "Emotions")
+                    ReviewManager.GetInstance().levelToReview = "EmotionsReviewGame";
+                else if (gameName == "Senses")
+                    ReviewManager.GetInstance().levelToReview = "SensesReviewGame";
+                else if (gameName == "BrainMaze")
+                    ReviewManager.GetInstance().levelToReview = "BrainmazeReviewGame";
+            }
+            if (gameLevels[gameName] != 5){
 				gameLevels[gameName] += 1;
 			}
 			return true;

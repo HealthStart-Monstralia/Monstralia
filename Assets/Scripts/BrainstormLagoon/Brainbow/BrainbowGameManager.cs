@@ -148,11 +148,13 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	void StartReview() {
 		SoundManager.GetInstance().PlayVoiceOverClip(reviewGame);
-		reviewCanvas.gameObject.SetActive(true);
-//		reviewCanvas = (Canvas)Instantiate (GameManager.GetInstance().ChooseLagoonReviewGame());
-//		reviewCanvas.transform.SetParent (GameObject.Find ("Canvas").transform);
-//		reviewCanvas.transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
-	}
+        //		reviewCanvas.gameObject.SetActive(true);
+        //		reviewCanvas = (Canvas)Instantiate (GameManager.GetInstance().ChooseLagoonReviewGame());
+        //		reviewCanvas.transform.SetParent (GameObject.Find ("Canvas").transform);
+        //		reviewCanvas.transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
+       // ReviewManager.GetInstance().needsReview = true;
+        //ReviewManager.GetInstance().levelToReview = "BrainbowReviewGame";
+    }
 
 	public void PregameSetup () {
 		score = 0;
