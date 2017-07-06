@@ -21,11 +21,6 @@ public class MMReview : MonoBehaviour {
 		SpawnFood();
 		StartCoroutine(RevealDishes ());
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
 	void ChooseBadFoods() {
 		int foodCount = 0;
