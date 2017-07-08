@@ -168,27 +168,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b911668798bcede469625e39ffb233ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stickerPopupCanvas: {fileID: 0}
   typeOfMonster: 0
   monsterList:
   - {fileID: 1000010047442250, guid: 1d7370fd27e64554db1e19af9ce62b59, type: 2}
   - {fileID: 1000010047442250, guid: 52b85add49cd00e4da6e87e3278b637b, type: 2}
   - {fileID: 1000010047442250, guid: ca3b2a66d1cfdf342b3d2c5637aa7391, type: 2}
   - {fileID: 1000010047442250, guid: 8473edbdd19a37e44b119a673223a66f, type: 2}
-  monsterScale: 0.4
-  monsterShadow: {fileID: 1330169251572182, guid: f80783169adbb1a48ae40312f98dfabd,
-    type: 2}
-  startingLocation: {fileID: 1710951673590374}
+  monsterScale: []
   backgroundMusic: {fileID: 8300000, guid: 3265aca7dd7cb4256a906218743de845, type: 3}
   scoreSlider: {fileID: 0}
   timerText: {fileID: 0}
+  timer: {fileID: 0}
   timeLimit: 30
-  currentScene: 1
-  sceneList:
-  - BrainMaze_Lvl01
-  - BrainMaze_Lvl02
-  - BrainMaze_Lvl03
-  - BrainMaze_Lvl04
-  - BrainMaze_Lvl05
+  beachBackgroundObj: {fileID: 0}
+  mazeGraphicObj: {fileID: 0}
+  mazeColliders: []
+  assetList: []
+  inputAllowed: 0
+  subtitlePanel: {fileID: 0}
+  instructionVOList: []
+  gameOverCanvas: {fileID: 0}
+  backButton: {fileID: 0}
+  tutorialAssets: {fileID: 0}
+  tutorialHand: {fileID: 0}
+  tutorialPickup: {fileID: 0}
 --- !u!114 &114511945551056106
 MonoBehaviour:
   m_ObjectHideFlags: 1

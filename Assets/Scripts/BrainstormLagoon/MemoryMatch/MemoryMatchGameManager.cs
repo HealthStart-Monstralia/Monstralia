@@ -77,7 +77,8 @@ public class MemoryMatchGameManager : AbstractGameManager {
 			RetrieveFoodsFromManager ();
 
 			if(GameManager.GetInstance().LagoonReview) {
-				StartReview();
+				//StartReview();
+				PregameSetup ();
 			}
 			else {
 				PregameSetup ();
@@ -120,9 +121,12 @@ public class MemoryMatchGameManager : AbstractGameManager {
 
 	public void StartReview() {
 		Debug.Log ("starting memory match review");
-//		reviewCanvas = GameManager.GetInstance().ChooseLagoonReviewGame();
-		reviewCanvas.gameObject.SetActive(true);
-	}
+        //		reviewCanvas = GameManager.GetInstance().ChooseLagoonReviewGame();
+        //		reviewCanvas.gameObject.SetActive(true);
+        //ReviewManager.GetInstance().needsReview = true;
+        //ReviewManager.GetInstance().levelToReview = "MemoryMatchReviewGame";
+
+    }
 
 	void Update () {
 		if(runningTutorial) {

@@ -20,9 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 224158980839656790}
   - component: {fileID: 212376499002285944}
-  - component: {fileID: 114790429019861934}
   - component: {fileID: 114848803243970032}
-  - component: {fileID: 114680324972066022}
   - component: {fileID: 61733799521659160}
   - component: {fileID: 95037720895028030}
   m_Layer: 5
@@ -74,29 +72,6 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114680324972066022
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1192340925441260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9b88b8decc2d4c1192072fc24d6c160, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: b24e99fa0112142c79cc477b3a50ad46, type: 3}
---- !u!114 &114790429019861934
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1192340925441260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df4b97d7355e24b3f9fae33ceb288334, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114848803243970032
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -115,6 +90,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: fbc99a45284204f30b08212cb707cd17, type: 3}
   - {fileID: 21300000, guid: 19614bc9ba7434589b7f16a6b92afe4f, type: 3}
   idleAnimationOn: 1
+  monsterSfx: {fileID: 8300000, guid: b24e99fa0112142c79cc477b3a50ad46, type: 3}
 --- !u!212 &212376499002285944
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -170,6 +146,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 288.4, y: -431.3}
+  m_AnchoredPosition: {x: 288.4, y: -410}
   m_SizeDelta: {x: 5, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}

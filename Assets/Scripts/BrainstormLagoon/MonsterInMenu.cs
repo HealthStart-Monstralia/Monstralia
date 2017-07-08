@@ -10,6 +10,7 @@ public class MonsterInMenu : MonoBehaviour {
 	public GameManager.MonsterType typeOfMonster;
 	public Sprite[] monsterSprites = new Sprite[4];
 	public bool idleAnimationOn = true;
+	public AudioClip monsterSfx;
 
 	private Animator animComp;
 
@@ -27,7 +28,10 @@ public class MonsterInMenu : MonoBehaviour {
 	}
 
 	void OnMouseDown() {
-		PlayTouch ();
+		if (!ParentPage.GetInstance ()) {
+			PlayTouch ();
+			SoundManager.GetInstance().PlaySFXClip(monsterSfx);
+		}
 	}
 
 	IEnumerator RandomAnimation() {
