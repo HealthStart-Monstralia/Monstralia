@@ -45,10 +45,10 @@ public class ReviewManager : MonoBehaviour {
             }
         }
             // if scene is game level and need review == true
-        if (levelToReview != "") 
-            if (GameManager.GetInstance().GetNumStars(reviewgamesAndGamesDict[levelToReview]) != 2 && SceneManager.GetActiveScene().buildIndex > 4) { 
-                GameObject activeReviewGame = Instantiate(ReviewGamePrefabs[reviewLevelIndex]) as GameObject;
-                activeReviewGame.transform.parent = GameObject.Find ("Canvas").transform;
+		if (levelToReview != "") {
+			if (GameManager.GetInstance ().GetNumStars (reviewgamesAndGamesDict [levelToReview]) != 2 && SceneManager.GetActiveScene ().buildIndex > 4) { 
+				GameObject activeReviewGame = Instantiate (ReviewGamePrefabs [reviewLevelIndex], transform) as GameObject;
+			}
         }
     }
 }   

@@ -16,6 +16,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	private Text nowYouTryText;
 	private BrainbowFood banana;
 	private Transform bananaOrigin;
+	private Animator handAnim;
 	private bool gameOver = false;
 	private Coroutine tutorialCoroutine;
 
@@ -29,6 +30,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	public GameObject tutorialHand;
 	public GameObject tutorialBanana;
 	public GameObject tutorialPlayerBanana;
+	public GameObject tutorialSpot;
 	public Canvas gameoverCanvas;
 	public List<GameObject> foods;
 	public List<GameObject> inGameFoods = new List<GameObject>();
@@ -99,12 +101,14 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	void Start() {
 		SoundManager.GetInstance().ChangeBackgroundMusic(backgroundMusic);
+		handAnim = tutorialHand.GetComponent<Animator> ();
 		instructionPopup.gameObject.SetActive(false);
 		tutorialHand.SetActive (false);
 		ChooseFoodsFromManager ();
 
 		if (GameManager.GetInstance ().LagoonReview) {
-			StartReview ();
+			//StartReview ();
+			PregameSetup ();
 		}
 		else {
 			PregameSetup ();
@@ -185,18 +189,11 @@ public class BrainbowGameManager : AbstractGameManager {
 		redOutline.SetActive(true);
 
 		yield return new WaitForSeconds(instructions.length-4.5f);
-
-		Animator anim = tutorialHand.GetComponent<Animator> ();
 		tutorialHand.SetActive (true);
-		anim.Play ("DragToStripe", -1, 0f);
 
-		yield return new WaitForSeconds(1.5f);
-		tutorialBanana.transform.SetParent (tutorialHand.transform);
-		yield return new WaitForSeconds(1.5f);
-		tutorialBanana.transform.SetParent (tutorialHand.transform.parent);
-		RaycastHit2D hit = Physics2D.Raycast (tutorialBanana.transform.position, -Vector2.up, 1.0f, foodLayerMask);
-		tutorialBanana.transform.position = hit.collider.GetComponent<ColorDetector> ().destinations [0].position;
-		yield return new WaitForSeconds(3f);
+		tutorialHand.GetComponent<Animator> ().Play ("DragBananaToStripe");
+
+		yield return new WaitForSeconds(7f);
 		tutorialHand.SetActive (false);
 		tutorialBanana.SetActive (false);
 		redOutline.SetActive(false);

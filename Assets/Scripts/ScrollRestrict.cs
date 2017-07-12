@@ -11,6 +11,6 @@ public class ScrollRestrict : MonoBehaviour {
         myPos = transform.position; // get current pos
         myPos.y = Mathf.Clamp(myPos.y, lowerBound, upperBound); // clamp pos
         transform.position = myPos; // assign clamped pos to current pos
-        print(transform.position.y);
+        // print(transform.position.y);
     }
 }

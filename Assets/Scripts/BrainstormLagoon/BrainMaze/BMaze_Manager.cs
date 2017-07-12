@@ -346,7 +346,7 @@ public class BMaze_Manager : AbstractGameManager {
 
 	void ScaleMonster() {
 		monsterObject.transform.localScale = new Vector3(monsterScale[level], monsterScale[level], monsterScale[level]);
-		monsterObject.GetComponent<CircleCollider2D> ().radius = (monsterScale[level]) + 0.5f;
+		monsterObject.GetComponent<CircleCollider2D> ().radius = (monsterScale[level]) + 1.0f;
 	}
 
 	/*

@@ -17,7 +17,7 @@ public class EmotionsGameManager : AbstractGameManager {
 			
 	private static EmotionsGameManager instance;
 	private int score;
-	private int scoreGoal = 2;
+	private int scoreGoal = 3;
 	private List<GameObject> primaryEmotions;
 	private List<GameObject> secondaryEmotions;
 	private List<GameObject> activeEmotions;
@@ -369,7 +369,7 @@ public class EmotionsGameManager : AbstractGameManager {
 		gameStarted = false;
 		gameOver = true;
 		inputAllowed = false;
-		yield return new WaitForSeconds (0.3f);
+		yield return new WaitForSeconds (1.0f);
 		GameOver ();
 	}
 

@@ -77,7 +77,8 @@ public class MemoryMatchGameManager : AbstractGameManager {
 			RetrieveFoodsFromManager ();
 
 			if(GameManager.GetInstance().LagoonReview) {
-				StartReview();
+				//StartReview();
+				PregameSetup ();
 			}
 			else {
 				PregameSetup ();
