@@ -26,7 +26,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	public Canvas mainCanvas;
 
 	public Timer timer;
-	public float timeLimit;
+	public float[] timeLimit;
 	public Text timerText;
 
 	public Transform foodToMatchSpawnPos;
@@ -100,15 +100,19 @@ public class MemoryMatchGameManager : AbstractGameManager {
 			switch (difficultyLevel) {
 			case (1):
 				numDishes = 3;
+				timer.SetTimeLimit (timeLimit[difficultyLevel - 1]);
 				break;
 			case (2):
 				numDishes = 4;
+				timer.SetTimeLimit (timeLimit[difficultyLevel - 1]);
 				break;
 			case (3):
 				numDishes = 6;
+				timer.SetTimeLimit (timeLimit[difficultyLevel - 1]);
 				break;
 			default:
 				numDishes = 6;
+				timer.SetTimeLimit (60f);
 				break;
 			}
 
@@ -262,7 +266,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		scoreGauge.gameObject.SetActive (true);
 		timerText.gameObject.SetActive (true);
 
-		timer.SetTimeLimit (timeLimit);
+		//timer.SetTimeLimit (timeLimit);
 		timerText.text = "Time: " + timer.TimeRemaining();
 		UpdateScoreGauge ();
 
