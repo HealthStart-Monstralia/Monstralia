@@ -8,6 +8,7 @@ public class SubtitlePanel : MonoBehaviour {
 	private Subtitle sub;
 	private bool isDisplaying = false;
 	private Queue<Tuple<string, AudioClip>> displayQueue = new Queue<Tuple<string, AudioClip>>();
+	private Coroutine waitCoroutine;
 
 	public Text textComp;
 
@@ -20,13 +21,16 @@ public class SubtitlePanel : MonoBehaviour {
 		}
 
 		if(!queue || !isDisplaying) {
+			if (isDisplaying)
+				StopCoroutine (waitCoroutine);
+
 			isDisplaying = true;
 			sub.Display(gameObject, textComp, subtitle, clip);
 			if (EmotionsGameManager.GetInstance ()) {
-				StartCoroutine (WaitTillHide (EmotionsGameManager.GetInstance ().waitDuration));
+				waitCoroutine = StartCoroutine (WaitTillHide (EmotionsGameManager.GetInstance ().waitDuration));
 			}
 			else if (BMaze_Manager.GetInstance ()) {
-				StartCoroutine (WaitTillHide (2f));
+				waitCoroutine = StartCoroutine (WaitTillHide (2f));
 			} 
 			/*
 			else if (MemoryMatchGameManager.GetInstance ()) {
