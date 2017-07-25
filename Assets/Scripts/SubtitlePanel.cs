@@ -21,24 +21,17 @@ public class SubtitlePanel : MonoBehaviour {
 		}
 
 		if(!queue || !isDisplaying) {
-			if (isDisplaying)
+			if (waitCoroutine != null) {
 				StopCoroutine (waitCoroutine);
-
+			}
 			isDisplaying = true;
 			sub.Display(gameObject, textComp, subtitle, clip);
-			if (EmotionsGameManager.GetInstance ()) {
-				waitCoroutine = StartCoroutine (WaitTillHide (EmotionsGameManager.GetInstance ().waitDuration));
-			}
-			else if (BMaze_Manager.GetInstance ()) {
-				waitCoroutine = StartCoroutine (WaitTillHide (2f));
-			} 
-			/*
-			else if (MemoryMatchGameManager.GetInstance ()) {
-				StopCoroutine (WaitTillHide(3f));
-				StartCoroutine (WaitTillHide (3f));
-			}
-			*/
+			waitCoroutine = StartCoroutine (WaitTillHide (2f));
+
+
+
 		}
+
 		else {
 			Tuple<string, AudioClip> t = new Tuple<string, AudioClip>(subtitle, clip);
 			displayQueue.Enqueue(t);

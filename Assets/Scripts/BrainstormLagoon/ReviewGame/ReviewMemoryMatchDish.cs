@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class DishObject : MonoBehaviour {
+public class ReviewMemoryMatchDish : MonoBehaviour {
 	private Food myFood;
 	private static bool isGuessing = false;
 	private bool matched = false;
@@ -90,28 +89,21 @@ public class DishObject : MonoBehaviour {
 	}
 
 	IEnumerator OnMouseDown () {
-		MemoryMatchGameManager manager = MemoryMatchGameManager.GetInstance ();
-		if(manager.inputAllowed && !isGuessing && (manager.isGameStarted() || manager.isRunningTutorial())) {
+		ReviewMemoryMatch manager = ReviewMemoryMatch.GetInstance ();
+		if(manager.inputAllowed && !isGuessing && (manager.isReviewRunning)) {
 			isGuessing = true;
-
 			OpenLid();
-			manager.subtitlePanel.Display(myFood.name, myFood.clipOfName);
 
 			if(manager.GetFoodToMatch().name != myFood.name) {
-				if (!matched && !manager.isRunningTutorial()) {
-					manager.SubtractTime (3.0f);
-				}
 				yield return new WaitForSeconds (2f);
 				CloseLid ();
 			}
 			else {
 				Correct();
 				yield return new WaitForSeconds(1.5f);
-				manager.ChooseFoodToMatch();
 			}
 
 			//The player can now guess again.
-			manager.subtitlePanel.Hide ();
 			isGuessing = false;
 		}
 	}
