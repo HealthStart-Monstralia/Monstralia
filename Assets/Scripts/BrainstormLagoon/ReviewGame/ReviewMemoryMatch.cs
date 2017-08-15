@@ -11,6 +11,7 @@ public class ReviewMemoryMatch : MonoBehaviour {
 	public List<GameObject> foods;
 	public Transform foodToMatchSpawnPos;
 	public float foodScale, foodToMatchScale;
+	public SubtitlePanel subtitle;
 
 	private GameObject currentFoodToMatch;
 	private static ReviewMemoryMatch instance;
@@ -73,21 +74,32 @@ public class ReviewMemoryMatch : MonoBehaviour {
 		}
 
 		yield return new WaitForSecondsRealtime (1f);
+		subtitle.Display ("Remember the foods!", null, false, 7f);
+		yield return new WaitForSecondsRealtime (1f);
 		for (int i = 0; i < dishes.Length; ++i) {
 			dishes[i].OpenLid ();
 		}
 
-		yield return new WaitForSecondsRealtime (3f);
+		yield return new WaitForSecondsRealtime (6f);
 		for (int i = 0; i < dishes.Length; ++i) {
 			dishes[i].CloseLid ();
 		}
 
+		yield return new WaitForSecondsRealtime (1f);
+
+		subtitle.Display ("Tap on the dish with the same food as below!", null, false, 0f);
+
 		isReviewRunning = true;
+		inputAllowed = true;
+		currentFoodToMatch.SetActive (true);
 	}
 
 	public void EndReview() {
 		isReviewRunning = false;
+		inputAllowed = false;
+		subtitle.Display ("Great job!");
 
+		Destroy (gameObject, 3f); // Replace when below is implemented
 		/* Insert function that tells the Review Manager
 		 * the review is finished */
 	}
@@ -131,6 +143,9 @@ public class ReviewMemoryMatch : MonoBehaviour {
 			currentFoodToMatch = SpawnFood(activeFoods, false, foodToMatchSpawnPos, foodToMatchSpawnPos, foodToMatchScale);
 			currentFoodToMatch.GetComponent<SpriteRenderer> ().sortingLayerName = "UI";
 			currentFoodToMatch.GetComponent<SpriteRenderer> ().sortingOrder = 10;
+			currentFoodToMatch.transform.localPosition = new Vector3 (0f, 0f, 0f);
+			currentFoodToMatch.transform.localScale = new Vector3 (0.2f, 0.2f, 0.2f);
+			currentFoodToMatch.SetActive (false);
 		}
 	}
 

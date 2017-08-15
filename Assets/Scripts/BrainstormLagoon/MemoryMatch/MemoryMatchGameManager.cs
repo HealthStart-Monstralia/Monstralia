@@ -292,6 +292,9 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	void SpawnDishes() {
 		//Mathf.Cos/Sin use radians, so the dishes are positioned 2pi/numDishes apart
 		float dishPositionAngleDelta = (2*Mathf.PI)/numDishes;
+        bool reduceSize = false;
+        if (numDishes > 4)
+            reduceSize = true;
 
 		for(int i = 0; i < numDishes; ++i) {
 			GameObject newDish = Instantiate(dish);
@@ -302,6 +305,11 @@ public class MemoryMatchGameManager : AbstractGameManager {
 				offset * Mathf.Sin (dishPositionAngleDelta*i + Mathf.PI / 2), 
 				0);
 			dishes[i] = newDish;
+
+            // Reduce size of dish depending on number of dishes
+            if (reduceSize) {
+                newDish.transform.localScale = newDish.transform.localScale * 0.8f;
+            }
 		}
 	}
 

@@ -84,7 +84,7 @@ public class ReviewMemoryMatchDish : MonoBehaviour {
 			lid.SetActive(true);
 		}
 		dishAnim.Play ("Dish_Correct");
-		MemoryMatchGameManager.GetInstance().AddToMatchedList(myFood);
+		ReviewMemoryMatch.GetInstance ().EndReview ();
 		matched = true;
 	}
 

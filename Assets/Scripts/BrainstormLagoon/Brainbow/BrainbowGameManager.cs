@@ -34,6 +34,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	public Canvas gameoverCanvas;
 	public List<GameObject> foods;
 	public List<GameObject> inGameFoods = new List<GameObject>();
+    public List<GameObject> restrictedFoods;
 	public Transform[] spawnPoints;
 	public Transform spawnParent;
 	public int foodScale;
@@ -296,21 +297,43 @@ public class BrainbowGameManager : AbstractGameManager {
 		List<GameObject> greenFoodsList = new List<GameObject>(listOfFoods.GetBrainbowFoods (Colorable.Color.Green));
 		List<GameObject> purpleFoodsList = new List<GameObject>(listOfFoods.GetBrainbowFoods (Colorable.Color.Purple));
 
+        // Go through restrictedFoods list and remove it from the pool of food to choose from
+        foreach (GameObject food in restrictedFoods) {
+            switch (food.GetComponent<Food> ().color) {
+                case Colorable.Color.Red:
+                    RemoveRestrictedFoods (redFoodsList, food);
+                    break;
+                case Colorable.Color.Yellow:
+                    RemoveRestrictedFoods (yellowFoodsList, food);
+                    break;
+                case Colorable.Color.Green:
+                    RemoveRestrictedFoods (greenFoodsList, food);
+                    break;
+                case Colorable.Color.Purple:
+                    RemoveRestrictedFoods (purpleFoodsList, food);
+                    break;
+            }
+        }
+
 		AddFoodsToList (redFoodsList);
 		AddFoodsToList (yellowFoodsList);
 		AddFoodsToList (greenFoodsList);
 		AddFoodsToList (purpleFoodsList);
 	}
 
+    void RemoveRestrictedFoods(List<GameObject> inputlist, GameObject objToRemove) {
+        inputlist.Remove (objToRemove);
+        print ("Removed: " + objToRemove);
+    }
+
 	void AddFoodsToList(List<GameObject> goList) {
 		int randomIndex;
-		for (int i = 0; i < 5; i++) {
-			print ("goList: " + goList);
-			randomIndex = Random.Range (0, goList.Count);
-			print ("goList.Count: " + goList.Count);
-			print ("randomIndex: " + randomIndex);
-			foods.Add (goList [randomIndex]);
-			goList.RemoveAt(randomIndex);
+
+        // Go through given list choose 5 different foods
+        for (int i = 0; i < 5; i++) {
+            randomIndex = Random.Range (0, goList.Count);
+            foods.Add (goList[randomIndex]);
+            goList.RemoveAt (randomIndex);
 		}
 	}
 
