@@ -135,6 +135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fed608cc45014f15800e37ede4de535, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typeOfGame: 3
+  stickerPopupCanvas: {fileID: 187232117}
   timeLimit: 15
   gameStarted: 0
   timerText: {fileID: 1075588625}
@@ -186,7 +188,6 @@ MonoBehaviour:
   emotionSpawnParent: {fileID: 1030583451}
   emotionToMatchSpawnParent: {fileID: 1395112799}
   gameOverCanvas: {fileID: 1732938958}
-  stickerPopupCanvas: {fileID: 187232117}
   backButton: {fileID: 70895565}
   waitDuration: 2.5
   answerSounds:
@@ -1506,7 +1507,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 97, y: -2}
+  m_AnchoredPosition: {x: 96.99997, y: -2}
   m_SizeDelta: {x: 374, y: 117}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1075588625

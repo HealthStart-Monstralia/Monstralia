@@ -11,10 +11,12 @@ public class GameManager : MonoBehaviour {
 		Yellow = 3
 	};
 
-	private Dictionary<string, int> gameLevels;
-	private Dictionary<string, int> gameStars;
-	private Dictionary<StickerManager.StickerType, bool> stickers;
-	private Dictionary<StickerManager.StickerType, bool> stickersPlaced;
+	private Dictionary<MinigameData.Minigame, int> gameLevels;
+    private Dictionary<MinigameData.Minigame, bool> gameTutorials;
+    private Dictionary<MinigameData.Minigame, int> gameStars;
+    private Dictionary<MinigameData.Minigame, StickerData.StickerType> gameStickers;
+    private Dictionary<StickerData.StickerType, bool> stickers;
+    private Dictionary<StickerData.StickerType, bool> stickersPlaced;
 
 	private static GameManager instance = null;
 	private List<string> LagoonReviewGames;
@@ -28,9 +30,6 @@ public class GameManager : MonoBehaviour {
 	public bool PlayIntro = true;
 	public Canvas introObject;
 	public static MonsterType monsterType;
-
-//	public List<Canvas> LagoonReviewCanvases;
-//	public List<Canvas> LagoonReviewGames;
 
 	string monster;
 
@@ -54,35 +53,8 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void Start() {
-		gameLevels = new Dictionary<string, int>();
-		gameLevels.Add("Brainbow", 1);
-		gameLevels.Add("MemoryMatch", 1);
-		gameLevels.Add("BrainMaze", 1);
-		gameLevels.Add("MonsterEmotions", 1);
-		gameLevels.Add("MonsterSenses", 1);
-
-		gameStars = new Dictionary<string, int>();
-		gameStars.Add ("Brainbow", 0);
-		gameStars.Add("MemoryMatch", 0);
-		gameStars.Add("BrainMaze", 0);
-		gameStars.Add("MonsterEmotions", 0);
-		gameStars.Add("MonsterSenses", 0);
-
-		stickers = new Dictionary<StickerManager.StickerType, bool> ();
-		stickers.Add (StickerManager.StickerType.Amygdala, false);
-		stickers.Add (StickerManager.StickerType.Cerebellum, false);
-		stickers.Add (StickerManager.StickerType.Frontal, false);
-		stickers.Add (StickerManager.StickerType.Hippocampus, false);
-		stickers.Add (StickerManager.StickerType.RainbowBrain, false);
-
-		stickersPlaced = new Dictionary<StickerManager.StickerType, bool> ();
-		stickersPlaced.Add (StickerManager.StickerType.Amygdala, false);
-		stickersPlaced.Add (StickerManager.StickerType.Cerebellum, false);
-		stickersPlaced.Add (StickerManager.StickerType.Frontal, false);
-		stickersPlaced.Add (StickerManager.StickerType.Hippocampus, false);
-		stickersPlaced.Add (StickerManager.StickerType.RainbowBrain, false);
-
-		LagoonReviewGames = new List<string>();
+        InitializeDictionaryEntries ();
+        LagoonReviewGames = new List<string>();
 
 		if (PlayIntro) {
 			Instantiate (introObject);
@@ -98,26 +70,36 @@ public class GameManager : MonoBehaviour {
 		return monster;
 	}
 
-	public int GetLevel(string gameName) {
+	public int GetLevel(MinigameData.Minigame gameName) {
 		return gameLevels[gameName];
 	}
 
-	public bool LevelUp(string gameName) {
-		if(gameStars[gameName] <= 3) {
+	public bool LevelUp(MinigameData.Minigame gameName) {
+		if(gameStars[gameName] < 3) {
 			gameStars[gameName] += 1;
             if (gameStars[gameName] == 1 || gameStars[gameName] == 3) {
-                if (gameName == "MemoryMatch")
-                    ReviewManager.GetInstance().levelToReview = "MemoryMatchReviewGame";
-                else if (gameName == "Brainbow")
-                    ReviewManager.GetInstance().levelToReview = "BrainbowReviewGame";
-                else if (gameName == "Emotions")
-                    ReviewManager.GetInstance().levelToReview = "EmotionsReviewGame";
-                else if (gameName == "Senses")
-                    ReviewManager.GetInstance().levelToReview = "SensesReviewGame";
-                else if (gameName == "BrainMaze")
-                    ReviewManager.GetInstance().levelToReview = "BrainmazeReviewGame";
+                switch (gameName) {
+
+                    case MinigameData.Minigame.Brainbow:
+                        ReviewManager.GetInstance ().levelToReview = "BrainbowReviewGame";
+                        break;
+                    case MinigameData.Minigame.BrainMaze:
+                        ReviewManager.GetInstance ().levelToReview = "BrainmazeReviewGame";
+                        break;
+                    case MinigameData.Minigame.MemoryMatch:
+                        ReviewManager.GetInstance ().levelToReview = "MemoryMatchReviewGame";
+                        break;
+                    case MinigameData.Minigame.MonsterEmotions:
+                        ReviewManager.GetInstance ().levelToReview = "EmotionsReviewGame";
+                        break;
+                    case MinigameData.Minigame.MonsterSenses:
+                        ReviewManager.GetInstance ().levelToReview = "SensesReviewGame";
+                        break;
+
+                }
             }
-            if (gameLevels[gameName] != 5){
+
+            if (gameLevels[gameName] < 3){
 				gameLevels[gameName] += 1;
 			}
 			return true;
@@ -125,13 +107,16 @@ public class GameManager : MonoBehaviour {
 		return false;
 	}
 
-	public int GetNumStars(string gameName) {
-		return gameStars[gameName];
-	}
+    public void CompleteTutorial(MinigameData.Minigame gameName) {
+        gameTutorials[gameName] = false;
+    }
 
-	//temporary solution
-	public void ActivateSticker(StickerManager.StickerType typeOfSticker) {
-		stickers [typeOfSticker] = true;
+    public bool GetPendingTutorial (MinigameData.Minigame gameName) {
+        return gameTutorials[gameName];
+    }
+
+    public int GetNumStars(MinigameData.Minigame gameName) {
+		return gameStars[gameName];
 	}
 
 	public void ActivateBrainstormLagoonReview() {
@@ -156,7 +141,7 @@ public class GameManager : MonoBehaviour {
 		return reviewGame;//Resources.Load(reviewGamePath  + "/" + LagoonReviewGames[Random.Range (0, LagoonReviewGames.Count)]) as Canvas;
 	}
 
-	// Determines what kind of monster is chosen\
+	// Determines what kind of monster is chosen
 	void DetermineMonster() {
 		if (GameManager.GetInstance ()) {
 			if (GameManager.GetInstance ().getMonster ().Contains ("Blue")) {
@@ -185,26 +170,37 @@ public class GameManager : MonoBehaviour {
 		GetComponent<CreateCountdown>().SpawnCountdown();
 	}
 
-	public void FetchStickers() {
-		foreach (StickerManager.StickerType sticker in stickers.Keys) {
-			if (stickers [sticker])
-				StickerManager.GetInstance ().SpawnSticker (sticker, stickersPlaced[sticker]);
-		}
-	}
+    public StickerData.StickerType GetAssignedSticker(MinigameData.Minigame game) {
+        return gameStickers[game];
+    }
 
-	public void OnStickerPlaced(StickerManager.StickerType typeOfSticker) {
+    public bool GetStickerStatus(MinigameData.Minigame game) {
+        return stickers[gameStickers[game]];
+    }
+
+    public Dictionary<StickerData.StickerType, bool> GetAllStickers () {
+        return stickers;
+    }
+
+    public Dictionary<StickerData.StickerType, bool> GetAllPlacedStickers () {
+        return stickersPlaced;
+    }
+
+    public void OnStickerPlaced(StickerData.StickerType typeOfSticker) {
 		stickersPlaced [typeOfSticker] = true;
 	}
 
 	public void DebugStickers() {
-		stickers [StickerManager.StickerType.Amygdala] = true;
-		stickers [StickerManager.StickerType.Cerebellum] = true;
-		stickers [StickerManager.StickerType.Frontal] = true;
-		stickers [StickerManager.StickerType.Hippocampus] = true;
-		stickers [StickerManager.StickerType.RainbowBrain] = true;
-	}
+        foreach (StickerData.StickerType sticker in System.Enum.GetValues (typeof (StickerData.StickerType))) {
+            stickers[sticker] = true;
+        }
+    }
 
-	public bool GetIsInputAllowed() {
+    public void ActivateSticker (MinigameData.Minigame game) {
+        stickers[gameStickers[game]] = true;
+    }
+
+    public bool GetIsInputAllowed() {
 		return allowInput;
 	}
 
@@ -212,5 +208,37 @@ public class GameManager : MonoBehaviour {
 		allowInput = boolean;
 		print ("Input Allowed: " + boolean);
 	}
+
+    void InitializeDictionaryEntries() {
+        // Initialize dictionaries
+        gameLevels = new Dictionary<MinigameData.Minigame, int> ();
+        gameStars = new Dictionary<MinigameData.Minigame, int> ();
+        gameTutorials = new Dictionary<MinigameData.Minigame, bool> ();
+
+        // Loop through each minigame enum to initialize the dictionary values to avoid typing all that damn stuff out
+        foreach (MinigameData.Minigame game in System.Enum.GetValues (typeof (MinigameData.Minigame))) {
+            gameLevels.Add (game, 1);
+            gameStars.Add (game, 0);
+            gameTutorials.Add (game, true);
+        }
+
+        // Associate each sticker with a certain minigame
+        gameStickers = new Dictionary<MinigameData.Minigame, StickerData.StickerType> ();
+        gameStickers.Add (MinigameData.Minigame.Brainbow, StickerData.StickerType.RainbowBrain);
+        gameStickers.Add (MinigameData.Minigame.BrainMaze, StickerData.StickerType.Frontal);
+        gameStickers.Add (MinigameData.Minigame.MemoryMatch, StickerData.StickerType.Hippocampus);
+        gameStickers.Add (MinigameData.Minigame.MonsterEmotions, StickerData.StickerType.Amygdala);
+        gameStickers.Add (MinigameData.Minigame.MonsterSenses, StickerData.StickerType.Cerebellum);
+
+        // Initialize dictionaries
+        stickers = new Dictionary<StickerData.StickerType, bool> ();
+        stickersPlaced = new Dictionary<StickerData.StickerType, bool> ();
+
+        // Loop through each sticker enum to initialize the dictionary values to avoid typing more damn stuff
+        foreach (StickerData.StickerType sticker in System.Enum.GetValues (typeof (StickerData.StickerType))) {
+            stickers.Add (sticker, false);
+            stickersPlaced.Add (sticker, false);
+        }
+    }
 
 }

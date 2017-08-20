@@ -47,7 +47,7 @@ public class SensesGameManager : AbstractGameManager {
 			Destroy(gameObject);
 		}
 
-		difficultyLevel = GameManager.GetInstance().GetLevel("MonsterSenses");
+		difficultyLevel = GameManager.GetInstance().GetLevel(MinigameData.Minigame.MonsterSenses);
 
 		sensesSetup = new Dictionary<int, int>()
 		{
@@ -228,10 +228,10 @@ public class SensesGameManager : AbstractGameManager {
 			gameOver = true;
 			//GameManager.GetInstance().AddLagoonReviewGame("MonsterEmotionsReviewGame");
 			if (difficultyLevel == 1) {
-				UnlockSticker (StickerManager.StickerType.Cerebellum);
+				UnlockSticker ();
 			}
 
-			GameManager.GetInstance ().LevelUp ("MonsterSenses");
+			GameManager.GetInstance ().LevelUp (MinigameData.Minigame.MonsterSenses);
 
 			DisplayGameOverPopup ();
 		}

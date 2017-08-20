@@ -85,7 +85,7 @@ public class BrainbowGameManager : AbstractGameManager {
 			SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
 			switchScene.loadScene ("Start");
 		} else {
-			difficultyLevel = GameManager.GetInstance ().GetLevel ("Brainbow");
+			difficultyLevel = GameManager.GetInstance ().GetLevel (MinigameData.Minigame.Brainbow);
 			scoreGoals = new Dictionary<int, int> () {
 				{ 1, 8 },
 				{ 2, 12 },
@@ -170,7 +170,7 @@ public class BrainbowGameManager : AbstractGameManager {
 		CreateMonster ();
 		monsterObject.PlaySpawn ();
 
-		if (GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.BRAINBOW]) {
+		if (GameManager.GetInstance ().GetPendingTutorial(MinigameData.Minigame.Brainbow)) {
 			tutorialCoroutine = StartCoroutine (RunTutorial ());
 		}
 		else {
@@ -211,7 +211,7 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	IEnumerator TutorialTearDown ()	{
 		StopCoroutine (tutorialCoroutine);
-		GameManager.GetInstance ().LagoonTutorial[(int)Constants.BrainstormLagoonLevels.BRAINBOW] = false;
+        GameManager.GetInstance ().CompleteTutorial (MinigameData.Minigame.Brainbow);
 		GameManager.GetInstance ().SetIsInputAllowed (false);
 		score = 0;
 		UpdateScoreGauge();
@@ -358,9 +358,9 @@ public class BrainbowGameManager : AbstractGameManager {
 		if(score >= scoreGoals[difficultyLevel]) {
 			GameManager.GetInstance().AddLagoonReviewGame("BrainbowReviewGame");
 			if(difficultyLevel == 1) {
-				UnlockSticker (StickerManager.StickerType.RainbowBrain);
+				UnlockSticker ();
 			}
-			GameManager.GetInstance().LevelUp("Brainbow");
+			GameManager.GetInstance().LevelUp(MinigameData.Minigame.Brainbow);
 		}
 
 		if(difficultyLevel > 1 || score < scoreGoals[difficultyLevel]) {

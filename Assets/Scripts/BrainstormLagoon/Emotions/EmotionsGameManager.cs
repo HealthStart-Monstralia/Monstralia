@@ -98,7 +98,7 @@ public class EmotionsGameManager : AbstractGameManager {
 					secondaryEmotions.AddRange (yellowEmotions);
 				}
 
-				difficultyLevel = GameManager.GetInstance ().GetLevel ("MonsterEmotions");
+				difficultyLevel = GameManager.GetInstance ().GetLevel (MinigameData.Minigame.MonsterEmotions);
 			} else {
 				monsterType = GameManager.GetMonsterType ();
 				primaryEmotions = greenEmotions;
@@ -116,7 +116,7 @@ public class EmotionsGameManager : AbstractGameManager {
 				{ 5, new Tuple<int, int> (2, 2) }
 			};
 
-			if (GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.EMOTIONS]) {
+			if (GameManager.GetInstance ().GetPendingTutorial(MinigameData.Minigame.MonsterEmotions) ) {
 				tutorialCoroutine = StartCoroutine (RunTutorial ());
 			} else {
 				PregameSetup ();
@@ -203,7 +203,7 @@ public class EmotionsGameManager : AbstractGameManager {
 	public void TutorialFinished() {
 		inputAllowed = false;
 		tutorialHand.SetActive (false);
-		GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.EMOTIONS] = false;
+		GameManager.GetInstance ().CompleteTutorial(MinigameData.Minigame.MonsterEmotions);
 		StopCoroutine (tutorialCoroutine);
 		StartCoroutine(TutorialTearDown ());
 	}
@@ -379,12 +379,12 @@ public class EmotionsGameManager : AbstractGameManager {
 			//GameManager.GetInstance().AddLagoonReviewGame("MonsterEmotionsReviewGame");
 			backButton.SetActive (true);
 			if (difficultyLevel == 1) {
-				UnlockSticker (StickerManager.StickerType.Amygdala);
+				UnlockSticker ();
 			} else {
 				DisplayGameOverPopup ();
 			}
 			
-			GameManager.GetInstance ().LevelUp ("MonsterEmotions");
+			GameManager.GetInstance ().LevelUp (MinigameData.Minigame.MonsterEmotions);
 
 		}
 	}

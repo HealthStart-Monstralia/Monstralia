@@ -52,7 +52,7 @@ public class BMaze_Manager : AbstractGameManager {
 			SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
 			switchScene.loadScene ("Start");
 		} else {
-			level = GameManager.GetInstance ().GetLevel ("BrainMaze") - 1;
+			level = GameManager.GetInstance ().GetLevel (MinigameData.Minigame.BrainMaze) - 1;
 			if (level > 2) {
 				level = 2;
 
@@ -74,7 +74,7 @@ public class BMaze_Manager : AbstractGameManager {
 				Debug.LogError ("No Timer Found!");
 			timerText.text = Mathf.Round (timeLeft).ToString ();
 
-			if (GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.BRAINMAZE]) {
+			if (GameManager.GetInstance ().GetPendingTutorial(MinigameData.Minigame.BrainMaze)) {
 				tutorialCoroutine = StartCoroutine (RunTutorial ());
 			} else {
 				SetupMaze (level);
@@ -172,7 +172,7 @@ public class BMaze_Manager : AbstractGameManager {
 	public void TutorialFinished() {
 		instance.inputAllowed = false;
 		tutorialHand.SetActive (false);
-		GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.BRAINMAZE] = false;
+		GameManager.GetInstance ().CompleteTutorial(MinigameData.Minigame.BrainMaze);
 		StopCoroutine (tutorialCoroutine);
 		StartCoroutine(TutorialTearDown ());
 	}
@@ -220,13 +220,13 @@ public class BMaze_Manager : AbstractGameManager {
 			gameStarted = false;
 
 			if (level == 0)
-				UnlockSticker(StickerManager.StickerType.Frontal);
+				UnlockSticker();
 			else {
 				ShowGameOver ();
 			}
 
 			if (GameManager.GetInstance ())
-				GameManager.GetInstance ().LevelUp ("BrainMaze");
+				GameManager.GetInstance ().LevelUp (MinigameData.Minigame.BrainMaze);
 		}
 	}
 
@@ -252,49 +252,12 @@ public class BMaze_Manager : AbstractGameManager {
 		} else {
 			gameStarted = false;
 			if (GameManager.GetInstance())
-				GameManager.GetInstance ().LevelUp ("BrainMaze");
+				GameManager.GetInstance ().LevelUp (MinigameData.Minigame.BrainMaze);
 			instance.ChangeScene ();
 		}
 		skipButton = button;
 		button.SetActive (false);
 	}
-
-	/*
-	public void NextSceneSelect () {
-		if (sceneSelect < 5)
-			sceneSelect += 1;
-		instance.Invoke ("ChangeScene", 3f);
-	}
-
-	public void NextSceneSelectFast () {
-		if (sceneSelect < 5)
-			sceneSelect += 1;
-		instance.Invoke ("ChangeScene", 0.25f);
-	}
-	*/
-
-	/*
-	void DetermineMonster() {
-		// Determines what kind of monster is chosen
-		if (GameManager.GetInstance ()) {
-			if (GameManager.GetInstance ().getMonster ().Contains ("Blue")) {
-				typeOfMonster = MonsterType.Blue;
-			} else {
-				if (GameManager.GetInstance ().getMonster ().Contains ("Green")) {
-					typeOfMonster = MonsterType.Green;
-				} else {
-					if (GameManager.GetInstance ().getMonster ().Contains ("Red")) {
-						typeOfMonster = MonsterType.Red;
-					} else {
-						typeOfMonster = MonsterType.Yellow;
-					}
-				}
-			}
-		} else {
-			typeOfMonster = MonsterType.Green;
-		}
-	}
-	*/
 
 	Vector3 GetStartingLocationVector(GameObject location) {
 		return new Vector3 (
@@ -348,13 +311,6 @@ public class BMaze_Manager : AbstractGameManager {
 		monsterObject.transform.localScale = new Vector3(monsterScale[level], monsterScale[level], monsterScale[level]);
 		monsterObject.GetComponent<CircleCollider2D> ().radius = (monsterScale[level]) + 1.0f;
 	}
-
-	/*
-	public void CreateShadowObject () {
-		GameObject shadow = Instantiate (monsterShadow, startingLocation.transform.position, startingLocation.transform.rotation) as GameObject;
-		shadow.GetComponent<BMaze_Shadow> ().objectToFollow = monsterObject;
-	}
-	*/
 
 	public static BMaze_Manager GetInstance() {
 		return instance;

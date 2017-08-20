@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 
 public class StickerSlot : MonoBehaviour, IDropHandler {
 
-	public StickerManager.StickerType typeOfSticker;
+	public StickerData.StickerType typeOfSticker;
 	public bool isStickerFilled = false;
 
 	void Start () {
@@ -27,7 +27,6 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
 
 	public void DisableInput(bool disable) {
 		if (!isStickerFilled) {
-			//GetComponent<Image> ().raycastTarget = disable;
 			GetComponent<Image> ().enabled = !disable;
 		}
 	}

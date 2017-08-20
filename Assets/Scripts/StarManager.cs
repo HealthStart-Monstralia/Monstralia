@@ -5,12 +5,13 @@ using System.Collections.Generic;
 
 public class StarManager : MonoBehaviour {
 
-	public GameObject[] starBases;
+    // StarManager is being replaced with StarPanel
 
+    public GameObject[] starBases;
 	private Dictionary<string, string> baseToGame;
 
-	// Use this for initialization
 	void Awake () {
+        /*
 		baseToGame = new Dictionary<string, string>();
 		baseToGame.Add("BrainbowStarBase", "Brainbow");
 		baseToGame.Add("MemoryMatchStarBase", "MemoryMatch");
@@ -25,7 +26,7 @@ public class StarManager : MonoBehaviour {
 				starBase.transform.GetChild(i).gameObject.SetActive(true);
 			}
 		}
-
+        */
 	}
 
 }

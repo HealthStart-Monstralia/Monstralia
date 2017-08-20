@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+/**
+ * \class DishObject
+ * \brief Defines the behavior of the dishes in the MemoryMatch game.
+ * 
+ * This script defines what a dish does when it is clicked on as well as
+ * determines if a match has been made.
+ */
+
 public class DishObject : MonoBehaviour {
 	private Food myFood;
 	private static bool isGuessing = false;
@@ -25,10 +33,12 @@ public class DishObject : MonoBehaviour {
 	}
 
 	void LateUpdate() {
-		lidSpriteComponent.sortingOrder = (initialSortingLayer + 15) + ((-(int)transform.position.y) * 10);
-		dishSpriteComponent.sortingOrder = (initialSortingLayer + 13) + ((-(int)transform.position.y) * 10);
-		if (foodObject)
-			foodSpriteComponent.sortingOrder = (initialSortingLayer + 14) + ((-(int)transform.position.y) * 10);
+        int layerNum = Mathf.Clamp((initialSortingLayer + 13) + ((-(int)transform.position.y) * 10), 1, 100);
+
+        lidSpriteComponent.sortingOrder = layerNum + 2;
+        if (foodObject) foodSpriteComponent.sortingOrder = layerNum + 1;
+        dishSpriteComponent.sortingOrder = layerNum;
+
 	}
 
 	public void SetFood(GameObject food) {
@@ -89,7 +99,15 @@ public class DishObject : MonoBehaviour {
 		matched = true;
 	}
 
-	IEnumerator OnMouseDown () {
+    /**
+     * \brief OnMouseDown is called when the player clicks (or taps) one of the dishes.
+     * 
+     * Check if this dish's myFood matches the foodToMatch. If it does match, deactivate
+     * the top part of the dish permenanatly, otherwise, cover the food again.
+     * @return WaitForSeconds for a delay.
+     */
+
+    IEnumerator OnMouseDown () {
 		MemoryMatchGameManager manager = MemoryMatchGameManager.GetInstance ();
 		if(manager.inputAllowed && !isGuessing && (manager.isGameStarted() || manager.isRunningTutorial())) {
 			isGuessing = true;

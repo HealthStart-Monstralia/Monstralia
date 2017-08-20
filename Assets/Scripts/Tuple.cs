@@ -24,4 +24,18 @@ public class Tuple<T1, T2> {
 	public static bool operator !=(Tuple<T1, T2> tup1, Tuple<T1, T2> tup2) {
 		return !(tup1 == tup2);
 	}
+
+    public override bool Equals (object obj) {
+        if (ReferenceEquals (null, obj)) return false;
+        if (ReferenceEquals (this, obj)) return true;
+        if (obj.GetType () != this.GetType ()) return false;
+        return Equals ((Tuple<T1, T2>)obj);
+    }
+
+    public override int GetHashCode () {
+        int hash = 17;
+        hash = hash * 23 + (first == null ? 0 : first.GetHashCode ());
+        hash = hash * 23 + (second == null ? 0 : second.GetHashCode ());
+        return hash;
+    }
 }

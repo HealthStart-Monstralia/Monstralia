@@ -2,11 +2,11 @@
 using System.Collections;
 
 public abstract class AbstractGameManager : MonoBehaviour {
-
+    public MinigameData.Minigame typeOfGame;
 	public abstract void GameOver(); // Force GameOver() to be implemented in child classes
 	public Canvas stickerPopupCanvas;
 
-	public virtual void UnlockSticker(StickerManager.StickerType stickerType) {
+	public virtual void UnlockSticker() {
 		if (stickerPopupCanvas) {
 			stickerPopupCanvas.gameObject.SetActive (true);
 			SoundManager.GetInstance ().PlayUnlockStickerVO ();
@@ -22,7 +22,7 @@ public abstract class AbstractGameManager : MonoBehaviour {
 				stickerPopupCanvas.transform.Find ("StickerbookButton").gameObject.SetActive (false);
 			}
 
-			GameManager.GetInstance ().ActivateSticker (stickerType);
+			GameManager.GetInstance ().ActivateSticker (typeOfGame);
 		} else {
 			Debug.LogError ("Error: Sticker Popup Canvas not assigned to Manager.");
 		}

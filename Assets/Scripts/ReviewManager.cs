@@ -8,7 +8,7 @@ public class ReviewManager : MonoBehaviour {
     public GameObject[] ReviewGamePrefabs; //list of review games
     private static ReviewManager instance;
     public string levelToReview; // bad code smell, open to other options
-    public Dictionary <string, string> reviewgamesAndGamesDict;
+    public Dictionary <string, MinigameData.Minigame> reviewgamesAndGamesDict;
     int reviewLevelIndex;
 
     public static ReviewManager GetInstance() {
@@ -23,13 +23,13 @@ public class ReviewManager : MonoBehaviour {
         }
 
         DontDestroyOnLoad(this);
-        reviewgamesAndGamesDict = new Dictionary<string, string>(); // <review prefab name> <level to review name>
+        reviewgamesAndGamesDict = new Dictionary<string, MinigameData.Minigame> (); // <review prefab name> <level to review name>
 
-        reviewgamesAndGamesDict.Add("BrainbowReviewGame", "Brainbow");
-        reviewgamesAndGamesDict.Add("MemoryMatchReviewGame", "MemoryMatch");
-        reviewgamesAndGamesDict.Add("SensesReviewGame", "Senses");
-        reviewgamesAndGamesDict.Add("EmotionsReviewGame", "Emotions");
-        reviewgamesAndGamesDict.Add("BrainmazeReviewGame", "BrainMaze");
+        reviewgamesAndGamesDict.Add("BrainbowReviewGame", MinigameData.Minigame.Brainbow);
+        reviewgamesAndGamesDict.Add("MemoryMatchReviewGame", MinigameData.Minigame.MemoryMatch);
+        reviewgamesAndGamesDict.Add("SensesReviewGame", MinigameData.Minigame.MonsterSenses);
+        reviewgamesAndGamesDict.Add("EmotionsReviewGame", MinigameData.Minigame.MonsterEmotions);
+        reviewgamesAndGamesDict.Add("BrainmazeReviewGame", MinigameData.Minigame.BrainMaze);
 
     }
     void OnEnable() {

@@ -35,6 +35,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	public List<GameObject> foods;
 	public GameObject dish;
 	public List<GameObject> dishes;
+    public GameObject dishAnchor;
 
 	public Slider scoreGauge;
 	public SubtitlePanel subtitlePanel;
@@ -70,7 +71,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 			switchScene.loadScene ("Start");
 		} else {
 
-			difficultyLevel = GameManager.GetInstance ().GetLevel ("MemoryMatch");
+			difficultyLevel = GameManager.GetInstance ().GetLevel (MinigameData.Minigame.MemoryMatch);
 			typeOfMonster = GameManager.GetMonsterType ();
 			CreateMonster ();
 			monsterObject.PlaySpawn ();
@@ -91,7 +92,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		matchedFoods = new List<Food> ();
 		inputAllowed = false;
 
-		if (GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH]) {
+		if (GameManager.GetInstance ().GetPendingTutorial(MinigameData.Minigame.MemoryMatch)) {
 			tutorialCoroutine = StartCoroutine (RunTutorial ());
 		}
 		else {
@@ -258,7 +259,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		yield return new WaitForSeconds(2.0f);
 		subtitlePanel.Hide ();
 		instructionPopup.gameObject.SetActive (false);
-		GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
+		GameManager.GetInstance ().CompleteTutorial(MinigameData.Minigame.MemoryMatch);
 		PregameSetup ();
 	}
 
@@ -298,8 +299,8 @@ public class MemoryMatchGameManager : AbstractGameManager {
 
 		for(int i = 0; i < numDishes; ++i) {
 			GameObject newDish = Instantiate(dish);
-			float offset = 200f;
-			newDish.transform.SetParent (mainCanvas.transform);
+			float offset = 2f;
+			newDish.transform.SetParent (dishAnchor.transform);
 			newDish.transform.localPosition = new Vector3(
 				offset * Mathf.Cos (dishPositionAngleDelta*i + Mathf.PI / 2), 
 				offset * Mathf.Sin (dishPositionAngleDelta*i + Mathf.PI / 2), 
@@ -308,8 +309,9 @@ public class MemoryMatchGameManager : AbstractGameManager {
 
             // Reduce size of dish depending on number of dishes
             if (reduceSize) {
-                newDish.transform.localScale = newDish.transform.localScale * 0.8f;
+                newDish.transform.localScale = newDish.transform.localScale * 0.9f;
             }
+
 		}
 	}
 
@@ -448,12 +450,12 @@ public class MemoryMatchGameManager : AbstractGameManager {
 			GameManager.GetInstance ().AddLagoonReviewGame ("MemoryMatchReviewGame");
 
 			if (difficultyLevel == 1) {
-				UnlockSticker (StickerManager.StickerType.Hippocampus);	// Calling from AbstractGameManager
+				UnlockSticker ();	// Calling from AbstractGameManager
 			} else {
 				DisplayGameOverPopup ();
 			}
 
-			GameManager.GetInstance ().LevelUp ("MemoryMatch");
+			GameManager.GetInstance ().LevelUp (MinigameData.Minigame.MemoryMatch);
 		} else {
 			if(difficultyLevel >= 1) {
 				//GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
