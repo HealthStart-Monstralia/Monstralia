@@ -129,10 +129,10 @@ public class EmotionsGameManager : AbstractGameManager {
 	}
 
 
-	void PregameSetup () {
+	public void PregameSetup () {
 		score = 0;
 		scoreGauge.maxValue = scoreGoal;
-		if(timer != null) {
+		if (timer != null) {
 			timerText.gameObject.SetActive(true);
 			timer.SetTimeLimit(this.timeLimit);
 			timer.StopTimer ();

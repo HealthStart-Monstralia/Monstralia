@@ -1,44 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BrainMazeReviewMonster : MonoBehaviour {
 
     public float speed;
-    Vector3 clickPos;
-    Vector3 changeInMousePos;
+    public Sprite[] monsterSprites;
+    Dictionary <int, Sprite> monsterColor;
 
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.Mouse0)) {
-            clickPos = Input.mousePosition;
-        }
-        if (Input.GetKey(KeyCode.Mouse0)) {
-            changeInMousePos = clickPos - Input.mousePosition;
-            transform.position -= changeInMousePos * Time.deltaTime * speed;
-        }
-    }
-    private void FixedUpdate() {
-        //transform.position -= changeInMousePos * Time.deltaTime * speed;
-    }
-    /*
     private void Start() {
-        StartDragMonster();
-    }
-    public void StartDragMonster() {
-        print("ppoi");
-        StartCoroutine(DragMonster());
- 
-    }
-    public void StopDragMonster() {
-        StopCoroutine(DragMonster());
-    }
-	
-    IEnumerator DragMonster() {
-        while (true) {
-
-            transform.position = Input.mousePosition;
-
-            yield return null;
+        monsterColor = new Dictionary<int, Sprite>();
+        for (int i = 0; i < monsterSprites.Length; i++) {
+            monsterColor.Add(i, monsterSprites[i]);
         }
-    }*/
+        GetComponent<Image>().sprite = monsterColor[(int)GameManager.monsterType];
+    }
+
+    private void OnMouseDrag() {
+        if (Input.GetMouseButton(0)) {
+            transform.position += new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")) * speed;
+        }
+    }
+
 }
