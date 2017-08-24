@@ -71,28 +71,20 @@ public class MemoryMatchGameManager : AbstractGameManager {
 			switchScene.loadScene ("Start");
 		} else {
 
-			difficultyLevel = GameManager.GetInstance ().GetLevel (MinigameData.Minigame.MemoryMatch);
+			difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.MemoryMatch);
 			typeOfMonster = GameManager.GetMonsterType ();
 			CreateMonster ();
 			monsterObject.PlaySpawn ();
 			RetrieveFoodsFromManager ();
-
-			if(GameManager.GetInstance().LagoonReview) {
-				//StartReview();
-				PregameSetup ();
-			}
-			else {
-				PregameSetup ();
-			}
 		}
 	}
 
-	public void PregameSetup () {
+	public override void PregameSetup () {
 		activeFoods = new List<GameObject> ();
 		matchedFoods = new List<Food> ();
 		inputAllowed = false;
 
-		if (GameManager.GetInstance ().GetPendingTutorial(MinigameData.Minigame.MemoryMatch)) {
+		if (GameManager.GetInstance ().GetPendingTutorial(DataType.Minigame.MemoryMatch)) {
 			tutorialCoroutine = StartCoroutine (RunTutorial ());
 		}
 		else {
@@ -259,7 +251,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		yield return new WaitForSeconds(2.0f);
 		subtitlePanel.Hide ();
 		instructionPopup.gameObject.SetActive (false);
-		GameManager.GetInstance ().CompleteTutorial(MinigameData.Minigame.MemoryMatch);
+		GameManager.GetInstance ().CompleteTutorial(DataType.Minigame.MemoryMatch);
 		PregameSetup ();
 	}
 
@@ -447,7 +439,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 			currentFoodToMatch.SetActive (false);
 
 		if (score >= numDishes) {
-			GameManager.GetInstance ().AddLagoonReviewGame ("MemoryMatchReviewGame");
+			//GameManager.GetInstance ().AddLagoonReviewGame ("MemoryMatchReviewGame");
 
 			if (difficultyLevel == 1) {
 				UnlockSticker ();	// Calling from AbstractGameManager
@@ -455,7 +447,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 				DisplayGameOverPopup ();
 			}
 
-			GameManager.GetInstance ().LevelUp (MinigameData.Minigame.MemoryMatch);
+			GameManager.GetInstance ().LevelUp (DataType.Minigame.MemoryMatch);
 		} else {
 			if(difficultyLevel >= 1) {
 				//GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;

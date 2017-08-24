@@ -7,7 +7,7 @@ public class DebugPanel : MonoBehaviour {
     public Text starsText;
     public Text titleText;
     public GameObject tutorialButton, reviewButton, stickerButton;
-    public MinigameData.Minigame gameName; // Must match same name as in Game Manager
+    public DataType.Minigame gameName; // Must match same name as in Game Manager
 
     private int starCount;
 

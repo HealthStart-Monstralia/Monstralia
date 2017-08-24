@@ -52,7 +52,7 @@ public class BMaze_Manager : AbstractGameManager {
 			SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
 			switchScene.loadScene ("Start");
 		} else {
-			level = GameManager.GetInstance ().GetLevel (MinigameData.Minigame.BrainMaze) - 1;
+			level = GameManager.GetInstance ().GetLevel (DataType.Minigame.BrainMaze) - 1;
 			if (level > 2) {
 				level = 2;
 
@@ -73,39 +73,35 @@ public class BMaze_Manager : AbstractGameManager {
 			if (timerText == null)
 				Debug.LogError ("No Timer Found!");
 			timerText.text = Mathf.Round (timeLeft).ToString ();
-
-			if (GameManager.GetInstance ().GetPendingTutorial(MinigameData.Minigame.BrainMaze)) {
-				tutorialCoroutine = StartCoroutine (RunTutorial ());
-			} else {
-				SetupMaze (level);
-			}
+            //PregameSetup ();
 
 			typeOfMonster = GameManager.GetMonsterType ();
 		}
 	}
 
-	void SetupMaze(int level) {
+    public override void PregameSetup () {
+        if (GameManager.GetInstance ().GetPendingTutorial (DataType.Minigame.BrainMaze)) {
+            tutorialCoroutine = StartCoroutine (RunTutorial ());
+        } else {
+            SetupMaze (level);
+        }
+
+    }
+
+    void SetupMaze(int level) {
 		beachBackgroundObj.GetComponent<BMaze_BeachBackgrounds> ().ChangeBackground (level);
 		mazeGraphicObj.GetComponent<BMaze_MazeGraphics> ().ChangeMaze (level);
+
 		for (int i = 0; i < mazeColliders.Length; i++) {
 			if (i != level) {
 				mazeColliders [i].SetActive (false);
 				assetList [i].gameObject.SetActive (false);
-				/*
-				assetList [i].GetPickupManager ().gameObject.SetActive (false);
-				assetList [i].GetDoor().gameObject.SetActive (false);
-				assetList [i].GetFinishline().gameObject.SetActive (false);
-				*/
 			} else {
 				mazeColliders [i].SetActive (true);
 				assetList [i].gameObject.SetActive (true);
-				/*
-				assetList [i].GetPickupManager ().gameObject.SetActive (true);
-				assetList [i].GetDoor().gameObject.SetActive (true);
-				assetList [i].GetFinishline().gameObject.SetActive (true);
-				*/
 			}
 		}
+
 		if (monsterObject)
 			RemoveMonster ();
 		CreateMonster ();
@@ -172,7 +168,7 @@ public class BMaze_Manager : AbstractGameManager {
 	public void TutorialFinished() {
 		instance.inputAllowed = false;
 		tutorialHand.SetActive (false);
-		GameManager.GetInstance ().CompleteTutorial(MinigameData.Minigame.BrainMaze);
+		GameManager.GetInstance ().CompleteTutorial(DataType.Minigame.BrainMaze);
 		StopCoroutine (tutorialCoroutine);
 		StartCoroutine(TutorialTearDown ());
 	}
@@ -226,7 +222,7 @@ public class BMaze_Manager : AbstractGameManager {
 			}
 
 			if (GameManager.GetInstance ())
-				GameManager.GetInstance ().LevelUp (MinigameData.Minigame.BrainMaze);
+				GameManager.GetInstance ().LevelUp (DataType.Minigame.BrainMaze);
 		}
 	}
 
@@ -252,7 +248,7 @@ public class BMaze_Manager : AbstractGameManager {
 		} else {
 			gameStarted = false;
 			if (GameManager.GetInstance())
-				GameManager.GetInstance ().LevelUp (MinigameData.Minigame.BrainMaze);
+				GameManager.GetInstance ().LevelUp (DataType.Minigame.BrainMaze);
 			instance.ChangeScene ();
 		}
 		skipButton = button;

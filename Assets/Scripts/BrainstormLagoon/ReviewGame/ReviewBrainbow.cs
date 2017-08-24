@@ -74,10 +74,8 @@ public class ReviewBrainbow : MonoBehaviour {
 		inputAllowed = false;
 		subtitle.Display ("Great job!");
 
-		Destroy (gameObject, 3f); // Replace when below is implemented
-		/* Insert function that tells the Review Manager
-		 * the review is finished */
-	}
+        ReviewManager.GetInstance ().EndReview ();
+    }
 
 	void ChooseFoodsFromManager() {
 		FoodList listOfFoods = GameManager.GetInstance ().GetComponent<FoodList> ();
@@ -108,7 +106,7 @@ public class ReviewBrainbow : MonoBehaviour {
 
 	public void SpawnFood(GameObject foodObject, Transform trans) {
 		GameObject newFood = Instantiate (foodObject, trans.position, Quaternion.identity, transform);
-		ReviewBrainbowFood bbFoodComponent = newFood.AddComponent<ReviewBrainbowFood> ();
+		newFood.AddComponent<ReviewBrainbowFood> ();
 		newFood.AddComponent<CanvasGroup> ();
 		newFood.GetComponent<SpriteRenderer> ().sortingLayerName = "UI";
 		newFood.GetComponent<SpriteRenderer> ().sortingOrder = 7;

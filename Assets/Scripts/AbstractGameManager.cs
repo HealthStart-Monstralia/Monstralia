@@ -2,16 +2,35 @@
 using System.Collections;
 
 public abstract class AbstractGameManager : MonoBehaviour {
-    public MinigameData.Minigame typeOfGame;
+    public DataType.Minigame typeOfGame;
 	public abstract void GameOver(); // Force GameOver() to be implemented in child classes
-	public Canvas stickerPopupCanvas;
+    public abstract void PregameSetup (); // Force PregameSetup() to be implemented in child classes
+    public Canvas stickerPopupCanvas;
 
-	public virtual void UnlockSticker() {
+    protected void Start() {
+        print ("AbstractGameManager Start running");
+        if (ReviewManager.GetInstance ().needReview) {
+            StartReview ();
+        } else {
+            PregameSetup ();
+        }
+    }
+
+    protected void StartReview () {
+        ReviewManager.OnFinishReview += EndReview;
+        ReviewManager.GetInstance ().StartReview ();
+        SoundManager.GetInstance ().PlayReviewVO();
+    }
+
+    protected void EndReview () {
+        ReviewManager.OnFinishReview -= EndReview;
+        PregameSetup ();
+    }
+
+    public virtual void UnlockSticker() {
 		if (stickerPopupCanvas) {
 			stickerPopupCanvas.gameObject.SetActive (true);
 			SoundManager.GetInstance ().PlayUnlockStickerVO ();
-			GameManager.GetInstance ().ActivateBrainstormLagoonReview ();
-
 
 			if (GameManager.GetInstance ().LagoonFirstSticker) {
 				GameManager.GetInstance ().LagoonFirstSticker = false;
@@ -22,9 +41,10 @@ public abstract class AbstractGameManager : MonoBehaviour {
 				stickerPopupCanvas.transform.Find ("StickerbookButton").gameObject.SetActive (false);
 			}
 
-			GameManager.GetInstance ().ActivateSticker (typeOfGame);
 		} else {
 			Debug.LogError ("Error: Sticker Popup Canvas not assigned to Manager.");
 		}
-	}
+
+        GameManager.GetInstance ().ActivateSticker (typeOfGame);
+    }
 }

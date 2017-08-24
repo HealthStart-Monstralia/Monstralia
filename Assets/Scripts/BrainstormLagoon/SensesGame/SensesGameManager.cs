@@ -47,7 +47,7 @@ public class SensesGameManager : AbstractGameManager {
 			Destroy(gameObject);
 		}
 
-		difficultyLevel = GameManager.GetInstance().GetLevel(MinigameData.Minigame.MonsterSenses);
+		difficultyLevel = GameManager.GetInstance().GetLevel(DataType.Minigame.MonsterSenses);
 
 		sensesSetup = new Dictionary<int, int>()
 		{
@@ -64,11 +64,12 @@ public class SensesGameManager : AbstractGameManager {
 	}
 
 	// Use this for initialization
-	void Start () {
+	new void Start () {
+        base.Start ();
 		PregameSetup();
 	}
 
-	void PregameSetup ()
+	public override void PregameSetup ()
 	{
 		score = 0;
 		scoreGauge.maxValue = scoreGoal;
@@ -231,7 +232,7 @@ public class SensesGameManager : AbstractGameManager {
 				UnlockSticker ();
 			}
 
-			GameManager.GetInstance ().LevelUp (MinigameData.Minigame.MonsterSenses);
+			GameManager.GetInstance ().LevelUp (DataType.Minigame.MonsterSenses);
 
 			DisplayGameOverPopup ();
 		}

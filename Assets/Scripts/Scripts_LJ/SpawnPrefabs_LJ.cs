@@ -94,7 +94,7 @@ public class SpawnPrefabs_LJ : MonoBehaviour
     {
         //Finds the InteractableObject_LJ component attached to the game object that was instantiated
         InteractableObject_LJ referencedObject = GameObject.FindObjectOfType<InteractableObject_LJ>();
-        numOfStarsSenses = GameManager.GetInstance().GetNumStars(MinigameData.Minigame.MonsterSenses);
+        numOfStarsSenses = GameManager.GetInstance().GetNumStars(DataType.Minigame.MonsterSenses);
         StartUpMonsterFireWorks();
     }
 

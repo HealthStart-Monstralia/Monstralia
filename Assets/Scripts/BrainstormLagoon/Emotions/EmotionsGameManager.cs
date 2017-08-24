@@ -98,7 +98,7 @@ public class EmotionsGameManager : AbstractGameManager {
 					secondaryEmotions.AddRange (yellowEmotions);
 				}
 
-				difficultyLevel = GameManager.GetInstance ().GetLevel (MinigameData.Minigame.MonsterEmotions);
+				difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.MonsterEmotions);
 			} else {
 				monsterType = GameManager.GetMonsterType ();
 				primaryEmotions = greenEmotions;
@@ -115,12 +115,6 @@ public class EmotionsGameManager : AbstractGameManager {
 				{ 4, new Tuple<int, int> (3, 1) },
 				{ 5, new Tuple<int, int> (2, 2) }
 			};
-
-			if (GameManager.GetInstance ().GetPendingTutorial(MinigameData.Minigame.MonsterEmotions) ) {
-				tutorialCoroutine = StartCoroutine (RunTutorial ());
-			} else {
-				PregameSetup ();
-			}
 		}
 	}
 
@@ -129,21 +123,25 @@ public class EmotionsGameManager : AbstractGameManager {
 	}
 
 
-	public void PregameSetup () {
-		score = 0;
-		scoreGauge.maxValue = scoreGoal;
-		if (timer != null) {
-			timerText.gameObject.SetActive(true);
-			timer.SetTimeLimit(this.timeLimit);
-			timer.StopTimer ();
-		}
+	public override void PregameSetup () {
+        if (GameManager.GetInstance ().GetPendingTutorial (DataType.Minigame.MonsterEmotions)) {
+            tutorialCoroutine = StartCoroutine (RunTutorial ());
+        } else {
+            score = 0;
+            scoreGauge.maxValue = scoreGoal;
+            if (timer != null) {
+                timerText.gameObject.SetActive (true);
+                timer.SetTimeLimit (this.timeLimit);
+                timer.StopTimer ();
+            }
 
-		numEmotions = emotionsSetup[difficultyLevel];
-		activeEmotions = new List<GameObject> ();
-		UpdateScoreGauge ();
+            numEmotions = emotionsSetup[difficultyLevel];
+            activeEmotions = new List<GameObject> ();
+            UpdateScoreGauge ();
 
-		timerText.text = "Time: " + timer.TimeRemaining();
-		StartCoroutine(DisplayGo());
+            timerText.text = "Time: " + timer.TimeRemaining ();
+            StartCoroutine (DisplayGo ());
+        }
 	}
 
 	public IEnumerator DisplayGo() {
@@ -203,7 +201,7 @@ public class EmotionsGameManager : AbstractGameManager {
 	public void TutorialFinished() {
 		inputAllowed = false;
 		tutorialHand.SetActive (false);
-		GameManager.GetInstance ().CompleteTutorial(MinigameData.Minigame.MonsterEmotions);
+		GameManager.GetInstance ().CompleteTutorial(DataType.Minigame.MonsterEmotions);
 		StopCoroutine (tutorialCoroutine);
 		StartCoroutine(TutorialTearDown ());
 	}
@@ -384,8 +382,7 @@ public class EmotionsGameManager : AbstractGameManager {
 				DisplayGameOverPopup ();
 			}
 			
-			GameManager.GetInstance ().LevelUp (MinigameData.Minigame.MonsterEmotions);
-
+			GameManager.GetInstance ().LevelUp (DataType.Minigame.MonsterEmotions);
 		}
 	}
 

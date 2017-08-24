@@ -5,8 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class StickerSlot : MonoBehaviour, IDropHandler {
-
-	public StickerData.StickerType typeOfSticker;
+	public DataType.StickerType typeOfSticker;
 	public bool isStickerFilled = false;
 
 	void Start () {

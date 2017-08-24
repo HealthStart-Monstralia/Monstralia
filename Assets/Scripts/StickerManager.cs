@@ -34,14 +34,14 @@ public class StickerManager : MonoBehaviour {
 		return instance;
 	}
 
-	public void SpawnSticker(StickerData.StickerType stickerSelection, bool isPlaced) {
+	public void SpawnSticker(DataType.StickerType stickerSelection, bool isPlaced) {
 		GameObject stickerObject;
 		stickerObject = Instantiate (stickersSpawnList [(int)stickerSelection], location.transform.position, Quaternion.identity, mainCanvas.transform);
 		if (isPlaced)
 			stickersSlotList [(int)stickerSelection].ReceiveSticker (stickerObject.GetComponent<StickerBehaviour>());
 	}
 
-	public void DisableOtherStickerSlots(StickerData.StickerType type) {
+	public void DisableOtherStickerSlots(DataType.StickerType type) {
 		foreach (StickerSlot stickerSlot in stickersSlotList) {
 			if (stickerSlot.typeOfSticker != type) {
 				stickerSlot.DisableInput (true);
@@ -51,7 +51,7 @@ public class StickerManager : MonoBehaviour {
 		}
 	}
 
-	public void EnableOtherStickerSlots(StickerData.StickerType type) {
+	public void EnableOtherStickerSlots(DataType.StickerType type) {
 		foreach (StickerSlot stickerSlot in stickersSlotList) {
 			stickerSlot.DisableInput (false);
 		}
@@ -63,10 +63,10 @@ public class StickerManager : MonoBehaviour {
 	}
 
     public void SpawnStickers () {
-        Dictionary<StickerData.StickerType, bool> stickers = GameManager.GetInstance ().GetAllStickers ();
-        Dictionary<StickerData.StickerType, bool> stickersPlaced = GameManager.GetInstance ().GetAllPlacedStickers ();
+        Dictionary<DataType.StickerType, bool> stickers = GameManager.GetInstance ().GetAllStickers ();
+        Dictionary<DataType.StickerType, bool> stickersPlaced = GameManager.GetInstance ().GetAllPlacedStickers ();
 
-        foreach (StickerData.StickerType sticker in stickers.Keys) {
+        foreach (DataType.StickerType sticker in stickers.Keys) {
             if (stickers[sticker]) SpawnSticker (sticker, stickersPlaced[sticker]);
         }
     }

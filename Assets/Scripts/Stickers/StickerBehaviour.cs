@@ -11,18 +11,18 @@ public class StickerBehaviour : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 	private CanvasGroup canvasGroup;
 	private int sortLayer;
 
-	public StickerData.StickerType typeOfSticker;
+	public DataType.StickerType typeOfSticker;
 
 	public void OnPointerDown (PointerEventData eventData) {
 		if (!isSticked) {
-			GetComponent<CanvasGroup> ().blocksRaycasts = false;
+            canvasGroup.blocksRaycasts = false;
 			StickerManager.GetInstance ().DisableOtherStickerSlots (typeOfSticker);
 		}
 	}
 
 	public void OnPointerUp (PointerEventData eventData) {
 		if (!isSticked) {
-			GetComponent<CanvasGroup> ().blocksRaycasts = true;
+            canvasGroup.blocksRaycasts = true;
 			StickerManager.GetInstance ().EnableOtherStickerSlots (typeOfSticker);
 		}
 	}

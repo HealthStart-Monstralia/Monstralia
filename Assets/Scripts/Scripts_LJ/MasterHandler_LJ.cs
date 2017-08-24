@@ -2,8 +2,9 @@
  * Description: This script remains active as a manager in the Senses Game scene. It activates/deactivates Level 1, Level 2, Level 3 game objects to act like scenes. (Initially built with scene-based structure)
  *              It also holds some shared/common items for use throughout the Senses Game. 
  * Author: Lance C. Jasper
+ * Edited by: Colby Tang
  * Created: 6AUGUST2017
- * Last Modified: 8AUGUST2017 
+ * Last Modified: 24AUGUST2017 
  */
 
 using System.Collections;
@@ -12,9 +13,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class MasterHandler_LJ : MonoBehaviour
+public class MasterHandler_LJ : AbstractGameManager
 {
     //-----PRIVATE FIELDS-----//
+    private static MasterHandler_LJ instance;
     private AudioManager_LJ getAudio;
     private SceneManager_LJ sceneManager;
     private GameObject FireWorksSpawn1;
@@ -51,6 +53,14 @@ public class MasterHandler_LJ : MonoBehaviour
     //-----ON GAME LOADING-----//
     void Awake()
     {
+        // Apply singleton property to MasterHandler_LJ
+        if (instance == null) {
+            instance = this;
+        } else if (instance != this) {
+            Destroy (gameObject);
+        }
+
+
         //Get references to objects/scripts to call their function here in this script
         GameObject sceneScript = GameObject.Find("MasterHandlerScript");
         sceneManager = sceneScript.GetComponent<SceneManager_LJ>();
@@ -59,28 +69,36 @@ public class MasterHandler_LJ : MonoBehaviour
         getAudio = audioScript.GetComponent<AudioManager_LJ>();
     }
 
+    public static MasterHandler_LJ GetInstance () {
+        return instance;
+    }
+
 
     //-----ON GAME START-----//
-    void Start()
+    new void Start()
     {
         //Set other parameters for game
-        numOfStarsSenses = GameManager.GetInstance().GetNumStars(MinigameData.Minigame.MonsterSenses);
+        numOfStarsSenses = GameManager.GetInstance().GetNumStars(DataType.Minigame.MonsterSenses);
         numOfStars = numOfStarsSenses;
         randInt1 = Random.Range(0, FireWorksPrefab.Length);
         randInt2 = Random.Range(0, FireWorksPrefab.Length);
         randInt3 = Random.Range(0, FireWorksPrefab.Length);
         randInt4 = Random.Range(0, FireWorksPrefab.Length);
         randInt5 = Random.Range(0, LargeFireWorkPrefab.Length);
+        base.Start (); // Calls Start() from AbstractGameManager
     }
 
 
-    public void PregameSetup()
+    public override void PregameSetup()
     {
-        //Created this public void for ReviewGameWinLose to access. The Senses Game is managed by this MasterHandler_LJ.cs script and a script called SceneManager_LJ.cs. 
+        //Created this public void for AbstractGameManager to access. The Senses Game is managed by this MasterHandler_LJ.cs script and a script called SceneManager_LJ.cs. 
         //The MasterHandler remains active in the Senses Game scene and activates/deactivates game objects that act as Level 1, Level 2, and Level 3.
         Debug.Log("From MasterHandler_LJ.cs: The PregameSetup function for Senses Game has been called by ReviewGameWinLose.cs. ----- This method is temporarily empty.");
     }
 
+    public override void GameOver () {
+        UnlockSticker ();
+    }
 
     void Update()
     {
@@ -232,7 +250,7 @@ public class MasterHandler_LJ : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            GameManager.GetInstance().LevelUp(MinigameData.Minigame.MonsterSenses);
+            GameManager.GetInstance().LevelUp(DataType.Minigame.MonsterSenses);
         }
     }
     //-----DEBUGGING-----//    //-----DEBUGGING-----//    //-----DEBUGGING-----//    //-----DEBUGGING-----//

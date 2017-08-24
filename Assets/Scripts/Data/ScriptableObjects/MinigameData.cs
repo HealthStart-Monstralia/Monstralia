@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu (fileName = "MinigameData_.asset", menuName = "Data/Minigame Data")]
 public class MinigameData : ScriptableObject {
-    public enum Minigame {
-        Brainbow,
-        BrainMaze,
-        MemoryMatch,
-        MonsterEmotions,
-        MonsterSenses
-    }
+    public DataType.Minigame typeOfGame;
+    public GameObject reviewPrefab;
+    public DataType.StickerType sticker;
 }

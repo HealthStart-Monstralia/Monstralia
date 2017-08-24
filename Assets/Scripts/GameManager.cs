@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using System.Collections;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
@@ -11,19 +13,19 @@ public class GameManager : MonoBehaviour {
 		Yellow = 3
 	};
 
-	private Dictionary<MinigameData.Minigame, int> gameLevels;
-    private Dictionary<MinigameData.Minigame, bool> gameTutorials;
-    private Dictionary<MinigameData.Minigame, int> gameStars;
-    private Dictionary<MinigameData.Minigame, StickerData.StickerType> gameStickers;
-    private Dictionary<StickerData.StickerType, bool> stickers;
-    private Dictionary<StickerData.StickerType, bool> stickersPlaced;
+	private Dictionary<DataType.Minigame, int> gameLevels;
+    private Dictionary<DataType.Minigame, MinigameData> minigameDictionary;
+    private Dictionary<DataType.Minigame, bool> gameTutorials;
+    private Dictionary<DataType.Minigame, int> gameStars;
+    private Dictionary<DataType.Minigame, DataType.StickerType> gameStickers;
+    private Dictionary<DataType.StickerType, bool> stickers;
+    private Dictionary<DataType.StickerType, bool> stickersPlaced;
 
 	private static GameManager instance = null;
 	private List<string> LagoonReviewGames;
 	private string reviewGamePath = "ReviewGames";
 	private bool allowInput = true;
 
-	public bool[] LagoonTutorial = new bool[5];
 	public bool LagoonFirstSticker = true;
 	public bool LagoonReview = false;
 	public bool PlayLagoonVoiceOver = true; // Prevents voiceover clip from playing when returning from a game inside Brainstorm Lagoon - CT
@@ -33,11 +35,11 @@ public class GameManager : MonoBehaviour {
 
 	string monster;
 
-	void Awake() {
-		for(int i = 0; i < 5; ++i) {
-			LagoonTutorial[i] = true;
-		}
+    public static GameManager GetInstance () {
+        return instance;
+    }
 
+    void Awake() {
 		if(instance == null) {
 			instance = this;
 		}
@@ -48,21 +50,69 @@ public class GameManager : MonoBehaviour {
 		DontDestroyOnLoad(this);
 	}
 
-	public static GameManager GetInstance() {
-		return instance;
-	}
-
-	void Start() {
+    void Start () {
         InitializeDictionaryEntries ();
-        LagoonReviewGames = new List<string>();
+        AddMinigamesToDictionary ();
+        LagoonReviewGames = new List<string> ();
 
-		if (PlayIntro) {
-			Instantiate (introObject);
-		}
-	}
+        if (PlayIntro) {
+            Instantiate (introObject);
+        }
+    }
+
+    void InitializeDictionaryEntries () {
+
+        // Initialize game dictionaries
+        minigameDictionary = new Dictionary<DataType.Minigame, MinigameData> ();
+        gameLevels = new Dictionary<DataType.Minigame, int> ();
+        gameStars = new Dictionary<DataType.Minigame, int> ();
+        gameTutorials = new Dictionary<DataType.Minigame, bool> ();
+
+        // Loop through each minigame enum to initialize the dictionary values to avoid typing all that damn stuff out
+        foreach (DataType.Minigame game in System.Enum.GetValues (typeof (DataType.Minigame))) {
+            gameLevels.Add (game, 1);
+            gameStars.Add (game, 0);
+            gameTutorials.Add (game, true);
+        }
+
+        // Associate each sticker with a certain minigame
+        gameStickers = new Dictionary<DataType.Minigame, DataType.StickerType> ();
+        gameStickers.Add (DataType.Minigame.Brainbow, DataType.StickerType.RainbowBrain);
+        gameStickers.Add (DataType.Minigame.BrainMaze, DataType.StickerType.Frontal);
+        gameStickers.Add (DataType.Minigame.MemoryMatch, DataType.StickerType.Hippocampus);
+        gameStickers.Add (DataType.Minigame.MonsterEmotions, DataType.StickerType.Amygdala);
+        gameStickers.Add (DataType.Minigame.MonsterSenses, DataType.StickerType.Cerebellum);
+
+        // Initialize sticker dictionaries
+        stickers = new Dictionary<DataType.StickerType, bool> ();
+        stickersPlaced = new Dictionary<DataType.StickerType, bool> ();
+
+        // Loop through each sticker enum to initialize the dictionary values to avoid typing more damn stuff
+        foreach (DataType.StickerType sticker in System.Enum.GetValues (typeof (DataType.StickerType))) {
+            stickers.Add (sticker, false);
+            stickersPlaced.Add (sticker, false);
+        }
+    }
+
+    void AddMinigamesToDictionary() {
+        print ("Minigames");
+        DirectoryInfo dir = new DirectoryInfo ("Assets/Scripts/Data/Minigames/BrainstormLagoon");
+        FileInfo[] info = dir.GetFiles ("*.asset");
+        foreach (FileInfo f in info) {
+            string fullPath = f.FullName.Replace (@"\", "/");
+            string assetPath = "Assets" + fullPath.Replace (Application.dataPath, "");
+            MinigameData data = AssetDatabase.LoadAssetAtPath (assetPath, typeof (MinigameData)) as MinigameData;
+            minigameDictionary.Add (data.typeOfGame, data);
+        }
+
+        foreach (KeyValuePair<DataType.Minigame, MinigameData> entry in minigameDictionary) {
+            print (string.Format("Key: {0} Value: {1} Sticker: {2}", entry.Key, entry.Value, entry.Value.sticker));
+        }
+
+    }
 
 	public void setMonster(string color) {
-		this.monster = color;
+		monster = color;
 		DetermineMonster ();
 	}
 	
@@ -70,87 +120,59 @@ public class GameManager : MonoBehaviour {
 		return monster;
 	}
 
-	public int GetLevel(MinigameData.Minigame gameName) {
+	public int GetLevel(DataType.Minigame gameName) {
 		return gameLevels[gameName];
 	}
 
-	public bool LevelUp(MinigameData.Minigame gameName) {
+	public bool LevelUp(DataType.Minigame gameName) {
 		if(gameStars[gameName] < 3) {
-			gameStars[gameName] += 1;
+            gameStars[gameName] += 1;
+
             if (gameStars[gameName] == 1 || gameStars[gameName] == 3) {
-                switch (gameName) {
-
-                    case MinigameData.Minigame.Brainbow:
-                        ReviewManager.GetInstance ().levelToReview = "BrainbowReviewGame";
-                        break;
-                    case MinigameData.Minigame.BrainMaze:
-                        ReviewManager.GetInstance ().levelToReview = "BrainmazeReviewGame";
-                        break;
-                    case MinigameData.Minigame.MemoryMatch:
-                        ReviewManager.GetInstance ().levelToReview = "MemoryMatchReviewGame";
-                        break;
-                    case MinigameData.Minigame.MonsterEmotions:
-                        ReviewManager.GetInstance ().levelToReview = "EmotionsReviewGame";
-                        break;
-                    case MinigameData.Minigame.MonsterSenses:
-                        ReviewManager.GetInstance ().levelToReview = "SensesReviewGame";
-                        break;
-
-                }
+                ReviewManager.GetInstance ().AddReviewGameToList (gameName);
             }
 
             if (gameLevels[gameName] < 3){
-				gameLevels[gameName] += 1;
+                gameLevels[gameName] += 1;
 			}
+
 			return true;
 		}
 		return false;
 	}
 
-    public void CompleteTutorial(MinigameData.Minigame gameName) {
+    public void CompleteTutorial(DataType.Minigame gameName) {
         gameTutorials[gameName] = false;
     }
 
-    public bool GetPendingTutorial (MinigameData.Minigame gameName) {
+    public bool GetPendingTutorial (DataType.Minigame gameName) {
         return gameTutorials[gameName];
     }
 
-    public int GetNumStars(MinigameData.Minigame gameName) {
+    public int GetNumStars(DataType.Minigame gameName) {
 		return gameStars[gameName];
 	}
 
-	public void ActivateBrainstormLagoonReview() {
-		Debug.Log ("Activating Brainstorm Lagoon review");
-		if(!LagoonReview) {
-			Debug.Log ("LagoonReview: " + LagoonReview);
-			LagoonReview = true;
-			Debug.Log ("LagoonReview: " + LagoonReview);
-		}
-	}
+    public MinigameData GetMinigameData(DataType.Minigame gameName) {
+        return minigameDictionary[gameName];
+    }
 
-	public void AddLagoonReviewGame(string gameName) {
-		Debug.Log ("Adding lagoon review game " + gameName);
-		LagoonReviewGames.Add (gameName);
-		Debug.Log ("COUNT OF REVIEW GAMES ACTIVE: " + LagoonReviewGames.Count);
-	}
+    /*
+	public MinigameData.Minigame ChooseReviewGame() {
 
-	public Canvas ChooseLagoonReviewGame() {
-		Debug.Log("Review Game: " + LagoonReviewGames[Random.Range (0, LagoonReviewGames.Count)]);
-		Canvas reviewGame = (Canvas)Instantiate(Resources.Load("MemoryMatchReviewGame"));//"ReviewGames/LagoonReveiwGames/" + LagoonReviewGames[Random.Range (0, LagoonReviewGames.Count)]));
-		Debug.Log("ReivewGameName: " + reviewGame.name);
-		return reviewGame;//Resources.Load(reviewGamePath  + "/" + LagoonReviewGames[Random.Range (0, LagoonReviewGames.Count)]) as Canvas;
 	}
+    */
 
 	// Determines what kind of monster is chosen
 	void DetermineMonster() {
-		if (GameManager.GetInstance ()) {
-			if (GameManager.GetInstance ().getMonster ().Contains ("Blue")) {
+		if (instance) {
+			if (instance.getMonster ().Contains ("Blue")) {
 				monsterType = MonsterType.Blue;
 			} else {
-				if (GameManager.GetInstance ().getMonster ().Contains ("Green")) {
+				if (instance.getMonster ().Contains ("Green")) {
 					monsterType = MonsterType.Green;
 				} else {
-					if (GameManager.GetInstance ().getMonster ().Contains ("Red")) {
+					if (instance.getMonster ().Contains ("Red")) {
 						monsterType = MonsterType.Red;
 					} else {
 						monsterType = MonsterType.Yellow;
@@ -166,37 +188,52 @@ public class GameManager : MonoBehaviour {
 		return monsterType;
 	}
 
-	public void Countdown() {
+    /// <summary>
+    /// Creates a countdown with a voiceover.
+    /// </summary>
+
+    public void Countdown() {
 		GetComponent<CreateCountdown>().SpawnCountdown();
 	}
 
-    public StickerData.StickerType GetAssignedSticker(MinigameData.Minigame game) {
+    /// <summary>
+    /// Retrieves the type of sticker assigned to the game
+    /// </summary>
+    /// <param name="game">Type of game to unlock sticker for.</param>
+    /// <returns>Returns a StickerType from DataType</returns>
+
+    public DataType.StickerType GetAssignedSticker(DataType.Minigame game) {
         return gameStickers[game];
     }
 
-    public bool GetStickerStatus(MinigameData.Minigame game) {
+    public bool GetStickerStatus(DataType.Minigame game) {
         return stickers[gameStickers[game]];
     }
 
-    public Dictionary<StickerData.StickerType, bool> GetAllStickers () {
+    public Dictionary<DataType.StickerType, bool> GetAllStickers () {
         return stickers;
     }
 
-    public Dictionary<StickerData.StickerType, bool> GetAllPlacedStickers () {
+    public Dictionary<DataType.StickerType, bool> GetAllPlacedStickers () {
         return stickersPlaced;
     }
 
-    public void OnStickerPlaced(StickerData.StickerType typeOfSticker) {
+    public void OnStickerPlaced(DataType.StickerType typeOfSticker) {
 		stickersPlaced [typeOfSticker] = true;
 	}
 
 	public void DebugStickers() {
-        foreach (StickerData.StickerType sticker in System.Enum.GetValues (typeof (StickerData.StickerType))) {
+        foreach (DataType.StickerType sticker in System.Enum.GetValues (typeof (DataType.StickerType))) {
             stickers[sticker] = true;
         }
     }
 
-    public void ActivateSticker (MinigameData.Minigame game) {
+    /// <summary>
+    /// Unlocks a sticker for the corresponding game
+    /// </summary>
+    /// <param name="game">Type of game to unlock sticker for.</param>
+
+    public void ActivateSticker (DataType.Minigame game) {
         stickers[gameStickers[game]] = true;
     }
 
@@ -209,36 +246,6 @@ public class GameManager : MonoBehaviour {
 		print ("Input Allowed: " + boolean);
 	}
 
-    void InitializeDictionaryEntries() {
-        // Initialize dictionaries
-        gameLevels = new Dictionary<MinigameData.Minigame, int> ();
-        gameStars = new Dictionary<MinigameData.Minigame, int> ();
-        gameTutorials = new Dictionary<MinigameData.Minigame, bool> ();
 
-        // Loop through each minigame enum to initialize the dictionary values to avoid typing all that damn stuff out
-        foreach (MinigameData.Minigame game in System.Enum.GetValues (typeof (MinigameData.Minigame))) {
-            gameLevels.Add (game, 1);
-            gameStars.Add (game, 0);
-            gameTutorials.Add (game, true);
-        }
-
-        // Associate each sticker with a certain minigame
-        gameStickers = new Dictionary<MinigameData.Minigame, StickerData.StickerType> ();
-        gameStickers.Add (MinigameData.Minigame.Brainbow, StickerData.StickerType.RainbowBrain);
-        gameStickers.Add (MinigameData.Minigame.BrainMaze, StickerData.StickerType.Frontal);
-        gameStickers.Add (MinigameData.Minigame.MemoryMatch, StickerData.StickerType.Hippocampus);
-        gameStickers.Add (MinigameData.Minigame.MonsterEmotions, StickerData.StickerType.Amygdala);
-        gameStickers.Add (MinigameData.Minigame.MonsterSenses, StickerData.StickerType.Cerebellum);
-
-        // Initialize dictionaries
-        stickers = new Dictionary<StickerData.StickerType, bool> ();
-        stickersPlaced = new Dictionary<StickerData.StickerType, bool> ();
-
-        // Loop through each sticker enum to initialize the dictionary values to avoid typing more damn stuff
-        foreach (StickerData.StickerType sticker in System.Enum.GetValues (typeof (StickerData.StickerType))) {
-            stickers.Add (sticker, false);
-            stickersPlaced.Add (sticker, false);
-        }
-    }
 
 }

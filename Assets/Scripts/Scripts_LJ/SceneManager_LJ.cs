@@ -3,8 +3,9 @@
  *              It needs SpawnPrefabs_LJ.cs and InteractableObject_LJ.cs to run properly.
  *              MasterHandler_LJ.cs was created to help manage this script and the objects it is attached to.
  * Author: Lance C. Jasper
+ * Edited by: Colby Tang
  * Created: 15JUNE2017
- * Last Modified: 11AUGUST2017 
+ * Last Modified: 24AUGUST2017 
  */
 
 using System.Collections;
@@ -13,8 +14,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SceneManager_LJ : MonoBehaviour
-{
+public class SceneManager_LJ : MonoBehaviour {
     //-----PUBLIC FIELDS-----//
     [Header("Add SpawnPrefabScript")]
     [Tooltip("SpawnPrefab_LJ.cs must be attached to a game object and placed here.")]
@@ -42,7 +42,7 @@ public class SceneManager_LJ : MonoBehaviour
 
     public bool StarAdded;
     public bool RoundIsOver;
-    public bool GameOver;
+    public bool gameOver;
 
 
     //-----PRIVATE FIELDS-----//
@@ -88,7 +88,7 @@ public class SceneManager_LJ : MonoBehaviour
         StarAdded = false;
         RoundIsOver = false;
         GoodJobScreen.enabled = false;
-        GameOver = false;
+        gameOver = false;
         GameOverScreen.SetActive(false);
         GaugeIncremented = false;
         goodChoice = false;
@@ -137,11 +137,10 @@ public class SceneManager_LJ : MonoBehaviour
 
         //Set other parameters for game
         StartCoroutine(GameIsReady()); //Wait For Seconds Coroutine
-        numOfStarsSenses = GameManager.GetInstance().GetNumStars(MinigameData.Minigame.MonsterSenses);
+        numOfStarsSenses = GameManager.GetInstance().GetNumStars(DataType.Minigame.MonsterSenses);
         numOfStars = numOfStarsSenses;
         Debug.Log(string.Format("I have {0} stars!", numOfStarsSenses));
     }
-
 
     //-----ON EVERY FRAME-----//
     void FixedUpdate()
@@ -155,7 +154,7 @@ public class SceneManager_LJ : MonoBehaviour
     //-----CANVAS UI TIMER-----//
     void TimeCountdown()
     {
-        if (gameReady && !GameOver)
+        if (gameReady && !gameOver)
         {
             TimeIsUp -= Time.deltaTime;
             //Debug.Log("TimeIsUp at: " + TimeIsUp.ToString("f2"));
@@ -163,7 +162,7 @@ public class SceneManager_LJ : MonoBehaviour
 
             if (TimeIsUp <= 0)
             {
-                GameOver = true;
+                gameOver = true;
                 TimeCountdownText.text = "Time's Up!";
                 GameIsOver();
             }
@@ -330,7 +329,7 @@ public class SceneManager_LJ : MonoBehaviour
     public void PlayChime()
     {
         //Checks if GameOver so chime won't hinder GameOver jingle (i.e. player clicks correct item .01 secs before time is up)
-        if (!GameOver)
+        if (!gameOver)
         {
             getChimesAudio.PlayChime();
         }
@@ -345,15 +344,15 @@ public class SceneManager_LJ : MonoBehaviour
         Invoke("LoadHubWorld", 3f);
         RoundIsOver = true;
         LevelUpMonster();
-        GameOver = true;
+        gameOver = true;
     }
 
 
     //-----IG GAME LOST-----//
-    public void GameIsOver()
+    void GameIsOver()
     {
         StartCoroutine(GameOverDelay());
-        if (GameOver)
+        if (gameOver)
         {
             getInput.InputLockOut();
             GameOverScreen.SetActive(true);
@@ -369,7 +368,7 @@ public class SceneManager_LJ : MonoBehaviour
         {
             if (RoundIsOver)
             {
-                GameManager.GetInstance().LevelUp(MinigameData.Minigame.MonsterSenses);
+                GameManager.GetInstance().LevelUp(DataType.Minigame.MonsterSenses);
                 StarAdded = true;
             }
         }
@@ -430,18 +429,15 @@ public class SceneManager_LJ : MonoBehaviour
         SpawnNewPrefabs();
     }
 
-    // Unlock corresponding sticker if the first level was completed
-    void UnlockSticker() {
-        if (PlayingLevel1) {
-            GameManager.GetInstance ().ActivateSticker (MinigameData.Minigame.MonsterSenses);
-        }
-    }
-
     void LevelComplete()
     {
         GoodJobScreen.enabled = true;
         getAudio.PlayVictoryJingle();
-        UnlockSticker ();
+
+        // Unlock corresponding sticker if the first level was completed
+        if (PlayingLevel1) {
+            MasterHandler_LJ.GetInstance ().GameOver ();
+        }
     }
 
     void LoadHubWorld()

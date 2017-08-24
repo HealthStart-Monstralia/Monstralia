@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StarPanel : MonoBehaviour {
-    public MinigameData.Minigame minigame;
+    public DataType.Minigame minigame;
     public int numStars;
 
     private GameObject[] stars = new GameObject[3];

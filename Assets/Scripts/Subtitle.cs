@@ -7,7 +7,8 @@ public class Subtitle {
 	public void Display(GameObject subtitlePanel, Text subtitleTextComp, string subtitle, AudioClip clip) {
 		subtitlePanel.GetComponent<Animator> ().Play ("Subtitle_In"); // Animation has SetActive(true)
 		subtitleTextComp.text = subtitle;
-		SoundManager.GetInstance().PlayVoiceOverClip(clip);
+        if (clip)
+		    SoundManager.GetInstance().PlayVoiceOverClip(clip);
 	}
 
 	public void Hide(GameObject subtitlePanel) {

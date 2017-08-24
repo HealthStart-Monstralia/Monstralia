@@ -85,7 +85,7 @@ public class BrainbowGameManager : AbstractGameManager {
 			SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
 			switchScene.loadScene ("Start");
 		} else {
-			difficultyLevel = GameManager.GetInstance ().GetLevel (MinigameData.Minigame.Brainbow);
+			difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.Brainbow);
 			scoreGoals = new Dictionary<int, int> () {
 				{ 1, 8 },
 				{ 2, 12 },
@@ -94,26 +94,16 @@ public class BrainbowGameManager : AbstractGameManager {
 				{ 5, 20 }
 			};
 		}
-	}
+
+        SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
+        handAnim = tutorialHand.GetComponent<Animator> ();
+        instructionPopup.gameObject.SetActive (false);
+        tutorialHand.SetActive (false);
+        ChooseFoodsFromManager ();
+    }
 
 	public static BrainbowGameManager GetInstance() {
 		return instance;
-	}
-
-	void Start() {
-		SoundManager.GetInstance().ChangeBackgroundMusic(backgroundMusic);
-		handAnim = tutorialHand.GetComponent<Animator> ();
-		instructionPopup.gameObject.SetActive(false);
-		tutorialHand.SetActive (false);
-		ChooseFoodsFromManager ();
-
-		if (GameManager.GetInstance ().LagoonReview) {
-			//StartReview ();
-			PregameSetup ();
-		}
-		else {
-			PregameSetup ();
-		}
 	}
 
 	void Update() {
@@ -121,7 +111,7 @@ public class BrainbowGameManager : AbstractGameManager {
 			StartCoroutine(TutorialTearDown());
 		}
 
-		if(gameStarted) {
+		if (gameStarted) {
 			if(score == 20 || timer.TimeRemaining() <= 0.0f) {
 				// Animation.
 				if(!animIsPlaying) {
@@ -129,7 +119,7 @@ public class BrainbowGameManager : AbstractGameManager {
 				}
 			}
 
-			if(waterSpawnTime > 0f && spawnWater) {
+			if (waterSpawnTime > 0f && spawnWater) {
 				if (waterBottleList.Count < 1) {
 					waterSpawnTime -= Time.deltaTime;
 				}
@@ -146,22 +136,12 @@ public class BrainbowGameManager : AbstractGameManager {
 	}
 
 	void FixedUpdate() {
-		if(gameStarted) {
+		if (gameStarted) {
 			timerText.text = "Time: " + timer.TimeRemaining();
 		}
 	}
 
-	void StartReview() {
-		SoundManager.GetInstance().PlayVoiceOverClip(reviewGame);
-        //		reviewCanvas.gameObject.SetActive(true);
-        //		reviewCanvas = (Canvas)Instantiate (GameManager.GetInstance().ChooseLagoonReviewGame());
-        //		reviewCanvas.transform.SetParent (GameObject.Find ("Canvas").transform);
-        //		reviewCanvas.transform.localScale = new Vector3 (1.0f, 1.0f, 1.0f);
-       // ReviewManager.GetInstance().needsReview = true;
-        //ReviewManager.GetInstance().levelToReview = "BrainbowReviewGame";
-    }
-
-	public void PregameSetup () {
+	public override void PregameSetup () {
 		score = 0;
 		scoreGauge.maxValue = scoreGoals[difficultyLevel];
 		UpdateScoreGauge();
@@ -170,7 +150,7 @@ public class BrainbowGameManager : AbstractGameManager {
 		CreateMonster ();
 		monsterObject.PlaySpawn ();
 
-		if (GameManager.GetInstance ().GetPendingTutorial(MinigameData.Minigame.Brainbow)) {
+		if (GameManager.GetInstance ().GetPendingTutorial(DataType.Minigame.Brainbow)) {
 			tutorialCoroutine = StartCoroutine (RunTutorial ());
 		}
 		else {
@@ -211,7 +191,7 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	IEnumerator TutorialTearDown ()	{
 		StopCoroutine (tutorialCoroutine);
-        GameManager.GetInstance ().CompleteTutorial (MinigameData.Minigame.Brainbow);
+        GameManager.GetInstance ().CompleteTutorial (DataType.Minigame.Brainbow);
 		GameManager.GetInstance ().SetIsInputAllowed (false);
 		score = 0;
 		UpdateScoreGauge();
@@ -356,11 +336,11 @@ public class BrainbowGameManager : AbstractGameManager {
 	override public void GameOver() {
 		spawnWater = false;
 		if(score >= scoreGoals[difficultyLevel]) {
-			GameManager.GetInstance().AddLagoonReviewGame("BrainbowReviewGame");
+			//GameManager.GetInstance().AddLagoonReviewGame("BrainbowReviewGame");
 			if(difficultyLevel == 1) {
 				UnlockSticker ();
 			}
-			GameManager.GetInstance().LevelUp(MinigameData.Minigame.Brainbow);
+			GameManager.GetInstance().LevelUp(DataType.Minigame.Brainbow);
 		}
 
 		if(difficultyLevel > 1 || score < scoreGoals[difficultyLevel]) {

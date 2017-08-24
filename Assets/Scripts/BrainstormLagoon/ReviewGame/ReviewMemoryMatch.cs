@@ -99,9 +99,7 @@ public class ReviewMemoryMatch : MonoBehaviour {
 		inputAllowed = false;
 		subtitle.Display ("Great job!");
 
-		Destroy (gameObject, 3f); // Replace when below is implemented
-		/* Insert function that tells the Review Manager
-		 * the review is finished */
+        ReviewManager.GetInstance ().EndReview ();
 	}
 
 	void RetrieveFoodsFromManager() {

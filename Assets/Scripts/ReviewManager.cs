@@ -6,10 +6,17 @@ using UnityEngine;
 public class ReviewManager : MonoBehaviour {
 
     public GameObject[] ReviewGamePrefabs; //list of review games
-    private static ReviewManager instance;
     public string levelToReview; // bad code smell, open to other options
-    public Dictionary<string, MinigameData.Minigame> reviewgamesAndGamesDict;
-    int reviewLevelIndex;
+    public Dictionary<string, DataType.Minigame> reviewgamesAndGamesDict;
+    public List<GameObject> reviewGameList = new List<GameObject> ();
+    public GameObject currentReview;
+    public bool needReview;
+    public delegate void ReviewAction ();
+    public static event ReviewAction OnFinishReview;
+
+
+    private int reviewLevelIndex;
+    private static ReviewManager instance;
 
     public static ReviewManager GetInstance() {
         return instance;
@@ -23,21 +30,48 @@ public class ReviewManager : MonoBehaviour {
         }
 
         DontDestroyOnLoad(this);
-        reviewgamesAndGamesDict = new Dictionary<string, MinigameData.Minigame> (); // <review prefab name> <level to review name>
+        reviewgamesAndGamesDict = new Dictionary<string, DataType.Minigame> (); // <review prefab name> <level to review name>
 
-        reviewgamesAndGamesDict.Add ("BrainbowReviewGame", MinigameData.Minigame.Brainbow);
-        reviewgamesAndGamesDict.Add ("MemoryMatchReviewGame", MinigameData.Minigame.MemoryMatch);
-        reviewgamesAndGamesDict.Add ("SensesReviewGame", MinigameData.Minigame.MonsterSenses);
-        reviewgamesAndGamesDict.Add ("EmotionsReviewGame", MinigameData.Minigame.MonsterEmotions);
-        reviewgamesAndGamesDict.Add ("BrainmazeReviewGame", MinigameData.Minigame.BrainMaze);
+        reviewgamesAndGamesDict.Add ("BrainbowReviewGame", DataType.Minigame.Brainbow);
+        reviewgamesAndGamesDict.Add ("MemoryMatchReviewGame", DataType.Minigame.MemoryMatch);
+        reviewgamesAndGamesDict.Add ("SensesReviewGame", DataType.Minigame.MonsterSenses);
+        reviewgamesAndGamesDict.Add ("EmotionsReviewGame", DataType.Minigame.MonsterEmotions);
+        reviewgamesAndGamesDict.Add ("BrainmazeReviewGame", DataType.Minigame.BrainMaze);
 
     }
-    void OnEnable() {
+
+    public void AddReviewGameToList(DataType.Minigame minigame) {
+        GameObject reviewGame = GameManager.GetInstance ().GetMinigameData (minigame).reviewPrefab; // Retrieve corresponding review prefab from MinigameData
+        reviewGameList.Add (reviewGame);
+        needReview = true;
+    }
+
+    public void RemoveReviewGameFromList(DataType.Minigame minigame) {
+        reviewGameList.Remove (currentReview);
+    }
+
+    public void StartReview() {
+        currentReview = Instantiate (reviewGameList[Random.Range(0, reviewGameList.Count - 1)]) as GameObject;
+    }
+
+    public void EndReview () {
+        StartCoroutine (WaitTillReviewEnd (3f));
+    }
+
+    IEnumerator WaitTillReviewEnd(float time) {
+        yield return new WaitForSecondsRealtime (3f);
+        Destroy (currentReview);
+        OnFinishReview ();
+    }
+
+    /*
+    void OnEnable () {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
-    void OnDisable() {
+    void OnDisable () {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
+
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         print("scene loaded");
         for (int i = 0; i < ReviewGamePrefabs.Length; i++) { // traverse array
@@ -52,4 +86,5 @@ public class ReviewManager : MonoBehaviour {
             }
         }
     }
+    */
 }   

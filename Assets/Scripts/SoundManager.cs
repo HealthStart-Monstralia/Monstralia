@@ -27,10 +27,11 @@ public class SoundManager : MonoBehaviour {
 	public AudioClip voiceTestClip;					/*!< AudioClip used to test ChangeVoiceOverVolume */
 	public Slider VoiceOverSlider;					/*!< The Slider that controls the voice-over volume */
 	public AudioClip stickerVO;						/*!< AudioClip used to tell the player they unlocked a sticker */
-	public AudioClip correctSFX;
+	public AudioClip correctSFX;                    /*!< AudioClip used to tell the player they are correct */
+    public AudioClip reviewVO;                      /*!< AudioClip used to tell the player they are reviewing */
 
-	/** \cond */
-	void Awake () {
+    /** \cond */
+    void Awake () {
 		//check to see if we already have an instance of the SoundManager
 		if(instance == null) {
 			instance = this;
@@ -175,4 +176,8 @@ public class SoundManager : MonoBehaviour {
 	public void PlayCorrectSFX() {
 		PlaySFXClip (correctSFX);
 	}
+
+    public void PlayReviewVO () {
+        PlayVoiceOverClip (reviewVO);
+    }
 }
