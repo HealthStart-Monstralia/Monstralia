@@ -58,13 +58,13 @@ public class ReviewBrainbow : MonoBehaviour {
 
 	public void PrepareReview() {
 		ChooseFoodsFromManager ();
-		ChooseFoodToSpawn ();
 		StartCoroutine (BeginReview ());
 	}
 
 	IEnumerator BeginReview() {
 		yield return new WaitForSecondsRealtime (1f);
-		subtitle.Display ("Drag the foods to the correct color!", null, false, 7f);
+        ChooseFoodToSpawn ();
+        subtitle.Display ("Drag the foods to the correct color!", null, false, 7f);
 		isReviewRunning = true;
 		inputAllowed = true;
 	}
@@ -73,7 +73,7 @@ public class ReviewBrainbow : MonoBehaviour {
 		isReviewRunning = false;
 		inputAllowed = false;
 		subtitle.Display ("Great job!");
-
+        Invoke ("FadeOut", 2.5f);
         ReviewManager.GetInstance ().EndReview ();
     }
 
@@ -122,4 +122,8 @@ public class ReviewBrainbow : MonoBehaviour {
 			foods.RemoveAt (randomIndex);
 		}
 	}
+
+    public void FadeOut () {
+        GetComponent<Animator> ().Play ("ReviewBrainMazeGameFadeOut");
+    }
 }

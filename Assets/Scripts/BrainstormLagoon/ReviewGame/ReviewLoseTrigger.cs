@@ -5,6 +5,8 @@ using UnityEngine;
 public class ReviewLoseTrigger : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D col) {
-        ReviewGameWinLose.GetInstance().LoseCondition();
+        if (col.GetComponent<ReviewBrainMazeMonster> ()) {
+            //ReviewGameWinLose.GetInstance ().LoseCondition ();
+        }
     }
 }

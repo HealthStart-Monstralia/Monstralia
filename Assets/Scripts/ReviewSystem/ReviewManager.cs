@@ -30,6 +30,7 @@ public class ReviewManager : MonoBehaviour {
         }
 
         DontDestroyOnLoad(this);
+        /*
         reviewgamesAndGamesDict = new Dictionary<string, DataType.Minigame> (); // <review prefab name> <level to review name>
 
         reviewgamesAndGamesDict.Add ("BrainbowReviewGame", DataType.Minigame.Brainbow);
@@ -37,7 +38,7 @@ public class ReviewManager : MonoBehaviour {
         reviewgamesAndGamesDict.Add ("SensesReviewGame", DataType.Minigame.MonsterSenses);
         reviewgamesAndGamesDict.Add ("EmotionsReviewGame", DataType.Minigame.MonsterEmotions);
         reviewgamesAndGamesDict.Add ("BrainmazeReviewGame", DataType.Minigame.BrainMaze);
-
+        */
     }
 
     public void AddReviewGameToList(DataType.Minigame minigame) {
