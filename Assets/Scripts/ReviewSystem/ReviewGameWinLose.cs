@@ -15,6 +15,9 @@ public class ReviewGameWinLose : MonoBehaviour {
     }
 
     public void WinCondition() {
+        ReviewManager.GetInstance ().EndReview ();
+
+        /*
         print("Win");
         if (FindObjectOfType<MemoryMatchGameManager>()) {
             FindObjectOfType<MemoryMatchGameManager>().PregameSetup();
@@ -29,7 +32,9 @@ public class ReviewGameWinLose : MonoBehaviour {
             FindObjectOfType<MasterHandler_LJ>().PregameSetup();
             Destroy(GameObject.FindGameObjectWithTag("ReviewPrefab"));
         }
+        */
     }
+
     public void LoseCondition() {
         print("Lose");
     }

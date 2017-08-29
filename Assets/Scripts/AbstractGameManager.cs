@@ -7,6 +7,10 @@ public abstract class AbstractGameManager : MonoBehaviour {
     public abstract void PregameSetup (); // Force PregameSetup() to be implemented in child classes
     public Canvas stickerPopupCanvas;
 
+    void OnDisable () {
+        ReviewManager.OnFinishReview -= EndReview;
+    }
+
     protected void Start() {
         print ("AbstractGameManager Start running");
         if (ReviewManager.GetInstance ().needReview) {
@@ -17,12 +21,14 @@ public abstract class AbstractGameManager : MonoBehaviour {
     }
 
     protected void StartReview () {
+        print ("AbstractGameManager StartReview");
         ReviewManager.OnFinishReview += EndReview;
         ReviewManager.GetInstance ().StartReview ();
         SoundManager.GetInstance ().PlayReviewVO();
     }
 
     protected void EndReview () {
+        print ("AbstractGameManager EndReview");
         ReviewManager.OnFinishReview -= EndReview;
         PregameSetup ();
     }

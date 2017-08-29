@@ -233,6 +233,7 @@ GameObject:
   - component: {fileID: 224857302411870838}
   - component: {fileID: 222430736402907992}
   - component: {fileID: 114909908351674188}
+  - component: {fileID: 114214643775498824}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -611,7 +612,7 @@ Transform:
   m_GameObject: {fileID: 1740981625720628}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.85, y: 0.85, z: 1}
+  m_LocalScale: {x: 0.9, y: 0.9, z: 1}
   m_Children:
   - {fileID: 224192635728581920}
   m_Father: {fileID: 0}
@@ -1405,6 +1406,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Move the monster through the maze to get all the good foods!
+--- !u!114 &114214643775498824
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1363237847799090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 20, y: -20}
+  m_UseGraphicAlpha: 1
 --- !u!114 &114217555034368648
 MonoBehaviour:
   m_ObjectHideFlags: 1

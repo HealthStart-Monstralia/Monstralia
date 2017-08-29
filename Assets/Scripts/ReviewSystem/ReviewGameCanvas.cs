@@ -5,9 +5,10 @@ using UnityEngine;
 public class ReviewGameCanvas : MonoBehaviour {
 
     private void Start() {
-        Camera mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent <Camera>();
+        //Camera mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent <Camera>();
         Canvas myCanvas = GetComponent<Canvas>();
         myCanvas.sortingLayerName = "UI";
-        myCanvas.worldCamera = mainCamera;
+        myCanvas.sortingOrder = 12;
+        myCanvas.worldCamera = Camera.main;
     }
 }

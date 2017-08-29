@@ -31,7 +31,8 @@ public class EmotionsReviewMonster : MonoBehaviour {
         print(mybutton);
     }
     void Win() {
-        ReviewGameWinLose.GetInstance().WinCondition();
-        Destroy(FindObjectOfType<ReviewGameWinLose>().gameObject);
+        SoundManager.GetInstance ().PlayCorrectSFX ();
+        ReviewEmotionsGame.GetInstance().EndReview();
+        //Destroy(FindObjectOfType<ReviewGameWinLose>().gameObject);
     }
 }

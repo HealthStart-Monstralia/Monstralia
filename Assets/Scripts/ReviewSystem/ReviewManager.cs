@@ -61,8 +61,15 @@ public class ReviewManager : MonoBehaviour {
 
     IEnumerator WaitTillReviewEnd(float time) {
         yield return new WaitForSecondsRealtime (3f);
-        Destroy (currentReview);
-        OnFinishReview ();
+        if (currentReview)
+            Destroy (currentReview);
+        else
+            Destroy (GameObject.FindGameObjectWithTag ("ReviewPrefab"));
+        print ("ReviewManager OnFinishReview");
+        if (OnFinishReview != null)
+            OnFinishReview ();
+        else
+            print ("OnFinishReview returned null");
     }
 
     /*
@@ -81,9 +88,9 @@ public class ReviewManager : MonoBehaviour {
             }
         }
             // if scene is game level and need review == true
-		if (levelToReview != "") {
-			if (GameManager.GetInstance ().GetNumStars (reviewgamesAndGamesDict [levelToReview]) != 2 && SceneManager.GetActiveScene ().buildIndex > 4) { 
-				GameObject activeReviewGame = Instantiate (ReviewGamePrefabs [reviewLevelIndex]) as GameObject; // GameObject.Find ("Review").transform
+        if (levelToReview != "") {
+            if (GameManager.GetInstance ().GetNumStars (reviewgamesAndGamesDict [levelToReview]) != 2 && SceneManager.GetActiveScene ().buildIndex > 4) { 
+                GameObject activeReviewGame = Instantiate (ReviewGamePrefabs [reviewLevelIndex]) as GameObject; // GameObject.Find ("Review").transform
             }
         }
     }

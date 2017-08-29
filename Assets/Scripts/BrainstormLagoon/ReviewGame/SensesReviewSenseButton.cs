@@ -4,14 +4,26 @@ using UnityEngine;
 
 public class SensesReviewSenseButton : MonoBehaviour {
 
-    ReviewGameWinLose winLose;
-    SensesReviewSenseItem item;
+    //ReviewGameWinLose winLose;
+    //SensesReviewSenseItem item;
 
+    public SensesReviewSenseItem.Senses typeOfSense;
+
+    public void OnClick() {
+        if (ReviewSensesGame.GetInstance ().CheckSense (typeOfSense)) {
+            ReviewSensesGame.GetInstance ().EndReview ();
+        }
+    }
+
+    /*
     private void Start() {
         item = FindObjectOfType<SensesReviewSenseItem>();
         winLose = FindObjectOfType<ReviewGameWinLose>();
     }
+
+
     public void Touch() {
+        /*
         for (int i = 0; i < item.touchImages.Length; i++) {
             if (item.touchImages[i] == item.mySprite) {
                winLose.WinCondition();
@@ -56,4 +68,5 @@ public class SensesReviewSenseButton : MonoBehaviour {
         }
         winLose.LoseCondition();
     }
+    */
 }
