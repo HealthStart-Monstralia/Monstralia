@@ -5034,6 +5034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bfdd9ff7d1f849b1b5ec58b36c60fe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typeOfGame: 0
   stickerPopupCanvas: {fileID: 1507907524}
   gameTitle: {fileID: 931317148}
   mainCanvas: {fileID: 1448859534}
@@ -5082,20 +5083,23 @@ MonoBehaviour:
   - {fileID: 1589730167203332, guid: d0df79b81c198d9468cbe42306fd0183, type: 2}
   spawnPoint: {fileID: 1864993535}
   correctMatchClips:
-  - {fileID: 8300000, guid: 57b7a61fd5755481aaf8c36c8ab46a94, type: 3}
-  - {fileID: 8300000, guid: b11ff4a011ca44912b1ffb131c58594a, type: 3}
+  - {fileID: 8300000, guid: db02557f24cd1854e90a423d09b2b144, type: 3}
+  - {fileID: 8300000, guid: c4e8cb74a3b855942b76b0219f97e9c1, type: 3}
+  - {fileID: 8300000, guid: 5cb0cebe31b636744a20e92ecabd7276, type: 3}
+  - {fileID: 8300000, guid: e04beaa7bb563df418a80ab97a678d11, type: 3}
+  - {fileID: 8300000, guid: 05850f19c5c3f654fb25d8cb059da25b, type: 3}
   wrongMatchClips:
-  - {fileID: 8300000, guid: 14d73772f00f4476aaa455489055904c, type: 3}
+  - {fileID: 8300000, guid: 17c9aacf585bf8947aff3f68519bac4f, type: 3}
   - {fileID: 8300000, guid: 44effb4713b064b548d67ff6394d77b0, type: 3}
   munchSound: {fileID: 8300000, guid: be67d8fae89d24304b9b1e19c15686e5, type: 3}
   backgroundMusic: {fileID: 8300000, guid: 3265aca7dd7cb4256a906218743de845, type: 3}
   correctSound: {fileID: 8300000, guid: 2a5d4400613f94b80b68d7eb65259fdb, type: 3}
   incorrectSound: {fileID: 8300000, guid: 12e21f6ae835d402c8fb59a9c6ab4023, type: 3}
   intro: {fileID: 8300000, guid: 5c127b198d4054294b4b70a532f94b70, type: 3}
-  instructions: {fileID: 8300000, guid: 4f7979c0b7e894085959ed30d964a37f, type: 3}
+  instructions: {fileID: 8300000, guid: 3ed7c7c93ef8cf14fbefa6ddf635c1fd, type: 3}
   nowYouTry: {fileID: 8300000, guid: deaf9294d46e14aba899a6e18a7f2989, type: 3}
-  letsPlay: {fileID: 8300000, guid: b97febc53600f4aa983a1e2597987d91, type: 3}
-  waterTip: {fileID: 8300000, guid: 131e14bea791e4994a4ad925a4abf280, type: 3}
+  letsPlay: {fileID: 8300000, guid: c151956fae26ee745afa33e4c5d54f55, type: 3}
+  waterTip: {fileID: 8300000, guid: 92860464cc1294947a661bfa3bebc1f0, type: 3}
   level1Complete: {fileID: 8300000, guid: a6dd888d08231497dafb0e84440038bf, type: 3}
   reviewGame: {fileID: 8300000, guid: 19a1db0ce6da444fead28a317da1abf6, type: 3}
   finalFeedback: {fileID: 8300000, guid: 9e507a2a5a5374e90968c452eda04664, type: 3}

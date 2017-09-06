@@ -18,7 +18,6 @@ public class ReviewBrainbow : MonoBehaviour {
 	private int numOfFilledSlots = 0;
 	private GameObject currentFoodToMatch;
 	private static ReviewBrainbow instance;
-	private List<GameObject> activeFoods = new List<GameObject>();
 
 	void Awake() {
 		if(instance == null) {

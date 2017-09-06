@@ -24,7 +24,7 @@ public class DebugPanel : MonoBehaviour {
         }
         */
 
-        if (GameManager.GetInstance ().GetStickerStatus (gameName)) {
+        if (GameManager.GetInstance ().GetStickerUnlock (gameName)) {
             stickerButton.SetActive (false);
         }
     }
@@ -51,7 +51,7 @@ public class DebugPanel : MonoBehaviour {
 
     public void ActivateSticker () {
         GameManager.GetInstance ().ActivateSticker (gameName);
-        if (GameManager.GetInstance ().GetStickerStatus (gameName)) {
+        if (GameManager.GetInstance ().GetStickerUnlock (gameName)) {
             stickerButton.SetActive (false);
         }
     }

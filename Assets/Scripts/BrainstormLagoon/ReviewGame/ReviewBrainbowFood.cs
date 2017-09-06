@@ -17,7 +17,7 @@ public class ReviewBrainbowFood : MonoBehaviour, IPointerDownHandler, IPointerUp
 
 	public void OnPointerDown (PointerEventData eventData) {
 		if (!isPlaced) {
-			GetComponent<CanvasGroup> ().blocksRaycasts = false;
+            canvasGroup.blocksRaycasts = false;
 		}
 	}
 
@@ -34,7 +34,7 @@ public class ReviewBrainbowFood : MonoBehaviour, IPointerDownHandler, IPointerUp
                 transform.position = origin;
             }
 
-            GetComponent<CanvasGroup> ().blocksRaycasts = true;
+            canvasGroup.blocksRaycasts = true;
         }
 	}
 

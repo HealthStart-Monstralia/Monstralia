@@ -38,8 +38,8 @@ public abstract class AbstractGameManager : MonoBehaviour {
 			stickerPopupCanvas.gameObject.SetActive (true);
 			SoundManager.GetInstance ().PlayUnlockStickerVO ();
 
-			if (GameManager.GetInstance ().LagoonFirstSticker) {
-				GameManager.GetInstance ().LagoonFirstSticker = false;
+			if (GameManager.GetInstance ().lagoonFirstSticker) {
+				GameManager.GetInstance ().lagoonFirstSticker = false;
 				stickerPopupCanvas.transform.Find ("BackButton").gameObject.SetActive (false);
 				stickerPopupCanvas.transform.Find ("StickerbookButton").gameObject.SetActive (true);
 			} else {
@@ -48,7 +48,7 @@ public abstract class AbstractGameManager : MonoBehaviour {
 			}
 
 		} else {
-			Debug.LogError ("Error: Sticker Popup Canvas not assigned to Manager.");
+			//Debug.LogError ("Error: Sticker Popup Canvas not assigned to Manager.");
 		}
 
         GameManager.GetInstance ().ActivateSticker (typeOfGame);

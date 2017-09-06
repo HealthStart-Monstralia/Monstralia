@@ -6,5 +6,5 @@ using UnityEngine;
 public class MinigameData : ScriptableObject {
     public DataType.Minigame typeOfGame;
     public GameObject reviewPrefab;
-    public DataType.StickerType sticker;
+    public GameObject stickerPrefab;
 }

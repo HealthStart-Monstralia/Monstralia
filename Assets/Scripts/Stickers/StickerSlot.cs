@@ -19,7 +19,7 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
 			StickerBehaviour sticker = eventData.pointerDrag.GetComponent<StickerBehaviour> ();
 			if (!isStickerFilled && sticker.typeOfSticker == typeOfSticker) {
 				SoundManager.GetInstance ().PlayCorrectSFX ();
-				ReceiveSticker (sticker);
+				ReceiveSticker (sticker, false);
 			}
 		}
 	}
@@ -30,14 +30,15 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
 		}
 	}
 
-	public void ReceiveSticker(StickerBehaviour sticker) {
+	public void ReceiveSticker(StickerBehaviour sticker, bool isAlreadyPlaced) {
 		sticker.OnSticked ();
 		isStickerFilled = true;
 		sticker.gameObject.transform.position = transform.position;
 		sticker.transform.SetParent (transform);
 		GetComponent<Image> ().raycastTarget = false;
 		sticker.GetComponent<CanvasGroup> ().blocksRaycasts = false;
-		GameManager.GetInstance ().OnStickerPlaced(sticker.typeOfSticker);
+        if (!isAlreadyPlaced)
+		    GameManager.GetInstance ().OnStickerPlaced(sticker.typeOfSticker);
 		Canvas can = gameObject.AddComponent<Canvas> ();
 		can.overrideSorting = true;
 		can.sortingOrder = -1;

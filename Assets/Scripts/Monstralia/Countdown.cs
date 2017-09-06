@@ -4,19 +4,9 @@ using System.Collections;
 public class Countdown : MonoBehaviour {
 
 	public AudioClip countdownClip;
-	public GameObject countdown1;
-	public AudioClip count1Clip;
-	public GameObject countdown2;
-	public AudioClip count2Clip;
-	public GameObject countdown3;
-	public AudioClip count3Clip;
-	public GameObject countdownGo;
-	public AudioClip countGoClip;
+	public GameObject countdown1, countdown2, countdown3, countdownGo;
 
-	Animator countdown3Anim;
-	Animator countdown2Anim;
-	Animator countdown1Anim;
-	Animator countdownGoAnim;
+	Animator countdown3Anim, countdown2Anim, countdown1Anim, countdownGoAnim;
 
 	void Awake() {
 		countdown3Anim = countdown3.GetComponent<Animator> ();
@@ -27,11 +17,9 @@ public class Countdown : MonoBehaviour {
 	}
 
 	public IEnumerator RunCountdown() {
-		//if (!SoundManager.GetInstance ())
-			//Instantiate (SoundManager);
 		SoundManager.GetInstance().StopPlayingVoiceOver();
 		SoundManager.GetInstance().PlayVoiceOverClip(countdownClip);
-		yield return new WaitForSeconds (1.0f);
+		yield return new WaitForSeconds (0.25f);
 
 		countdown3.SetActive (true);
 		countdown3Anim.Play ("CountdownGoAnimation");
@@ -40,19 +28,16 @@ public class Countdown : MonoBehaviour {
 
 		countdown2.SetActive (true);
 		countdown2Anim.Play ("CountdownGoAnimation");
-		//SoundManager.GetInstance().PlayVoiceOverClip(count2Clip);
 		yield return new WaitForSeconds (1.0f);
 		countdown2.SetActive (false);
 
 		countdown1.SetActive (true);
 		countdown1Anim.Play ("CountdownGoAnimation");
-		//SoundManager.GetInstance().PlayVoiceOverClip(count1Clip);
 		yield return new WaitForSeconds (1.0f);
 		countdown1.SetActive (false);
 
 		countdownGo.SetActive (true);
 		countdownGoAnim.Play ("CountdownGoAnimation");
-		//SoundManager.GetInstance().PlayVoiceOverClip(countGoClip);
 		yield return new WaitForSeconds (1.0f);
 		countdownGo.SetActive (false);
 		Destroy (gameObject);

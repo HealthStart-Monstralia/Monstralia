@@ -38,6 +38,7 @@ public class MasterHandler_LJ : AbstractGameManager
 
 
     //-----PUBLIC FIELDS-----//
+    public GameObject UICanvas;
     public GameObject LevelOne;
     public GameObject LevelTwo;
     public GameObject LevelThree;
@@ -77,6 +78,7 @@ public class MasterHandler_LJ : AbstractGameManager
     //-----ON GAME START-----//
     new void Start()
     {
+        UICanvas.SetActive (false);
         //Set other parameters for game
         numOfStarsSenses = GameManager.GetInstance().GetNumStars(DataType.Minigame.MonsterSenses);
         numOfStars = numOfStarsSenses;
@@ -91,6 +93,7 @@ public class MasterHandler_LJ : AbstractGameManager
 
     public override void PregameSetup()
     {
+        UICanvas.SetActive (true);
         //Created this public void for AbstractGameManager to access. The Senses Game is managed by this MasterHandler_LJ.cs script and a script called SceneManager_LJ.cs. 
         //The MasterHandler remains active in the Senses Game scene and activates/deactivates game objects that act as Level 1, Level 2, and Level 3.
         Debug.Log("From MasterHandler_LJ.cs: The PregameSetup function for Senses Game has been called by ReviewGameWinLose.cs. ----- This method is temporarily empty.");

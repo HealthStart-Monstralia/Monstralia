@@ -231,8 +231,8 @@ public class EmotionsGameManager : AbstractGameManager {
 
 	public void SkipReview() {
 		StopCoroutine (tutorialCoroutine);
-		StartCoroutine (TutorialTearDown ());
-	}
+        TutorialFinished ();
+    }
 
 	private void PostCountdownSetup() {
 		for(int i = 0; i < numEmotions.first + numEmotions.second; ++i) {

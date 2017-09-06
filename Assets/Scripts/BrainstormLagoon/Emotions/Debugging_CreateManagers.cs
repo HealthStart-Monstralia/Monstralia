@@ -20,7 +20,7 @@ public class Debugging_CreateManagers : MonoBehaviour {
 				Instantiate (soundMan);
 			if (!GameObject.FindObjectOfType<GameManager> ()) {
 				GameManager gameManagerObject = Instantiate (gameMan);
-				gameManagerObject.setMonster("Green");
+				gameManagerObject.SetMonster("Green");
 			}
 		}
 	}

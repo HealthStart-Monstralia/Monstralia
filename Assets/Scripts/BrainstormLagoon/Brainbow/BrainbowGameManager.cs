@@ -16,7 +16,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	private Text nowYouTryText;
 	private BrainbowFood banana;
 	private Transform bananaOrigin;
-	private Animator handAnim;
+	//private Animator handAnim;
 	private bool gameOver = false;
 	private Coroutine tutorialCoroutine;
 
@@ -96,7 +96,7 @@ public class BrainbowGameManager : AbstractGameManager {
 		}
 
         SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
-        handAnim = tutorialHand.GetComponent<Animator> ();
+        //handAnim = tutorialHand.GetComponent<Animator> ();
         instructionPopup.gameObject.SetActive (false);
         tutorialHand.SetActive (false);
         ChooseFoodsFromManager ();
