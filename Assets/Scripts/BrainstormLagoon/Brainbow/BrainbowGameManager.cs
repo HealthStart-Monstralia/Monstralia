@@ -23,9 +23,8 @@ public class BrainbowGameManager : AbstractGameManager {
 	private float waterSpawnTime = 0.0f;
 	private bool spawnWater = false;
 
-	public Text gameTitle;
+    public VoiceOversData voData;
 	public Canvas mainCanvas;
-	public Canvas reviewCanvas;
 	public Canvas instructionPopup;
 	public GameObject tutorialHand;
 	public GameObject tutorialBanana;
@@ -63,15 +62,8 @@ public class BrainbowGameManager : AbstractGameManager {
 	public AudioClip backgroundMusic;
 	public AudioClip correctSound;
 	public AudioClip incorrectSound;
-	public AudioClip intro;
-	public AudioClip instructions;
-	public AudioClip nowYouTry;
-	public AudioClip letsPlay;
 	public AudioClip waterTip;
 	public AudioClip level1Complete;
-
-	public AudioClip reviewGame;
-	public AudioClip finalFeedback;
 	
 	void Awake() {
 		if(instance == null) {
@@ -162,14 +154,21 @@ public class BrainbowGameManager : AbstractGameManager {
 		runningTutorial = true;
 		GameManager.GetInstance ().SetIsInputAllowed (false);
 		instructionPopup.gameObject.SetActive(true);
-		SoundManager.GetInstance().PlayVoiceOverClip(intro);
-		yield return new WaitForSeconds(6f);
-		SoundManager.GetInstance().PlayVoiceOverClip(instructions);
-		yield return new WaitForSeconds(3.5f);	// Replace with generic time of intro audio (after splitting track)
-		GameObject redOutline = instructionPopup.gameObject.transform.Find ("RedFlashingOutline").gameObject;
-		redOutline.SetActive(true);
+        yield return new WaitForSeconds (1.5f);
+        AudioClip tutorial1 = voData.FindVO("tutorial1");
+        SoundManager.GetInstance ().PlayVoiceOverClip (tutorial1);
+        yield return new WaitForSeconds(tutorial1.length + 0.5f);
 
-		yield return new WaitForSeconds(instructions.length-4.5f);
+        AudioClip tutorial2 = voData.FindVO ("tutorial2");
+        SoundManager.GetInstance ().PlayVoiceOverClip (tutorial2);
+        yield return new WaitForSeconds (tutorial2.length - 0.5f);
+        GameObject redOutline = instructionPopup.gameObject.transform.Find ("RedFlashingOutline").gameObject;
+		redOutline.SetActive(true);
+        yield return new WaitForSeconds (2f);
+
+        AudioClip tutorial3 = voData.FindVO ("tutorial3");
+        SoundManager.GetInstance ().PlayVoiceOverClip (tutorial3);
+        yield return new WaitForSeconds (tutorial3.length - 1f);
 		tutorialHand.SetActive (true);
 
 		tutorialHand.GetComponent<Animator> ().Play ("DragBananaToStripe");
@@ -180,7 +179,7 @@ public class BrainbowGameManager : AbstractGameManager {
 		redOutline.SetActive(false);
 
 		if (runningTutorial) {
-			subtitlePanel.Display ("Now You Try!", nowYouTry);
+            subtitlePanel.Display ("Now You Try!", voData.FindVO ("tutorial4"));
 			tutorialPlayerBanana.SetActive(true);
 			GameManager.GetInstance ().SetIsInputAllowed (true);
 			bananaOrigin = tutorialOrigin;
@@ -196,11 +195,13 @@ public class BrainbowGameManager : AbstractGameManager {
 		score = 0;
 		UpdateScoreGauge();
 		runningTutorial = false;
-		subtitlePanel.Display("Perfect!", letsPlay, true);
-		yield return new WaitForSeconds(letsPlay.length);
+
+        AudioClip letsPlay = voData.FindVO ("letsplay");
+        subtitlePanel.Display("Perfect!", letsPlay, true);
+		yield return new WaitForSeconds(letsPlay.length + 1f);
+
 		subtitlePanel.Hide ();
 		instructionPopup.gameObject.SetActive(false);
-		gameTitle.gameObject.SetActive(false);
 		StartGame ();
 	}
 
@@ -234,15 +235,16 @@ public class BrainbowGameManager : AbstractGameManager {
 		GameObject water = Instantiate(
 			waterBottle,
 			waterSpawnLocations [selection].transform
-			//mainCanvas.transform
 		);
+
 		water.transform.localPosition = new Vector3 (0f,0f,0f);
 		water.transform.localScale = new Vector3 (0.25f, 0.25f, 0.25f);
 	}
 
 	public IEnumerator DisplayGo () {
-		GameManager.GetInstance ().Countdown ();
-		yield return new WaitForSeconds (5.0f);
+        yield return new WaitForSeconds (2.0f);
+        GameManager.GetInstance ().Countdown ();
+		yield return new WaitForSeconds (4.0f);
 		PostCountdownSetup ();
 	}
 
@@ -334,9 +336,9 @@ public class BrainbowGameManager : AbstractGameManager {
 	}
 
 	override public void GameOver() {
+        SoundManager.GetInstance ().PlayCorrectSFX ();
 		spawnWater = false;
 		if(score >= scoreGoals[difficultyLevel]) {
-			//GameManager.GetInstance().AddLagoonReviewGame("BrainbowReviewGame");
 			if(difficultyLevel == 1) {
 				UnlockSticker ();
 			}
@@ -371,7 +373,7 @@ public class BrainbowGameManager : AbstractGameManager {
 			food.GetComponent<Collider2D>().enabled = true;
 		}
 
-		SoundManager.GetInstance().PlayVoiceOverClip(finalFeedback);
+		SoundManager.GetInstance().PlayVoiceOverClip(voData.FindVO("yay"));
 		monsterObject.PlayEat ();
 
 		yield return new WaitForSeconds (14f);
