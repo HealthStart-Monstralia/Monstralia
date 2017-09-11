@@ -15,15 +15,15 @@ public class ReviewBrainMazeMonster : MonoBehaviour {
 	}
 
 	public void OnMouseDown() {
-		if (allowMovement) {
-			cursorPos = Input.mousePosition;
+        if (allowMovement) {
+            cursorPos = Input.mousePosition;
 			cursorPos.z -= (Camera.main.transform.position.z + 10f);
 			pointerOffset = Camera.main.ScreenToWorldPoint (cursorPos) - transform.position;
 		}
 	}
 
 	public void OnMouseDrag() {
-		if (allowMovement) {
+        if (allowMovement) {
 			cursorPos = Input.mousePosition;
 			cursorPos.z -= (Camera.main.transform.position.z + 10f);
 			MoveTowards (Camera.main.ScreenToWorldPoint (cursorPos) - pointerOffset);
@@ -31,7 +31,8 @@ public class ReviewBrainMazeMonster : MonoBehaviour {
 	}
 
 	public void MoveTowards (Vector2 pos) {
-		rigBody.MovePosition (Vector2.MoveTowards (rigBody.position, pos, 0.8f));
+        rigBody.AddForce ((pos - rigBody.position) * 6);
+        //rigBody.MovePosition (Vector2.MoveTowards (rigBody.position, pos, 0.8f));
 	}
 
     public void FadeOut () {

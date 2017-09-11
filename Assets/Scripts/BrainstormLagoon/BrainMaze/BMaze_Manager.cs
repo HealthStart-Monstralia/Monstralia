@@ -12,6 +12,7 @@ public class BMaze_Manager : AbstractGameManager {
 	public GameObject[] monsterList = new GameObject[4];
 	[Range(0.1f,1.0f)]
 	public float[] monsterScale;
+    public VoiceOversData voData;
 	public static GameObject monsterObject;
 
 	public AudioClip backgroundMusic;
@@ -48,35 +49,31 @@ public class BMaze_Manager : AbstractGameManager {
 			Destroy(gameObject);
 		}
 
-		if (!GameManager.GetInstance ()) {
-			SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
-			switchScene.loadScene ("Start");
-		} else {
-			level = GameManager.GetInstance ().GetLevel (DataType.Minigame.BrainMaze) - 1;
-			if (level > 2) {
-				level = 2;
+        CheckForGameManager ();
 
-			}
+		level = GameManager.GetInstance ().GetLevel (DataType.Minigame.BrainMaze) - 1;
+		if (level > 2) {
+			level = 2;
 
-			if (SoundManager.GetInstance ()) {
-				SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
-				SoundManager.GetInstance ().StopPlayingVoiceOver ();
-			}
-
-			backButton.SetActive (true);
-			stickerPopupCanvas.gameObject.SetActive (false);
-			gameOverCanvas.SetActive (false);
-			subtitlePanel.SetActive (false);
-			tutorialHand.SetActive (false);
-			ChangeSlider (0f);
-			timeLeft = timeLimit;
-			if (timerText == null)
-				Debug.LogError ("No Timer Found!");
-			timerText.text = Mathf.Round (timeLeft).ToString ();
-            //PregameSetup ();
-
-			typeOfMonster = GameManager.GetMonsterType ();
 		}
+
+		if (SoundManager.GetInstance ()) {
+			SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
+			SoundManager.GetInstance ().StopPlayingVoiceOver ();
+		}
+
+		backButton.SetActive (true);
+		stickerPopupCanvas.gameObject.SetActive (false);
+		gameOverCanvas.SetActive (false);
+		subtitlePanel.SetActive (false);
+		tutorialHand.SetActive (false);
+		ChangeSlider (0f);
+		timeLeft = timeLimit;
+		if (timerText == null)
+			Debug.LogError ("No Timer Found!");
+		timerText.text = Mathf.Round (timeLeft).ToString ();
+
+		typeOfMonster = GameManager.GetMonsterType ();
 	}
 
     public override void PregameSetup () {
@@ -125,34 +122,43 @@ public class BMaze_Manager : AbstractGameManager {
 		scoreSlider.gameObject.SetActive (false);
 		timer.SetActive (false);
 
-		yield return new WaitForSeconds(0.5f);
+		yield return new WaitForSeconds(0.25f);
 		subtitlePanel.SetActive (true);
 		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Welcome to Brain Maze!", null);
 
 		SoundManager.GetInstance().StopPlayingVoiceOver();
-		SoundManager.GetInstance().PlayVoiceOverClip(instructionVOList[0]);
-		yield return new WaitForSeconds(instructionVOList[0].length);
+        AudioClip tutorial1 = voData.FindVO ("tutorial1");
+        AudioClip tutorial2 = voData.FindVO ("tutorial2");
+        AudioClip tutorial3 = voData.FindVO ("tutorial3");
+
+        SoundManager.GetInstance().PlayVoiceOverClip(tutorial1);
+		yield return new WaitForSeconds(tutorial1.length);
 		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
 
 		CreateMonster ();
-		SoundManager.GetInstance().StopPlayingVoiceOver();
-		SoundManager.GetInstance().PlayVoiceOverClip(instructionVOList[1]);
-		yield return new WaitForSeconds(instructionVOList[1].length - 1f);
+        //SoundManager.GetInstance().PlayVoiceOverClip(instructionVOList[1]);
+        //yield return new WaitForSeconds(instructionVOList[1].length - 1f);
 
-		tutorialHand.SetActive (true);
+        SoundManager.GetInstance ().PlayVoiceOverClip (tutorial2);
+        yield return new WaitForSeconds (tutorial2.length);
+
+        SoundManager.GetInstance ().PlayVoiceOverClip (tutorial3);
+        yield return new WaitForSeconds (tutorial3.length);
+
+        tutorialHand.SetActive (true);
 		tutorialHand.GetComponent<Animator> ().Play ("BMaze_HandMoveMonster");
 		yield return new WaitForSeconds(1.5f);
 		monsterObject.transform.SetParent (tutorialHand.transform);
 		yield return new WaitForSeconds(1.5f);
 		monsterObject.transform.SetParent (null);
+        yield return new WaitForSeconds (1.5f);
 
+        //SoundManager.GetInstance().PlayVoiceOverClip(instructionVOList[2]);
 
-		SoundManager.GetInstance().StopPlayingVoiceOver();
-		SoundManager.GetInstance().PlayVoiceOverClip(instructionVOList[2]);
-		yield return new WaitForSeconds(instructionVOList[2].length);
+        //yield return new WaitForSeconds(instructionVOList[2].length);
 
-		SoundManager.GetInstance().StopPlayingVoiceOver();
-		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Now you try!", instructionVOList[3]);
+        //SoundManager.GetInstance().StopPlayingVoiceOver();
+        subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Now you try!", voData.FindVO("nowyoutry"));
 		GameObject startingLocation = instance.tutorialAssets.GetStartLocation();
 		monsterObject.transform.position = GetStartingLocationVector (startingLocation);
 		tutorialPickup.GetComponent<BMaze_Pickup>().ReActivate ();
@@ -175,11 +181,18 @@ public class BMaze_Manager : AbstractGameManager {
 
 	public IEnumerator TutorialDoorUnlockedVO () {
 		SoundManager.GetInstance().StopPlayingVoiceOver();
+        /*
 		SoundManager.GetInstance().PlayVoiceOverClip(instructionVOList[4]);
 		yield return new WaitForSeconds(instructionVOList[4].length);
 		SoundManager.GetInstance().PlayVoiceOverClip(instructionVOList[5]);
 		yield return new WaitForSeconds(instructionVOList[5].length);
-	}
+        */
+
+        print ("UnlockedDoor VO");
+        AudioClip unlockeddoor = voData.FindVO ("unlockeddoor");
+        SoundManager.GetInstance ().PlayVoiceOverClip (unlockeddoor);
+        yield return new WaitForSeconds (unlockeddoor.length);
+    }
 
 	IEnumerator TutorialTearDown() {
 		print ("TutorialTearDown");
@@ -324,7 +337,8 @@ public class BMaze_Manager : AbstractGameManager {
 		return gameStarted;
 	}
 
-	public static void UnlockDoor () {
+	public void UnlockDoor () {
+        StartCoroutine ("TutorialDoorUnlockedVO");
 		if (isTutorialRunning) {
 			instance.tutorialAssets.GetDoor ().OpenDoor ();
 			instance.tutorialAssets.GetFinishline ().UnlockFinishline ();

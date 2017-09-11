@@ -19,6 +19,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	private float stopRotateTime;
 	private Coroutine tutorialCoroutine;
 
+    public VoiceOversData voData;
 	public Canvas reviewCanvas;
 	public Canvas instructionPopup;
 	public Canvas gameOverCanvas;
@@ -53,9 +54,6 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	public AudioClip[] wrongMatchClips;
 	public AudioClip munchClip;
 
-	public AudioClip instructions;
-	public AudioClip letsPlay;
-	public AudioClip nowYouTry;
 	public bool hasSpawned;
 
 	void Awake () {
@@ -66,17 +64,13 @@ public class MemoryMatchGameManager : AbstractGameManager {
 			Destroy(gameObject);
 		}
 
-		if (!GameManager.GetInstance ()) {
-			SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
-			switchScene.loadScene ("Start");
-		} else {
+        CheckForGameManager ();
 
-			difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.MemoryMatch);
-			typeOfMonster = GameManager.GetMonsterType ();
-			CreateMonster ();
-			monsterObject.PlaySpawn ();
-			RetrieveFoodsFromManager ();
-		}
+        difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.MemoryMatch);
+		typeOfMonster = GameManager.GetMonsterType ();
+		CreateMonster ();
+		monsterObject.PlaySpawn ();
+		RetrieveFoodsFromManager ();
 	}
 
 	public override void PregameSetup () {
@@ -127,7 +121,6 @@ public class MemoryMatchGameManager : AbstractGameManager {
 			if(score >= numDishes || timer.TimeRemaining () <= 0) {
 				if(!animIsPlaying) {
 					StartCoroutine(RunEndGameAnimation());
-				// GameOver();
 				}
 			}
 		}
@@ -178,11 +171,17 @@ public class MemoryMatchGameManager : AbstractGameManager {
 
 		yield return new WaitForSeconds (1f);
 
-		SoundManager.GetInstance ().PlayVoiceOverClip (instructions);
+        AudioClip tutorial1 = voData.FindVO ("tutorial1");
+        AudioClip tutorial2 = voData.FindVO ("tutorial2");
+        SoundManager.GetInstance ().PlayVoiceOverClip (tutorial1);
 
-		yield return new WaitForSeconds (1f);
+		yield return new WaitForSeconds (tutorial1.length);
 
-		tutDish1.SpawnLids(true);
+        SoundManager.GetInstance ().PlayVoiceOverClip (tutorial2);
+
+        yield return new WaitForSeconds (tutorial2.length);
+
+        tutDish1.SpawnLids(true);
 		yield return new WaitForSeconds(0.25f);
 		tutDish2.SpawnLids(true);
 		yield return new WaitForSeconds(0.25f);
@@ -194,34 +193,45 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		foreach (DishObject dish in tutorialDishes) {
 			dish.OpenLid ();
 		}
-		yield return new WaitForSeconds(3.5f);
+
+        AudioClip tutorial3 = voData.FindVO ("tutorial3");
+        AudioClip tutorial4 = voData.FindVO ("tutorial4");
+        SoundManager.GetInstance ().PlayVoiceOverClip (tutorial3);
+
+        yield return new WaitForSeconds (tutorial3.length - 1.5f);
+
+        instructionPopup.gameObject.transform.Find ("panelbanana").gameObject.SetActive (true);
+
+        yield return new WaitForSeconds(1.5f);
 
 		// Dish close.
 		foreach (DishObject dish in tutorialDishes) {
 			dish.CloseLid ();
 		}
 
-		yield return new WaitForSeconds(2f);
-		instructionPopup.gameObject.transform.Find ("panelbanana").gameObject.SetActive(true);
+        SoundManager.GetInstance ().PlayVoiceOverClip (tutorial4);
+        yield return new WaitForSeconds(tutorial4.length - 1f);
 
-		yield return new WaitForSeconds(3f);
 		Animator handAnim = instructionPopup.gameObject.transform.Find ("TutorialAnimation").gameObject.transform.Find ("Hand").gameObject.GetComponent<Animator>();
 		handAnim.Play("mmhand_5_12");
 		yield return new WaitForSeconds(4f);
+
+        // Hand taps on the left dish cover
 		SoundManager.GetInstance ().PlayCorrectSFX ();
 		tutorialDishes[0].OpenLid();
+
 		yield return new WaitForSeconds(2f);
 		tutorialDishes [0].CloseLid ();
 
-		yield return new WaitForSeconds (instructions.length - 14f);
-		subtitlePanel.Display ("Now you try!", nowYouTry);
-		inputAllowed = true;
-		handAnim.gameObject.SetActive (false);
+        handAnim.gameObject.SetActive (false);
+        inputAllowed = true;
+        AudioClip tutorial5 = voData.FindVO ("tutorial5");
+        subtitlePanel.Display ("Now you try!", tutorial5);
+
 
 		for (int i = 0; i < tutorialDishes.Length; ++i) {
 			tutorialDishes [i].GetComponent<Collider2D> ().enabled = true;
 		}
-//		StartGame ();
 	}
 
 	public void SkipTutorialButton(GameObject button) {
@@ -235,11 +245,18 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	}
 
 	IEnumerator TutorialTearDown() {
-		print ("TutorialTearDown");
 		runningTutorial = false;
 		score = 0;
-		subtitlePanel.Display("Perfect!", letsPlay);
+
+        AudioClip goodjob = voData.FindVO ("goodjob");
+
+        SoundManager.GetInstance ().PlayVoiceOverClip (goodjob);
+        yield return new WaitForSeconds (goodjob.length);
+
+        AudioClip letsPlay = voData.FindVO ("letsplay");
+        subtitlePanel.Display("Perfect!", letsPlay);
 		yield return new WaitForSeconds(2.0f);
+
 		subtitlePanel.Hide ();
 		instructionPopup.gameObject.SetActive (false);
 		GameManager.GetInstance ().CompleteTutorial(DataType.Minigame.MemoryMatch);

@@ -676,7 +676,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!50 &50874599658627354
 Rigidbody2D:
@@ -2050,6 +2050,8 @@ SpriteRenderer:
   m_Size: {x: 31.070002, y: 32.78}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!212 &212934234649881580
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -2090,6 +2092,8 @@ SpriteRenderer:
   m_Size: {x: 2.85, y: 4.3}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!222 &222035458136774220
 CanvasRenderer:
   m_ObjectHideFlags: 1

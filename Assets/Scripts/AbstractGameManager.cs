@@ -11,6 +11,14 @@ public abstract class AbstractGameManager : MonoBehaviour {
         ReviewManager.OnFinishReview -= EndReview;
     }
 
+    // Go to Start scene if no Game Manager is present
+    protected void CheckForGameManager () {
+        if (!GameManager.GetInstance ()) {
+            SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
+            switchScene.loadScene ("Start", false);
+        }
+    }
+
     protected void Start() {
         print ("AbstractGameManager Start running");
         if (ReviewManager.GetInstance ().needReview) {

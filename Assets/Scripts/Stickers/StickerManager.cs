@@ -29,11 +29,11 @@ public class StickerManager : MonoBehaviour {
         AssignSlotsToDict ();
 
         if (!GameManager.GetInstance ()) {
-			SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
-			switchScene.loadScene ("Start");
-		}
+            SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
+            switchScene.loadScene ("Start", false);
+        }
 
-		if (SoundManager.GetInstance())
+        if (SoundManager.GetInstance())
 			SoundManager.GetInstance().ChangeBackgroundMusic(SoundManager.GetInstance().gameBackgroundMusic);
 	}
 

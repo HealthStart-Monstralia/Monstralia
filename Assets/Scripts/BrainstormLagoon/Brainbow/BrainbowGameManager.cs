@@ -72,20 +72,16 @@ public class BrainbowGameManager : AbstractGameManager {
 		else if(instance != this) {
 			Destroy(gameObject);
 		}
+        CheckForGameManager ();
 
-		if (!GameManager.GetInstance ()) {
-			SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
-			switchScene.loadScene ("Start");
-		} else {
-			difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.Brainbow);
-			scoreGoals = new Dictionary<int, int> () {
-				{ 1, 8 },
-				{ 2, 12 },
-				{ 3, 20 },
-				{ 4, 20 },
-				{ 5, 20 }
-			};
-		}
+		difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.Brainbow);
+		scoreGoals = new Dictionary<int, int> () {
+			{ 1, 8 },
+			{ 2, 12 },
+			{ 3, 20 },
+			{ 4, 20 },
+			{ 5, 20 }
+		};
 
         SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
         //handAnim = tutorialHand.GetComponent<Animator> ();

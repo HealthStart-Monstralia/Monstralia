@@ -42,7 +42,7 @@ RenderSettings:
 --- !u!157 &4
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 11
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 8
+    serializedVersion: 9
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -87,7 +87,7 @@ LightmapSettings:
     m_PVRFilteringAtrousNormalSigma: 1
     m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
-  m_ShadowMaskMode: 2
+  m_UseShadowmask: 1
 --- !u!196 &5
 NavMeshSettings:
   serializedVersion: 2
@@ -500,6 +500,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!1001 &387966035
 Prefab:
   m_ObjectHideFlags: 0
@@ -1066,6 +1068,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!1 &615808449
 GameObject:
   m_ObjectHideFlags: 0
@@ -1721,6 +1725,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!95 &1026224819
 Animator:
   serializedVersion: 3
@@ -2404,6 +2410,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeOfGame: 2
   stickerPopupCanvas: {fileID: 199534166}
+  voData: {fileID: 11400000, guid: 62b6ddb5add6a084c8d05452b4602252, type: 2}
   reviewCanvas: {fileID: 0}
   instructionPopup: {fileID: 1198866624}
   gameOverCanvas: {fileID: 397233140}
@@ -2448,11 +2455,8 @@ MonoBehaviour:
   - {fileID: 587727322}
   - {fileID: 1944728381}
   wrongMatchClips:
-  - {fileID: 8300000, guid: 14d73772f00f4476aaa455489055904c, type: 3}
+  - {fileID: 8300000, guid: af5808b958d69ac4794c197c5626a061, type: 3}
   munchClip: {fileID: 8300000, guid: be67d8fae89d24304b9b1e19c15686e5, type: 3}
-  instructions: {fileID: 8300000, guid: 04b2fba2641fe47bf90bffa6094eb448, type: 3}
-  letsPlay: {fileID: 8300000, guid: b1a9a7450655e447197cf664dbaa6df1, type: 3}
-  nowYouTry: {fileID: 8300000, guid: 67521ea18f2e54ebbafb7f7d8f5ab8d3, type: 3}
   hasSpawned: 0
 --- !u!4 &1491141534
 Transform:
@@ -3242,6 +3246,8 @@ SpriteRenderer:
   m_Size: {x: 5, y: 5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!95 &2048992138
 Animator:
   serializedVersion: 3

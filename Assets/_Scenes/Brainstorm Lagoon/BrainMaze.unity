@@ -42,7 +42,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 9
+  serializedVersion: 11
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 8
+    serializedVersion: 9
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -71,7 +71,7 @@ LightmapSettings:
     m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
-    m_MixedBakeMode: 3
+    m_MixedBakeMode: 2
     m_BakeBackend: 0
     m_PVRSampling: 1
     m_PVRDirectSampleCount: 32
@@ -87,7 +87,7 @@ LightmapSettings:
     m_PVRFilteringAtrousNormalSigma: 1
     m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
-  m_ShadowMaskMode: 2
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1140,7 +1140,7 @@ Prefab:
         type: 2}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 9810a1d51db3a4f6c98eb80eff17b252, type: 3}
+      objectReference: {fileID: 8300000, guid: 34ffc2ed52ff15b47af54bbc4295ca7f, type: 3}
     - target: {fileID: 1000011677758560, guid: 46c63dfaa2129784eb082783043c7726, type: 2}
       propertyPath: m_Name
       value: Tutorial FinishLine
@@ -3882,12 +3882,12 @@ Prefab:
     - target: {fileID: 212404970180292010, guid: d5f0d12204c6753459f58fbf343fa829,
         type: 2}
       propertyPath: m_Size.x
-      value: 1.95
+      value: 5.12
       objectReference: {fileID: 0}
     - target: {fileID: 212404970180292010, guid: d5f0d12204c6753459f58fbf343fa829,
         type: 2}
       propertyPath: m_Size.y
-      value: 5.79
+      value: 5.12
       objectReference: {fileID: 0}
     - target: {fileID: 114163653397247512, guid: d5f0d12204c6753459f58fbf343fa829,
         type: 2}
@@ -3898,22 +3898,57 @@ Prefab:
         type: 2}
       propertyPath: pickupSfx
       value: 
-      objectReference: {fileID: 8300000, guid: 2e2c67c9e62fe4aa389ceffa809bace3, type: 3}
+      objectReference: {fileID: 8300000, guid: baba03fe6ac69bc4aaae1853bda75a41, type: 3}
     - target: {fileID: 114706195707868552, guid: d5f0d12204c6753459f58fbf343fa829,
         type: 2}
       propertyPath: pickupSfx
       value: 
-      objectReference: {fileID: 8300000, guid: 2e2c67c9e62fe4aa389ceffa809bace3, type: 3}
+      objectReference: {fileID: 8300000, guid: f67b77c2b5ef3cd48970d8f54276cc8d, type: 3}
     - target: {fileID: 114188042794017364, guid: d5f0d12204c6753459f58fbf343fa829,
         type: 2}
       propertyPath: pickupSfx
       value: 
-      objectReference: {fileID: 8300000, guid: 2e2c67c9e62fe4aa389ceffa809bace3, type: 3}
+      objectReference: {fileID: 8300000, guid: 3b6c8ede34188f1468ea98e34e238067, type: 3}
     - target: {fileID: 114154596762329754, guid: d5f0d12204c6753459f58fbf343fa829,
         type: 2}
       propertyPath: pickupSfx
       value: 
-      objectReference: {fileID: 8300000, guid: 2e2c67c9e62fe4aa389ceffa809bace3, type: 3}
+      objectReference: {fileID: 8300000, guid: ec60e1bd89c010646a43575369d5ac01, type: 3}
+    - target: {fileID: 212404970180292010, guid: d5f0d12204c6753459f58fbf343fa829,
+        type: 2}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012702753734, guid: d5f0d12204c6753459f58fbf343fa829,
+        type: 2}
+      propertyPath: water
+      value: 
+      objectReference: {fileID: 1000010484756878, guid: a15cdc024306ffa4aa826ccee884e214,
+        type: 2}
+    - target: {fileID: 114000012702753734, guid: d5f0d12204c6753459f58fbf343fa829,
+        type: 2}
+      propertyPath: biking
+      value: 
+      objectReference: {fileID: 1000012617040918, guid: 87f0df79316422b4a9dde1ecce2f4edb,
+        type: 2}
+    - target: {fileID: 114000012702753734, guid: d5f0d12204c6753459f58fbf343fa829,
+        type: 2}
+      propertyPath: hiking
+      value: 
+      objectReference: {fileID: 1000012617040918, guid: 4cdd8e9f427a03a42ac03ab9e13dd5ec,
+        type: 2}
+    - target: {fileID: 114000012702753734, guid: d5f0d12204c6753459f58fbf343fa829,
+        type: 2}
+      propertyPath: swimming
+      value: 
+      objectReference: {fileID: 1000012617040918, guid: 28cd19947efa53d429ca4f5a35258651,
+        type: 2}
+    - target: {fileID: 114000012702753734, guid: d5f0d12204c6753459f58fbf343fa829,
+        type: 2}
+      propertyPath: jogging
+      value: 
+      objectReference: {fileID: 1000012617040918, guid: 36754d953ae4a6a41b62bee70f4c9675,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d5f0d12204c6753459f58fbf343fa829, type: 2}
   m_IsPrefabParent: 0
@@ -4479,7 +4514,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickup: 3
-  pickupSfx: {fileID: 8300000, guid: 2e2c67c9e62fe4aa389ceffa809bace3, type: 3}
+  pickupSfx: {fileID: 8300000, guid: f67b77c2b5ef3cd48970d8f54276cc8d, type: 3}
 --- !u!58 &719895415
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4537,6 +4572,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!1001 &738117743
 Prefab:
   m_ObjectHideFlags: 0
@@ -5140,7 +5177,7 @@ Prefab:
         type: 2}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 9810a1d51db3a4f6c98eb80eff17b252, type: 3}
+      objectReference: {fileID: 8300000, guid: 34ffc2ed52ff15b47af54bbc4295ca7f, type: 3}
     - target: {fileID: 1000011677758560, guid: 46c63dfaa2129784eb082783043c7726, type: 2}
       propertyPath: m_Name
       value: Lvl01 FinishLine
@@ -5680,6 +5717,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!114 &974277417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6292,7 +6331,7 @@ Prefab:
         type: 2}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 9810a1d51db3a4f6c98eb80eff17b252, type: 3}
+      objectReference: {fileID: 8300000, guid: 34ffc2ed52ff15b47af54bbc4295ca7f, type: 3}
     - target: {fileID: 1343884806420646, guid: 46c63dfaa2129784eb082783043c7726, type: 2}
       propertyPath: m_Name
       value: Lvl03 Finish Spot
@@ -7496,7 +7535,7 @@ Prefab:
         type: 2}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 9810a1d51db3a4f6c98eb80eff17b252, type: 3}
+      objectReference: {fileID: 8300000, guid: 34ffc2ed52ff15b47af54bbc4295ca7f, type: 3}
     - target: {fileID: 1343884806420646, guid: 46c63dfaa2129784eb082783043c7726, type: 2}
       propertyPath: m_Name
       value: Lvl05 Finish Spot
@@ -7929,7 +7968,7 @@ Prefab:
         type: 2}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 9810a1d51db3a4f6c98eb80eff17b252, type: 3}
+      objectReference: {fileID: 8300000, guid: 34ffc2ed52ff15b47af54bbc4295ca7f, type: 3}
     - target: {fileID: 1343884806420646, guid: 46c63dfaa2129784eb082783043c7726, type: 2}
       propertyPath: m_Name
       value: Lvl04 Finish Spot
@@ -8337,7 +8376,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 9810a1d51db3a4f6c98eb80eff17b252, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 34ffc2ed52ff15b47af54bbc4295ca7f, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -8475,6 +8514,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!1 &1513432703
 GameObject:
   m_ObjectHideFlags: 0
@@ -8935,6 +8976,8 @@ SpriteRenderer:
   m_Size: {x: 5.12, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!1001 &1551412039
 Prefab:
   m_ObjectHideFlags: 0
@@ -9289,6 +9332,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!4 &1566437601
 Transform:
   m_ObjectHideFlags: 0
@@ -10824,6 +10869,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!4 &1963392754
 Transform:
   m_ObjectHideFlags: 0

@@ -4,10 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class BMaze_PickupManager : MonoBehaviour {
-	/* CREATED BY: Colby Tang.
+    /* CREATED BY: Colby Tang.
 	 * GAME: Brain Maze
 	 */
-
 	public List<GameObject> pickupList = new List<GameObject> ();
 
 	private AudioSource audioSrc;
@@ -15,7 +14,8 @@ public class BMaze_PickupManager : MonoBehaviour {
 
 	void Start () {
 		audioSrc = GetComponent<AudioSource> ();
-		for (int count = 0; count < transform.childCount; count++) {
+
+        for (int count = 0; count < transform.childCount; count++) {
 			pickupList.Add (transform.GetChild (count).gameObject);
 		}
 	}
@@ -28,7 +28,6 @@ public class BMaze_PickupManager : MonoBehaviour {
 	}
 
 	void GoalAchieved () {
-		audioSrc.Play ();
-		BMaze_Manager.UnlockDoor ();
+		BMaze_Manager.GetInstance().UnlockDoor ();
 	}
 }

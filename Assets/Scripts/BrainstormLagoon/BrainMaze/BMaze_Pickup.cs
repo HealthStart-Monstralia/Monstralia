@@ -8,7 +8,7 @@ public class BMaze_Pickup : MonoBehaviour {
 
 	public enum TypeOfPickup { 
 		Water = 0, 
-		Jogging = 1,
+		Running = 1,
 		Swimming = 2,
 		Hiking = 3,
 		Biking = 4
@@ -24,8 +24,9 @@ public class BMaze_Pickup : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.GetComponent<BMaze_MonsterMovement> ()) {
-			//col.GetComponent<BMaze_MonsterMovement> ().Pickup (pickup);
-			SoundManager.GetInstance().PlaySFXClip(pickupSfx);
+            //col.GetComponent<BMaze_MonsterMovement> ().Pickup (pickup);
+            SoundManager.GetInstance ().PlayCorrectSFX ();
+            SoundManager.GetInstance().PlaySFXClip(pickupSfx);
 			if (BMaze_Manager.GetInstance ()) {
 				if (pickup == TypeOfPickup.Water)
 					GetComponent<BMaze_WaterPickup> ().IncreaseTime ();

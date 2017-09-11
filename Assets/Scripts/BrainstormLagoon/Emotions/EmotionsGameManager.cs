@@ -62,60 +62,55 @@ public class EmotionsGameManager : AbstractGameManager {
 			Destroy(gameObject);
 		}
 
-		if (!GameManager.GetInstance ()) {
-			SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
-			switchScene.loadScene ("Start");
-		} 
+        CheckForGameManager ();
 
-		else {
-			tutorialCanvas.gameObject.SetActive (false);
-			tutorialHand.SetActive (false);
+		tutorialCanvas.gameObject.SetActive (false);
+		tutorialHand.SetActive (false);
 
-			secondaryEmotions = new List<GameObject> ();
+		secondaryEmotions = new List<GameObject> ();
 
-			// Checks if game manager exists, if not default values are chosen
-			if (GameManager.GetInstance ()) {
-				monsterType = GameManager.GetMonsterType ();
+		// Checks if game manager exists, if not default values are chosen
+		if (GameManager.GetInstance ()) {
+			monsterType = GameManager.GetMonsterType ();
 
-				if (monsterType == GameManager.MonsterType.Blue) {
-					primaryEmotions = blueEmotions;
-				} else {
-					secondaryEmotions.AddRange (blueEmotions);
-				}
-				if (monsterType == GameManager.MonsterType.Green) {
-					primaryEmotions = greenEmotions;
-				} else {
-					secondaryEmotions.AddRange (greenEmotions);
-				}
-				if (monsterType == GameManager.MonsterType.Red) {
-					primaryEmotions = redEmotions;
-				} else {
-					secondaryEmotions.AddRange (redEmotions);
-				}
-				if (monsterType == GameManager.MonsterType.Yellow) {
-					primaryEmotions = yellowEmotions;
-				} else {
-					secondaryEmotions.AddRange (yellowEmotions);
-				}
-
-				difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.MonsterEmotions);
+			if (monsterType == GameManager.MonsterType.Blue) {
+				primaryEmotions = blueEmotions;
 			} else {
-				monsterType = GameManager.GetMonsterType ();
-				primaryEmotions = greenEmotions;
 				secondaryEmotions.AddRange (blueEmotions);
+			}
+			if (monsterType == GameManager.MonsterType.Green) {
+				primaryEmotions = greenEmotions;
+			} else {
+				secondaryEmotions.AddRange (greenEmotions);
+			}
+			if (monsterType == GameManager.MonsterType.Red) {
+				primaryEmotions = redEmotions;
+			} else {
 				secondaryEmotions.AddRange (redEmotions);
+			}
+			if (monsterType == GameManager.MonsterType.Yellow) {
+				primaryEmotions = yellowEmotions;
+			} else {
 				secondaryEmotions.AddRange (yellowEmotions);
-				difficultyLevel = 1;
 			}
 
-			emotionsSetup = new Dictionary<int, Tuple<int, int>> () {
-				{ 1, new Tuple<int, int> (2, 0) },
-				{ 2, new Tuple<int, int> (3, 0) },
-				{ 3, new Tuple<int, int> (4, 0) },
-				{ 4, new Tuple<int, int> (3, 1) },
-				{ 5, new Tuple<int, int> (2, 2) }
-			};
+			difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.MonsterEmotions);
+		} else {
+			monsterType = GameManager.GetMonsterType ();
+			primaryEmotions = greenEmotions;
+			secondaryEmotions.AddRange (blueEmotions);
+			secondaryEmotions.AddRange (redEmotions);
+			secondaryEmotions.AddRange (yellowEmotions);
+			difficultyLevel = 1;
 		}
+
+		emotionsSetup = new Dictionary<int, Tuple<int, int>> () {
+			{ 1, new Tuple<int, int> (2, 0) },
+			{ 2, new Tuple<int, int> (3, 0) },
+			{ 3, new Tuple<int, int> (4, 0) },
+			{ 4, new Tuple<int, int> (3, 1) },
+			{ 5, new Tuple<int, int> (2, 2) }
+		};
 	}
 
 	public static EmotionsGameManager GetInstance() {
