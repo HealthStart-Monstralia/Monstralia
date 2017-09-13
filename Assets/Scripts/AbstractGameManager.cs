@@ -31,8 +31,7 @@ public abstract class AbstractGameManager : MonoBehaviour {
     protected void StartReview () {
         print ("AbstractGameManager StartReview");
         ReviewManager.OnFinishReview += EndReview;
-        ReviewManager.GetInstance ().StartReview ();
-        SoundManager.GetInstance ().PlayReviewVO();
+        ReviewManager.GetInstance ().StartReview (typeOfGame);
     }
 
     protected void EndReview () {

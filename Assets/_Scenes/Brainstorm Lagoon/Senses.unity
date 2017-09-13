@@ -121,6 +121,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 251862825}
     m_Modifications:
+    - target: {fileID: 114509452378729834, guid: 2184dc0b3c5d23947b4548055442060d,
+        type: 2}
+      propertyPath: rightChoiceVO.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4440191062749362, guid: 2184dc0b3c5d23947b4548055442060d, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -168,16 +173,6 @@ Prefab:
       propertyPath: FeedbackText
       value: 
       objectReference: {fileID: 1260300428}
-    - target: {fileID: 114509452378729834, guid: 2184dc0b3c5d23947b4548055442060d,
-        type: 2}
-      propertyPath: typeOfGame
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 114509452378729834, guid: 2184dc0b3c5d23947b4548055442060d,
-        type: 2}
-      propertyPath: TimeIsUp
-      value: 25
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2184dc0b3c5d23947b4548055442060d, type: 2}
   m_IsPrefabParent: 0
@@ -637,7 +632,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0.019607844}
+  m_BackGroundColor: {r: 0.33088237, g: 0.33088237, b: 0.33088237, a: 0.021}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -685,6 +680,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 322516152}
     m_Modifications:
+    - target: {fileID: 114617499116772244, guid: 0a92a9afbe3a5f8478b32da332809feb,
+        type: 2}
+      propertyPath: wrongChoiceVO.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4191042831579628, guid: 0a92a9afbe3a5f8478b32da332809feb, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -744,8 +744,23 @@ Prefab:
     - target: {fileID: 114617499116772244, guid: 0a92a9afbe3a5f8478b32da332809feb,
         type: 2}
       propertyPath: TimeIsUp
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 114617499116772244, guid: 0a92a9afbe3a5f8478b32da332809feb,
+        type: 2}
+      propertyPath: wrongChoiceVO.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: a4ad2b7dcfc90ea47893877434c9e4ce, type: 3}
+    - target: {fileID: 114617499116772244, guid: 0a92a9afbe3a5f8478b32da332809feb,
+        type: 2}
+      propertyPath: wrongChoiceVO.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: d4d4491156858a84ead0be6dbb30fa5d, type: 3}
+    - target: {fileID: 114617499116772244, guid: 0a92a9afbe3a5f8478b32da332809feb,
+        type: 2}
+      propertyPath: wrongChoiceVO.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 04374011a527463499b20e828ff27814, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0a92a9afbe3a5f8478b32da332809feb, type: 2}
   m_IsPrefabParent: 0
@@ -756,6 +771,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 1155571032}
     m_Modifications:
+    - target: {fileID: 114111849659830318, guid: 6102c16beb98de749a2d4d0302d6b26c,
+        type: 2}
+      propertyPath: wrongChoiceVO.Array.size
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 4496554758226116, guid: 6102c16beb98de749a2d4d0302d6b26c, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -811,8 +831,23 @@ Prefab:
     - target: {fileID: 114111849659830318, guid: 6102c16beb98de749a2d4d0302d6b26c,
         type: 2}
       propertyPath: TimeIsUp
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 114111849659830318, guid: 6102c16beb98de749a2d4d0302d6b26c,
+        type: 2}
+      propertyPath: wrongChoiceVO.Array.data[0]
+      value: 
+      objectReference: {fileID: 8300000, guid: a4ad2b7dcfc90ea47893877434c9e4ce, type: 3}
+    - target: {fileID: 114111849659830318, guid: 6102c16beb98de749a2d4d0302d6b26c,
+        type: 2}
+      propertyPath: wrongChoiceVO.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: d4d4491156858a84ead0be6dbb30fa5d, type: 3}
+    - target: {fileID: 114111849659830318, guid: 6102c16beb98de749a2d4d0302d6b26c,
+        type: 2}
+      propertyPath: wrongChoiceVO.Array.data[2]
+      value: 
+      objectReference: {fileID: 8300000, guid: 04374011a527463499b20e828ff27814, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6102c16beb98de749a2d4d0302d6b26c, type: 2}
   m_IsPrefabParent: 0
@@ -1003,6 +1038,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeOfGame: 4
   stickerPopupCanvas: {fileID: 0}
+  voData: {fileID: 11400000, guid: a20f80c44f1634f4ebfd21c812c2c4aa, type: 2}
   UICanvas: {fileID: 270736128}
   LevelOne: {fileID: 251862824}
   LevelTwo: {fileID: 322516151}
@@ -1755,6 +1791,10 @@ Prefab:
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 1722664200007460, guid: d50cd61b9313f394aa4823c365ba38c3, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d50cd61b9313f394aa4823c365ba38c3, type: 2}
   m_IsPrefabParent: 0
@@ -1931,7 +1971,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1196212179822136, guid: 15fa1e6308e4a924ca17be87a9e1ac45, type: 2}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 15fa1e6308e4a924ca17be87a9e1ac45, type: 2}
