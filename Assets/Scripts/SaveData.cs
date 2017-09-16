@@ -5,6 +5,6 @@ public class SaveData : MonoBehaviour {
 
 	// Use this for initialization
 	public void setMonster(string color) {
-		GameManager.GetInstance().setMonster(color);
+		GameManager.GetInstance().SetMonster(color);
 	}
 }

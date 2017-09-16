@@ -8,9 +8,9 @@ public class PlayVoiceOver : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		SoundManager.GetInstance().StopPlayingVoiceOver();
-		if (GameManager.GetInstance ().PlayLagoonVoiceOver) {
+		if (GameManager.GetInstance ().playLagoonVoiceOver) {
 			SoundManager.GetInstance ().PlayVoiceOverClip (clipToPlay);
-			GameManager.GetInstance ().PlayLagoonVoiceOver = false;
+			GameManager.GetInstance ().playLagoonVoiceOver = false;
 		}
 	}
 }

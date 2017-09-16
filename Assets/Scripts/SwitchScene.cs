@@ -16,4 +16,10 @@ public class SwitchScene: MonoBehaviour {
 		Instantiate (loadingScreen, transform.root);
 		SceneManager.LoadScene (name);
 	}
+
+    public void loadScene (string name, bool needLoadScreen) {
+        if (needLoadScreen)
+            Instantiate (loadingScreen, transform.root);
+        SceneManager.LoadScene (name);
+    }
 }

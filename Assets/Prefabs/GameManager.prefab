@@ -25,7 +25,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 122832}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 206.30446, y: 380.85995, z: -0.25}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -42,9 +42,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931ddca56b31743de8058aff3d570467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LagoonTutorial: 0000000000
+  minigameAssetData:
+  - {fileID: 11400000, guid: c0e32eb1a891c1e44b5d44bf6ca48313, type: 2}
+  - {fileID: 11400000, guid: 2576e2917f435064797e6248b048b53b, type: 2}
+  - {fileID: 11400000, guid: 58b1cf4094aedae49b57a9e9dacf247d, type: 2}
+  - {fileID: 11400000, guid: 9c8e2f21ab55d4f4a81d902979cf7a1e, type: 2}
+  - {fileID: 11400000, guid: b2d9dce9aaa7c4743af77566e905dfab, type: 2}
+  FirstTimeInMainMap: 1
+  FirstTimeInBrainstormLagoon: 1
   LagoonFirstSticker: 1
-  LagoonReview: 0
   PlayLagoonVoiceOver: 1
   PlayIntro: 1
   introObject: {fileID: 223972170410359922, guid: 9e44c9b07cb2a5145bff6100c100f9bb,

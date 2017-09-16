@@ -56,7 +56,7 @@ GameObject:
   - component: {fileID: 114592024327917108}
   m_Layer: 0
   m_Name: BrainMazeManager
-  m_TagString: Untagged
+  m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -80,21 +80,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!1 &1710951673590374
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 4513886421087948}
-  m_Layer: 0
-  m_Name: Starting Location
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!4 &4271431878242314
 Transform:
   m_ObjectHideFlags: 1
@@ -105,22 +90,8 @@ Transform:
   m_LocalPosition: {x: 0.24314018, y: -0.2918185, z: 5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 4513886421087948}
   - {fileID: 224698561736307260}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &4513886421087948
-Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1710951673590374}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 44.7, y: -72.7, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 4271431878242314}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4599738214968798
@@ -168,6 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b911668798bcede469625e39ffb233ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typeOfGame: 1
   stickerPopupCanvas: {fileID: 0}
   typeOfMonster: 0
   monsterList:
@@ -175,7 +147,13 @@ MonoBehaviour:
   - {fileID: 1000010047442250, guid: 52b85add49cd00e4da6e87e3278b637b, type: 2}
   - {fileID: 1000010047442250, guid: ca3b2a66d1cfdf342b3d2c5637aa7391, type: 2}
   - {fileID: 1000010047442250, guid: 8473edbdd19a37e44b119a673223a66f, type: 2}
-  monsterScale: []
+  monsterScale:
+  - 0.5
+  - 0.4
+  - 0.3
+  - 0.25
+  - 0.2
+  voData: {fileID: 11400000, guid: 788bb78fac969cf40bb161f2b347f8e1, type: 2}
   backgroundMusic: {fileID: 8300000, guid: 3265aca7dd7cb4256a906218743de845, type: 3}
   scoreSlider: {fileID: 0}
   timerText: {fileID: 0}
@@ -183,11 +161,27 @@ MonoBehaviour:
   timeLimit: 30
   beachBackgroundObj: {fileID: 0}
   mazeGraphicObj: {fileID: 0}
-  mazeColliders: []
-  assetList: []
+  mazeColliders:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  assetList:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   inputAllowed: 0
   subtitlePanel: {fileID: 0}
-  instructionVOList: []
+  instructionVOList:
+  - {fileID: 8300000, guid: c7a68d5dca98d42ff8fa762d6d6c7537, type: 3}
+  - {fileID: 8300000, guid: f07f22cc9a6494a7c9cb99ee3cfa417a, type: 3}
+  - {fileID: 8300000, guid: 69314ceef76414bbe9427f5d67155dad, type: 3}
+  - {fileID: 8300000, guid: deaf9294d46e14aba899a6e18a7f2989, type: 3}
+  - {fileID: 8300000, guid: b0605add40db94defa637d00798f6b29, type: 3}
+  - {fileID: 8300000, guid: f7cfc78558a624d3cb68eb2e32e9aa22, type: 3}
   gameOverCanvas: {fileID: 0}
   backButton: {fileID: 0}
   tutorialAssets: {fileID: 0}
@@ -306,6 +300,8 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!222 &222566748936617622
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -351,7 +347,7 @@ RectTransform:
   - {fileID: 4599738214968798}
   - {fileID: 224876405532374952}
   m_Father: {fileID: 4271431878242314}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

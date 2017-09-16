@@ -20,7 +20,6 @@ public class IntroManager : MonoBehaviour {
 
 	private static IntroManager instance = null;
 
-	private int slideNum = 0;
 	private bool emailOkay = false;
 	private bool passOkay = false;
 

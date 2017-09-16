@@ -12,7 +12,7 @@ public class SubtitlePanel : MonoBehaviour {
 
 	public Text textComp;
 
-	public void Display(string subtitle, AudioClip clip = null, bool queue = false) {
+	public void Display(string subtitle, AudioClip clip = null, bool queue = false, float time = 3f) {
 		if (!gameObject.activeSelf)
 			gameObject.SetActive (true);
 
@@ -26,10 +26,10 @@ public class SubtitlePanel : MonoBehaviour {
 			}
 			isDisplaying = true;
 			sub.Display(gameObject, textComp, subtitle, clip);
-			waitCoroutine = StartCoroutine (WaitTillHide (2f));
 
-
-
+			if (time > 0f) {
+				waitCoroutine = StartCoroutine (WaitTillHide (time));
+			} 
 		}
 
 		else {

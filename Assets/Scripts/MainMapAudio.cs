@@ -2,12 +2,18 @@
 using System.Collections;
 
 public class MainMapAudio : MonoBehaviour {
+    /* For playing the voiceover */
 
-	public AudioClip introAudio;
+	public AudioClip introAudio, welcomeBackClip;
 
 	// Use this for initialization
 	void Start () {
-		SoundManager.GetInstance().PlayVoiceOverClip(introAudio);
+        if (GameManager.GetInstance ().firstTimeInMainMap) {
+            if (introAudio != null)
+                SoundManager.GetInstance ().PlayVoiceOverClip (introAudio);
+            GameManager.GetInstance ().firstTimeInMainMap = false;
+        } else
+            SoundManager.GetInstance ().PlayVoiceOverClip (welcomeBackClip);		
 	}
 
 }

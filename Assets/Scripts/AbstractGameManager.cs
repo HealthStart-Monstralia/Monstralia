@@ -2,19 +2,51 @@
 using System.Collections;
 
 public abstract class AbstractGameManager : MonoBehaviour {
-
+    public DataType.Minigame typeOfGame;
 	public abstract void GameOver(); // Force GameOver() to be implemented in child classes
-	public Canvas stickerPopupCanvas;
+    public abstract void PregameSetup (); // Force PregameSetup() to be implemented in child classes
+    public Canvas stickerPopupCanvas;
 
-	public virtual void UnlockSticker(StickerManager.StickerType stickerType) {
+    void OnDisable () {
+        ReviewManager.OnFinishReview -= EndReview;
+    }
+
+    // Go to Start scene if no Game Manager is present
+    protected void CheckForGameManager () {
+        if (!GameManager.GetInstance ()) {
+            SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
+            switchScene.loadScene ("Start", false);
+        }
+    }
+
+    protected void Start() {
+        print ("AbstractGameManager Start running");
+        if (ReviewManager.GetInstance ().needReview) {
+            StartReview ();
+        } else {
+            PregameSetup ();
+        }
+    }
+
+    protected void StartReview () {
+        print ("AbstractGameManager StartReview");
+        ReviewManager.OnFinishReview += EndReview;
+        ReviewManager.GetInstance ().StartReview (typeOfGame);
+    }
+
+    protected void EndReview () {
+        print ("AbstractGameManager EndReview");
+        ReviewManager.OnFinishReview -= EndReview;
+        PregameSetup ();
+    }
+
+    public virtual void UnlockSticker() {
 		if (stickerPopupCanvas) {
 			stickerPopupCanvas.gameObject.SetActive (true);
 			SoundManager.GetInstance ().PlayUnlockStickerVO ();
-			GameManager.GetInstance ().ActivateBrainstormLagoonReview ();
 
-
-			if (GameManager.GetInstance ().LagoonFirstSticker) {
-				GameManager.GetInstance ().LagoonFirstSticker = false;
+			if (GameManager.GetInstance ().lagoonFirstSticker) {
+				GameManager.GetInstance ().lagoonFirstSticker = false;
 				stickerPopupCanvas.transform.Find ("BackButton").gameObject.SetActive (false);
 				stickerPopupCanvas.transform.Find ("StickerbookButton").gameObject.SetActive (true);
 			} else {
@@ -22,9 +54,10 @@ public abstract class AbstractGameManager : MonoBehaviour {
 				stickerPopupCanvas.transform.Find ("StickerbookButton").gameObject.SetActive (false);
 			}
 
-			GameManager.GetInstance ().ActivateSticker (stickerType);
 		} else {
-			Debug.LogError ("Error: Sticker Popup Canvas not assigned to Manager.");
+			//Debug.LogError ("Error: Sticker Popup Canvas not assigned to Manager.");
 		}
-	}
+
+        GameManager.GetInstance ().ActivateSticker (typeOfGame);
+    }
 }
