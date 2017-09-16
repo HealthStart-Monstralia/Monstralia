@@ -54,6 +54,7 @@ CircleCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 2.56
@@ -69,6 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickup: 0
+  pickupSfx: {fileID: 8300000, guid: 2e2c67c9e62fe4aa389ceffa809bace3, type: 3}
 --- !u!114 &114544848301358490
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -80,7 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5db2687edbfa2c842b182c201c4a321f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeIncrease: 6
+  timeIncrease: 8
 --- !u!212 &212000010880390522
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -111,8 +113,15 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 909b9b3dbb0e7461480fe1bf33b4d814, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 05ddf2f71d491e6458cc7d5276800c9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1.95, y: 5.79}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0

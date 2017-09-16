@@ -10,30 +10,34 @@ public class FoodList : MonoBehaviour {
 	public List<GameObject> goodFoods;
 
 	void Start () {
-		SortFoods ();
+		SortBrainbowFoods ();
 	}
 
 	/* Sort foods into categories for Brainbow */
-	void SortFoods() {
-		foreach (GameObject food in goodFoods) {
-			switch (food.GetComponent<Food> ().color) {
-			case Colorable.Color.Red:
-				redFoods.Add (food);
-				break;
+	void SortBrainbowFoods () {
+        Food foodComponent;
+        foreach (GameObject food in goodFoods) {
+            foodComponent = food.GetComponent<Food> ();
+            if (foodComponent.foodType == Food.TypeOfFood.Fruit || foodComponent.foodType == Food.TypeOfFood.Vegetable) {
+                switch (food.GetComponent<Food> ().color) {
+                    case Colorable.Color.Red:
+                        redFoods.Add (food);
+                        break;
 
-				case Colorable.Color.Yellow:
-				yellowFoods.Add(food);
-				break;
+                    case Colorable.Color.Yellow:
+                        yellowFoods.Add (food);
+                        break;
 
-				case Colorable.Color.Green:
-				greenFoods.Add(food);
-				break;
+                    case Colorable.Color.Green:
+                        greenFoods.Add (food);
+                        break;
 
-				case Colorable.Color.Purple:
-				purpleFoods.Add(food);
-				break;
-			}
-		}
+                    case Colorable.Color.Purple:
+                        purpleFoods.Add (food);
+                        break;
+                }
+            }
+        }
 	}
 
 	public List<GameObject> GetBrainbowFoods(Colorable.Color colour) {

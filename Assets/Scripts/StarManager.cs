@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
 public class StarManager : MonoBehaviour {
 
-	public GameObject[] starBases;
+    // StarManager is being replaced with StarPanel
 
+    public GameObject[] starBases;
 	private Dictionary<string, string> baseToGame;
 
-	// Use this for initialization
 	void Awake () {
+        /*
 		baseToGame = new Dictionary<string, string>();
 		baseToGame.Add("BrainbowStarBase", "Brainbow");
 		baseToGame.Add("MemoryMatchStarBase", "MemoryMatch");
@@ -22,10 +24,9 @@ public class StarManager : MonoBehaviour {
 
 			for(int i = 0; i < numStars; ++i) {
 				starBase.transform.GetChild(i).gameObject.SetActive(true);
-				starBase.transform.GetChild(i).gameObject.GetComponent<SpriteRenderer>().sortingOrder = 1;
 			}
 		}
-
+        */
 	}
 
 }

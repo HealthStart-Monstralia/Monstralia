@@ -8,10 +8,11 @@ public class SubtitlePanel : MonoBehaviour {
 	private Subtitle sub;
 	private bool isDisplaying = false;
 	private Queue<Tuple<string, AudioClip>> displayQueue = new Queue<Tuple<string, AudioClip>>();
+	private Coroutine waitCoroutine;
 
 	public Text textComp;
 
-	public void Display(string subtitle, AudioClip clip = null, bool queue = false) {
+	public void Display(string subtitle, AudioClip clip = null, bool queue = false, float time = 3f) {
 		if (!gameObject.activeSelf)
 			gameObject.SetActive (true);
 
@@ -20,21 +21,17 @@ public class SubtitlePanel : MonoBehaviour {
 		}
 
 		if(!queue || !isDisplaying) {
+			if (waitCoroutine != null) {
+				StopCoroutine (waitCoroutine);
+			}
 			isDisplaying = true;
 			sub.Display(gameObject, textComp, subtitle, clip);
-			if (EmotionsGameManager.GetInstance ()) {
-				StartCoroutine (WaitTillHide (EmotionsGameManager.GetInstance ().waitDuration));
-			}
-			else if (BMaze_Manager.GetInstance ()) {
-				StartCoroutine (WaitTillHide (2f));
+
+			if (time > 0f) {
+				waitCoroutine = StartCoroutine (WaitTillHide (time));
 			} 
-			/*
-			else if (MemoryMatchGameManager.GetInstance ()) {
-				StopCoroutine (WaitTillHide(3f));
-				StartCoroutine (WaitTillHide (3f));
-			}
-			*/
 		}
+
 		else {
 			Tuple<string, AudioClip> t = new Tuple<string, AudioClip>(subtitle, clip);
 			displayQueue.Enqueue(t);

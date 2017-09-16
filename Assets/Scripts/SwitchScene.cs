@@ -10,12 +10,16 @@ public class SwitchScene: MonoBehaviour {
 	public void loadScene() {
 		loadingScreen.SetActive(true);
 		SceneManager.LoadScene (sceneToLoad);
-		//Application.LoadLevel(sceneToLoad);
 	}
 
 	public void loadScene(string name) {
-		if(loadingScreen)
-			loadingScreen.SetActive(true);
+		Instantiate (loadingScreen, transform.root);
 		SceneManager.LoadScene (name);
 	}
+
+    public void loadScene (string name, bool needLoadScreen) {
+        if (needLoadScreen)
+            Instantiate (loadingScreen, transform.root);
+        SceneManager.LoadScene (name);
+    }
 }
