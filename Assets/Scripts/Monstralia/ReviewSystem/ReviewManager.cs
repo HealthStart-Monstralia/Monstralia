@@ -14,7 +14,6 @@ public class ReviewManager : MonoBehaviour {
     public delegate void ReviewAction ();
     public static event ReviewAction OnFinishReview;
 
-
     private int reviewLevelIndex;
     private static ReviewManager instance;
 
@@ -45,7 +44,7 @@ public class ReviewManager : MonoBehaviour {
         GameObject reviewGame = GameManager.GetInstance ().GetMinigameData (minigame).reviewPrefab; // Retrieve corresponding review prefab from MinigameData
         reviewGamesDict.Add (reviewGame, minigame);
         reviewGamesList.Add (reviewGame);
-        needReview = true;
+        needReview = true; // Place somewhere else maybe
     }
 
     public void RemoveReviewGameFromList(DataType.Minigame minigame) {
@@ -85,6 +84,7 @@ public class ReviewManager : MonoBehaviour {
     }
 
     public void EndReview () {
+        // Add delay timer in parameters, add an overload function perhaps
         StartCoroutine (WaitTillReviewEnd (3f));
     }
 
