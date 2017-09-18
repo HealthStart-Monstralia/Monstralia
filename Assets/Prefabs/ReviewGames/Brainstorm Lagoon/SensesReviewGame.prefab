@@ -281,7 +281,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114138237426278562}
+      - m_Target: {fileID: 114264903677430086}
         m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
@@ -305,7 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b7114d2b67410b49bfd9c59c48db65e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeOfSense: 0
+  typeOfSense: 2
 --- !u!114 &114092609162547680
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -383,7 +383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b7114d2b67410b49bfd9c59c48db65e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeOfSense: 0
+  typeOfSense: 1
 --- !u!114 &114162878493339188
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -461,7 +461,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114138237426278562}
+      - m_Target: {fileID: 114634898079683166}
         m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
@@ -512,7 +512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b7114d2b67410b49bfd9c59c48db65e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeOfSense: 0
+  typeOfSense: 3
 --- !u!114 &114348477661405248
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -580,6 +580,7 @@ MonoBehaviour:
   - {fileID: 1867768076350366, guid: 0a11eb12f874cce498433d33541bad8d, type: 2}
   - {fileID: 1946170307796846, guid: 31b0e223f89203c4c8cb019ed74121c8, type: 2}
   senseText: {fileID: 114708063277046702}
+  isGuessing: 0
 --- !u!114 &114532080923547930
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -621,7 +622,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b7114d2b67410b49bfd9c59c48db65e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeOfSense: 0
+  typeOfSense: 4
 --- !u!114 &114708063277046702
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -721,7 +722,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114138237426278562}
+      - m_Target: {fileID: 114156742104524754}
         m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
@@ -846,7 +847,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 114138237426278562}
+      - m_Target: {fileID: 114046492242974888}
         m_MethodName: OnClick
         m_Mode: 1
         m_Arguments:
@@ -1017,7 +1018,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: -608095089
   m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!224 &224047517729149628

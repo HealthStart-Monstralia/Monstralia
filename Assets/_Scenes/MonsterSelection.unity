@@ -117,6 +117,7 @@ GameObject:
   m_Component:
   - component: {fileID: 288904368}
   - component: {fileID: 288904371}
+  - component: {fileID: 288904372}
   - component: {fileID: 288904370}
   - component: {fileID: 288904369}
   m_Layer: 5
@@ -139,10 +140,10 @@ RectTransform:
   m_Father: {fileID: 451213998}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 164, y: -216}
-  m_SizeDelta: {x: 256, y: 275}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &288904369
 MonoBehaviour:
@@ -183,9 +184,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 343628535}
-        m_MethodName: setMonster
-        m_Mode: 5
+      - m_Target: {fileID: 288904372}
+        m_MethodName: SetMonsterChosen
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -194,8 +195,8 @@ MonoBehaviour:
           m_StringArgument: Yellow_Baby
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 343628534}
-        m_MethodName: loadScene
+      - m_Target: {fileID: 811324358}
+        m_MethodName: LoadScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -226,7 +227,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: bad56abbacef94c1098f773c27066586, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 70afd45fb00c9a347baaeb90abd7677d, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 0
@@ -240,6 +241,18 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 288904367}
+--- !u!114 &288904372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 288904367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e8e59c49eeda7a42b8ee31f632089e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeOfMonster: 3
 --- !u!1 &343628528
 GameObject:
   m_ObjectHideFlags: 0
@@ -252,8 +265,6 @@ GameObject:
   - component: {fileID: 343628531}
   - component: {fileID: 343628530}
   - component: {fileID: 343628529}
-  - component: {fileID: 343628534}
-  - component: {fileID: 343628535}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -331,30 +342,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &343628534
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 343628528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70955650897f8422da0c5875e43541f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneToLoad: MainMap
-  loadingScreen: {fileID: 446515443}
---- !u!114 &343628535
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 343628528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ede613b2aa4640b98a5b05758f2abe0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &440606997
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,6 +351,7 @@ GameObject:
   m_Component:
   - component: {fileID: 440606998}
   - component: {fileID: 440607003}
+  - component: {fileID: 440606999}
   - component: {fileID: 440607002}
   - component: {fileID: 440607001}
   m_Layer: 5
@@ -386,11 +374,23 @@ RectTransform:
   m_Father: {fileID: 451213998}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -164, y: 178}
-  m_SizeDelta: {x: 274, y: 250}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &440606999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 440606997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e8e59c49eeda7a42b8ee31f632089e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeOfMonster: 1
 --- !u!114 &440607001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430,9 +430,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 343628535}
-        m_MethodName: setMonster
-        m_Mode: 5
+      - m_Target: {fileID: 440606999}
+        m_MethodName: SetMonsterChosen
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -441,8 +441,8 @@ MonoBehaviour:
           m_StringArgument: Green_Baby
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 343628534}
-        m_MethodName: loadScene
+      - m_Target: {fileID: 811324358}
+        m_MethodName: LoadScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -473,7 +473,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: ae798cf6cdbdc471d88e388b5c281bf4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 13bd31cee88dd9f45a2f369c36643704, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 0
@@ -560,11 +560,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22435558, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
       propertyPath: m_Pivot.x
-      value: .5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 22435558, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
       propertyPath: m_Pivot.y
-      value: .5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 22435558, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
       propertyPath: m_LocalScale.x
@@ -585,10 +585,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
   m_IsPrefabParent: 0
---- !u!1 &446515443 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 117540, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
-  m_PrefabInternal: {fileID: 446515442}
 --- !u!224 &446515444 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 22435558, guid: 0ac25aff716064388843f1b68c1d8088,
@@ -604,6 +600,8 @@ GameObject:
   - component: {fileID: 451213998}
   - component: {fileID: 451213997}
   - component: {fileID: 451213996}
+  - component: {fileID: 451214000}
+  - component: {fileID: 451213999}
   m_Layer: 5
   m_Name: SelectionBox
   m_TagString: Untagged
@@ -666,6 +664,43 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -50, y: -50}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &451213999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 451213995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 10, y: -10}
+  m_UseGraphicAlpha: 1
+--- !u!114 &451214000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 451213995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -2095666955, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 300, y: 300}
+  m_Spacing: {x: 10, y: 10}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &496210831
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,6 +778,7 @@ GameObject:
   m_Component:
   - component: {fileID: 503756571}
   - component: {fileID: 503756570}
+  - component: {fileID: 503756572}
   - component: {fileID: 503756569}
   - component: {fileID: 503756568}
   m_Layer: 5
@@ -791,9 +827,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 343628535}
-        m_MethodName: setMonster
-        m_Mode: 5
+      - m_Target: {fileID: 503756572}
+        m_MethodName: SetMonsterChosen
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -802,8 +838,8 @@ MonoBehaviour:
           m_StringArgument: Blue_Baby
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 343628534}
-        m_MethodName: loadScene
+      - m_Target: {fileID: 811324358}
+        m_MethodName: LoadScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -834,7 +870,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: c13e072b3b7654380a4fbc821430e1dd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f0493efb8db4ed44195f215a33c6b1ee, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 0
@@ -861,11 +897,23 @@ RectTransform:
   m_Father: {fileID: 451213998}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 164, y: 184}
-  m_SizeDelta: {x: 248, y: 266}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &503756572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 503756567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e8e59c49eeda7a42b8ee31f632089e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeOfMonster: 0
 --- !u!1 &503847856
 GameObject:
   m_ObjectHideFlags: 0
@@ -875,6 +923,7 @@ GameObject:
   m_Component:
   - component: {fileID: 503847857}
   - component: {fileID: 503847860}
+  - component: {fileID: 503847861}
   - component: {fileID: 503847859}
   - component: {fileID: 503847858}
   m_Layer: 5
@@ -897,10 +946,10 @@ RectTransform:
   m_Father: {fileID: 451213998}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -164, y: -207}
-  m_SizeDelta: {x: 240, y: 310}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &503847858
 MonoBehaviour:
@@ -941,9 +990,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 343628535}
-        m_MethodName: setMonster
-        m_Mode: 5
+      - m_Target: {fileID: 503847861}
+        m_MethodName: SetMonsterChosen
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -952,8 +1001,8 @@ MonoBehaviour:
           m_StringArgument: Red_Baby
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 343628534}
-        m_MethodName: loadScene
+      - m_Target: {fileID: 811324358}
+        m_MethodName: LoadScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -984,7 +1033,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 60c709a74e7f93642bfbbe14179a0db3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 98af6643f75637f448c4ea5cacec9652, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 0
@@ -998,6 +1047,18 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 503847856}
+--- !u!114 &503847861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 503847856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e8e59c49eeda7a42b8ee31f632089e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeOfMonster: 2
 --- !u!1 &714322909
 GameObject:
   m_ObjectHideFlags: 0
@@ -1008,6 +1069,7 @@ GameObject:
   - component: {fileID: 714322910}
   - component: {fileID: 714322912}
   - component: {fileID: 714322911}
+  - component: {fileID: 714322913}
   m_Layer: 5
   m_Name: MonsterSelectionText
   m_TagString: Untagged
@@ -1072,6 +1134,20 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 714322909}
+--- !u!114 &714322913
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 714322909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.122}
+  m_EffectDistance: {x: 5, y: -5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &811324352
 GameObject:
   m_ObjectHideFlags: 0
@@ -1084,6 +1160,7 @@ GameObject:
   - component: {fileID: 811324354}
   - component: {fileID: 811324353}
   - component: {fileID: 811324357}
+  - component: {fileID: 811324358}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1178,10 +1255,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 811324352}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bfbb99635be347fbae0198511149999, type: 3}
+  m_Script: {fileID: 11500000, guid: 84dbf5f31f8d01745a4b6e02edbeba2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playOnStart: 1
   clipToPlay: {fileID: 8300000, guid: 95a4cd6fe6ea65c4fa79c7e1ea726340, type: 3}
+--- !u!114 &811324358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 811324352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70955650897f8422da0c5875e43541f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneToLoadName: MainMap
 --- !u!1 &955670641
 GameObject:
   m_ObjectHideFlags: 0
@@ -1192,7 +1282,6 @@ GameObject:
   - component: {fileID: 955670645}
   - component: {fileID: 955670644}
   - component: {fileID: 955670643}
-  - component: {fileID: 955670642}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -1200,18 +1289,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &955670642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 955670641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1997211142, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_ForceModuleActive: 0
 --- !u!114 &955670643
 MonoBehaviour:
   m_ObjectHideFlags: 0

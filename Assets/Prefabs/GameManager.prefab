@@ -48,12 +48,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 58b1cf4094aedae49b57a9e9dacf247d, type: 2}
   - {fileID: 11400000, guid: 9c8e2f21ab55d4f4a81d902979cf7a1e, type: 2}
   - {fileID: 11400000, guid: b2d9dce9aaa7c4743af77566e905dfab, type: 2}
-  FirstTimeInMainMap: 1
-  FirstTimeInBrainstormLagoon: 1
-  LagoonFirstSticker: 1
-  PlayLagoonVoiceOver: 1
-  PlayIntro: 1
+  stickerObjects: []
+  lagoonFirstSticker: 1
+  playLagoonVoiceOver: 1
+  playIntro: 1
   introObject: {fileID: 223972170410359922, guid: 9e44c9b07cb2a5145bff6100c100f9bb,
+    type: 2}
+  loadingScreen: {fileID: 117540, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
+  endingScreen: {fileID: 1252322694986208, guid: 37bd93cc4902a65489a71fcd16534923,
     type: 2}
 --- !u!1001 &100100000
 Prefab:

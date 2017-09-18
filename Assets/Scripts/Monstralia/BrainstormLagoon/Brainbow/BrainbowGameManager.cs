@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 
 public class BrainbowGameManager : AbstractGameManager {
-
-	private static BrainbowGameManager instance;
+    
+    private static BrainbowGameManager instance;
 	private int score;
 	private BrainbowFood activeFood;
 	private bool gameStarted;
@@ -16,13 +16,13 @@ public class BrainbowGameManager : AbstractGameManager {
 	private Text nowYouTryText;
 	private BrainbowFood banana;
 	private Transform bananaOrigin;
-	//private Animator handAnim;
 	private bool gameOver = false;
 	private Coroutine tutorialCoroutine;
 
 	private float waterSpawnTime = 0.0f;
 	private bool spawnWater = false;
 
+    [Header ("Brainbow")]
     public VoiceOversData voData;
 	public Canvas mainCanvas;
 	public Canvas instructionPopup;
@@ -51,7 +51,6 @@ public class BrainbowGameManager : AbstractGameManager {
 	public GameObject[] waterSpawnLocations;
 	public List<GameObject> waterBottleList = new List<GameObject> ();
 
-	[HideInInspector] public GameManager.MonsterType typeOfMonster;
 	[HideInInspector] public BBMonster monsterObject;
 	public GameObject[] monsterList;
 	public GameObject spawnPoint;
@@ -134,7 +133,6 @@ public class BrainbowGameManager : AbstractGameManager {
 		scoreGauge.maxValue = scoreGoals[difficultyLevel];
 		UpdateScoreGauge();
 
-		typeOfMonster = GameManager.GetMonsterType ();
 		CreateMonster ();
 		monsterObject.PlaySpawn ();
 
@@ -334,18 +332,18 @@ public class BrainbowGameManager : AbstractGameManager {
 	override public void GameOver() {
         SoundManager.GetInstance ().PlayCorrectSFX ();
 		spawnWater = false;
-		if(score >= scoreGoals[difficultyLevel]) {
-			if(difficultyLevel == 1) {
-				UnlockSticker ();
-			}
-			GameManager.GetInstance().LevelUp(DataType.Minigame.Brainbow);
-		}
-
-		if(difficultyLevel > 1 || score < scoreGoals[difficultyLevel]) {
-			DisplayGameOverCanvas ();
-		}
-	}
-
+		if (score >= scoreGoals[difficultyLevel]) {
+            if (difficultyLevel == 1) {
+                UnlockSticker ();
+            } else {
+                GameManager.GetInstance ().LevelUp (DataType.Minigame.Brainbow);
+                GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
+            }
+        }
+        else {
+            GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.FailedLevel);
+        }
+    }
 
 	void EndGameTearDown () {
 		subtitlePanel.Hide ();
@@ -395,20 +393,21 @@ public class BrainbowGameManager : AbstractGameManager {
 	}
 
 	void CreateMonster() {
-		// Blue = 0, Green = 1, Red = 2, Yellow = 3
+        // Blue = 0, Green = 1, Red = 2, Yellow = 3
+        DataType.MonsterType typeOfMonster = GameManager.GetInstance ().GetMonster ();
 
-		switch (typeOfMonster) {
-		case GameManager.MonsterType.Blue:
-			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Blue]);
+        switch (typeOfMonster) {
+		case DataType.MonsterType.Blue:
+			InstantiateMonster (monsterList [(int)DataType.MonsterType.Blue]);
 			break;
-		case GameManager.MonsterType.Green:
-			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Green]);
+		case DataType.MonsterType.Green:
+			InstantiateMonster (monsterList [(int)DataType.MonsterType.Green]);
 			break;
-		case GameManager.MonsterType.Red:
-			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Red]);
+		case DataType.MonsterType.Red:
+			InstantiateMonster (monsterList [(int)DataType.MonsterType.Red]);
 			break;
-		case GameManager.MonsterType.Yellow:
-			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Yellow]);
+		case DataType.MonsterType.Yellow:
+			InstantiateMonster (monsterList [(int)DataType.MonsterType.Yellow]);
 			break;
 		}
 	}

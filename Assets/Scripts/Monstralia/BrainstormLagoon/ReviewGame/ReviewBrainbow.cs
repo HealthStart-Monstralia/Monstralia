@@ -34,18 +34,18 @@ public class ReviewBrainbow : MonoBehaviour {
 
 	void Start() {
 		// Change monster sprite depending on player choice
-		switch (GameManager.GetMonsterType ()) {
-		case GameManager.MonsterType.Blue:
-			monster.GetComponentInChildren<SpriteRenderer>().sprite = spriteList [(int)GameManager.MonsterType.Blue];
+		switch (GameManager.GetInstance().GetMonster()) {
+		case DataType.MonsterType.Blue:
+			monster.GetComponentInChildren<SpriteRenderer>().sprite = spriteList [(int)DataType.MonsterType.Blue];
 			break;
-		case GameManager.MonsterType.Green:
-			monster.GetComponentInChildren<SpriteRenderer>().sprite = spriteList [(int)GameManager.MonsterType.Green];
+		case DataType.MonsterType.Green:
+			monster.GetComponentInChildren<SpriteRenderer>().sprite = spriteList [(int)DataType.MonsterType.Green];
 			break;
-		case GameManager.MonsterType.Red:
-			monster.GetComponentInChildren<SpriteRenderer>().sprite = spriteList [(int)GameManager.MonsterType.Red];
+		case DataType.MonsterType.Red:
+			monster.GetComponentInChildren<SpriteRenderer>().sprite = spriteList [(int)DataType.MonsterType.Red];
 			break;
-		case GameManager.MonsterType.Yellow:
-			monster.GetComponentInChildren<SpriteRenderer>().sprite = spriteList [(int)GameManager.MonsterType.Yellow];
+		case DataType.MonsterType.Yellow:
+			monster.GetComponentInChildren<SpriteRenderer>().sprite = spriteList [(int)DataType.MonsterType.Yellow];
 			break;
 		}
 		PrepareReview ();
@@ -122,6 +122,6 @@ public class ReviewBrainbow : MonoBehaviour {
 	}
 
     public void FadeOut () {
-        GetComponent<Animator> ().Play ("ReviewBrainMazeGameFadeOut");
+        GetComponent<Animator> ().Play ("ReviewBrainbowGameFadeOut");
     }
 }

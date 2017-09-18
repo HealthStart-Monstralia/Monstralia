@@ -9,12 +9,9 @@ public class BMaze_PickupManager : MonoBehaviour {
 	 */
 	public List<GameObject> pickupList = new List<GameObject> ();
 
-	private AudioSource audioSrc;
 	private bool achieved = false;
 
 	void Start () {
-		audioSrc = GetComponent<AudioSource> ();
-
         for (int count = 0; count < transform.childCount; count++) {
 			pickupList.Add (transform.GetChild (count).gameObject);
 		}

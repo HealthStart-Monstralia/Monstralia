@@ -24,19 +24,19 @@ public class ReviewBrainMazeCanvas : MonoBehaviour {
 	void Start() {
         // Change monster sprite depending on player choice
         GetComponentInParent<Animator> ().Play ("ReviewBrainMazeGameFadeIn");
-		switch (GameManager.GetMonsterType ()) {
-		case GameManager.MonsterType.Blue:
-			monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)GameManager.MonsterType.Blue];
+		switch (GameManager.GetInstance().GetMonster ()) {
+		case DataType.MonsterType.Blue:
+			monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Blue];
 				break;
-			case GameManager.MonsterType.Green:
-			monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)GameManager.MonsterType.Green];
-				break;
-			case GameManager.MonsterType.Red:
-			monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)GameManager.MonsterType.Red];
-				break;
-			case GameManager.MonsterType.Yellow:
-			monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)GameManager.MonsterType.Yellow];
-				break;
+		case DataType.MonsterType.Green:
+		monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Green];
+			break;
+		case DataType.MonsterType.Red:
+		monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Red];
+			break;
+		case DataType.MonsterType.Yellow:
+		monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Yellow];
+			break;
 		}
 		PrepareReview ();
 	}

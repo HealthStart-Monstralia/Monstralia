@@ -17,7 +17,7 @@ public class BrainMazeReviewMonster : MonoBehaviour {
         for (int i = 0; i < monsterSprites.Length; i++) {
             monsterColor.Add(i, monsterSprites[i]);
         }
-        GetComponent<Image>().sprite = monsterColor[(int)GameManager.monsterType];
+        GetComponent<Image>().sprite = monsterColor[(int)GameManager.GetInstance().GetMonster()];
     }
 
     private void OnMouseDrag() {

@@ -30,7 +30,7 @@ public class StickerManager : MonoBehaviour {
 
         if (!GameManager.GetInstance ()) {
             SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
-            switchScene.loadScene ("Start", false);
+            switchScene.LoadScene ("Start", false);
         }
 
         if (SoundManager.GetInstance())

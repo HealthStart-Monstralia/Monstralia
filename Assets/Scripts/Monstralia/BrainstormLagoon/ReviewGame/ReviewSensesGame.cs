@@ -7,7 +7,9 @@ public class ReviewSensesGame : MonoBehaviour {
     public SensesReviewSenseItem senseItem;
     public GameObject[] senseItemsSpawnArray;
     public Text senseText;
+    public bool isGuessing;
     private static ReviewSensesGame instance;
+    private bool isSenseRight = false;
 
     void Awake () {
         // Enforce singleton property
@@ -32,15 +34,29 @@ public class ReviewSensesGame : MonoBehaviour {
     }
 
     // Loop through each assigned sense in senseItem and see if it matches the button's sense.
-    public bool CheckSense (SensesReviewSenseItem.Senses senseButton) {
+    public void CheckSense (SensesReviewSenseItem.Senses senseButton) {
         foreach (SensesReviewSenseItem.Senses itemSense in senseItem.assignSenses) {
-            if (senseButton == itemSense) {
-                ReviewManager.GetInstance ().EndReview ();
+            if (senseButton == itemSense && !isSenseRight) {
+                isSenseRight = true;
+                print ("SenseButton: " + senseButton + " | itemSense: " + itemSense);
+
+                if (ReviewManager.GetInstance ()) {
+                    ReviewManager.GetInstance ().EndReview ();
+                } else {
+                    Destroy (gameObject, 2f);
+                }
+
+                EndReview ();
                 SoundManager.GetInstance ().PlayCorrectSFX ();
-                return true;
             }
         }
-        return false;
+        if (!isSenseRight)
+            StartCoroutine (ChoiceCooldown ());
+    }
+
+    IEnumerator ChoiceCooldown() {
+        yield return new WaitForSeconds (1f);
+        isGuessing = false;
     }
 
     // SensesReviewSenseButton uses this function through GetInstance() to signal the review is over

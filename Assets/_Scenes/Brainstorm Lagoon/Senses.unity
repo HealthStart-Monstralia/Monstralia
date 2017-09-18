@@ -1038,6 +1038,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeOfGame: 4
   stickerPopupCanvas: {fileID: 0}
+  typeOfMonster: 0
   voData: {fileID: 11400000, guid: a20f80c44f1634f4ebfd21c812c2c4aa, type: 2}
   UICanvas: {fileID: 270736128}
   LevelOne: {fileID: 251862824}
@@ -1548,6 +1549,16 @@ Prefab:
         type: 2}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114067909923645208, guid: c10dd78dc5811ae448b92bf3906a3839,
+        type: 2}
+      propertyPath: sceneToLoadName
+      value: BrainstormLagoon
+      objectReference: {fileID: 0}
+    - target: {fileID: 114857330441415338, guid: c10dd78dc5811ae448b92bf3906a3839,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadScene
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 114127323152150686, guid: c10dd78dc5811ae448b92bf3906a3839, type: 2}

@@ -345,7 +345,7 @@ public class SceneManager_LJ : MonoBehaviour {
     {
         getInput.InputLockOut();
         Invoke("LevelComplete", 1.5f);
-        Invoke("LoadHubWorld", 3f);
+        //Invoke("LoadHubWorld", 3f);
         RoundIsOver = true;
         LevelUpMonster();
         gameOver = true;
@@ -442,11 +442,9 @@ public class SceneManager_LJ : MonoBehaviour {
         if (PlayingLevel1) {
             MasterHandler_LJ.GetInstance ().GameOver ();
         }
-    }
-
-    void LoadHubWorld()
-    {
-        SceneManager.LoadScene("BrainstormLagoon");
+        else {
+            GameManager.GetInstance ().CreateEndScreen (MasterHandler_LJ.GetInstance ().typeOfGame, EndScreen.EndScreenType.CompletedLevel);
+        }
     }
 
     void WipeText()

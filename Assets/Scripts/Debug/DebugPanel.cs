@@ -18,11 +18,6 @@ public class DebugPanel : MonoBehaviour {
         if (!GameManager.GetInstance ().GetPendingTutorial (gameName)) {
             tutorialButton.SetActive (false);
         }
-        /*
-        if (!GameManager.GetInstance ().GetPendingTutorial (gameName)) {
-            reviewButton.SetActive (false);
-        }
-        */
 
         if (GameManager.GetInstance ().GetStickerUnlock (gameName)) {
             stickerButton.SetActive (false);
@@ -45,8 +40,8 @@ public class DebugPanel : MonoBehaviour {
         }
     }
 
-    public void AddToReview() {
-
+    public void CreateReview() {
+        ReviewManager.GetInstance ().CreateReview (gameName);
     }
 
     public void ActivateSticker () {

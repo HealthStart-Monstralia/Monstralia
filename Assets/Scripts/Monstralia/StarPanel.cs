@@ -12,6 +12,7 @@ public class StarPanel : MonoBehaviour {
         // Initialize stars array
         for (int i = 0; i < transform.childCount; i++) {
             stars[i] = transform.GetChild (i).gameObject;
+            stars[i].SetActive (false);
         }
 
         // Initialize numStars with amount of stars from Game Manager

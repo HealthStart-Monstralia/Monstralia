@@ -8,12 +8,12 @@ public class BMaze_Manager : AbstractGameManager {
 	 * GAME: Brain Maze
 	 */
 
-	public GameManager.MonsterType typeOfMonster;
 	public GameObject[] monsterList = new GameObject[4];
 	[Range(0.1f,1.0f)]
 	public float[] monsterScale;
     public VoiceOversData voData;
-	public static GameObject monsterObject;
+    public bool inputAllowed = false;
+    public static GameObject monsterObject;
 
 	public AudioClip backgroundMusic;
 	public Slider scoreSlider;
@@ -25,9 +25,8 @@ public class BMaze_Manager : AbstractGameManager {
 	public GameObject beachBackgroundObj, mazeGraphicObj;
 	public GameObject[] mazeColliders;
 	public BMaze_SceneAssets[] assetList;
-	public bool inputAllowed = false;
+
 	public GameObject subtitlePanel;
-	public AudioClip[] instructionVOList;
 
 	public GameObject gameOverCanvas;
 	public GameObject backButton;
@@ -63,7 +62,6 @@ public class BMaze_Manager : AbstractGameManager {
 		}
 
 		backButton.SetActive (true);
-		stickerPopupCanvas.gameObject.SetActive (false);
 		gameOverCanvas.SetActive (false);
 		subtitlePanel.SetActive (false);
 		tutorialHand.SetActive (false);
@@ -73,7 +71,7 @@ public class BMaze_Manager : AbstractGameManager {
 			Debug.LogError ("No Timer Found!");
 		timerText.text = Mathf.Round (timeLeft).ToString ();
 
-		typeOfMonster = GameManager.GetMonsterType ();
+		typeOfMonster = GameManager.GetInstance().GetMonster ();
 	}
 
     public override void PregameSetup () {
@@ -101,7 +99,7 @@ public class BMaze_Manager : AbstractGameManager {
 
 		if (monsterObject)
 			RemoveMonster ();
-		CreateMonster ();
+		monsterObject = CreateMonster ();
 		StartCoroutine (Countdown ());
 	}
 		
@@ -115,10 +113,9 @@ public class BMaze_Manager : AbstractGameManager {
 
 	IEnumerator RunTutorial () {
 		isTutorialRunning = true;
-		instance.tutorialAssets.gameObject.SetActive (true);
+		tutorialAssets.gameObject.SetActive (true);
 		print ("RunTutorial");
 		mazeColliders [0].SetActive (true);
-		instance.inputAllowed = false;
 		scoreSlider.gameObject.SetActive (false);
 		timer.SetActive (false);
 
@@ -135,7 +132,8 @@ public class BMaze_Manager : AbstractGameManager {
 		yield return new WaitForSeconds(tutorial1.length);
 		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
 
-		CreateMonster ();
+		monsterObject = CreateMonster ();
+        monsterObject.GetComponent<BMaze_MonsterMovement> ().allowMovement = false;
         //SoundManager.GetInstance().PlayVoiceOverClip(instructionVOList[1]);
         //yield return new WaitForSeconds(instructionVOList[1].length - 1f);
 
@@ -162,9 +160,9 @@ public class BMaze_Manager : AbstractGameManager {
 		GameObject startingLocation = instance.tutorialAssets.GetStartLocation();
 		monsterObject.transform.position = GetStartingLocationVector (startingLocation);
 		tutorialPickup.GetComponent<BMaze_Pickup>().ReActivate ();
-		instance.inputAllowed = true;
-		yield return new WaitForSeconds(instructionVOList[3].length);
-		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
+        monsterObject.GetComponent<BMaze_MonsterMovement> ().allowMovement = true;
+        //yield return new WaitForSeconds(instructionVOList[3].length);
+        subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
 		yield return new WaitForSeconds(2f);
 		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Get all the pickups!", null);
 		yield return new WaitForSeconds(5f);
@@ -219,8 +217,8 @@ public class BMaze_Manager : AbstractGameManager {
 
 	public void GameStart () {
 		gameStarted = true;
-		instance.inputAllowed = true;
-		if (instance.skipButton)
+        monsterObject.GetComponent<BMaze_MonsterMovement> ().allowMovement = true;
+        if (instance.skipButton)
 			instance.skipButton.SetActive (true);
 	}
 
@@ -231,10 +229,10 @@ public class BMaze_Manager : AbstractGameManager {
 			if (level == 0)
 				UnlockSticker();
 			else {
-				ShowGameOver ();
-			}
+                GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
+            }
 
-			if (GameManager.GetInstance ())
+            if (GameManager.GetInstance ())
 				GameManager.GetInstance ().LevelUp (DataType.Minigame.BrainMaze);
 		}
 	}
@@ -252,7 +250,7 @@ public class BMaze_Manager : AbstractGameManager {
 	}
 
 	public void ChangeScene () {
-		GetComponent<SwitchScene> ().loadScene ();
+		GetComponent<SwitchScene> ().LoadScene ();
 	}
 
 	public void SkipLevel (GameObject button) {
@@ -275,7 +273,7 @@ public class BMaze_Manager : AbstractGameManager {
 			0f);
 	}
 
-	void CreateMonster() {
+	GameObject CreateMonster() {
 		GameObject startingLocation = assetList [level].GetStartLocation();
 
 		Vector3 monsterPosition = GetStartingLocationVector (startingLocation);
@@ -283,37 +281,43 @@ public class BMaze_Manager : AbstractGameManager {
 		Quaternion monsterRotation = startingLocation.transform.rotation;
 
 		switch (typeOfMonster) {
-		case GameManager.MonsterType.Blue:
-			monsterObject = Instantiate (
-				monsterList [0], 
-				monsterPosition,
-				monsterRotation) as GameObject;
-			ScaleMonster ();
-			break;
-		case GameManager.MonsterType.Green:
-			monsterObject = Instantiate (
-				monsterList [1], 
-				monsterPosition,
-				monsterRotation) as GameObject;
-			ScaleMonster ();
-			break;
-		case GameManager.MonsterType.Red:
-			monsterObject = Instantiate (
-				monsterList [2], 
-				monsterPosition,
-				monsterRotation) as GameObject;
-			ScaleMonster ();
-			break;
-		case GameManager.MonsterType.Yellow:
-			monsterObject = Instantiate (
-				monsterList [3], 
-				monsterPosition,
-				monsterRotation) as GameObject;
-			ScaleMonster ();
-			break;
+		    case DataType.MonsterType.Blue:
+			    monsterObject = Instantiate (
+				    monsterList [0], 
+				    monsterPosition,
+				    monsterRotation) as GameObject;
+			    ScaleMonster ();
+                monsterObject.GetComponent<BMaze_Monster> ().PlaySpawn ();
+                return monsterObject;
+		    case DataType.MonsterType.Green:
+			    monsterObject = Instantiate (
+				    monsterList [1], 
+				    monsterPosition,
+				    monsterRotation) as GameObject;
+			    ScaleMonster ();
+                monsterObject.GetComponent<BMaze_Monster> ().PlaySpawn ();
+                return monsterObject;
+                case DataType.MonsterType.Red:
+		    monsterObject = Instantiate (
+				    monsterList [2], 
+				    monsterPosition,
+				    monsterRotation) as GameObject;
+			    ScaleMonster ();
+                monsterObject.GetComponent<BMaze_Monster> ().PlaySpawn ();
+                return monsterObject;
+		    case DataType.MonsterType.Yellow:
+			    monsterObject = Instantiate (
+				    monsterList [3], 
+				    monsterPosition,
+				    monsterRotation) as GameObject;
+			    ScaleMonster ();
+                monsterObject.GetComponent<BMaze_Monster> ().PlaySpawn ();
+                return monsterObject;
+            default:
+                return null;
 		}
 
-		monsterObject.GetComponent<BMaze_Monster>().PlaySpawn ();
+		
 	}
 
 	void ScaleMonster() {

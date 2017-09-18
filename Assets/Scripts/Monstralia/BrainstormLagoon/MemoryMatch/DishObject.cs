@@ -42,7 +42,6 @@ public class DishObject : MonoBehaviour {
 	}
 
 	public void SetFood(GameObject food) {
-		print ("SetFood");
 		foodObject = food;
 		myFood = foodObject.GetComponent<Food>();
 		foodSpriteComponent = foodObject.GetComponent<SpriteRenderer> ();

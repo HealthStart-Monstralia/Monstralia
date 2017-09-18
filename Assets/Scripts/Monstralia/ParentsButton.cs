@@ -15,8 +15,11 @@ public class ParentsButton : MonoBehaviour {
 	}
 
 	public void DisableButtons() {
-		for (int i = 0; i < buttonsToDisable.Length; i++) {
-			buttonsToDisable [i].interactable = false;
-		}
+        if (buttonsToDisable.Length > 0) {
+            for (int i = 0; i < buttonsToDisable.Length; i++) {
+                if (buttonsToDisable[i] != null)
+                    buttonsToDisable[i].interactable = false;
+            }
+        }
 	}
 }

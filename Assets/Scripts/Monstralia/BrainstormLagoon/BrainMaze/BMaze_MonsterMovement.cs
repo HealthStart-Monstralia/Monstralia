@@ -20,7 +20,6 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 
 	void Start () {
 		rigBody = GetComponent<Rigidbody2D> ();
-		allowMovement = true;
 		audioSrc = GetComponent<AudioSource> ();
 	}
 

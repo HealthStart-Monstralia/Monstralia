@@ -18,4 +18,17 @@ public class DataType : ScriptableObject {
         MonsterEmotions,
         MonsterSenses
     };
+
+    public enum IslandSection {
+        Monstralia,
+        BrainstormLagoon,
+        MainframeMountain
+    };
+
+    public enum MonsterType {
+        Blue = 0,
+        Green = 1,
+        Red = 2,
+        Yellow = 3
+    };
 }

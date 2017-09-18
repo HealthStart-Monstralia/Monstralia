@@ -36,7 +36,7 @@ public class EmotionsGameManager : AbstractGameManager {
 	public Text timerText;
 	public Slider scoreGauge;
 	public Timer timer;
-	public GameManager.MonsterType monsterType;
+	public DataType.MonsterType monsterType;
 	public List<GameObject> blueEmotions;
 	public List<GameObject> greenEmotions;
 	public List<GameObject> redEmotions;
@@ -72,24 +72,24 @@ public class EmotionsGameManager : AbstractGameManager {
 
 		// Checks if game manager exists, if not default values are chosen
 		if (GameManager.GetInstance ()) {
-			monsterType = GameManager.GetMonsterType ();
+			monsterType = GameManager.GetInstance().GetMonster ();
 
-			if (monsterType == GameManager.MonsterType.Blue) {
+			if (monsterType == DataType.MonsterType.Blue) {
 				primaryEmotions = blueEmotions;
 			} else {
 				secondaryEmotions.AddRange (blueEmotions);
 			}
-			if (monsterType == GameManager.MonsterType.Green) {
+			if (monsterType == DataType.MonsterType.Green) {
 				primaryEmotions = greenEmotions;
 			} else {
 				secondaryEmotions.AddRange (greenEmotions);
 			}
-			if (monsterType == GameManager.MonsterType.Red) {
+			if (monsterType == DataType.MonsterType.Red) {
 				primaryEmotions = redEmotions;
 			} else {
 				secondaryEmotions.AddRange (redEmotions);
 			}
-			if (monsterType == GameManager.MonsterType.Yellow) {
+			if (monsterType == DataType.MonsterType.Yellow) {
 				primaryEmotions = yellowEmotions;
 			} else {
 				secondaryEmotions.AddRange (yellowEmotions);
@@ -97,8 +97,8 @@ public class EmotionsGameManager : AbstractGameManager {
 
 			difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.MonsterEmotions);
 		} else {
-			monsterType = GameManager.GetMonsterType ();
-			primaryEmotions = greenEmotions;
+            monsterType = GameManager.GetInstance ().GetMonster ();
+            primaryEmotions = greenEmotions;
 			secondaryEmotions.AddRange (blueEmotions);
 			secondaryEmotions.AddRange (redEmotions);
 			secondaryEmotions.AddRange (yellowEmotions);

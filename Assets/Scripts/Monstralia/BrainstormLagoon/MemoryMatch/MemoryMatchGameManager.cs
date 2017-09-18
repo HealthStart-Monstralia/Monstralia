@@ -46,7 +46,6 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	public Transform rotationTarget;
 	public float rotationalSpeed;
 
-	public GameManager.MonsterType typeOfMonster;
 	[HideInInspector] public MMMonster monsterObject;
 	public GameObject[] monsterList;
 
@@ -67,7 +66,6 @@ public class MemoryMatchGameManager : AbstractGameManager {
         CheckForGameManager ();
 
         difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.MemoryMatch);
-		typeOfMonster = GameManager.GetMonsterType ();
 		CreateMonster ();
 		monsterObject.PlaySpawn ();
 		RetrieveFoodsFromManager ();
@@ -497,17 +495,17 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		// Blue = 0, Green = 1, Red = 2, Yellow = 3
 
 		switch (typeOfMonster) {
-		case GameManager.MonsterType.Blue:
-			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Blue]);
+		case DataType.MonsterType.Blue:
+			InstantiateMonster (monsterList [(int)DataType.MonsterType.Blue]);
 			break;
-		case GameManager.MonsterType.Green:
-			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Green]);
+		case DataType.MonsterType.Green:
+			InstantiateMonster (monsterList [(int)DataType.MonsterType.Green]);
 			break;
-		case GameManager.MonsterType.Red:
-			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Red]);
+		case DataType.MonsterType.Red:
+			InstantiateMonster (monsterList [(int)DataType.MonsterType.Red]);
 			break;
-		case GameManager.MonsterType.Yellow:
-			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Yellow]);
+		case DataType.MonsterType.Yellow:
+			InstantiateMonster (monsterList [(int)DataType.MonsterType.Yellow]);
 			break;
 		}
 	}

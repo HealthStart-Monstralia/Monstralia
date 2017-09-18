@@ -822,7 +822,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 286890587}
-        m_MethodName: loadScene
+        m_MethodName: LoadScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -878,8 +878,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70955650897f8422da0c5875e43541f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneToLoad: MonsterSelection
-  loadingScreen: {fileID: 117540, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
+  sceneToLoadName: MonsterSelection
 --- !u!1 &298418125
 GameObject:
   m_ObjectHideFlags: 0
