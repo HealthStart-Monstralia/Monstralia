@@ -31,8 +31,8 @@ public class ReviewBrainMazeMonster : MonoBehaviour {
 	}
 
 	public void MoveTowards (Vector2 pos) {
-        rigBody.AddForce ((pos - rigBody.position) * 6);
-        //rigBody.MovePosition (Vector2.MoveTowards (rigBody.position, pos, 0.8f));
+        //rigBody.AddForce ((pos - rigBody.position) * 6);
+        rigBody.MovePosition (Vector2.MoveTowards (rigBody.position, pos, 0.8f));
 	}
 
     public void FadeOut () {

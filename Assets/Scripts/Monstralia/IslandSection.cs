@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class IslandSection : MonoBehaviour {
     public DataType.IslandSection island;
-    public AudioClip introAudio, welcomeBackClip;
+    public AudioClip introAudio, welcomeBackClip, backgroundMusic;
 
     private void Awake () {
         GameManager.GetInstance ().SetIslandSection (island);
@@ -12,6 +12,7 @@ public class IslandSection : MonoBehaviour {
 
     private void Start () {
         PlayWelcomeVO ();
+        SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
     }
 
     public void PlayWelcomeVO() {

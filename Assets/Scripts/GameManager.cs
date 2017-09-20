@@ -100,6 +100,7 @@ public class GameManager : MonoBehaviour {
 
         if (newStats.stars == 1 || newStats.stars == 3) {
             ReviewManager.GetInstance ().AddReviewGameToList (gameName);
+            ReviewManager.GetInstance ().needReview = true;
         }
 
         if (newStats.level < 3) {

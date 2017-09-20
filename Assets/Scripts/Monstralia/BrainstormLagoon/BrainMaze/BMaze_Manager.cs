@@ -134,8 +134,6 @@ public class BMaze_Manager : AbstractGameManager {
 
 		monsterObject = CreateMonster ();
         monsterObject.GetComponent<BMaze_MonsterMovement> ().allowMovement = false;
-        //SoundManager.GetInstance().PlayVoiceOverClip(instructionVOList[1]);
-        //yield return new WaitForSeconds(instructionVOList[1].length - 1f);
 
         SoundManager.GetInstance ().PlayVoiceOverClip (tutorial2);
         yield return new WaitForSeconds (tutorial2.length);
@@ -151,17 +149,12 @@ public class BMaze_Manager : AbstractGameManager {
 		monsterObject.transform.SetParent (null);
         yield return new WaitForSeconds (1.5f);
 
-        //SoundManager.GetInstance().PlayVoiceOverClip(instructionVOList[2]);
-
-        //yield return new WaitForSeconds(instructionVOList[2].length);
-
-        //SoundManager.GetInstance().StopPlayingVoiceOver();
         subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Now you try!", voData.FindVO("nowyoutry"));
 		GameObject startingLocation = instance.tutorialAssets.GetStartLocation();
 		monsterObject.transform.position = GetStartingLocationVector (startingLocation);
 		tutorialPickup.GetComponent<BMaze_Pickup>().ReActivate ();
         monsterObject.GetComponent<BMaze_MonsterMovement> ().allowMovement = true;
-        //yield return new WaitForSeconds(instructionVOList[3].length);
+
         subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
 		yield return new WaitForSeconds(2f);
 		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Get all the pickups!", null);
@@ -179,14 +172,7 @@ public class BMaze_Manager : AbstractGameManager {
 
 	public IEnumerator TutorialDoorUnlockedVO () {
 		SoundManager.GetInstance().StopPlayingVoiceOver();
-        /*
-		SoundManager.GetInstance().PlayVoiceOverClip(instructionVOList[4]);
-		yield return new WaitForSeconds(instructionVOList[4].length);
-		SoundManager.GetInstance().PlayVoiceOverClip(instructionVOList[5]);
-		yield return new WaitForSeconds(instructionVOList[5].length);
-        */
 
-        print ("UnlockedDoor VO");
         AudioClip unlockeddoor = voData.FindVO ("unlockeddoor");
         SoundManager.GetInstance ().PlayVoiceOverClip (unlockeddoor);
         yield return new WaitForSeconds (unlockeddoor.length);

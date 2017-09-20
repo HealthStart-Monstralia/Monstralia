@@ -445,19 +445,16 @@ public class MemoryMatchGameManager : AbstractGameManager {
 			currentFoodToMatch.SetActive (false);
 
 		if (score >= numDishes) {
-			//GameManager.GetInstance ().AddLagoonReviewGame ("MemoryMatchReviewGame");
-
 			if (difficultyLevel == 1) {
 				UnlockSticker ();	// Calling from AbstractGameManager
 			} else {
-				DisplayGameOverPopup ();
-			}
+                GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
+            }
 
 			GameManager.GetInstance ().LevelUp (DataType.Minigame.MemoryMatch);
 		} else {
 			if(difficultyLevel >= 1) {
-				//GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
-				DisplayGameOverPopup();
+				GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
 			}
 		}
 	}

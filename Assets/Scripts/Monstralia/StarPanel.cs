@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StarPanel : MonoBehaviour {
-    public DataType.Minigame minigame;
+    /* Requires the Star Panel to be a child of a MinigameButton */
     public int numStars;
 
     private GameObject[] stars = new GameObject[3];
@@ -15,8 +15,14 @@ public class StarPanel : MonoBehaviour {
             stars[i].SetActive (false);
         }
 
-        // Initialize numStars with amount of stars from Game Manager
-        numStars = GameManager.GetInstance ().GetNumStars (minigame);
+        if (GetComponentInParent<MinigameButton> ()) {
+            DataType.Minigame minigame = GetComponentInParent<MinigameButton> ().typeOfGame;
+            // Initialize numStars with amount of stars from Game Manager
+            numStars = GameManager.GetInstance ().GetNumStars (minigame);
+        }
+        else {
+            Debug.LogError ("StarPanel was not able to find a MinigameButton script in the parent.");
+        }
 
         // Show number of stars
         for (int i = 0; i < numStars; ++i) {

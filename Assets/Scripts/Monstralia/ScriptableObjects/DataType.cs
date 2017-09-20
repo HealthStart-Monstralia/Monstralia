@@ -11,6 +11,7 @@ public class DataType : ScriptableObject {
         RainbowBrain = 4
     };
 
+    // Enum name should match scene name so MinigameButton can load the game.
     public enum Minigame {
         Brainbow,
         BrainMaze,

@@ -394,8 +394,8 @@ public class EmotionsGameManager : AbstractGameManager {
 			if (difficultyLevel == 1) {
 				UnlockSticker ();
 			} else {
-				DisplayGameOverPopup ();
-			}
+                GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
+            }
 			
 			GameManager.GetInstance ().LevelUp (DataType.Minigame.MonsterEmotions);
 		}
