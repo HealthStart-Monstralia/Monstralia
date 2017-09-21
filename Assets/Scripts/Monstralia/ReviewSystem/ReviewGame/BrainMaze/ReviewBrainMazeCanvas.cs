@@ -23,7 +23,6 @@ public class ReviewBrainMazeCanvas : MonoBehaviour {
 
 	void Start() {
         // Change monster sprite depending on player choice
-        GetComponentInParent<Animator> ().Play ("ReviewBrainMazeGameFadeIn");
 		switch (GameManager.GetInstance().GetMonster ()) {
 		case DataType.MonsterType.Blue:
 			monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Blue];
@@ -60,12 +59,6 @@ public class ReviewBrainMazeCanvas : MonoBehaviour {
         reviewText.text = "Great Job!";
 		isReviewRunning = false;
 		monster.allowMovement = false;
-        Invoke ("FadeOut", 2.5f);
         ReviewManager.GetInstance ().EndReview ();
 	}
-
-    public void FadeOut() {
-        GetComponentInParent<Animator> ().Play ("ReviewBrainMazeGameFadeOut");
-        monster.FadeOut ();
-    }
 }

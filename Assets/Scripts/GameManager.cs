@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private GameObject[] stickerObjects;
     private DataType.Minigame lastGamePlayed;
     private DataType.IslandSection currentSection;
+    private bool activateReview = false; // Alternate activating review when game is lvl 3
 
     public struct MinigameStats {
         public int level;
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour {
         public bool isStickerPlaced;
     }
 
+    public int numOfGamesPlayed = 0;
     public bool lagoonFirstSticker = true;
     public bool playLagoonVoiceOver = true;
     public bool playIntro = true;
@@ -91,6 +93,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    // Called at the end of a minigame
     public void LevelUp (DataType.Minigame gameName) {
         MinigameStats newStats = gameStats[gameName]; // Copy current struct to a new one
 
@@ -100,13 +103,25 @@ public class GameManager : MonoBehaviour {
 
         if (newStats.stars == 1 || newStats.stars == 3) {
             ReviewManager.GetInstance ().AddReviewGameToList (gameName);
-            ReviewManager.GetInstance ().needReview = true;
+
+            // Set needReview to true when lvl 3 is completed every other time, temporary measure to reduce annoying reviews
+            if (newStats.stars >= 3) {
+                if (activateReview) {
+                    ReviewManager.GetInstance ().needReview = true;
+                }
+                activateReview = !activateReview;
+            }
+            else {
+                ReviewManager.GetInstance ().needReview = true;
+            }
+
         }
 
         if (newStats.level < 3) {
             newStats.level += 1;
         }
 
+        numOfGamesPlayed++;
         gameStats[gameName] = newStats; // Save changes to new struct
     }
 

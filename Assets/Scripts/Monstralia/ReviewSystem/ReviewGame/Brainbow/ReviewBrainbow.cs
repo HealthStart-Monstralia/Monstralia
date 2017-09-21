@@ -72,7 +72,6 @@ public class ReviewBrainbow : MonoBehaviour {
 		isReviewRunning = false;
 		inputAllowed = false;
 		subtitle.Display ("Great job!");
-        Invoke ("FadeOut", 2.5f);
         ReviewManager.GetInstance ().EndReview ();
     }
 
@@ -121,7 +120,4 @@ public class ReviewBrainbow : MonoBehaviour {
 		}
 	}
 
-    public void FadeOut () {
-        GetComponent<Animator> ().Play ("ReviewBrainbowGameFadeOut");
-    }
 }

@@ -36,6 +36,6 @@ public class ReviewBrainMazeMonster : MonoBehaviour {
 	}
 
     public void FadeOut () {
-        GetComponentInChildren<Animator> ().Play ("ReviewBrainMazeMonsterFadeOut");
+        GetComponentInChildren<Animator> ().Play ("ReviewMonsterFadeOut");
     }
 }

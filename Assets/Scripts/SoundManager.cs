@@ -97,7 +97,7 @@ public class SoundManager : MonoBehaviour {
 	 * @param newBackgroundMusic: the AudioClip of the new background music.
 	 */
 	public void ChangeBackgroundMusic(AudioClip newBackgroundMusic) {
-		if(!backgroundSource.clip.Equals(newBackgroundMusic)) {
+		if(!backgroundSource.clip.Equals(newBackgroundMusic) && newBackgroundMusic != null) {
 			backgroundSource.clip = newBackgroundMusic;
 			backgroundSource.Play ();
 		}

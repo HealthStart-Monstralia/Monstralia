@@ -435,7 +435,7 @@ public class SceneManager_LJ : MonoBehaviour {
 
     void LevelComplete()
     {
-        GoodJobScreen.enabled = true;
+        //GoodJobScreen.enabled = true;
         getAudio.PlayVictoryJingle();
 
         // Unlock corresponding sticker if the first level was completed

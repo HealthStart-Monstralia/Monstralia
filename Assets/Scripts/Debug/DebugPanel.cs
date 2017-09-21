@@ -41,7 +41,7 @@ public class DebugPanel : MonoBehaviour {
     }
 
     public void CreateReview() {
-        ReviewManager.GetInstance ().CreateReview (gameName);
+        ReviewManager.GetInstance ().CreateReviewImmediately (gameName);
     }
 
     public void ActivateSticker () {

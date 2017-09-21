@@ -194,7 +194,8 @@ public class BMaze_Manager : AbstractGameManager {
 	}
 
 	IEnumerator Countdown() {
-		GameManager.GetInstance ().Countdown ();
+        yield return new WaitForSeconds (1.0f);
+        GameManager.GetInstance ().Countdown ();
 		scoreSlider.gameObject.SetActive (true);
 		timer.SetActive (true);
 		yield return new WaitForSeconds (4.0f);

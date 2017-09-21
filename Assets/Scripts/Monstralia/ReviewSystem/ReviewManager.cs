@@ -15,6 +15,7 @@ public class ReviewManager : MonoBehaviour {
 
     private int reviewLevelIndex;
     private static ReviewManager instance;
+    private GameObject reviewGameBase;      // Relies on child structure to find
 
     public static ReviewManager GetInstance() {
         return instance;
@@ -29,7 +30,9 @@ public class ReviewManager : MonoBehaviour {
         }
 
         DontDestroyOnLoad(this);
-
+        reviewGameBase = transform.GetChild (0).gameObject;
+        reviewGameBase.GetComponent<Animator> ().SetBool ("ReviewEnd", false);
+        reviewGameBase.SetActive (false);
         reviewGamesDict = new Dictionary<GameObject, DataType.Minigame> (); // <review prefab object> <review prefab type>
     }
 
@@ -40,7 +43,6 @@ public class ReviewManager : MonoBehaviour {
             reviewGamesDict.Add (reviewGame, minigame);
             reviewGamesList.Add (reviewGame);
         }
-        //needReview = true;
     }
 
     public void RemoveReviewGameFromList(DataType.Minigame minigame) {
@@ -72,8 +74,7 @@ public class ReviewManager : MonoBehaviour {
             }
 
             if (selectedReview) {
-                SoundManager.GetInstance ().PlayReviewVO ();
-                currentReview = Instantiate (selectedReview) as GameObject;
+                SpawnReview (selectedReview);
             } else
                 TerminateReview ();
         }
@@ -82,22 +83,37 @@ public class ReviewManager : MonoBehaviour {
         }
     }
 
-    public void CreateReview(DataType.Minigame minigame) {
+    // For review manager use
+    void SpawnReview(GameObject objToSpawn) {
+        SoundManager.GetInstance ().PlayReviewVO ();
+        currentReview = Instantiate (objToSpawn, reviewGameBase.transform) as GameObject;
+        reviewGameBase.SetActive (true);
+    }
+
+    // For creating a review without any conditions
+    public void CreateReviewImmediately(DataType.Minigame minigame) {
         GameObject reviewGame = GameManager.GetInstance ().GetMinigameData (minigame).reviewPrefab;
-        currentReview = Instantiate (reviewGame);
+        SpawnReview (reviewGame);
     }
 
     public void EndReview () {
-        // Add delay timer in parameters, add an overload function perhaps
         StartCoroutine (WaitTillReviewEnd (3f));
     }
 
+    public void EndReview (float time) {
+        StartCoroutine (WaitTillReviewEnd (time));
+    }
+
     IEnumerator WaitTillReviewEnd(float time) {
-        yield return new WaitForSecondsRealtime (time);
+        yield return new WaitForSecondsRealtime (time - 0.5f);
+        reviewGameBase.GetComponent<Animator> ().SetBool ("ReviewEnd", true);
+        yield return new WaitForSecondsRealtime (0.5f);
         TerminateReview ();
     }
 
     void TerminateReview () {
+        reviewGameBase.GetComponent<Animator> ().SetBool ("ReviewEnd", false);
+        reviewGameBase.SetActive (false);
         needReview = false;
         if (currentReview) {
             Destroy (currentReview);
