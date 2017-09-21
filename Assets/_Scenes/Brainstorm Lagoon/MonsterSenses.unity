@@ -42,7 +42,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 11
+  serializedVersion: 9
   m_GIWorkflowMode: 0
   m_GISettings:
     serializedVersion: 2
@@ -54,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
-    serializedVersion: 9
+    serializedVersion: 8
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -87,7 +87,7 @@ LightmapSettings:
     m_PVRFilteringAtrousNormalSigma: 1
     m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_ShadowMaskMode: 2
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -173,6 +173,11 @@ Prefab:
       propertyPath: FeedbackText
       value: 
       objectReference: {fileID: 1260300428}
+    - target: {fileID: 114509452378729834, guid: 2184dc0b3c5d23947b4548055442060d,
+        type: 2}
+      propertyPath: TimeIsUp
+      value: 45
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2184dc0b3c5d23947b4548055442060d, type: 2}
   m_IsPrefabParent: 0
@@ -266,7 +271,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!4 &228668020
 Transform:
   m_ObjectHideFlags: 0
@@ -549,7 +553,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!1 &505759199
 GameObject:
   m_ObjectHideFlags: 0
@@ -744,7 +747,7 @@ Prefab:
     - target: {fileID: 114617499116772244, guid: 0a92a9afbe3a5f8478b32da332809feb,
         type: 2}
       propertyPath: TimeIsUp
-      value: 30
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 114617499116772244, guid: 0a92a9afbe3a5f8478b32da332809feb,
         type: 2}
@@ -831,7 +834,7 @@ Prefab:
     - target: {fileID: 114111849659830318, guid: 6102c16beb98de749a2d4d0302d6b26c,
         type: 2}
       propertyPath: TimeIsUp
-      value: 30
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 114111849659830318, guid: 6102c16beb98de749a2d4d0302d6b26c,
         type: 2}
@@ -1037,8 +1040,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeOfGame: 4
-  stickerPopupCanvas: {fileID: 0}
   typeOfMonster: 0
+  backgroundMusicArray: []
   voData: {fileID: 11400000, guid: a20f80c44f1634f4ebfd21c812c2c4aa, type: 2}
   UICanvas: {fileID: 270736128}
   LevelOne: {fileID: 251862824}
@@ -1314,7 +1317,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!1 &934360639
 GameObject:
   m_ObjectHideFlags: 0
@@ -1385,7 +1387,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!1 &1097837281
 GameObject:
   m_ObjectHideFlags: 0
@@ -2073,7 +2074,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
 --- !u!114 &1762002008 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114567557792915500, guid: d50cd61b9313f394aa4823c365ba38c3,
@@ -2494,4 +2494,3 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
