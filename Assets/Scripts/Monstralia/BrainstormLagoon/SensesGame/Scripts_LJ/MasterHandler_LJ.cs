@@ -62,6 +62,8 @@ public class MasterHandler_LJ : AbstractGameManager
             Destroy (gameObject);
         }
 
+        SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusicArray[Random.Range (0, backgroundMusicArray.Length)]);
+
 
         //Get references to objects/scripts to call their function here in this script
         GameObject sceneScript = GameObject.Find("MasterHandlerScript");

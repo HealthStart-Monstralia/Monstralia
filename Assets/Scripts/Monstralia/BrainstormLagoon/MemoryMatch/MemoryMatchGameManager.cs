@@ -64,6 +64,8 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		}
 
         CheckForGameManager ();
+        SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusicArray[Random.Range (0, backgroundMusicArray.Length)]);
+
 
         difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.MemoryMatch);
 		CreateMonster ();
