@@ -394,7 +394,7 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	void CreateMonster() {
         // Blue = 0, Green = 1, Red = 2, Yellow = 3
-        DataType.MonsterType typeOfMonster = GameManager.GetInstance ().GetMonster ();
+        DataType.MonsterType typeOfMonster = GameManager.GetInstance ().GetMonsterType ();
 
         switch (typeOfMonster) {
 		case DataType.MonsterType.Blue:

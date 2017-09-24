@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour {
     private static GameManager instance = null;
 	private bool allowInput = true;
     [SerializeField] private MinigameData[] minigameAssetData;
-    [SerializeField] private GameObject[] stickerObjects;
+    //[SerializeField] private GameObject[] stickerObjects;
     private DataType.Minigame lastGamePlayed;
     private DataType.IslandSection currentSection;
     private bool activateReview = false; // Alternate activating review when game is lvl 3
@@ -32,11 +32,12 @@ public class GameManager : MonoBehaviour {
 
     public int numOfGamesPlayed = 0;
     public bool lagoonFirstSticker = true;
-    public bool playLagoonVoiceOver = true;
+    //public bool playLagoonVoiceOver = true;
     public bool playIntro = true;
 	public Canvas introObject;
     public GameObject loadingScreen;
     public GameObject endingScreen;
+    public GameObject blueMonster, greenMonster, redMonster, yellowMonster;
 
     public static GameManager GetInstance () {
         return instance;
@@ -189,12 +190,27 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void SetMonster (DataType.MonsterType monster) {
+    public void SetMonsterType (DataType.MonsterType monster) {
         monsterType = monster;
     }
 
-    public DataType.MonsterType GetMonster () {
+    public DataType.MonsterType GetMonsterType () {
         return monsterType;
+    }
+
+    public GameObject GetMonster () {
+        switch(monsterType) {
+            case DataType.MonsterType.Blue:
+                return blueMonster;
+            case DataType.MonsterType.Green:
+                return greenMonster;
+            case DataType.MonsterType.Red:
+                return redMonster;
+            case DataType.MonsterType.Yellow:
+                return yellowMonster;
+            default:
+                return greenMonster;
+        }
     }
 
     public int GetLevel (DataType.Minigame gameName) {

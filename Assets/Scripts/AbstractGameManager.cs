@@ -14,7 +14,7 @@ public abstract class AbstractGameManager : MonoBehaviour {
     }
 
     void OnEnable () {
-        typeOfMonster = GameManager.GetInstance ().GetMonster ();
+        typeOfMonster = GameManager.GetInstance ().GetMonsterType ();
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 

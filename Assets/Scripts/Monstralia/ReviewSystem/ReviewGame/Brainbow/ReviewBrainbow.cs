@@ -34,7 +34,7 @@ public class ReviewBrainbow : MonoBehaviour {
 
 	void Start() {
 		// Change monster sprite depending on player choice
-		switch (GameManager.GetInstance().GetMonster()) {
+		switch (GameManager.GetInstance().GetMonsterType()) {
 		case DataType.MonsterType.Blue:
 			monster.GetComponentInChildren<SpriteRenderer>().sprite = spriteList [(int)DataType.MonsterType.Blue];
 			break;

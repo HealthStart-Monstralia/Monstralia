@@ -20,12 +20,10 @@ public class EmotionsReviewMonster : MonoBehaviour {
 
         if (isMonsterToChoose == true) {
             text.text = "Pick the " + myImage.sprite.name + " monster!";
-            print("should be adding button");
             AddButton();
         }
     }
     void AddButton() {
-        print("adding button");
         Button mybutton = gameObject.AddComponent<Button>();
         mybutton.onClick.AddListener(Win);
         print(mybutton);

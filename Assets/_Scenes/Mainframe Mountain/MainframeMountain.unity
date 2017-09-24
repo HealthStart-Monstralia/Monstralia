@@ -245,6 +245,11 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 16382184}
   m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
+--- !u!1 &16382186 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1666506607902930, guid: 026b9d737f4a242c197e125197976783,
+    type: 2}
+  m_PrefabInternal: {fileID: 16382184}
 --- !u!1 &63865199
 GameObject:
   m_ObjectHideFlags: 0
@@ -847,8 +852,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   island: 2
+  monsterLocation: {fileID: 16382186}
+  monster: {fileID: 0}
   introAudio: {fileID: 0}
   welcomeBackClip: {fileID: 0}
+  backgroundMusic: {fileID: 8300000, guid: b64dda38d7801594eae4be7b16551529, type: 3}
 --- !u!4 &1074729647
 Transform:
   m_ObjectHideFlags: 0

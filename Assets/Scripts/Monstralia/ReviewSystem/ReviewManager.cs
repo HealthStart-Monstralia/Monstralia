@@ -112,6 +112,7 @@ public class ReviewManager : MonoBehaviour {
     }
 
     void TerminateReview () {
+        reviewGameBase.SetActive (true);
         reviewGameBase.GetComponent<Animator> ().SetBool ("ReviewEnd", false);
         reviewGameBase.SetActive (false);
         needReview = false;

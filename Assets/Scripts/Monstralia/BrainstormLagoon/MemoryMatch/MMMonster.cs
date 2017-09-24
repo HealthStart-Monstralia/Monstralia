@@ -10,7 +10,7 @@ public class MMMonster : MonoBehaviour {
 
 	void Awake() {
 		animComp = GetComponentInChildren<Animator> ();
-		monster = GameManager.GetInstance().GetMonster();
+		monster = GameManager.GetInstance().GetMonsterType();
 	}
 
 	public void PlaySpawn() {

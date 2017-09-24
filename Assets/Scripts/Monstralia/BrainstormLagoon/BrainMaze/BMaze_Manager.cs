@@ -71,7 +71,7 @@ public class BMaze_Manager : AbstractGameManager {
 			Debug.LogError ("No Timer Found!");
 		timerText.text = Mathf.Round (timeLeft).ToString ();
 
-		typeOfMonster = GameManager.GetInstance().GetMonster ();
+		typeOfMonster = GameManager.GetInstance().GetMonsterType ();
 	}
 
     public override void PregameSetup () {

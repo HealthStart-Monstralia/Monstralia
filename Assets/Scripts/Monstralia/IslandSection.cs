@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class IslandSection : MonoBehaviour {
     public DataType.IslandSection island;
+    public GameObject monsterLocation;
+    [HideInInspector] public GameObject monster;
     public AudioClip introAudio, welcomeBackClip, backgroundMusic;
 
     private void Awake () {
@@ -11,6 +13,7 @@ public class IslandSection : MonoBehaviour {
     }
 
     private void Start () {
+        CreateMonsterOnMap ();
         PlayWelcomeVO ();
         SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
     }
@@ -26,4 +29,8 @@ public class IslandSection : MonoBehaviour {
         }
     }
 
+    void CreateMonsterOnMap() {
+        monster = GameManager.GetInstance ().GetMonster ();
+        Instantiate (monster, monsterLocation.transform);
+    }
 }
