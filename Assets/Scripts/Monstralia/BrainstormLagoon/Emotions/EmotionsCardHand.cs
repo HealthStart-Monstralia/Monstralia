@@ -25,8 +25,13 @@ public class EmotionsCardHand : MonoBehaviour {
         }
     }
 
-    public void SpawnCard (int iteration, EmotionsGameManager.MonsterEmotions changeToEmotion, Sprite img, AudioClip audio) {
-        EmotionCard card = Instantiate (cardObject, Vector2.zero, Quaternion.identity, transform.parent).GetComponent<EmotionCard> ();
+    public void SpawnCard (int iteration, DataType.MonsterEmotions changeToEmotion, Sprite img, AudioClip audio) {
+        EmotionCard card = Instantiate (
+            cardObject, 
+            EmotionsGameManager.GetInstance().monsterLocation.position, 
+            Quaternion.identity, 
+            transform.parent).GetComponent<EmotionCard> ();
+
         cards.Add (card.gameObject);
         card.ChangeEmotion (changeToEmotion, img, audio);
         card.StartCoroutine (card.MoveToAndFlip(cardLocations[iteration]));

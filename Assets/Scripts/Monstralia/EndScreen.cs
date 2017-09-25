@@ -12,7 +12,7 @@ public class EndScreen : MonoBehaviour {
     }
 
     public EndScreenType typeOfScreen;
-    public DataType.Minigame game;
+    public DataType.Minigame typeOfGame;
     public bool earnedSticker;
     public Text headerText, footerText;
     public GameObject stickerButton, backButton, nextLevelButton, imageLocation, brain;
@@ -25,7 +25,7 @@ public class EndScreen : MonoBehaviour {
         stickerButton.SetActive (true);
         brain.SetActive (false);
         SoundManager.GetInstance ().PlayCorrectSFX ();
-        GameObject sticker = Instantiate (GameManager.GetInstance ().GetMinigameData (game).stickerPrefab, imageLocation.transform);
+        GameObject sticker = Instantiate (GameManager.GetInstance ().GetMinigameData (typeOfGame).stickerPrefab, imageLocation.transform);
         sticker.transform.localPosition = Vector3.zero;
         Destroy (sticker.GetComponent<StickerBehaviour> ());
         headerText.text = "Congratulations you earned a new sticker!";
@@ -35,7 +35,7 @@ public class EndScreen : MonoBehaviour {
     public void EarnedSticker (string header, string footer) {
         stickerButton.SetActive (true);
         brain.SetActive (false);
-        GameObject sticker = Instantiate (GameManager.GetInstance ().GetMinigameData (game).stickerPrefab, imageLocation.transform);
+        GameObject sticker = Instantiate (GameManager.GetInstance ().GetMinigameData (typeOfGame).stickerPrefab, imageLocation.transform);
         sticker.transform.localPosition = Vector3.zero;
         Destroy (sticker.GetComponent<StickerBehaviour> ());
         headerText.text = header;
@@ -46,8 +46,8 @@ public class EndScreen : MonoBehaviour {
         stickerButton.SetActive (false);
         brain.SetActive (true);
         headerText.text = "Great job you completed " + SceneManager.GetActiveScene().name + "!";
-        footerText.text = "Tap on the back button to go back or" +
-            " tap on the next button to continue playing";
+        footerText.text = "You can go back to " + GameManager.GetInstance().GetIslandSection().ToString()
+            + " or play again!";
     }
 
     public void CompletedLevel (string header, string footer) {

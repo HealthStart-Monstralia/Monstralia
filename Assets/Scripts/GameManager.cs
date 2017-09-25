@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour {
     }
 
     void InitializeDictionaryEntries () {
+
         // Initialize dictionaries
         minigameDictionary = new Dictionary<DataType.Minigame, MinigameData> ();
         gameStats = new Dictionary<DataType.Minigame, MinigameStats> ();
@@ -303,7 +304,7 @@ public class GameManager : MonoBehaviour {
     public EndScreen CreateEndScreen(DataType.Minigame game, EndScreen.EndScreenType type) {
         print ("Created End Screen of type: " + type);
         EndScreen screen = Instantiate (endingScreen).GetComponent<EndScreen> ();
-        screen.game = game;
+        screen.typeOfGame = game;
         screen.typeOfScreen = type;
 
         switch (type) {

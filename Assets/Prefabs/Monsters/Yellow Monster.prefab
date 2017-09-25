@@ -99,18 +99,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeOfMonster: 3
-  idleAnimationOn: 1
+  selectedEmotion: 0
+  emotionData: {fileID: 11400000, guid: 6df536b44a86574489d9755e5d70290b, type: 2}
   allowMonsterTickle: 1
-  emotions: 0
+  _idleAnimationOn: 1
   monsterSfx: {fileID: 8300000, guid: b24e99fa0112142c79cc477b3a50ad46, type: 3}
-  afraid: {fileID: 21300000, guid: 9a11e29f25a4b41d3ba42fe0687a7eaa, type: 3}
-  disgusted: {fileID: 21300000, guid: 815aa8a35655547ca8f486de534f85e1, type: 3}
-  happy: {fileID: 21300000, guid: 19614bc9ba7434589b7f16a6b92afe4f, type: 3}
-  joyous: {fileID: 21300000, guid: 4dea3f2af11f342ba95cf082ee7eecc0, type: 3}
-  mad: {fileID: 21300000, guid: 88fb6ee73cfcf44a4ac22e5bf5907299, type: 3}
-  sad: {fileID: 21300000, guid: fb4a4d2355d7746f9b2bbc4d0667f450, type: 3}
-  thoughtful: {fileID: 21300000, guid: b0511d3596418415585f55887cc0fe8e, type: 3}
-  worried: {fileID: 21300000, guid: d11f613b47af2435d9d6552be16fb1e2, type: 3}
 --- !u!212 &212321950606231192
 SpriteRenderer:
   m_ObjectHideFlags: 1

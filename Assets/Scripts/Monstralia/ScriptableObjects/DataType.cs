@@ -32,4 +32,16 @@ public class DataType : ScriptableObject {
         Red = 2,
         Yellow = 3
     };
+
+    // Emotions referenced by Monster.cs, EmotionsGenerator.cs, EmotionsCardHand.cs
+    public enum MonsterEmotions {
+        Happy = 0,
+        Afraid = 1,
+        Disgusted = 2,
+        Joyous = 3,
+        Mad = 4,
+        Sad = 5,
+        Thoughtful = 6,
+        Worried = 7
+    };
 }
