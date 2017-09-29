@@ -10,21 +10,35 @@ public class BMaze_PickupManager : MonoBehaviour {
 	public List<GameObject> pickupList = new List<GameObject> ();
 
 	private bool achieved = false;
+    private int score = 0;
 
-	void Start () {
-        for (int count = 0; count < transform.childCount; count++) {
-			pickupList.Add (transform.GetChild (count).gameObject);
-		}
-	}
+    public void ResetScore () {
+        score = 0;
+    }
 
-	void Update () {
-		if (pickupList.Count <= 0 && !achieved) {
-			achieved = true;
-			GoalAchieved ();
-		}
-	}
+    public void AddToList (GameObject obj) {
+        pickupList.Add (obj);
+        ChangeProgress ();
+    }
+
+    public void PickupScored (GameObject obj) {
+        obj.SetActive (false);
+        score++;
+        ChangeProgress ();
+        if (score >= pickupList.Count)
+            GoalAchieved ();
+    }
+
+    public void ReactivatePickup(GameObject obj) {
+        obj.SetActive (true);
+        ChangeProgress ();
+    }
 
 	void GoalAchieved () {
 		BMaze_Manager.GetInstance().UnlockDoor ();
 	}
+
+    void ChangeProgress() {
+        BMaze_Manager.GetInstance ().ChangeProgressBar ((float)score / pickupList.Count);
+    }
 }

@@ -11,6 +11,6 @@ public class BMaze_WaterPickup : MonoBehaviour {
 
 	/*! Increase time on pickup, called from BMaze_Pickup */
 	public void IncreaseTime() {
-		BMaze_Manager.timeLeft += timeIncrease;
+		BMaze_Manager.GetInstance().timeLeft += timeIncrease;
 	}
 }

@@ -145,8 +145,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224244856675401578}
-  - component: {fileID: 222028791825968086}
-  - component: {fileID: 114084559886767028}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -1752,19 +1750,6 @@ MonoBehaviour:
     m_LineSpacing: 0.75
   m_Text: Several challenging and fun mini-games that test kids understanding of good
     food and fitness choices, problem-solving, and creative thinking.
---- !u!114 &114084559886767028
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1077971131045110}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e22740512061a914d874bbf32ee11ea3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  upperBound: 9
-  lowerBound: 3
 --- !u!114 &114090836406489866
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4799,12 +4784,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1513172755398342}
---- !u!222 &222028791825968086
-CanvasRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1077971131045110}
 --- !u!222 &222037875561045078
 CanvasRenderer:
   m_ObjectHideFlags: 1

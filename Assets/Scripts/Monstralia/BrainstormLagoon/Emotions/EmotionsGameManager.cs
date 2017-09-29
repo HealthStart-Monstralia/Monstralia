@@ -25,7 +25,7 @@ public class EmotionsGameManager : AbstractGameManager {
     [HideInInspector] public bool isDrawingCards = false;
 
     public Text timerText;
-	public Slider scoreGauge;
+	public ScoreGauge scoreGauge;
 	public Timer timer;
 	public GameObject subtitlePanel;
 	public Transform[] emotionSpawnLocs;
@@ -83,7 +83,6 @@ public class EmotionsGameManager : AbstractGameManager {
             }
 
             score = 0;
-            scoreGauge.maxValue = scoreGoal;
             if (timer != null) {
                 timerText.gameObject.SetActive (true);
                 timer.SetTimeLimit (this.timeLimit);
@@ -292,9 +291,10 @@ public class EmotionsGameManager : AbstractGameManager {
             
 	}
 
-	private void UpdateScoreGauge(){
-		scoreGauge.value = score;
-	}
+    void UpdateScoreGauge () {
+        if (scoreGauge.gameObject.activeSelf)
+            scoreGauge.SetProgressTransition ((float)score / scoreGoal);
+    }
 
     public void SkipReviewButton (GameObject button) {
         SkipReview ();

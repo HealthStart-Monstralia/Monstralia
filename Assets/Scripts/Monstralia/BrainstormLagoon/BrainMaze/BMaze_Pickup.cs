@@ -16,29 +16,31 @@ public class BMaze_Pickup : MonoBehaviour {
 	public TypeOfPickup pickup;
 	public AudioClip pickupSfx;
 
-	private BMaze_PickupManager pickupMan;
+    private BMaze_PickupManager pickupMan;
 
-	void Start () {
-		pickupMan = transform.parent.GetComponent<BMaze_PickupManager> ();
-	}
+    private void Start () {
+        pickupMan = BMaze_Manager.GetInstance ().pickupMan;
+        pickupMan.AddToList (gameObject);
+    }
 
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.GetComponent<BMaze_MonsterMovement> ()) {
-            //col.GetComponent<BMaze_MonsterMovement> ().Pickup (pickup);
-            SoundManager.GetInstance ().PlayCorrectSFX ();
-            SoundManager.GetInstance().PlaySFXClip(pickupSfx);
 			if (BMaze_Manager.GetInstance ()) {
-				if (pickup == TypeOfPickup.Water)
+                SoundManager.GetInstance ().PlayVoiceOverClip (pickupSfx);
+
+                if (pickup == TypeOfPickup.Water)
 					GetComponent<BMaze_WaterPickup> ().IncreaseTime ();
-				BMaze_Manager.GetInstance ().ShowSubtitle (pickup.ToString ());
-				pickupMan.pickupList.Remove (gameObject);
+                else
+                    SoundManager.GetInstance ().PlayCorrectSFX ();
+
+                BMaze_Manager.GetInstance ().ShowSubtitle (pickup.ToString ());
+				pickupMan.PickupScored (gameObject);
 			}
 			gameObject.SetActive (false);
 		}
 	}
 
 	public void ReActivate() {
-		pickupMan.pickupList.Add (gameObject);
-		gameObject.SetActive (true);
-	}
+        pickupMan.ReactivatePickup (gameObject);
+    }
 }

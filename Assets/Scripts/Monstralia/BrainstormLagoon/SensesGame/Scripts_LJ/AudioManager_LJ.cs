@@ -36,40 +36,47 @@ public class AudioManager_LJ : MonoBehaviour
 
 
     //-----ON GAME START-----//
-    void Start()
-    {
+    void Start() {
         //Get the AudioSource in order to reference it in script below
         SensesAudioSource = GetComponent<AudioSource>();
     }
 
 
     //-----METHODS-----//
-    //Called by SceneManager_LJ.cs
-    public void PlayGameOverAudio()
-    {
+    // Called by SceneManager_LJ.cs
+    public void PlayGameOverAudio() {
+        SoundManager.GetInstance ().PlaySFXClip (gameOverAudio);
+        /*
         SensesAudioSource.clip = gameOverAudio;
         SensesAudioSource.Play();
         SensesAudioSource.volume = .5f;
+        */
     }
 
-    public void PlayVictoryJingle()
-    {
+    public void PlayVictoryJingle() {
+        SoundManager.GetInstance ().PlaySFXClip (playerWonAudio);
+        /*
         SensesAudioSource.clip = playerWonAudio;
         SensesAudioSource.Play();
         SensesAudioSource.volume = .5f;
+        */
     }
 
-    public void PlayIntroJingle()
-    {
+    public void PlayIntroJingle() {
+        SoundManager.GetInstance ().PlaySFXClip (IntroJingle);
+        /*
         SensesAudioSource.clip = IntroJingle;
         SensesAudioSource.volume = .5f;
         SensesAudioSource.Play();
+        */
     }
 
-    public void PlayMagicWoosh()
-    {
+    public void PlayMagicWoosh() {
+        SoundManager.GetInstance ().PlaySFXClip (MagicWoosh);
+        /*
         SensesAudioSource.clip = MagicWoosh;
         SensesAudioSource.volume = 1f;
         SensesAudioSource.Play();
+        */
     }
 }

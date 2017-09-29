@@ -11,9 +11,7 @@ public class GameManager : MonoBehaviour {
 
     private DataType.MonsterType monsterType;
     private static GameManager instance = null;
-	private bool allowInput = true;
     [SerializeField] private MinigameData[] minigameAssetData;
-    //[SerializeField] private GameObject[] stickerObjects;
     private DataType.Minigame lastGamePlayed;
     private DataType.IslandSection currentSection;
     private bool activateReview = false; // Alternate activating review when game is lvl 3
@@ -32,7 +30,6 @@ public class GameManager : MonoBehaviour {
 
     public int numOfGamesPlayed = 0;
     public bool lagoonFirstSticker = true;
-    //public bool playLagoonVoiceOver = true;
     public bool playIntro = true;
 	public Canvas introObject;
     public GameObject loadingScreen;
@@ -267,15 +264,6 @@ public class GameManager : MonoBehaviour {
             ActivateSticker(sticker);
         }
     }
-
-    public bool GetIsInputAllowed() {
-		return allowInput;
-	}
-
-	public void SetIsInputAllowed(bool boolean) {
-		allowInput = boolean;
-		print ("Input Allowed: " + boolean);
-	}
 
     public void SetLastGamePlayed (DataType.Minigame game) {
         lastGamePlayed = game;

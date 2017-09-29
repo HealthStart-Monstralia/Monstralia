@@ -1540,20 +1540,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eb42953e8a677944884cb9c84908926, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpawnPrefabScript: {fileID: 1117563541288786}
-  AudioPrefabScript: {fileID: 1612443199514594}
+  spawnPrefabScript: {fileID: 1117563541288786}
+  audioPrefabScript: {fileID: 1612443199514594}
   senseInstructions: []
-  GoodJobScreen: {fileID: 114851060577741352}
-  GameOverScreen: {fileID: 1324593083439064}
-  BrainGauge: {fileID: 0}
+  goodJobScreen: {fileID: 114851060577741352}
+  gameOverScreen: {fileID: 1324593083439064}
+  scoreGauge: {fileID: 0}
   requestedTime: 1.5
   requestedTime2: 1.2
-  FeedbackText: {fileID: 0}
-  TimeCountdownText: {fileID: 114686135324222518}
-  TimeCountdownSystem: {fileID: 0}
-  TimeIsUp: 45
-  StarAdded: 0
-  RoundIsOver: 0
+  feedbackText: {fileID: 0}
+  timeCountdownText: {fileID: 114686135324222518}
+  timeCountdownSystem: {fileID: 114225650196936240}
+  timeIsUp: 15
+  starAdded: 0
+  roundIsOver: 0
   gameOver: 0
   rightChoiceVO: []
   wrongChoiceVO:

@@ -18,30 +18,30 @@ public class SceneManager_LJ : MonoBehaviour {
     //-----PUBLIC FIELDS-----//
     [Header("Add SpawnPrefabScript")]
     [Tooltip("SpawnPrefab_LJ.cs must be attached to a game object and placed here.")]
-    public GameObject SpawnPrefabScript;
-    public GameObject AudioPrefabScript;
+    public GameObject spawnPrefabScript;
+    public GameObject audioPrefabScript;
 
     //Holds the random assignSense value from SpawnPrefabs_LJ.cs
     public string[] senseInstructions;
-    public Image GoodJobScreen;
-    public GameObject GameOverScreen;
-    public Slider BrainGauge;
+    public Image goodJobScreen;
+    public GameObject gameOverScreen;
+    public ScoreGauge scoreGauge;
 
     [Header("Secs Before GoodJobScreen")]
     public float requestedTime = 1.5f;
 
     [Header("Delay Before Feedback Text Erase")]
     public float requestedTime2 = 1.5f;
-    public Text FeedbackText;
+    public Text feedbackText;
 
 
     [Header("Timer Text")]
-    public Text TimeCountdownText;
-    public Timer TimeCountdownSystem;
-    public float TimeIsUp = 15f;
+    public Text timeCountdownText;
+    public Timer timeCountdownSystem;
+    public float timeIsUp = 15f;
 
-    public bool StarAdded;
-    public bool RoundIsOver;
+    public bool starAdded;
+    public bool roundIsOver;
     public bool gameOver;
 
     [Header ("Voiceovers")]
@@ -61,7 +61,7 @@ public class SceneManager_LJ : MonoBehaviour {
     private bool GaugeIncremented;
     private bool goodChoice;
     private bool PlayingLevel1;
-    private int BrainScore = 0;
+    private int brainScore = 0;
     private int numOfStarsSenses;
     private int numOfStars;
     private float wipeTextDelay = 1.3f;
@@ -88,11 +88,11 @@ public class SceneManager_LJ : MonoBehaviour {
     void Awake()
     {
         //Initial states to avoid accidental repeats/issue caused by clicking, repeated actions, duplication, etc.
-        StarAdded = false;
-        RoundIsOver = false;
-        GoodJobScreen.enabled = false;
+        starAdded = false;
+        roundIsOver = false;
+        goodJobScreen.enabled = false;
         gameOver = false;
-        GameOverScreen.SetActive(false);
+        gameOverScreen.SetActive(false);
         GaugeIncremented = false;
         goodChoice = false;
 
@@ -131,8 +131,7 @@ public class SceneManager_LJ : MonoBehaviour {
         //GameManager.GetInstance().Countdown();
 
         //Set parameters for UI Slider that represents the green score gauge in the UI
-        BrainGauge.minValue = 0;
-        BrainScore = 0;
+        brainScore = 0;
 
         //A list of ints collected from the Interactable Object that is touched/clicked
         receivedSensesOnTouch = new List<int>();
@@ -159,14 +158,14 @@ public class SceneManager_LJ : MonoBehaviour {
     {
         if (gameReady && !gameOver)
         {
-            TimeIsUp -= Time.deltaTime;
+            timeIsUp -= Time.deltaTime;
             //Debug.Log("TimeIsUp at: " + TimeIsUp.ToString("f2"));
-            TimeCountdownText.text = "Time: " + TimeIsUp.ToString("f0");
+            timeCountdownText.text = "Time: " + timeIsUp.ToString("f0");
 
-            if (TimeIsUp <= 0)
+            if (timeIsUp <= 0)
             {
                 gameOver = true;
-                TimeCountdownText.text = "Time's Up!";
+                timeCountdownText.text = "Time's Up!";
                 GameIsOver();
             }
 
@@ -177,15 +176,15 @@ public class SceneManager_LJ : MonoBehaviour {
     //Dirty method to set timer color change based on time left
     private void timerColorSetter()
     {
-        if (TimeIsUp >= 9)
+        if (timeIsUp >= 9)
         {
             WhiteColor = true;
         }
-        if (TimeIsUp <= 8.999)
+        if (timeIsUp <= 8.999)
         {
             OrangeColor = true;
         }
-        if (TimeIsUp <= 0)
+        if (timeIsUp <= 0)
         {
             RedColor = true;
         }
@@ -196,15 +195,15 @@ public class SceneManager_LJ : MonoBehaviour {
     {
         if (WhiteColor)
         {
-            TimeCountdownText.color = Color.white;
+            timeCountdownText.color = Color.white;
         }
         if (OrangeColor)
         {
-            TimeCountdownText.color = Color.yellow;
+            timeCountdownText.color = Color.yellow;
         }
         if (RedColor)
         {
-            TimeCountdownText.color = Color.red;
+            timeCountdownText.color = Color.red;
         }
     }
 
@@ -272,14 +271,14 @@ public class SceneManager_LJ : MonoBehaviour {
             IncrementBrainScore();
             GaugeIncremented = true;
             getButtonAudio.PlayPositiveSound();
-            FeedbackText.text = rightChoice[Random.Range(0, rightChoice.Length)];
+            feedbackText.text = rightChoice[Random.Range(0, rightChoice.Length)];
         }
 
         //If the player must try again
         else
         {
             SoundManager.GetInstance ().PlayVoiceOverClip (wrongChoiceVO[Random.Range (0, wrongChoiceVO.Length)] );
-            FeedbackText.text = wrongChoice[Random.Range(0, wrongChoice.Length)];
+            feedbackText.text = wrongChoice[Random.Range(0, wrongChoice.Length)];
             Invoke("WipeText", wipeTextDelay);
         }
     }
@@ -292,10 +291,10 @@ public class SceneManager_LJ : MonoBehaviour {
         if (!GaugeIncremented)
         {
             goodChoice = false;
-            BrainScore += 1;
+            brainScore += 1;
 
             //If the player's last click is a winning choice, the game is won
-            if (BrainScore == 3)
+            if (brainScore == 3)
             {
                 WonGame();
             }
@@ -311,9 +310,9 @@ public class SceneManager_LJ : MonoBehaviour {
 
 
     //Increase Brain Meter in UI
-    public void IncrementBrainScore()
-    {
-        BrainGauge.value = BrainScore;
+    public void IncrementBrainScore() {
+        if (scoreGauge.gameObject.activeSelf)
+            scoreGauge.SetProgressTransition ((float)brainScore / 3);
     }
 
 
@@ -346,7 +345,7 @@ public class SceneManager_LJ : MonoBehaviour {
         getInput.InputLockOut();
         Invoke("LevelComplete", 1.5f);
         //Invoke("LoadHubWorld", 3f);
-        RoundIsOver = true;
+        roundIsOver = true;
         LevelUpMonster();
         gameOver = true;
     }
@@ -359,7 +358,7 @@ public class SceneManager_LJ : MonoBehaviour {
         if (gameOver)
         {
             getInput.InputLockOut();
-            GameOverScreen.SetActive(true);
+            gameOverScreen.SetActive(true);
             getAudio.PlayGameOverAudio();
         }
     }
@@ -368,12 +367,12 @@ public class SceneManager_LJ : MonoBehaviour {
     public void LevelUpMonster()
     {
         //Star not added yet, prevents star from being added unintentionally
-        if (!StarAdded)
+        if (!starAdded)
         {
-            if (RoundIsOver)
+            if (roundIsOver)
             {
                 GameManager.GetInstance().LevelUp(DataType.Minigame.MonsterSenses);
-                StarAdded = true;
+                starAdded = true;
             }
         }
     }
@@ -449,7 +448,7 @@ public class SceneManager_LJ : MonoBehaviour {
 
     void WipeText()
     {
-        FeedbackText.text = "";
+        feedbackText.text = "";
     }
 
 

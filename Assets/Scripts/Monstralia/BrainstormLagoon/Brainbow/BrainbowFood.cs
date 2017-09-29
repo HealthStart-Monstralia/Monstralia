@@ -10,7 +10,7 @@ public class BrainbowFood : MonoBehaviour {
 	private bool moving = false;
 
 	void OnMouseDown() {
-		if(!busy && !BrainbowGameManager.GetInstance().isGameOver() && GameManager.GetInstance().GetIsInputAllowed()) {
+		if(!busy && !BrainbowGameManager.GetInstance().isGameOver() && BrainbowGameManager.GetInstance().inputAllowed) {
 			moving = true;
 			BrainbowGameManager.GetInstance().SetActiveFood(this);
 			offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
@@ -30,7 +30,7 @@ public class BrainbowFood : MonoBehaviour {
 	}
 
 	void OnMouseUp() {
-		if (GameManager.GetInstance ().GetIsInputAllowed ()) {
+		if (BrainbowGameManager.GetInstance ().inputAllowed) {
 			if (!busy && moving) {
 				busy = true;
 

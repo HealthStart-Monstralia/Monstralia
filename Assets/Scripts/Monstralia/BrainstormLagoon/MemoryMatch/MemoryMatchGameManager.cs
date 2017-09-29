@@ -7,9 +7,9 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	private static MemoryMatchGameManager instance;
 	private bool gameStarted;
 	private bool gameStartup;
-	private int score;
+	[SerializeField] private int score;
 	private GameObject currentFoodToMatch;
-	private int numDishes;
+    [SerializeField] private int numDishes;
 	private int difficultyLevel;
 	private List<GameObject> activeFoods;
 	private List<Food> matchedFoods;
@@ -20,7 +20,6 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	private Coroutine tutorialCoroutine;
 
     public VoiceOversData voData;
-	public Canvas reviewCanvas;
 	public Canvas instructionPopup;
 	public Canvas gameOverCanvas;
 
@@ -38,7 +37,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	public List<GameObject> dishes;
     public GameObject dishAnchor;
 
-	public Slider scoreGauge;
+	public ScoreGauge scoreGauge;
 	public SubtitlePanel subtitlePanel;
 	[HideInInspector] public bool animIsPlaying = false;
 	[HideInInspector] public bool inputAllowed = false;
@@ -83,8 +82,8 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		}
 		else {
 			score = 0;
-
-			switch (difficultyLevel) {
+            instructionPopup.gameObject.SetActive (false);
+            switch (difficultyLevel) {
 			case (1):
 				numDishes = 3;
 				timer.SetTimeLimit (timeLimit[difficultyLevel - 1]);
@@ -102,8 +101,6 @@ public class MemoryMatchGameManager : AbstractGameManager {
 				timer.SetTimeLimit (60f);
 				break;
 			}
-
-			scoreGauge.maxValue = numDishes;
 
 			UpdateScoreGauge ();
 			StartGame ();
@@ -147,8 +144,10 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		print ("RunTutorial");
 		runningTutorial = true;
 		instructionPopup.gameObject.SetActive(true);
+        scoreGauge.gameObject.SetActive (false);
+        numDishes = 3;
 
-		DishObject tutDish1 = tutorialDishes[0];
+        DishObject tutDish1 = tutorialDishes[0];
 		DishObject tutDish2 = tutorialDishes[1];
 		DishObject tutDish3 = tutorialDishes[2];
 
@@ -161,9 +160,11 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		tutorialDishes [1].SetFood (tutFood2);
 		tutorialDishes [2].SetFood (tutFood3);
 
+        /*
 		tutFood1.transform.localPosition = new Vector3 (0, 1.25f, 0);
 		tutFood2.transform.localPosition = new Vector3 (0, 1.25f, 0);
 		tutFood3.transform.localPosition = new Vector3 (0, 1.25f, 0);
+        */
 
 		tutFood1.transform.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
 		tutFood2.transform.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
@@ -483,8 +484,9 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	}
 
 	void UpdateScoreGauge() {
-		scoreGauge.value = score;
-	}
+        if (scoreGauge.gameObject.activeSelf)
+            scoreGauge.SetProgressTransition ((float)score / numDishes);
+    }
 
 	public void SubtractTime(float delta) {
 		timer.SubtractTime(delta);

@@ -38,12 +38,13 @@ public class BrainbowGameManager : AbstractGameManager {
 	public Transform spawnParent;
 	public int foodScale;
 	public LayerMask foodLayerMask;
-	public Slider scoreGauge;
+	public ScoreGauge scoreGauge;
 	public Text timerText;
 	public float timeLimit;
 	public Timer timer;
+    public bool inputAllowed = false;
 
-	public GameObject endGameAnimation;
+    public GameObject endGameAnimation;
 	public SubtitlePanel subtitlePanel;
 	public Transform tutorialOrigin;
 
@@ -130,7 +131,6 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	public override void PregameSetup () {
 		score = 0;
-		scoreGauge.maxValue = scoreGoals[difficultyLevel];
 		UpdateScoreGauge();
 
 		CreateMonster ();
@@ -146,8 +146,9 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	IEnumerator RunTutorial() {
 		runningTutorial = true;
-		GameManager.GetInstance ().SetIsInputAllowed (false);
-		instructionPopup.gameObject.SetActive(true);
+        inputAllowed = false;
+
+        instructionPopup.gameObject.SetActive(true);
         yield return new WaitForSeconds (1.5f);
         AudioClip tutorial1 = voData.FindVO("tutorial1");
         SoundManager.GetInstance ().PlayVoiceOverClip (tutorial1);
@@ -175,8 +176,8 @@ public class BrainbowGameManager : AbstractGameManager {
 		if (runningTutorial) {
             subtitlePanel.Display ("Now You Try!", voData.FindVO ("tutorial4"));
 			tutorialPlayerBanana.SetActive(true);
-			GameManager.GetInstance ().SetIsInputAllowed (true);
-			bananaOrigin = tutorialOrigin;
+            inputAllowed = true;
+            bananaOrigin = tutorialOrigin;
 			print (tutorialPlayerBanana);
 			tutorialPlayerBanana.GetComponent<BrainbowFood> ().SetOrigin (bananaOrigin);
 		}
@@ -185,8 +186,8 @@ public class BrainbowGameManager : AbstractGameManager {
 	IEnumerator TutorialTearDown ()	{
 		StopCoroutine (tutorialCoroutine);
         GameManager.GetInstance ().CompleteTutorial (DataType.Minigame.Brainbow);
-		GameManager.GetInstance ().SetIsInputAllowed (false);
-		score = 0;
+        inputAllowed = false;
+        score = 0;
 		UpdateScoreGauge();
 		runningTutorial = false;
 
@@ -243,8 +244,9 @@ public class BrainbowGameManager : AbstractGameManager {
 	}
 
 	void PostCountdownSetup () {
-		GameManager.GetInstance ().SetIsInputAllowed (true);
-		if(difficultyLevel == 1){
+        inputAllowed = true;
+
+        if (difficultyLevel == 1){
 			SoundManager.GetInstance().PlayVoiceOverClip(waterTip);
 
 		}
@@ -333,10 +335,10 @@ public class BrainbowGameManager : AbstractGameManager {
         SoundManager.GetInstance ().PlayCorrectSFX ();
 		spawnWater = false;
 		if (score >= scoreGoals[difficultyLevel]) {
+            GameManager.GetInstance ().LevelUp (DataType.Minigame.Brainbow);
             if (difficultyLevel == 1) {
                 UnlockSticker ();
             } else {
-                GameManager.GetInstance ().LevelUp (DataType.Minigame.Brainbow);
                 GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
             }
         }
@@ -348,7 +350,9 @@ public class BrainbowGameManager : AbstractGameManager {
 	void EndGameTearDown () {
 		subtitlePanel.Hide ();
 		gameStarted = false;
-		timer.StopTimer();
+        inputAllowed = false;
+
+        timer.StopTimer();
 		gameOver = true;
 
 		if(activeFood != null) {
@@ -380,11 +384,12 @@ public class BrainbowGameManager : AbstractGameManager {
 		gameoverScore.text = "Good job! You fed your monster " + score + " healthy brain foods!";
 	}
 
-	void UpdateScoreGauge() {
-		scoreGauge.value = score;
-	}
+    void UpdateScoreGauge () {
+        if (scoreGauge.gameObject.activeSelf)
+            scoreGauge.SetProgressTransition ((float)score / scoreGoals[difficultyLevel]);
+    }
 
-	public bool GameStarted() {
+    public bool GameStarted() {
 		return gameStarted;
 	}
 
