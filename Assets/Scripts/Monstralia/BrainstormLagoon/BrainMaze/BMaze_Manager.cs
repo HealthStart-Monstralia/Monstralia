@@ -3,10 +3,11 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Collections;
 
+/* CREATED BY: Colby Tang
+ * GAME: Brain Maze
+ */
+
 public class BMaze_Manager : AbstractGameManager {
-	/* CREATED BY: Colby Tang
-	 * GAME: Brain Maze
-	 */
 
 	public GameObject[] monsterList = new GameObject[4];
 	[Range(0.1f,2.0f)]
@@ -69,6 +70,10 @@ public class BMaze_Manager : AbstractGameManager {
 		typeOfMonster = GameManager.GetInstance().GetMonsterType ();
 	}
 
+    public static BMaze_Manager GetInstance () {
+        return instance;
+    }
+
     public override void PregameSetup () {
         if (GameManager.GetInstance ().GetPendingTutorial (DataType.Minigame.BrainMaze)) {
             selectedAsset = assetList[0];
@@ -111,9 +116,9 @@ public class BMaze_Manager : AbstractGameManager {
 		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Welcome to Brain Maze!", null);
 
 		SoundManager.GetInstance().StopPlayingVoiceOver();
-        AudioClip tutorial1 = voData.FindVO ("tutorial1");
-        AudioClip tutorial2 = voData.FindVO ("tutorial2");
-        AudioClip tutorial3 = voData.FindVO ("tutorial3");
+        AudioClip tutorial1 = voData.FindVO ("1_tutorial_start");
+        AudioClip tutorial2 = voData.FindVO ("2_tutorial_drag");
+        AudioClip tutorial3 = voData.FindVO ("3_tutorial_letmeshow");
 
         SoundManager.GetInstance().PlayVoiceOverClip(tutorial1);
 		yield return new WaitForSeconds(tutorial1.length);
@@ -290,10 +295,6 @@ public class BMaze_Manager : AbstractGameManager {
 		monsterObject.GetComponent<CircleCollider2D> ().radius = (monsterScale[level]);
 	}
 
-	public static BMaze_Manager GetInstance() {
-		return instance;
-	}
-
 	public GameObject GetMonster() {
 		return monsterObject;
 	}
@@ -302,13 +303,9 @@ public class BMaze_Manager : AbstractGameManager {
 		Destroy(monsterObject);
 	}
 
-	public static bool GetGameStarted() {
-		return gameStarted;
-	}
-
 	public void UnlockDoor () {
         AudioClip unlockeddoor = voData.FindVO ("unlockeddoor");
-        SoundManager.GetInstance ().PlayVoiceOverClip (unlockeddoor);
+        SoundManager.GetInstance ().AddToVOQueue (unlockeddoor);
 
         selectedAsset.GetDoor ().OpenDoor ();
 		selectedAsset.GetFinishline ().UnlockFinishline ();
@@ -320,5 +317,10 @@ public class BMaze_Manager : AbstractGameManager {
 
     public BMaze_PickupManager GetPickupManager() {
         return pickupMan;
+    }
+
+    public void FinishGame() {
+        AudioClip youdidit = voData.FindVO ("youdidit");
+        SoundManager.GetInstance ().AddToVOQueue (youdidit);
     }
 }

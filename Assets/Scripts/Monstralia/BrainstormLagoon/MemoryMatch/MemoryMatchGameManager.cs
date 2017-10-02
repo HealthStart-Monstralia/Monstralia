@@ -172,8 +172,8 @@ public class MemoryMatchGameManager : AbstractGameManager {
 
 		yield return new WaitForSeconds (1f);
 
-        AudioClip tutorial1 = voData.FindVO ("tutorial1");
-        AudioClip tutorial2 = voData.FindVO ("tutorial2");
+        AudioClip tutorial1 = voData.FindVO ("1_tutorial_welcome");
+        AudioClip tutorial2 = voData.FindVO ("2_tutorial_platters");
         SoundManager.GetInstance ().PlayVoiceOverClip (tutorial1);
 
 		yield return new WaitForSeconds (tutorial1.length);
@@ -195,8 +195,8 @@ public class MemoryMatchGameManager : AbstractGameManager {
 			dish.OpenLid ();
 		}
 
-        AudioClip tutorial3 = voData.FindVO ("tutorial3");
-        AudioClip tutorial4 = voData.FindVO ("tutorial4");
+        AudioClip tutorial3 = voData.FindVO ("3_tutorial_rememberfood");
+        AudioClip tutorial4 = voData.FindVO ("4_tutorial_letmeshow");
         SoundManager.GetInstance ().PlayVoiceOverClip (tutorial3);
 
         yield return new WaitForSeconds (tutorial3.length - 1.5f);
@@ -226,7 +226,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 
         handAnim.gameObject.SetActive (false);
         inputAllowed = true;
-        AudioClip tutorial5 = voData.FindVO ("tutorial5");
+        AudioClip tutorial5 = voData.FindVO ("5_tutorial_nowtry");
         subtitlePanel.Display ("Now you try!", tutorial5);
 
 

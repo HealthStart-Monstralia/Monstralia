@@ -26,7 +26,7 @@ public class BMaze_Pickup : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D col) {
 		if (col.GetComponent<BMaze_MonsterMovement> ()) {
 			if (BMaze_Manager.GetInstance ()) {
-                SoundManager.GetInstance ().PlayVoiceOverClip (pickupSfx);
+                SoundManager.GetInstance ().AddToVOQueue (pickupSfx);
 
                 if (pickup == TypeOfPickup.Water)
 					GetComponent<BMaze_WaterPickup> ().IncreaseTime ();

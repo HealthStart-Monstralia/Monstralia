@@ -120,7 +120,7 @@ public class EmotionsGameManager : AbstractGameManager {
 
 		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Welcome to Monster Feelings!", null);
 		SoundManager.GetInstance().StopPlayingVoiceOver();
-        AudioClip tutorial1 = voData.FindVO ("tutorial1");
+        AudioClip tutorial1 = voData.FindVO ("1_tutorial_start");
 		SoundManager.GetInstance().PlayVoiceOverClip(tutorial1);
         
         float secsToRemove = 6f;

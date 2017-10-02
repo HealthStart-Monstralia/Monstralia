@@ -7,12 +7,7 @@ public class BMaze_Finishline : MonoBehaviour {
 	 */
 	public GameObject finishSpot;
 
-	private AudioSource audioSrc;
 	private bool finished = false;
-
-	void Start () {
-		audioSrc = GetComponent<AudioSource> ();
-	}
 
 	public void UnlockFinishline () {
 		finished = true;
@@ -25,12 +20,12 @@ public class BMaze_Finishline : MonoBehaviour {
 			col.GetComponent<BMaze_MonsterMovement> ().finished = true;
 			col.GetComponent<BMaze_MonsterMovement> ().gotoPos = finishSpot.transform.position;
 
-			audioSrc.Play ();
-			if (!BMaze_Manager.GetInstance().isTutorialRunning)
-				StartCoroutine(BMaze_Manager.GetInstance().EndGameWait (3f));
-			else {
-				BMaze_Manager.GetInstance ().TutorialFinished ();
-			}
+            if (!BMaze_Manager.GetInstance ().isTutorialRunning) {
+                BMaze_Manager.GetInstance ().FinishGame ();
+                StartCoroutine (BMaze_Manager.GetInstance ().EndGameWait (3f));
+            } else {
+                BMaze_Manager.GetInstance ().TutorialFinished ();
+            }
 		}
 	}
 }

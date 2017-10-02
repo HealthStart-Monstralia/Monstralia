@@ -17,7 +17,8 @@ public class DataType : ScriptableObject {
         BrainMaze,
         MemoryMatch,
         MonsterEmotions,
-        MonsterSenses
+        MonsterSenses,
+        BridgeBones
     };
 
     public enum IslandSection {

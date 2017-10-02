@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 
 public abstract class AbstractGameManager : MonoBehaviour {
+    [Header ("AbstractGameManager Fields")]
     public DataType.Minigame typeOfGame;
 	public abstract void GameOver(); // Force GameOver() to be implemented in child classes
     public abstract void PregameSetup (); // Force PregameSetup() to be implemented in child classes

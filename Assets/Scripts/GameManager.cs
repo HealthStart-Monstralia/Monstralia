@@ -84,11 +84,13 @@ public class GameManager : MonoBehaviour {
             gameStats.Add (entry.typeOfGame, newGame);
 
             // Create and initialize stats for corresponding sticker and add it to stickerStats Dictionary
-            StickerStats newSticker;
-            newSticker.stickerObject = entry.stickerPrefab;
-            newSticker.isStickerPlaced = false;
-            newSticker.isStickerUnlocked = false;
-            stickerStats.Add (GetAssignedSticker(entry.typeOfGame), newSticker);
+            if (entry.stickerPrefab) {
+                StickerStats newSticker;
+                newSticker.stickerObject = entry.stickerPrefab;
+                newSticker.isStickerPlaced = false;
+                newSticker.isStickerUnlocked = false;
+                stickerStats.Add (GetAssignedSticker (entry.typeOfGame), newSticker);
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 /**
  * \class SoundManager
@@ -14,6 +15,9 @@ public class SoundManager : MonoBehaviour {
 	private bool isMuted = false;				    /*!< Flag for if the sound has been muted */
 	private bool setup;								/*!< Flag for if the sound manager is being set up */
 	private bool isPlayingClip = false;				/*!< Flag to prevent a clip from playing more than once at a time */
+    [SerializeField] private List<AudioClip> clipQueue = new List<AudioClip> ();
+    private bool isQueuePlaying = false;
+    private Coroutine queueCoroutine, voiceCoroutine;
 
 	public AudioClip gameBackgroundMusic;			/*!< The game's main background music */
 	public bool isPlayingVoiceOver = false;         /*!< Way to check if a voice over is already playing */
@@ -84,19 +88,30 @@ public class SoundManager : MonoBehaviour {
 	}
 
     /**
-	 * \brief Play a single AudioClip through the SFXsource.
+	 * \brief Play a single AudioClip through the SFXsource with a coroutine.
 	 * @param clip: the sound effect AudioClip to be played.
 	 */
     public void PlayVoiceOverClip(AudioClip clip) {
-		voiceOverSource.clip = clip;
-		voiceOverSource.Play();
+        if (isPlayingVoiceOver) {
+            StopCoroutine (voiceCoroutine);
+            StopPlayingVoiceOver ();
+        }
+        voiceCoroutine = StartCoroutine (PlayVoiceOverClipCoroutine (clip));
 	}
 
-	/**
+    IEnumerator PlayVoiceOverClipCoroutine (AudioClip clip) {
+        isPlayingVoiceOver = true;
+        voiceOverSource.clip = clip;
+        voiceOverSource.Play ();
+        yield return new WaitForSeconds(clip.length);
+        isPlayingVoiceOver = false;
+    }
+
+    /**
 	 * \brief Change the background music to a new clip.
 	 * @param newBackgroundMusic: the AudioClip of the new background music.
 	 */
-	public void ChangeBackgroundMusic(AudioClip newBackgroundMusic) {
+    public void ChangeBackgroundMusic(AudioClip newBackgroundMusic) {
 		if(!backgroundSource.clip.Equals(newBackgroundMusic) && newBackgroundMusic != null) {
 			backgroundSource.clip = newBackgroundMusic;
 			backgroundSource.Play ();
@@ -210,5 +225,29 @@ public class SoundManager : MonoBehaviour {
      */
     public void PlayReviewVO () {
         PlayVoiceOverClip (reviewVO);
+    }
+
+    /**
+     * \brief Play the next voice over in the queue
+     */
+    public void AddToVOQueue(AudioClip clip) {
+        clipQueue.Add (clip);
+        if (!isQueuePlaying) {
+            queueCoroutine = StartCoroutine (PlayQueue ());
+        }
+    }
+
+    IEnumerator PlayQueue() {
+        print ("PlayQueue");
+        isQueuePlaying = true;
+        while (clipQueue.Count > 0) {
+            AudioClip clip = clipQueue[0];
+            print ("clipQueue[0]: " + clipQueue[0]);
+            PlayVoiceOverClip (clip);
+            yield return new WaitForSeconds (clip.length);
+            clipQueue.RemoveAt (0);
+        }
+        isQueuePlaying = false;
+        print ("PlayQueue Stop");
     }
 }

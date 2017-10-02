@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BMaze_Door : MonoBehaviour {
+    [SerializeField] private AudioClip unlockClip;
 
 	public void OpenDoor() {
-		AudioSource audio = GetComponent<AudioSource> ();
-		audio.Play ();
-		Invoke ("Hide", 0.5f);
-		//Destroy(gameObject, 0.5f);
+        SoundManager.GetInstance ().PlaySFXClip (unlockClip);
+        Invoke ("Hide", 0.5f);
 	}
 
 	public void Hide() {

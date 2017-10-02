@@ -38,10 +38,14 @@ public class ReviewManager : MonoBehaviour {
 
     public void AddReviewGameToList(DataType.Minigame minigame) {
         GameObject reviewGame = GameManager.GetInstance ().GetMinigameData (minigame).reviewPrefab; // Retrieve corresponding review prefab from MinigameData
-        bool foundObject = reviewGamesList.Contains (reviewGame);
-        if (!foundObject) {
-            reviewGamesDict.Add (reviewGame, minigame);
-            reviewGamesList.Add (reviewGame);
+        
+        // If review prefab exists
+        if (!reviewGame) {
+            bool foundObject = reviewGamesList.Contains (reviewGame);
+            if (!foundObject) {
+                reviewGamesDict.Add (reviewGame, minigame);
+                reviewGamesList.Add (reviewGame);
+            }
         }
     }
 

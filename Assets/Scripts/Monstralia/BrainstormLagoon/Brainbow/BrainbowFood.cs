@@ -17,7 +17,8 @@ public class BrainbowFood : MonoBehaviour {
 
 			//Display the food's name
 			//move this into game manager with method call
-			BrainbowGameManager.GetInstance().ShowSubtitles(gameObject.name, gameObject.GetComponent<Food>().clipOfName);
+			BrainbowGameManager.GetInstance().ShowSubtitles(gameObject.name);
+            SoundManager.GetInstance ().AddToVOQueue (gameObject.GetComponent<Food> ().clipOfName);
 		}
 	}
 	
@@ -44,9 +45,9 @@ public class BrainbowFood : MonoBehaviour {
 					Vector3 oldPos = gameObject.transform.position;
 					detector.AddFood (gameObject);
 
-					if (Random.value < 0.3f) {
+					if (Random.value < 0.2f) {
 						int randomClipIndex = Random.Range (0, BrainbowGameManager.GetInstance ().correctMatchClips.Length);
-						SoundManager.GetInstance ().PlayVoiceOverClip (BrainbowGameManager.GetInstance ().correctMatchClips [randomClipIndex]);
+						SoundManager.GetInstance ().AddToVOQueue (BrainbowGameManager.GetInstance ().correctMatchClips [randomClipIndex]);
 					}
 
 					gameObject.GetComponent<Collider2D> ().enabled = false;
@@ -54,7 +55,7 @@ public class BrainbowFood : MonoBehaviour {
 				} else {
 					MoveBack ();
 					int randomClipIndex = Random.Range (0, BrainbowGameManager.GetInstance ().wrongMatchClips.Length);
-					SoundManager.GetInstance ().PlayVoiceOverClip (BrainbowGameManager.GetInstance ().wrongMatchClips [randomClipIndex]);
+					SoundManager.GetInstance ().AddToVOQueue (BrainbowGameManager.GetInstance ().wrongMatchClips [randomClipIndex]);
 				}
 			}
 			moving = false;
