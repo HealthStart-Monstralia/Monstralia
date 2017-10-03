@@ -97,7 +97,8 @@ public class ReviewManager : MonoBehaviour {
     // For creating a review without any conditions
     public void CreateReviewImmediately(DataType.Minigame minigame) {
         GameObject reviewGame = GameManager.GetInstance ().GetMinigameData (minigame).reviewPrefab;
-        SpawnReview (reviewGame);
+        if (reviewGame)
+            SpawnReview (reviewGame);
     }
 
     public void EndReview () {

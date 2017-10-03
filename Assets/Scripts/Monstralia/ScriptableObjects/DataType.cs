@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DataType : ScriptableObject {
     public enum StickerType {
+        None = -1,
         Amygdala = 0,
         Cerebellum = 1,
         Frontal = 2,

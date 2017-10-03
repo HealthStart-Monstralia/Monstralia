@@ -161,14 +161,16 @@ public class GameManager : MonoBehaviour {
     public void ActivateSticker (DataType.Minigame game) {
         // Copy current struct to a new one
         DataType.StickerType gameSticker = GetAssignedSticker(game);
-        StickerStats newSticker = stickerStats[gameSticker];
+        if (gameSticker != DataType.StickerType.None) {
+            StickerStats newSticker = stickerStats[gameSticker];
 
-        // Modify desired variable
-        if (!newSticker.isStickerUnlocked) {
-            newSticker.isStickerUnlocked = true;
+            // Modify desired variable
+            if (!newSticker.isStickerUnlocked) {
+                newSticker.isStickerUnlocked = true;
 
-            // Save changes to new struct
-            stickerStats[gameSticker] = newSticker;
+                // Save changes to new struct
+                stickerStats[gameSticker] = newSticker;
+            }
         }
     }
 
@@ -236,7 +238,11 @@ public class GameManager : MonoBehaviour {
     /// <returns>Returns a StickerType from DataType</returns>
 
     public DataType.StickerType GetAssignedSticker (DataType.Minigame game) {
-        return minigameDictionary[game].stickerPrefab.GetComponent<StickerBehaviour>().typeOfSticker;
+        GameObject stickerPrefab = minigameDictionary[game].stickerPrefab;
+        if (stickerPrefab)
+            return stickerPrefab.GetComponent<StickerBehaviour> ().typeOfSticker;
+        else
+            return DataType.StickerType.None;
     }
 
     /// <summary>
@@ -246,7 +252,10 @@ public class GameManager : MonoBehaviour {
     /// <returns>Returns whether sticker is unlocked or not.</returns>
 
     public bool GetStickerUnlock (DataType.Minigame game) {
-        return stickerStats[GetAssignedSticker(game)].isStickerUnlocked;
+        if (stickerStats.ContainsKey(GetAssignedSticker (game)))
+            return stickerStats[GetAssignedSticker (game)].isStickerUnlocked;
+        else
+            return false;
     }
 
     public Dictionary<DataType.StickerType, StickerStats> GetStickerDict () {
