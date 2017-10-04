@@ -74,6 +74,7 @@ public class DishObject : MonoBehaviour {
 		}
 	}
 
+
 	public void OpenLid() {
 		if(!lid.activeSelf) {
 			lid.SetActive(true);
@@ -96,6 +97,7 @@ public class DishObject : MonoBehaviour {
 		dishAnim.Play ("Dish_Correct");
 		MemoryMatchGameManager.GetInstance().AddToMatchedList(myFood);
 		matched = true;
+        lid.SetActive(false);
 	}
 
     /**
@@ -110,28 +112,30 @@ public class DishObject : MonoBehaviour {
 		MemoryMatchGameManager manager = MemoryMatchGameManager.GetInstance ();
 		if(manager.inputAllowed && !isGuessing && (manager.isGameStarted() || manager.isRunningTutorial())) {
 			isGuessing = true;
-
-			OpenLid();
+            List<Food> matchedList = manager.ReturnMatchedList(); 
+            OpenLid();
 			manager.subtitlePanel.Display(myFood.name, myFood.clipOfName);
 
 			if(manager.GetFoodToMatch().name != myFood.name) {
-				if (!matched && !manager.isRunningTutorial()) {
-					manager.SubtractTime (3.0f);
-				}
-				yield return new WaitForSeconds (2f);
-				CloseLid ();
-			}
-			else {
-				Correct();
-				yield return new WaitForSeconds(1.5f);
-				manager.ChooseFoodToMatch();
-			}
-
-			//The player can now guess again.
-			manager.subtitlePanel.Hide ();
-			isGuessing = false;
-		}
-	}
+			     if (!matched && !manager.isRunningTutorial()) {
+				    	manager.SubtractTime (3.0f);
+				        }
+				 yield return new WaitForSeconds (2f);
+				 CloseLid ();
+			    }
+		         else {
+			    	Correct();
+				    yield return new WaitForSeconds(1.5f);
+				    manager.ChooseFoodToMatch();
+			    }
+    
+			    //The player can now guess again.
+			    manager.subtitlePanel.Hide ();
+			    isGuessing = false;
+		     
+	    }
+            }
+			
 
 	public bool IsMatched() {
 		return matched;

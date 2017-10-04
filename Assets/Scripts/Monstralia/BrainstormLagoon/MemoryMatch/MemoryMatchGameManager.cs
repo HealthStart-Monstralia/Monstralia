@@ -422,6 +422,11 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		matchedFoods.Add (food);
 	}
 
+    public List<Food> ReturnMatchedList ()
+    {
+        return matchedFoods;
+    }
+
 	IEnumerator RunEndGameAnimation(){
 		animIsPlaying = true;
 		timer.StopTimer();
