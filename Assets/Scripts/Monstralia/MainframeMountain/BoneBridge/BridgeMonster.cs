@@ -10,17 +10,23 @@ public class BridgeMonster : MonoBehaviour {
     private BoxCollider2D col;
     private Vector3 pointerOffset;
     private Vector3 cursorPos;
+    public bool tapToMove;
 
     private void Awake () {
         rigBody = gameObject.AddComponent<Rigidbody2D> ();
-        col = gameObject.AddComponent<BoxCollider2D> ();
+        rigBody.freezeRotation = true;
+        rigBody.mass = 3;
+        //col = gameObject.AddComponent<BoxCollider2D> ();
         //GameObject parentObj = gameObject.transform.parent.gameObject;
         transform.SetParent (transform.root.parent);
         //Destroy (parentObj);
     }
 
     public void OnMouseDown () {
-        StartCoroutine (Move ());
+        if (tapToMove) {
+            StopAllCoroutines ();
+            StartCoroutine (Move ());
+        }
         /*
         if (BridgeBonesManager.GetInstance ().inputAllowed) {
             print ("Mousedown");
@@ -42,12 +48,15 @@ public class BridgeMonster : MonoBehaviour {
     */
 
     IEnumerator Move () {
+        Vector2 dir;
         while (true) {
-            MoveTowards (goalObject.transform.position);
+            dir = goalObject.transform.position - transform.position;
+            Debug.DrawLine (transform.position, goalObject.transform.position);
+            MoveTowards (dir);
             yield return null;
         }
     }
     public void MoveTowards (Vector2 pos) {
-        rigBody.MovePosition (Vector2.MoveTowards (rigBody.position, pos, 0.1f));
+        rigBody.AddForce (pos * 3f);
     }
 }

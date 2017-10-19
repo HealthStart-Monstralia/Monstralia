@@ -19,7 +19,7 @@ public class DataType : ScriptableObject {
         MemoryMatch,
         MonsterEmotions,
         MonsterSenses,
-        BridgeBones
+        BoneBridge
     };
 
     public enum IslandSection {
