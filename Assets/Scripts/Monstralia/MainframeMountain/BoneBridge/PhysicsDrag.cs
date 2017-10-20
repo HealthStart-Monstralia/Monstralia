@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PhysicsDrag : MonoBehaviour {
-    public bool holdNoGrav;
+    public bool holdNoGrav, holdResetRotation, holdIgnorePhys;
     private Rigidbody2D rigBody;
     private BoxCollider2D col;
     private Vector3 pointerOffset;
@@ -11,12 +11,21 @@ public class PhysicsDrag : MonoBehaviour {
 
     private void Start () {
         rigBody = GetComponent<Rigidbody2D> ();
+        col = GetComponent<BoxCollider2D> ();
     }
 
     public void OnMouseDown () {
         print ("Mousedown");
         if (holdNoGrav)
             rigBody.gravityScale = 0f;
+        if (holdResetRotation) {
+            rigBody.freezeRotation = true;
+            transform.rotation = Quaternion.identity;
+        }
+        if (holdIgnorePhys) {
+            col.enabled = false;
+        }
+
         transform.SetParent (transform.root);
         cursorPos = Input.mousePosition;
         cursorPos.z -= (Camera.main.transform.position.z + 10f);
@@ -32,9 +41,14 @@ public class PhysicsDrag : MonoBehaviour {
     public void OnMouseUp () {
         if (holdNoGrav)
             rigBody.gravityScale = 1f;
+        if (holdResetRotation)
+            rigBody.freezeRotation = false;
+        if (holdIgnorePhys) {
+            col.enabled = true;
+        }
     }
 
     public void MoveTowards (Vector2 pos) {
-        rigBody.MovePosition (Vector2.MoveTowards (rigBody.position, pos, 0.1f));
+        rigBody.MovePosition (Vector2.MoveTowards (rigBody.position, pos, 0.2f));
     }
 }

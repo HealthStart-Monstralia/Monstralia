@@ -15,37 +15,22 @@ public class BridgeMonster : MonoBehaviour {
     private void Awake () {
         rigBody = gameObject.AddComponent<Rigidbody2D> ();
         rigBody.freezeRotation = true;
-        rigBody.mass = 3;
-        //col = gameObject.AddComponent<BoxCollider2D> ();
-        //GameObject parentObj = gameObject.transform.parent.gameObject;
+        rigBody.mass = 10;
+        rigBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+        rigBody.interpolation = RigidbodyInterpolation2D.Interpolate;
         transform.SetParent (transform.root.parent);
-        //Destroy (parentObj);
+
     }
 
     public void OnMouseDown () {
-        if (tapToMove) {
-            StopAllCoroutines ();
-            StartCoroutine (Move ());
-        }
-        /*
-        if (BridgeBonesManager.GetInstance ().inputAllowed) {
-            print ("Mousedown");
-            cursorPos = Input.mousePosition;
-            cursorPos.z -= (Camera.main.transform.position.z + 10f);
-            pointerOffset = Camera.main.ScreenToWorldPoint (cursorPos) - transform.position;
-        }
-        */
-    }
-
-    /*
-    public void OnMouseDrag () {
-        if (BridgeBonesManager.GetInstance ().inputAllowed) {
-            cursorPos = Input.mousePosition;
-            cursorPos.z -= (Camera.main.transform.position.z + 10f);
-            MoveTowards (Camera.main.ScreenToWorldPoint (cursorPos) - pointerOffset);
+        if (BoneBridgeManager.GetInstance ().inputAllowed) {
+            if (tapToMove) {
+                Stop ();
+                BoneBridgeManager.GetInstance ().CameraSwitch (gameObject);
+                StartCoroutine (Move ());
+            }
         }
     }
-    */
 
     IEnumerator Move () {
         Vector2 dir;
@@ -56,7 +41,13 @@ public class BridgeMonster : MonoBehaviour {
             yield return null;
         }
     }
+
+    public void Stop() {
+        print ("Stopping");
+        StopAllCoroutines ();
+    }
+
     public void MoveTowards (Vector2 pos) {
-        rigBody.AddForce (pos * 3f);
+        rigBody.AddForce (pos * 2f);
     }
 }

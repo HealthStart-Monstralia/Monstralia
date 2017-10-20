@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BridgeBonesCamera : MonoBehaviour {
+public class BoneBridgeCamera : MonoBehaviour {
 
     public float dampTime = 0.1f;
     public GameObject target;
@@ -18,7 +18,7 @@ public class BridgeBonesCamera : MonoBehaviour {
     void Start () {
         cam = GetComponent<Camera> ();
         if (!target)
-            target = BridgeBonesManager.GetInstance ().monster.gameObject;
+            target = BoneBridgeManager.GetInstance ().monster.gameObject;
     }
 
     void moveCamera (Vector3 pos) {

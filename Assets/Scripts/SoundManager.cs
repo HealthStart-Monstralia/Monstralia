@@ -48,10 +48,12 @@ public class SoundManager : MonoBehaviour {
 
 	void Start() {
 		setup = true;
-		//set the value of the volume slider
-		volumeSlider.value = backgroundSource.volume;
-		SFXslider.value = SFXsource.volume;
-		VoiceOverSlider.value = voiceOverSource.volume;
+        //set the value of the volume slider
+        if (volumeSlider) {
+            volumeSlider.value = backgroundSource.volume;
+            SFXslider.value = SFXsource.volume;
+            VoiceOverSlider.value = voiceOverSource.volume;
+        }
 		setup = false;
 	}
 	/** /endcond */

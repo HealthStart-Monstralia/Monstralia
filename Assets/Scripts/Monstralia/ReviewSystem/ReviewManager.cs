@@ -55,32 +55,39 @@ public class ReviewManager : MonoBehaviour {
 
     public void StartReview(DataType.Minigame minigame) {
         if (reviewGamesList.Count > 0) {
-            int randNum = Random.Range (0, reviewGamesList.Count - 1);
-            GameObject selectedReview = reviewGamesList[randNum];
-            DataType.Minigame typeOfGame = reviewGamesDict[selectedReview];
+            if (reviewGamesDict.ContainsKey(GameManager.GetInstance().GetMinigameData(minigame).reviewPrefab)) {
+                int randNum = Random.Range (0, reviewGamesList.Count - 1);
+                GameObject selectedReview = reviewGamesList[randNum];
+                DataType.Minigame typeOfGame = reviewGamesDict[selectedReview];
 
-            // If the same type of game matches review, choose another
-            if (typeOfGame == minigame) {
-                if (reviewGamesList.Count <= 1) {
-                    GameObject temp = reviewGamesList[randNum];
-                    reviewGamesList.RemoveAt (randNum);
+                // If the same type of game matches review, choose another
+                if (typeOfGame == minigame) {
+                    if (reviewGamesList.Count <= 1) {
+                        GameObject temp = reviewGamesList[randNum];
+                        reviewGamesList.RemoveAt (randNum);
 
-                    if (reviewGamesList.Count != 0) {
-                        randNum = Random.Range (0, reviewGamesList.Count - 1);
-                        selectedReview = reviewGamesList[randNum];
+                        if (reviewGamesList.Count != 0) {
+                            randNum = Random.Range (0, reviewGamesList.Count - 1);
+                            selectedReview = reviewGamesList[randNum];
 
-                    } else {
-                        selectedReview = null;
+                        } else {
+                            selectedReview = null;
+                        }
+
+                        reviewGamesList.Add (temp);
                     }
-
-                    reviewGamesList.Add (temp);
                 }
+
+                if (selectedReview) {
+                    SpawnReview (selectedReview);
+                } else
+                    TerminateReview ();
             }
 
-            if (selectedReview) {
-                SpawnReview (selectedReview);
-            } else
+            else {
                 TerminateReview ();
+            }
+
         }
         else {
             TerminateReview ();
