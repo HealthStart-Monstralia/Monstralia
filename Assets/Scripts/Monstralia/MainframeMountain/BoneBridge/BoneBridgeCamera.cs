@@ -12,8 +12,6 @@ public class BoneBridgeCamera : MonoBehaviour {
     private Vector3 velocity = Vector3.zero;
     private float zVal = -100f;
     private Camera cam;
-    private float offsetX = 0f;
-    private float offsetY = 0f;
 
     void Start () {
         cam = GetComponent<Camera> ();

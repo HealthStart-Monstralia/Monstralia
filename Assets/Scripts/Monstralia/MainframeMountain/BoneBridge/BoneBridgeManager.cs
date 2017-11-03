@@ -5,12 +5,23 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /* CREATED BY: Colby Tang
- * GAME: Bridge Bones
+ * GAME: Bone Bridge
  */
 
 public class BoneBridgeManager : AbstractGameManager {
+    public enum BridgePhase {
+        Start,
+        Building,
+        Crossing,
+        Finish
+    };
+
+    [Header ("BoneBridgeManager Fields")]
+    public BridgePhase bridgePhase;
+    public int bridgeSection;
 
     public VoiceOversData voData;
+    public bool doCountdown;
     public bool inputAllowed = false;
     public bool isTutorialRunning = false;
     public ScoreGauge scoreGauge;
@@ -20,18 +31,18 @@ public class BoneBridgeManager : AbstractGameManager {
     public float timeLeft;
     public GameObject subtitlePanel;
     public GameObject goal;
-    public GameObject[] waypoints;
-    public GameObject[] focusPoints;
     public Monster monster;
-    public BoxCollider2D leftTransition, rightTransition;
-
     public BoneBridgeCamera boneCamera;
 
-    private int level = 0;
+    // Events
+    public delegate void PhaseChangeAction (BridgePhase phase);
+    public static event PhaseChangeAction PhaseChange;
+
+    private int difficultyLevel = 0;
     private Coroutine tutorialCoroutine;
     private bool gameStarted = false;
     private static BoneBridgeManager instance = null;
-    private BridgeMonster bridgeMonster;
+    private BoneBridgeMonster bridgeMonster;
     private Vector2 startPos;
 
     void Awake () {
@@ -42,6 +53,12 @@ public class BoneBridgeManager : AbstractGameManager {
         }
 
         startPos = GetComponent<CreateMonster> ().spawnPosition.transform.position;
+        ChangePhase(BridgePhase.Start);
+        //difficultyLevel = GameManager.GetInstance ().GetLevel (typeOfGame);
+    }
+
+    public static BoneBridgeManager GetInstance () {
+        return instance;
     }
 
     private void Update () {
@@ -51,6 +68,7 @@ public class BoneBridgeManager : AbstractGameManager {
     }
 
     public override void PregameSetup () {
+
         if (GameManager.GetInstance ().GetPendingTutorial (DataType.Minigame.BoneBridge)) {
 
         }
@@ -60,13 +78,14 @@ public class BoneBridgeManager : AbstractGameManager {
 
         monster = GetComponent<CreateMonster> ().SpawnMonster ().GetComponentInChildren<Monster> ();
         monster.ChangeEmotions (DataType.MonsterEmotions.Happy);
-        bridgeMonster = monster.transform.parent.gameObject.AddComponent<BridgeMonster> ();
-        bridgeMonster.goalObject = waypoints[0];
+        bridgeMonster = monster.transform.parent.gameObject.AddComponent<BoneBridgeMonster> ();
         bridgeMonster.tapToMove = true;
         monster.GetComponent<BoxCollider2D> ().enabled = false;
         monster.gameObject.AddComponent<CapsuleCollider2D> ();
-        GameStart ();
-        //StartCoroutine (Countdown ());
+        if (doCountdown)
+            StartCoroutine (Countdown ());
+        else
+            GameStart ();
     }
 
     IEnumerator Countdown () {
@@ -85,38 +104,47 @@ public class BoneBridgeManager : AbstractGameManager {
 
     public void GameStart () {
         gameStarted = true;
-        inputAllowed = true;
+        ChangePhase(BridgePhase.Building);
     }
 
     public override void GameOver () {
         gameStarted = false;
-        inputAllowed = false;
+        ChangePhase(BridgePhase.Finish);
     }
 
-    public static BoneBridgeManager GetInstance () {
-        return instance;
+    public void ChangePhase (BridgePhase phase) {
+        bridgePhase = phase;
+        print ("Manager ChangePhase firing");
+        PhaseChange (phase);
+    }
+
+    void OnPhaseChange (BridgePhase phase) {
+        switch (phase) {
+            case BridgePhase.Start:
+                inputAllowed = false;
+                break;
+            case BridgePhase.Building:
+                inputAllowed = true;
+                break;
+            case BridgePhase.Crossing:
+                inputAllowed = true;
+                break;
+            case BridgePhase.Finish:
+                inputAllowed = false;
+                break;
+        }
     }
 
     public void CameraSwitch(GameObject obj) {
         boneCamera.target = obj;
     }
 
-    public void SwitchGoal (int num) {
-        bridgeMonster.Stop ();
-        bridgeMonster.goalObject = waypoints[1];
+    public void ChangeWaypoint(GameObject waypoint) {
+        bridgeMonster.StopAllCoroutines ();
+        bridgeMonster.goalObject = waypoint;
     }
 
-    public void ResetMonster (int num) {
-        bridgeMonster.Stop ();
-        switch (num) {
-            case 0:
-                bridgeMonster.gameObject.transform.position = startPos;
-                CameraSwitch (focusPoints[0]);
-                break;
-            case 1:
-                bridgeMonster.gameObject.transform.position = waypoints[0].transform.position;
-                CameraSwitch (focusPoints[1]);
-                break;
-        }
+    public void ResetMonster (Vector2 pos) {
+        bridgeMonster.gameObject.transform.position = pos;
     }
 }

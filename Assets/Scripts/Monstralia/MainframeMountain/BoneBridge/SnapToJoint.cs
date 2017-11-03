@@ -13,7 +13,8 @@ public class SnapToJoint : MonoBehaviour {
     public AudioClip boneAttachSfx, boneDetachSfx;
 
     private CircleCollider2D col;
-    [SerializeField] private BoneJoint jointTouching, jointSnappedTo;
+    [SerializeField] private BoneJoint jointTouching;
+    public HingeJoint2D jointAttached;
     private SpriteRenderer spr;
 
     private void Awake () {
@@ -23,15 +24,18 @@ public class SnapToJoint : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D (Collider2D collision) {
-        if (collision.gameObject.GetComponent<BoneJoint> ()) {
-            spr.color = touchColor;
-            jointTouching = collision.GetComponent<BoneJoint> ();
+        BoneJoint joint = collision.gameObject.GetComponent<BoneJoint> ();
+        if (joint) {
+            if (joint.IsJointAvailible(typeOfEnd)) {
+                spr.color = touchColor;
+                jointTouching = joint;
+            }
         }
     }
 
     private void OnTriggerExit2D (Collider2D collision) {
         if (collision.gameObject.GetComponent<BoneJoint> ()) {
-            spr.color = jointSnappedTo ? snapColor : normalColor;
+            spr.color = jointAttached ? snapColor : normalColor;
             jointTouching = null;
         }
     }
@@ -41,18 +45,18 @@ public class SnapToJoint : MonoBehaviour {
     }
 
     public void Detach() {
-        if (jointSnappedTo) {
-            Destroy (jointSnappedTo.GetComponent<HingeJoint2D>());
-            jointSnappedTo = null;
+        if (jointAttached) {
+            jointAttached.GetComponent<BoneJoint>().DestroyJoint();
+            //Destroy (jointAttached);
+            jointAttached = null;
             spr.color = normalColor;
             SoundManager.GetInstance ().PlaySFXClip (boneDetachSfx);
         }
     }
 
-    private void SnapTo(BoneJoint joint) {
-        transform.position = joint.transform.position;
-        joint.AddJoint (gameObject, typeOfEnd);
-        jointSnappedTo = jointTouching;
+    private void SnapTo (BoneJoint joint) {
+        transform.parent.position = joint.transform.position + (transform.parent.position - transform.position);
+        jointAttached = joint.AddJoint (transform.parent.gameObject, typeOfEnd);
         SoundManager.GetInstance ().PlaySFXClip (boneAttachSfx);
     }
 }

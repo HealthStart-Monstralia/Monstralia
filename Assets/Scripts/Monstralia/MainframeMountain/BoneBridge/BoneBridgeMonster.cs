@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BridgeMonster : MonoBehaviour {
-
+public class BoneBridgeMonster : MonoBehaviour {
     public GameObject goalObject;
 
     private Rigidbody2D rigBody;
@@ -12,10 +11,18 @@ public class BridgeMonster : MonoBehaviour {
     private Vector3 cursorPos;
     public bool tapToMove;
 
+    private void OnEnable () {
+        BoneBridgeManager.PhaseChange += OnPhaseChange;
+    }
+
+    private void OnDisable () {
+        BoneBridgeManager.PhaseChange -= OnPhaseChange;
+    }
+
     private void Awake () {
         rigBody = gameObject.AddComponent<Rigidbody2D> ();
         rigBody.freezeRotation = true;
-        rigBody.mass = 10;
+        rigBody.mass = 3f;
         rigBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         rigBody.interpolation = RigidbodyInterpolation2D.Interpolate;
         transform.SetParent (transform.root.parent);
@@ -24,11 +31,29 @@ public class BridgeMonster : MonoBehaviour {
 
     public void OnMouseDown () {
         if (BoneBridgeManager.GetInstance ().inputAllowed) {
-            if (tapToMove) {
-                Stop ();
+            if (tapToMove && BoneBridgeManager.GetInstance ().bridgePhase != BoneBridgeManager.BridgePhase.Crossing) {
+                StopAllCoroutines ();
+                BoneBridgeManager.GetInstance ().ChangePhase (BoneBridgeManager.BridgePhase.Crossing);
+            }
+        }
+    }
+
+    void OnPhaseChange(BoneBridgeManager.BridgePhase phase) {
+        print ("BoneBridgeMonster OnPhaseChange firing: " + phase);
+        switch (phase) {
+            case BoneBridgeManager.BridgePhase.Start:
+                
+                break;
+            case BoneBridgeManager.BridgePhase.Building:
+                StopAllCoroutines ();
+                break;
+            case BoneBridgeManager.BridgePhase.Crossing:
                 BoneBridgeManager.GetInstance ().CameraSwitch (gameObject);
                 StartCoroutine (Move ());
-            }
+                break;
+            case BoneBridgeManager.BridgePhase.Finish:
+                StopAllCoroutines ();
+                break;
         }
     }
 
@@ -42,12 +67,7 @@ public class BridgeMonster : MonoBehaviour {
         }
     }
 
-    public void Stop() {
-        print ("Stopping");
-        StopAllCoroutines ();
-    }
-
     public void MoveTowards (Vector2 pos) {
-        rigBody.AddForce (pos * 2f);
+        rigBody.AddForce (pos * 0.015f, ForceMode2D.Impulse);
     }
 }

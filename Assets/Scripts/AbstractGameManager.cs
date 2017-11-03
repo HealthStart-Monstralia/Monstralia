@@ -27,7 +27,7 @@ public abstract class AbstractGameManager : MonoBehaviour {
     // Go to Start scene if no Game Manager is present
     protected void CheckForGameManager () {
         if (!GameManager.GetInstance ()) {
-            SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
+            SwitchScene switchScene = gameObject.AddComponent<SwitchScene> ();
             switchScene.LoadScene ("Start", false);
         }
     }
