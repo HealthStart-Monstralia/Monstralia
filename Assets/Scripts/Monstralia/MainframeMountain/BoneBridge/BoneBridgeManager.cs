@@ -20,6 +20,9 @@ public class BoneBridgeManager : AbstractGameManager {
     public BridgePhase bridgePhase;
     public int bridgeSection;
 
+    [Range (0.1f, 5f)]
+    public float monsterMass = 1.5f;
+
     public VoiceOversData voData;
     public bool doCountdown;
     public bool inputAllowed = false;
@@ -45,6 +48,8 @@ public class BoneBridgeManager : AbstractGameManager {
     private BoneBridgeMonster bridgeMonster;
     private Vector2 startPos;
 
+    private Rigidbody2D rigBody;
+
     void Awake () {
         if (instance == null) {
             instance = this;
@@ -65,6 +70,8 @@ public class BoneBridgeManager : AbstractGameManager {
         ChangeProgressBar (
             (bridgeMonster.transform.position.x - startPos.x) / (goal.transform.position.x - startPos.x)
         );
+        if (rigBody)
+            if (rigBody.mass != monsterMass) rigBody.mass = monsterMass;
     }
 
     public override void PregameSetup () {
@@ -80,6 +87,8 @@ public class BoneBridgeManager : AbstractGameManager {
         monster.ChangeEmotions (DataType.MonsterEmotions.Happy);
         bridgeMonster = monster.transform.parent.gameObject.AddComponent<BoneBridgeMonster> ();
         bridgeMonster.tapToMove = true;
+        rigBody = bridgeMonster.GetComponent<Rigidbody2D> ();
+        rigBody.mass = monsterMass;
         monster.GetComponent<BoxCollider2D> ().enabled = false;
         monster.gameObject.AddComponent<CapsuleCollider2D> ();
         if (doCountdown)

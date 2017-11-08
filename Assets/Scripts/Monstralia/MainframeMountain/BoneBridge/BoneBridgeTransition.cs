@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class BoneBridgeTransition : MonoBehaviour {
     public GameObject focus, waypoint, startPos;
+    public bool isWinTrigger;
     public int section;
 
     void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.tag == "Monster") {
-            SetupSection();
+            if (isWinTrigger) WinGame (); else SetupSection ();
             //Destroy (gameObject);
         }
     }
@@ -22,5 +23,9 @@ public class BoneBridgeTransition : MonoBehaviour {
         BoneBridgeManager.GetInstance ().CameraSwitch (focus);
         BoneBridgeManager.GetInstance ().ChangeWaypoint (waypoint);
         BoneBridgeManager.GetInstance ().ChangePhase (BoneBridgeManager.BridgePhase.Building);
+    }
+
+    void WinGame() {
+        BoneBridgeManager.GetInstance ().GameOver ();
     }
 }
