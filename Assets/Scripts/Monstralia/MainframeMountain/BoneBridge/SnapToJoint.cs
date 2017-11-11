@@ -10,17 +10,15 @@ public class SnapToJoint : MonoBehaviour {
 
     public Color normalColor, touchColor, snapColor;
     public EndType typeOfEnd;
-    public AudioClip boneAttachSfx, boneDetachSfx;
+    public AudioClip boneAttachSfx;
+    public BoneJoint jointTouching, jointAttached;
+    public HingeJoint2D hingeAttached;
 
-    private CircleCollider2D col;
-    [SerializeField] private BoneJoint jointTouching;
-    public HingeJoint2D jointAttached;
     private SpriteRenderer spr;
 
     private void Awake () {
         spr = GetComponent<SpriteRenderer> ();
-        col = GetComponent<CircleCollider2D> ();
-        spr.color = normalColor;
+        spr.color = snapColor;
     }
 
     private void OnTriggerEnter2D (Collider2D collision) {
@@ -40,23 +38,31 @@ public class SnapToJoint : MonoBehaviour {
         }
     }
 
-    public void TrySnapping() {
-        if (jointTouching) SnapTo (jointTouching);
+    public bool TrySnapping() {
+        if (jointTouching) {
+            SnapTo (jointTouching);
+            return true;
+        }
+        if (GetComponentInParent<BoneBridgePiece>().isAttached) spr.color = normalColor;
+        else spr.color = snapColor;
+        return false;
     }
 
-    public void Detach() {
-        if (jointAttached) {
-            jointAttached.GetComponent<BoneJoint>().DestroyJoint();
-            //Destroy (jointAttached);
-            jointAttached = null;
-            spr.color = normalColor;
-            SoundManager.GetInstance ().PlaySFXClip (boneDetachSfx);
-        }
+    public void ActivateJoint() {
+        spr.color = normalColor;
     }
 
     private void SnapTo (BoneJoint joint) {
         transform.parent.position = joint.transform.position + (transform.parent.position - transform.position);
-        jointAttached = joint.AddJoint (transform.parent.gameObject, typeOfEnd);
+        jointAttached = joint;
+        hingeAttached = joint.AddJoint (transform.parent.gameObject, typeOfEnd);
+        SnapToJoint snap = joint.GetComponent<SnapToJoint> ();
+
+        if (snap) {
+            snap.jointAttached = jointAttached;
+            snap.hingeAttached = hingeAttached;
+        }
+
         SoundManager.GetInstance ().PlaySFXClip (boneAttachSfx);
     }
 }

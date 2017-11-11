@@ -13,10 +13,14 @@ public class BoneBridgeCamera : MonoBehaviour {
     private float zVal = -100f;
     private Camera cam;
 
-    void Start () {
+    private void Awake () {
         cam = GetComponent<Camera> ();
+    }
+
+    void Start () {
         if (!target)
             target = BoneBridgeManager.GetInstance ().monster.gameObject;
+        if (target) transform.position = target.transform.position;
     }
 
     void moveCamera (Vector3 pos) {
@@ -24,14 +28,14 @@ public class BoneBridgeCamera : MonoBehaviour {
         Vector3 delta = point - cam.ViewportToWorldPoint (new Vector3 (0.5f, 0.5f, 0f));
         Vector3 destination = transform.position + delta;
         transform.position = Vector3.SmoothDamp (transform.position, destination, ref velocity, dampTime);
-    }
-
-    private void LateUpdate () {
-        moveCamera (target.transform.position);
         transform.position = new Vector3 (
             Mathf.Clamp (transform.position.x, xMinClamp, xMaxClamp),
             0f,
             -20f
         );
+    }
+
+    private void LateUpdate () {
+        moveCamera (target.transform.position);
     }
 }

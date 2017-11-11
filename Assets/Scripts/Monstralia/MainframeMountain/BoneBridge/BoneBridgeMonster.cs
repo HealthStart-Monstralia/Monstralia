@@ -57,17 +57,15 @@ public class BoneBridgeMonster : MonoBehaviour {
         }
     }
 
-    IEnumerator Move () {
-        Vector2 dir;
+    public IEnumerator Move () {
+        Vector2 dir = Vector2.right;
         while (true) {
-            dir = goalObject.transform.position - transform.position;
-            Debug.DrawLine (transform.position, goalObject.transform.position);
             MoveTowards (dir);
             yield return null;
         }
     }
 
     public void MoveTowards (Vector2 pos) {
-        rigBody.AddForce (pos * 0.015f, ForceMode2D.Impulse);
+        rigBody.AddForce (pos * 0.25f, ForceMode2D.Impulse);
     }
 }

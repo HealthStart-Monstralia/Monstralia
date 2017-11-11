@@ -3,14 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BoneBridgeTransition : MonoBehaviour {
+    public enum SectionType {
+        StartZone = 0,
+        PlayZone = 1,
+        WinZone = 2
+    }
     public GameObject focus, waypoint, startPos;
-    public bool isWinTrigger;
-    public int section;
+    public SectionType typeOfSection;
 
     void OnTriggerEnter2D(Collider2D collision) {
         if (collision.gameObject.tag == "Monster") {
-            if (isWinTrigger) WinGame (); else SetupSection ();
-            //Destroy (gameObject);
+            switch (typeOfSection) {
+                case SectionType.StartZone:
+                    StartGame ();
+                    break;
+                case SectionType.PlayZone:
+                    SetupSection ();
+                    break;
+                case SectionType.WinZone:
+                    WinGame ();
+                    break;
+            }
         }
     }
 
@@ -19,7 +32,15 @@ public class BoneBridgeTransition : MonoBehaviour {
         SetupSection();
     }
 
+    void StartGame() {
+        print ("Starting game");
+        BoneBridgeManager.GetInstance ().GameStart ();
+        BoneBridgeManager.GetInstance ().CameraSwitch (focus);
+        BoneBridgeManager.GetInstance ().ChangeWaypoint (waypoint);
+    }
+
     void SetupSection() {
+        SoundManager.GetInstance ().PlayCorrectSFX ();
         BoneBridgeManager.GetInstance ().CameraSwitch (focus);
         BoneBridgeManager.GetInstance ().ChangeWaypoint (waypoint);
         BoneBridgeManager.GetInstance ().ChangePhase (BoneBridgeManager.BridgePhase.Building);
@@ -27,5 +48,7 @@ public class BoneBridgeTransition : MonoBehaviour {
 
     void WinGame() {
         BoneBridgeManager.GetInstance ().GameOver ();
+        if (focus)
+            BoneBridgeManager.GetInstance ().CameraSwitch (focus);
     }
 }
