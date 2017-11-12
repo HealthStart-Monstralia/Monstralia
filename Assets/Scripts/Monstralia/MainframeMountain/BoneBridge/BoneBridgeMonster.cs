@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BoneBridgeMonster : MonoBehaviour {
-    public GameObject goalObject;
+    [HideInInspector] public Rigidbody2D rigBody;
 
-    private Rigidbody2D rigBody;
     private BoxCollider2D col;
     private Vector3 pointerOffset;
     private Vector3 cursorPos;
-    public bool tapToMove;
+    private Monster monster;
 
     private void OnEnable () {
         BoneBridgeManager.PhaseChange += OnPhaseChange;
@@ -20,18 +19,13 @@ public class BoneBridgeMonster : MonoBehaviour {
     }
 
     private void Awake () {
-        rigBody = gameObject.AddComponent<Rigidbody2D> ();
-        rigBody.freezeRotation = true;
-        rigBody.mass = 3f;
-        rigBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
-        rigBody.interpolation = RigidbodyInterpolation2D.Interpolate;
         transform.SetParent (transform.root.parent);
-
+        monster = GetComponentInChildren<Monster> ();
     }
 
     public void OnMouseDown () {
         if (BoneBridgeManager.GetInstance ().inputAllowed) {
-            if (tapToMove && BoneBridgeManager.GetInstance ().bridgePhase != BoneBridgeManager.BridgePhase.Crossing) {
+            if (BoneBridgeManager.GetInstance ().bridgePhase != BoneBridgeManager.BridgePhase.Crossing) {
                 StopAllCoroutines ();
                 BoneBridgeManager.GetInstance ().ChangePhase (BoneBridgeManager.BridgePhase.Crossing);
             }
@@ -50,6 +44,10 @@ public class BoneBridgeMonster : MonoBehaviour {
             case BoneBridgeManager.BridgePhase.Crossing:
                 BoneBridgeManager.GetInstance ().CameraSwitch (gameObject);
                 StartCoroutine (Move ());
+                break;
+            case BoneBridgeManager.BridgePhase.Falling:
+                StopAllCoroutines ();
+                monster.ChangeEmotions (DataType.MonsterEmotions.Afraid);
                 break;
             case BoneBridgeManager.BridgePhase.Finish:
                 StopAllCoroutines ();

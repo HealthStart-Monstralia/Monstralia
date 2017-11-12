@@ -39,6 +39,7 @@ public class SnapToJoint : MonoBehaviour {
     }
 
     public bool TrySnapping() {
+        print ("TrySnapping: " + typeOfEnd);
         if (jointTouching) {
             SnapTo (jointTouching);
             return true;

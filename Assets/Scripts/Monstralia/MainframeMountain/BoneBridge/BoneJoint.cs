@@ -65,6 +65,7 @@ public class BoneJoint : MonoBehaviour {
 
     public void DestroyJoint() {
         if (boneJoint) {
+            print ("Firing Destroy Joint");
             Destroy (boneJoint);
             boneJoint = null;
         }

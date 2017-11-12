@@ -27,22 +27,15 @@ public class BoneBridgeTransition : MonoBehaviour {
         }
     }
 
-    public void ResetMonster() {
-        BoneBridgeManager.GetInstance ().ResetMonster (startPos.transform.position);
-        SetupSection();
-    }
-
     void StartGame() {
         print ("Starting game");
         BoneBridgeManager.GetInstance ().GameStart ();
         BoneBridgeManager.GetInstance ().CameraSwitch (focus);
-        BoneBridgeManager.GetInstance ().ChangeWaypoint (waypoint);
     }
 
     void SetupSection() {
         SoundManager.GetInstance ().PlayCorrectSFX ();
         BoneBridgeManager.GetInstance ().CameraSwitch (focus);
-        BoneBridgeManager.GetInstance ().ChangeWaypoint (waypoint);
         BoneBridgeManager.GetInstance ().ChangePhase (BoneBridgeManager.BridgePhase.Building);
     }
 

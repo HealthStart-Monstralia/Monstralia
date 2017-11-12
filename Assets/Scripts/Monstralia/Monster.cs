@@ -6,7 +6,7 @@ public class Monster : MonoBehaviour {
     public DataType.MonsterType typeOfMonster;
     public DataType.MonsterEmotions selectedEmotion;
     public EmotionData emotionData;
-    public bool allowMonsterTickle;
+    public bool allowMonsterTickle, spawnAnimation;
 
     public bool idleAnimationOn {
         get { return _idleAnimationOn; }
@@ -46,6 +46,7 @@ public class Monster : MonoBehaviour {
         selectableEmotions[3] = DataType.MonsterEmotions.Joyous;
 
         ChangeEmotions (selectedEmotion);
+        if (spawnAnimation) PlaySpawnAnimation ();
         StartCoroutine (PlayIdleAnimation ());
     }
 
@@ -70,6 +71,10 @@ public class Monster : MonoBehaviour {
 
     public void PlayGiggle () {
         SoundManager.GetInstance ().PlaySFXClip (monsterSfx);
+    }
+
+    public void PlaySpawnAnimation() {
+        animComp.Play ("MonsterSpawn", -1, 0f);
     }
 
     IEnumerator PlayIdleAnimation() {

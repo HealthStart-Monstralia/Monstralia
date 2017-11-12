@@ -12,6 +12,7 @@ public class BoneBridgeManager : AbstractGameManager {
     public enum BridgePhase {
         Start,
         Building,
+        Falling,
         Crossing,
         Finish
     };
@@ -20,11 +21,10 @@ public class BoneBridgeManager : AbstractGameManager {
     public BridgePhase bridgePhase;
     public int bridgeSection;
 
-    [Range (0.1f, 5f)]
-    public float monsterMass = 1.5f;
+
 
     public VoiceOversData voData;
-    public bool doCountdown;
+    public bool doCountdown, playIntro;
     public bool inputAllowed = false;
     public bool isTutorialRunning = false;
     public ScoreGauge scoreGauge;
@@ -36,6 +36,7 @@ public class BoneBridgeManager : AbstractGameManager {
     public GameObject goal;
     public Monster monster;
     public BoneBridgeCamera boneCamera;
+    [HideInInspector] public BoneBridgeMonster bridgeMonster;
 
     // Events
     public delegate void PhaseChangeAction (BridgePhase phase);
@@ -45,7 +46,6 @@ public class BoneBridgeManager : AbstractGameManager {
     private Coroutine tutorialCoroutine;
     private bool gameStarted = false;
     private static BoneBridgeManager instance = null;
-    private BoneBridgeMonster bridgeMonster;
     private Vector2 startPos;
 
     private Rigidbody2D rigBody;
@@ -71,8 +71,6 @@ public class BoneBridgeManager : AbstractGameManager {
                 (bridgeMonster.transform.position.x - startPos.x) / (goal.transform.position.x - startPos.x)
             );
         }
-        if (rigBody)
-            if (rigBody.mass != monsterMass) rigBody.mass = monsterMass;
     }
 
     private void OnEnable () {
@@ -93,24 +91,26 @@ public class BoneBridgeManager : AbstractGameManager {
         }
 
         CameraSwitch (GetComponent<CreateMonster>().spawnPosition.gameObject);
-        ChangePhase (BridgePhase.Start);
+        OnPhaseChange (BridgePhase.Start);
         StartCoroutine (Intro ());
     }
 
     IEnumerator Intro () {
         yield return new WaitForSeconds (1.0f);
         CreateMonster ();
-        monster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
-        yield return new WaitForSeconds (1.0f);
-        float initialDampTime = boneCamera.dampTime;
-        boneCamera.dampTime = 1.5f;
-        CameraSwitch (goal);
-        yield return new WaitForSeconds (6.0f);
-        boneCamera.dampTime = initialDampTime;
-        CameraSwitch (bridgeMonster.gameObject);
-        yield return new WaitForSeconds (1.0f);
-        monster.ChangeEmotions (DataType.MonsterEmotions.Thoughtful);
-        yield return new WaitForSeconds (1.0f);
+        if (playIntro) {
+            monster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
+            yield return new WaitForSeconds (1.0f);
+            float initialDampTime = boneCamera.dampTime;
+            boneCamera.dampTime = 1.5f;
+            CameraSwitch (goal);
+            yield return new WaitForSeconds (6.0f);
+            boneCamera.dampTime = initialDampTime;
+            CameraSwitch (bridgeMonster.gameObject);
+            yield return new WaitForSeconds (1.0f);
+            monster.ChangeEmotions (DataType.MonsterEmotions.Thoughtful);
+            yield return new WaitForSeconds (1.0f);
+        }
         monster.ChangeEmotions (DataType.MonsterEmotions.Happy);
         bridgeMonster.StartCoroutine (bridgeMonster.Move ());
     }
@@ -141,9 +141,11 @@ public class BoneBridgeManager : AbstractGameManager {
     }
 
     public void ChangePhase (BridgePhase phase) {
-        bridgePhase = phase;
-        print ("Manager ChangePhase firing: " + phase);
-        PhaseChange (phase);
+        if (bridgePhase != phase) {
+            bridgePhase = phase;
+            print ("Manager ChangePhase firing: " + phase);
+            PhaseChange (phase);
+        }
     }
 
     void OnPhaseChange (BridgePhase phase) {
@@ -154,8 +156,12 @@ public class BoneBridgeManager : AbstractGameManager {
             case BridgePhase.Building:
                 inputAllowed = true;
                 break;
+            case BridgePhase.Falling:
+                inputAllowed = false;
+
+                break;
             case BridgePhase.Crossing:
-                inputAllowed = true;
+                inputAllowed = false;
                 break;
             case BridgePhase.Finish:
                 inputAllowed = false;
@@ -173,28 +179,24 @@ public class BoneBridgeManager : AbstractGameManager {
     }
 
     void CreateMonster() {
-        monster = GetComponent<CreateMonster> ().SpawnMonster ().GetComponentInChildren<Monster> ();
-        monster.ChangeEmotions (DataType.MonsterEmotions.Happy);
-        bridgeMonster = monster.transform.parent.gameObject.AddComponent<BoneBridgeMonster> ();
-        bridgeMonster.tapToMove = true;
-        rigBody = bridgeMonster.GetComponent<Rigidbody2D> ();
-        rigBody.mass = monsterMass;
-        rigBody.drag = 1f;
-        monster.GetComponent<BoxCollider2D> ().enabled = false;
-        monster.gameObject.AddComponent<CapsuleCollider2D> ();
+        monster = GetComponent<CreateMonster> ().SpawnMonster ();
+
     }
 
     public void CameraSwitch(GameObject obj) {
         boneCamera.target = obj;
     }
 
-    public void ChangeWaypoint(GameObject waypoint) {
-        bridgeMonster.StopAllCoroutines ();
-        bridgeMonster.goalObject = waypoint;
+    public void ResetMonster (Vector2 pos, GameObject focus) {
+        StartCoroutine (ResettingMonster (pos, focus));
     }
 
-    public void ResetMonster (Vector2 pos) {
-        bridgeMonster.gameObject.transform.position = pos;
+    IEnumerator ResettingMonster (Vector2 pos, GameObject focus) {
+        yield return new WaitForSeconds (3.0f);
+        bridgeMonster.transform.position = pos;
+        CameraSwitch (focus);
+        monster.ChangeEmotions (DataType.MonsterEmotions.Happy);
+        ChangePhase (BridgePhase.Building);
     }
 
     public void ChangeProgressBar (float value) {

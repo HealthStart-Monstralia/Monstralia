@@ -20,13 +20,24 @@ public class BoneBridgePiece : PhysicsDrag {
     }
 
     void OnPhaseChange (BoneBridgeManager.BridgePhase phase) {
-        //print ("BoneBridgePiece OnPhaseChange firing: " + phase);
+        print ("BoneBridgePiece OnPhaseChange firing: " + phase);
         switch (phase) {
             case BoneBridgeManager.BridgePhase.Start:
                 rigBody.bodyType = RigidbodyType2D.Kinematic;
                 break;
             case BoneBridgeManager.BridgePhase.Building:
                 //rigBody.bodyType = RigidbodyType2D.Kinematic;
+                break;
+            case BoneBridgeManager.BridgePhase.Falling:
+                if (isAttached) {
+                    rigBody.bodyType = RigidbodyType2D.Dynamic;
+                    if (leftJoint.jointAttached)
+                        leftJoint.jointAttached.DestroyJoint ();
+                    if (rightJoint.jointAttached)
+                        rightJoint.jointAttached.DestroyJoint ();
+                    GetComponent<BoxCollider2D> ().enabled = false;
+                    Destroy (gameObject, 3f);
+                }
                 break;
             case BoneBridgeManager.BridgePhase.Crossing:
                 if (isAttached)
