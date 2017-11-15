@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 /**
@@ -8,22 +9,34 @@ using System.Collections;
 
 public class Timer : MonoBehaviour {
 
-	public float timeLimit; /*!< The time limit that this timer will use */
+	public float timeLimit;         /*!< The time limit that this timer will use */
+    public Text textObject;
 
-	private bool timing;	/*!< Flag to keep track of when to start/stop counting down */
-	private float timeRemaining; /*!< The time remaining */
+    // Event
+    public delegate void OutOfTimeAction ();
+    public static event OutOfTimeAction OutOfTime;
+
+    private bool timing = false;	/*!< Flag to keep track of when to start/stop counting down */
+	private float timeRemaining;    /*!< The time remaining */
 
 	/** \cond */
 	void Start() {
-		timing = false;
-	}
+        timeRemaining = timeLimit;
+    }
 	
 	void FixedUpdate () {
-		if(timing && timeRemaining >= 0f) {
-			timeRemaining -= Time.deltaTime;
+		if (timing) {
+            if (timeRemaining >= 0f) {
+                timeRemaining -= Time.deltaTime;
+            }
+            else {
+                StopTimer ();
+                OutOfTime ();
+            }
 		}
-	
-	}
+        
+        textObject.text = TimeRemaining ().ToString ();
+    }
 	/** \endcond */
 
 	/**
@@ -42,19 +55,19 @@ public class Timer : MonoBehaviour {
 		timing = true;
 	}
 
-	/**
+    /**
+     * \brief Tell the timer to stop counting down
+     */
+    public void StopTimer () {
+        timing = false;
+    }
+
+    /**
 	 * \brief Get the time remaining without the decimal
 	 * @return The timeRemaining without the decimal
 	 */
-	public int TimeRemaining() {
+    public int TimeRemaining() {
 		return Mathf.CeilToInt(timeRemaining);
-	}
-
-	/**
-	 * \brief Tell the timer to stop counting down
-	 */
-	public void StopTimer() {
-		timing = false;
 	}
 
 	public void SubtractTime(float delta) {

@@ -8,7 +8,7 @@ public class BoneBridgeTransition : MonoBehaviour {
         PlayZone = 1,
         WinZone = 2
     }
-    public GameObject focus, waypoint, startPos;
+    public GameObject focus, startPos;
     public SectionType typeOfSection;
 
     void OnTriggerEnter2D(Collider2D collision) {
