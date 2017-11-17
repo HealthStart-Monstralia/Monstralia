@@ -9,6 +9,7 @@ public class BoneBridgeMonster : MonoBehaviour {
     private Vector3 pointerOffset;
     private Vector3 cursorPos;
     private Monster monster;
+    private Coroutine movingCoroutine;
 
     private void OnEnable () {
         BoneBridgeManager.PhaseChange += OnPhaseChange;
@@ -34,8 +35,8 @@ public class BoneBridgeMonster : MonoBehaviour {
 
     void OnPhaseChange(BoneBridgeManager.BridgePhase phase) {
         switch (phase) {
-            case BoneBridgeManager.BridgePhase.Start:
-                
+            case BoneBridgeManager.BridgePhase.Countdown:
+                StopAllCoroutines ();
                 break;
             case BoneBridgeManager.BridgePhase.Building:
                 StopAllCoroutines ();

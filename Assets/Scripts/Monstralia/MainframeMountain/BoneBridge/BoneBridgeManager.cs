@@ -11,6 +11,7 @@ using UnityEngine.UI;
 public class BoneBridgeManager : AbstractGameManager {
     public enum BridgePhase {
         Start,
+        Countdown,
         Building,
         Falling,
         Crossing,
@@ -122,6 +123,7 @@ public class BoneBridgeManager : AbstractGameManager {
     }
 
     IEnumerator Countdown () {
+        ChangePhase (BridgePhase.Countdown);
         yield return new WaitForSeconds (1.0f);
         GameManager.GetInstance ().Countdown ();
         yield return new WaitForSeconds (4.0f);
@@ -157,6 +159,9 @@ public class BoneBridgeManager : AbstractGameManager {
     void OnPhaseChange (BridgePhase phase) {
         switch (phase) {
             case BridgePhase.Start:
+                inputAllowed = false;
+                break;
+            case BridgePhase.Countdown:
                 inputAllowed = false;
                 break;
             case BridgePhase.Building:

@@ -35,10 +35,9 @@ public class CreateMonster : MonoBehaviour {
         if (addRigidbody) {
             Rigidbody2D rigBody = monster.transform.parent.gameObject.AddComponent<Rigidbody2D> ();
             rigBody.mass = monsterMass;
-            rigBody.drag = 0.5f;
+            rigBody.drag = 0.3f;
             rigBody.freezeRotation = true;
             rigBody.gravityScale = 1.5f;
-            rigBody.mass = 3f;
             rigBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             rigBody.interpolation = RigidbodyInterpolation2D.Interpolate;
         }
