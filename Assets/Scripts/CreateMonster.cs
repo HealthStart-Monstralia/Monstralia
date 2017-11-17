@@ -3,34 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CreateMonster : MonoBehaviour {
+    public bool spawnMonsterOnStart = true;
     public bool allowMonsterTickle = true;
     public bool idleAnimationOn = true;
     public bool addRigidbody = false;
+    public bool replaceBoxCollider = false;
+    public bool playSpawnAnimation = true;
+
     public Vector3 scale = new Vector3 (1f, 1f, 1f);
     public Transform spawnPosition;
     [Range (0.1f, 5f)]
     public float monsterMass = 1.5f;
     [HideInInspector] public Rigidbody2D rigBody;
 
-    private void Update () {
-        if (rigBody)
-            if (rigBody.mass != monsterMass) rigBody.mass = monsterMass;
+    private void Start () {
+        if (spawnMonsterOnStart) { SpawnMonster (GameManager.GetInstance ().GetPlayerMonsterType ()); };
     }
 
-    public Monster SpawnMonster() {
-        Transform spot;
-        if (spawnPosition)
-            spot = spawnPosition;
-        else
-            spot = transform;
+    public Monster SpawnMonster (GameObject monsterObject) {
+        if (!spawnPosition)
+            spawnPosition = transform;
+        return Spawn (monsterObject);
+    }
 
-        Monster monster = Instantiate (GameManager.GetInstance ().GetMonster (), spot.position, Quaternion.identity, spot.parent).GetComponentInChildren<Monster> ();
+    public Monster SpawnMonster(GameObject monsterObject, Transform spot) {
+        spawnPosition = spot;
+        return Spawn (monsterObject);
+    }
+
+    private Monster Spawn(GameObject monsterObject) {
+        Monster monster = Instantiate (monsterObject, spawnPosition.position, Quaternion.identity, spawnPosition.parent).GetComponentInChildren<Monster> ();
         monster.allowMonsterTickle = allowMonsterTickle;
         monster.idleAnimationOn = idleAnimationOn;
         monster.transform.parent.localScale = scale;
-        monster.GetComponent<BoxCollider2D> ().enabled = false;
-        monster.gameObject.AddComponent<CapsuleCollider2D> ();
-        monster.PlaySpawnAnimation ();
+
+        if (replaceBoxCollider) {
+            monster.GetComponent<BoxCollider2D> ().enabled = false;
+            monster.gameObject.AddComponent<CapsuleCollider2D> ();
+        }
+
+        if (playSpawnAnimation) monster.PlaySpawnAnimation ();
 
         if (addRigidbody) {
             Rigidbody2D rigBody = monster.transform.parent.gameObject.AddComponent<Rigidbody2D> ();

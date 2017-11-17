@@ -200,8 +200,12 @@ public class GameManager : MonoBehaviour {
         return monsterType;
     }
 
-    public GameObject GetMonster () {
-        switch(monsterType) {
+    public GameObject GetPlayerMonsterType () {
+        return GetMonsterObject (monsterType);
+    }
+
+    public GameObject GetMonsterObject (DataType.MonsterType typeOfMonster) {
+        switch (typeOfMonster) {
             case DataType.MonsterType.Blue:
                 return blueMonster;
             case DataType.MonsterType.Green:

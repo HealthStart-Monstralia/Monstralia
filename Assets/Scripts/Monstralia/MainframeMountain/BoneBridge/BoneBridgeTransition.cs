@@ -6,13 +6,16 @@ public class BoneBridgeTransition : MonoBehaviour {
     public enum SectionType {
         StartZone = 0,
         PlayZone = 1,
-        WinZone = 2
+        WinZone = 2,
+        FallZone = 3
     }
     public GameObject focus, startPos;
     public SectionType typeOfSection;
 
+    // Assign a monster responsible for this sector
+
     void OnTriggerEnter2D(Collider2D collision) {
-        if (collision.gameObject.tag == "Monster") {
+        if (collision.gameObject.tag == "Monster" && collision.GetComponentInParent<BoneBridgeMonster>()) {
             switch (typeOfSection) {
                 case SectionType.StartZone:
                     StartGame ();
@@ -22,6 +25,9 @@ public class BoneBridgeTransition : MonoBehaviour {
                     break;
                 case SectionType.WinZone:
                     WinGame ();
+                    break;
+                case SectionType.FallZone:
+                    RestartBridge ();
                     break;
             }
         }
@@ -43,5 +49,10 @@ public class BoneBridgeTransition : MonoBehaviour {
         BoneBridgeManager.GetInstance ().GameOver ();
         if (focus)
             BoneBridgeManager.GetInstance ().CameraSwitch (focus);
+    }
+
+    void RestartBridge() {
+        BoneBridgeManager.GetInstance ().ChangePhase (BoneBridgeManager.BridgePhase.Falling);
+        BoneBridgeManager.GetInstance ().ResetMonster (startPos.transform.position, focus);
     }
 }

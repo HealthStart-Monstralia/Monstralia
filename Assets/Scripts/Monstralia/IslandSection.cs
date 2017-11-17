@@ -31,7 +31,7 @@ public class IslandSection : MonoBehaviour {
     }
 
     void CreateMonsterOnMap() {
-        monster = GameManager.GetInstance ().GetMonster ();
+        monster = GameManager.GetInstance ().GetPlayerMonsterType ();
         Instantiate (monster, monsterLocation.transform);
     }
 }

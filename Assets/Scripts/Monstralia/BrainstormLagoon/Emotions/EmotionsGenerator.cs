@@ -183,7 +183,7 @@ public class EmotionsGenerator : MonoBehaviour {
 
     public void CreateMonster() {
         Vector2 pos = EmotionsGameManager.GetInstance ().monsterLocation.position;
-        monster = Instantiate(GameManager.GetInstance ().GetMonster (), pos, Quaternion.identity);
+        monster = Instantiate(GameManager.GetInstance ().GetPlayerMonsterType (), pos, Quaternion.identity);
         monster.transform.localScale = new Vector3 (0.8f, 0.8f, 0.8f);
         monster.AddComponent<EmotionsMonster> ();
         monster.GetComponentInChildren<Monster> ().idleAnimationOn = false;

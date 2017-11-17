@@ -59,7 +59,7 @@ public class BoneBridgeMonster : MonoBehaviour {
         Vector2 dir = Vector2.right;
         while (true) {
             MoveTowards (dir);
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
     }
 
