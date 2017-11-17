@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4981727617776016}
   - component: {fileID: 212700998455607298}
   - component: {fileID: 50029467736370148}
+  - component: {fileID: 114677719146919416}
   - component: {fileID: 114259289055824622}
   - component: {fileID: 58733878912113104}
   m_Layer: 0
@@ -37,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1760361989569442}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.77, y: 1.14, z: 0}
+  m_LocalPosition: {x: -7.77, y: 0.93, z: 0}
   m_LocalScale: {x: 0.12484522, y: 0.12484522, z: 0.12484522}
   m_Children: []
   m_Father: {fileID: 0}
@@ -94,6 +95,17 @@ MonoBehaviour:
   rejectRightEnd: 1
   boneDetachSfx: {fileID: 8300000, guid: d573ec18301b55d4a8e8911d0a70c62e, type: 3}
   boneJoint: {fileID: 0}
+--- !u!114 &114677719146919416
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1760361989569442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e24ca1a45bfae8941addf395e392cec1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212700998455607298
 SpriteRenderer:
   m_ObjectHideFlags: 1

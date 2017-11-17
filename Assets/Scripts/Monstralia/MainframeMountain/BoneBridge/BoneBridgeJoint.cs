@@ -2,39 +2,39 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoneJoint : MonoBehaviour {
+public class BoneBridgeJoint : MonoBehaviour {
     public float jointBreakForce = 250f;
     public bool rejectLeftEnd, rejectRightEnd;
     public AudioClip boneDetachSfx;
     public HingeJoint2D boneJoint;
 
-    public HingeJoint2D AddJoint(GameObject obj, SnapToJoint.EndType typeOfEnd) {
+    public HingeJoint2D AddJoint(GameObject obj, BoneBridgeSnapToSocket.EndType typeOfEnd) {
         switch (typeOfEnd) {
-            case SnapToJoint.EndType.Left:
+            case BoneBridgeSnapToSocket.EndType.Left:
                 return !boneJoint ? CreateJoint (obj, typeOfEnd, -90f, 90f) : null;
-            case SnapToJoint.EndType.Right:
+            case BoneBridgeSnapToSocket.EndType.Right:
                 return !boneJoint ? CreateJoint (obj, typeOfEnd, 90f, -90f) : null;
             default:
                 return null;
         }
     }
 
-    HingeJoint2D CreateJoint (GameObject obj, SnapToJoint.EndType typeOfEnd, float lowerAngle, float upperAngle) {
+    HingeJoint2D CreateJoint (GameObject obj, BoneBridgeSnapToSocket.EndType typeOfEnd, float lowerAngle, float upperAngle) {
         if (GetComponent<Rigidbody2D> ()) {
             boneJoint = gameObject.AddComponent<HingeJoint2D> ();
-            if (typeOfEnd == SnapToJoint.EndType.Left) {
-                obj.GetComponent<BoneBridgePiece> ().leftJoint.GetComponent<BoneJoint> ().boneJoint = boneJoint;
+            if (typeOfEnd == BoneBridgeSnapToSocket.EndType.Left) {
+                obj.GetComponent<BoneBridgePiece> ().leftJoint.GetComponent<BoneBridgeJoint> ().boneJoint = boneJoint;
             } else {
-                obj.GetComponent<BoneBridgePiece> ().rightJoint.GetComponent<BoneJoint> ().boneJoint = boneJoint;
+                obj.GetComponent<BoneBridgePiece> ().rightJoint.GetComponent<BoneBridgeJoint> ().boneJoint = boneJoint;
             }
         } else {
             boneJoint = transform.parent.gameObject.AddComponent<HingeJoint2D> ();
-            if (typeOfEnd == SnapToJoint.EndType.Left) {
+            if (typeOfEnd == BoneBridgeSnapToSocket.EndType.Left) {
                 boneJoint.anchor = new Vector2 (2f, boneJoint.anchor.y);
-                obj.GetComponent<BoneBridgePiece> ().leftJoint.GetComponent<BoneJoint> ().boneJoint = boneJoint;
+                obj.GetComponent<BoneBridgePiece> ().leftJoint.GetComponent<BoneBridgeJoint> ().boneJoint = boneJoint;
             } else {
                 boneJoint.anchor = new Vector2 (-2f, boneJoint.anchor.y);
-                obj.GetComponent<BoneBridgePiece> ().rightJoint.GetComponent<BoneJoint> ().boneJoint = boneJoint;
+                obj.GetComponent<BoneBridgePiece> ().rightJoint.GetComponent<BoneBridgeJoint> ().boneJoint = boneJoint;
             }
         }
         Rigidbody2D rigBody = obj.GetComponent<Rigidbody2D> ();
@@ -52,11 +52,11 @@ public class BoneJoint : MonoBehaviour {
         return boneJoint;
     }
 
-    public bool IsJointAvailible(SnapToJoint.EndType end) {
+    public bool IsJointAvailible(BoneBridgeSnapToSocket.EndType end) {
         switch (end) {
-            case SnapToJoint.EndType.Left:
+            case BoneBridgeSnapToSocket.EndType.Left:
                 return (!rejectLeftEnd && !boneJoint) ? true : false;
-            case SnapToJoint.EndType.Right:
+            case BoneBridgeSnapToSocket.EndType.Right:
                 return (!rejectRightEnd && !boneJoint) ? true : false;
             default:
                 return false;

@@ -33,7 +33,6 @@ public class BoneBridgeMonster : MonoBehaviour {
     }
 
     void OnPhaseChange(BoneBridgeManager.BridgePhase phase) {
-        print ("BoneBridgeMonster OnPhaseChange firing: " + phase);
         switch (phase) {
             case BoneBridgeManager.BridgePhase.Start:
                 

@@ -26,11 +26,11 @@ public class BoneBridgeManager : AbstractGameManager {
     public bool inputAllowed = false;
     public bool isTutorialRunning = false;
     public ScoreGauge scoreGauge;
+    public SubtitlePanel subtitlePanel;
 
     public Timer timerObject;
-    public GameObject subtitlePanel;
     public GameObject start, goal;
-    public Monster monster;
+    [HideInInspector] public Monster monster;
     public BoneBridgeCamera boneCamera;
     [HideInInspector] public BoneBridgeMonster bridgeMonster;
 
@@ -54,6 +54,7 @@ public class BoneBridgeManager : AbstractGameManager {
 
         scoreGauge.gameObject.SetActive (false);
         timerObject.gameObject.SetActive (false);
+        inputAllowed = false;
     }
 
     public static BoneBridgeManager GetInstance () {
@@ -81,15 +82,13 @@ public class BoneBridgeManager : AbstractGameManager {
     public override void PregameSetup () {
         difficultyLevel = GameManager.GetInstance ().GetLevel (typeOfGame);
         if (GameManager.GetInstance ().GetPendingTutorial (DataType.Minigame.BoneBridge)) {
-
+            StartCoroutine (Tutorial ());
         }
         else {
-
+            CameraSwitch (GetComponent<CreateMonster> ().spawnPosition.gameObject);
+            OnPhaseChange (BridgePhase.Start);
+            StartCoroutine (Intro ());
         }
-
-        CameraSwitch (GetComponent<CreateMonster>().spawnPosition.gameObject);
-        OnPhaseChange (BridgePhase.Start);
-        StartCoroutine (Intro ());
     }
 
     IEnumerator Intro () {
@@ -110,6 +109,16 @@ public class BoneBridgeManager : AbstractGameManager {
         }
         monster.ChangeEmotions (DataType.MonsterEmotions.Happy);
         bridgeMonster.StartCoroutine (bridgeMonster.Move ());
+        CameraSwitch (bridgeMonster.gameObject);
+    }
+
+    IEnumerator Tutorial () {
+        yield return new WaitForSeconds (1.0f);
+        subtitlePanel.Display ("Welcome to Bone Bridge!");
+        yield return new WaitForSeconds (3.0f);
+
+        GameManager.GetInstance ().CompleteTutorial (typeOfGame);
+        PregameSetup ();
     }
 
     IEnumerator Countdown () {
@@ -134,6 +143,8 @@ public class BoneBridgeManager : AbstractGameManager {
     public bool GetGameStarted () { return gameStarted; }
 
     public override void GameOver () { ChangePhase(BridgePhase.Finish); }
+
+    void OnOutOfTime () { ChangePhase (BridgePhase.Lose); }
 
     public void ChangePhase (BridgePhase phase) {
         if (bridgePhase != phase) {
@@ -174,9 +185,6 @@ public class BoneBridgeManager : AbstractGameManager {
         }
     }
 
-    void OnOutOfTime () {
-        ChangePhase (BridgePhase.Lose);
-    }
 
     IEnumerator GameOverSequence() {
         monster.ChangeEmotions (DataType.MonsterEmotions.Joyous);

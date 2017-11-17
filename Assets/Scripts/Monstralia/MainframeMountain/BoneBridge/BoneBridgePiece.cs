@@ -5,7 +5,7 @@ using UnityEngine;
 public class BoneBridgePiece : PhysicsDrag {
     public AudioClip bonePickupSfx;
     public float jointBreakForce = 250f;
-    public SnapToJoint leftJoint, rightJoint;
+    public BoneBridgeSnapToSocket leftJoint, rightJoint;
     public bool isAttached = false;
 
     private Vector3 startPos;
@@ -20,13 +20,11 @@ public class BoneBridgePiece : PhysicsDrag {
     }
 
     void OnPhaseChange (BoneBridgeManager.BridgePhase phase) {
-        print ("BoneBridgePiece OnPhaseChange firing: " + phase);
         switch (phase) {
             case BoneBridgeManager.BridgePhase.Start:
                 rigBody.bodyType = RigidbodyType2D.Kinematic;
                 break;
             case BoneBridgeManager.BridgePhase.Building:
-                //rigBody.bodyType = RigidbodyType2D.Kinematic;
                 break;
             case BoneBridgeManager.BridgePhase.Falling:
                 if (isAttached) {
@@ -36,7 +34,8 @@ public class BoneBridgePiece : PhysicsDrag {
                     if (rightJoint.jointAttached)
                         rightJoint.jointAttached.DestroyJoint ();
                     GetComponent<BoxCollider2D> ().enabled = false;
-                    Destroy (gameObject, 3f);
+                    isAttached = false;
+                    Invoke ("ResetBone", 3f);
                 }
                 break;
             case BoneBridgeManager.BridgePhase.Crossing:
@@ -53,8 +52,8 @@ public class BoneBridgePiece : PhysicsDrag {
     void Start() {
         startPos = transform.position;
         startRot = transform.rotation;
-        leftJoint.GetComponent<BoneJoint> ().jointBreakForce = jointBreakForce;
-        rightJoint.GetComponent<BoneJoint> ().jointBreakForce = jointBreakForce;
+        leftJoint.GetComponent<BoneBridgeJoint> ().jointBreakForce = jointBreakForce;
+        rightJoint.GetComponent<BoneBridgeJoint> ().jointBreakForce = jointBreakForce;
         //OnPhaseChange(BoneBridgeManager.BridgePhase.Building);
     }
 
@@ -75,8 +74,7 @@ public class BoneBridgePiece : PhysicsDrag {
             if (rightJoint.TrySnapping ())
                 isAttached = true;
             if (!isAttached) {
-                transform.position = startPos;
-                transform.rotation = startRot;
+                ResetBone ();
             }
             print ("isAttached: " + isAttached);
         }
@@ -86,5 +84,16 @@ public class BoneBridgePiece : PhysicsDrag {
         if (BoneBridgeManager.GetInstance ().inputAllowed && !isAttached) {
             base.OnMouseDrag ();
         }
+    }
+
+    public void ResetBone() {
+        rigBody.bodyType = RigidbodyType2D.Kinematic;
+        rigBody.velocity = Vector2.zero;
+        rigBody.angularVelocity = 0f;
+        transform.position = startPos;
+        transform.rotation = startRot;
+        leftJoint.ActivateJoint ();
+        rightJoint.ActivateJoint ();
+        GetComponent<BoxCollider2D> ().enabled = true;
     }
 }

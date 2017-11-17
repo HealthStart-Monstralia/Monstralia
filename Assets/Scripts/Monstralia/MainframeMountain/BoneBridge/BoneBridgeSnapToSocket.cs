@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SnapToJoint : MonoBehaviour {
+public class BoneBridgeSnapToSocket : MonoBehaviour {
     public enum EndType {
         Left = 0,
         Right = 1
@@ -11,7 +11,7 @@ public class SnapToJoint : MonoBehaviour {
     public Color normalColor, touchColor, snapColor;
     public EndType typeOfEnd;
     public AudioClip boneAttachSfx;
-    public BoneJoint jointTouching, jointAttached;
+    public BoneBridgeJoint jointTouching, jointAttached;
     public HingeJoint2D hingeAttached;
 
     private SpriteRenderer spr;
@@ -22,7 +22,7 @@ public class SnapToJoint : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D (Collider2D collision) {
-        BoneJoint joint = collision.gameObject.GetComponent<BoneJoint> ();
+        BoneBridgeJoint joint = collision.gameObject.GetComponent<BoneBridgeJoint> ();
         if (joint) {
             if (joint.IsJointAvailible(typeOfEnd)) {
                 spr.color = touchColor;
@@ -32,7 +32,7 @@ public class SnapToJoint : MonoBehaviour {
     }
 
     private void OnTriggerExit2D (Collider2D collision) {
-        if (collision.gameObject.GetComponent<BoneJoint> ()) {
+        if (collision.gameObject.GetComponent<BoneBridgeJoint> ()) {
             spr.color = jointAttached ? snapColor : normalColor;
             jointTouching = null;
         }
@@ -53,11 +53,11 @@ public class SnapToJoint : MonoBehaviour {
         spr.color = normalColor;
     }
 
-    private void SnapTo (BoneJoint joint) {
+    private void SnapTo (BoneBridgeJoint joint) {
         transform.parent.position = joint.transform.position + (transform.parent.position - transform.position);
         jointAttached = joint;
         hingeAttached = joint.AddJoint (transform.parent.gameObject, typeOfEnd);
-        SnapToJoint snap = joint.GetComponent<SnapToJoint> ();
+        BoneBridgeSnapToSocket snap = joint.GetComponent<BoneBridgeSnapToSocket> ();
 
         if (snap) {
             snap.jointAttached = jointAttached;
