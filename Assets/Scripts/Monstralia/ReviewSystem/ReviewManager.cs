@@ -43,7 +43,9 @@ public class ReviewManager : MonoBehaviour {
         if (!reviewGame) {
             bool foundObject = reviewGamesList.Contains (reviewGame);
             if (!foundObject) {
-                reviewGamesDict.Add (reviewGame, minigame);
+                if (!reviewGamesDict.ContainsKey (reviewGame)) {
+                    reviewGamesDict.Add (reviewGame, minigame);
+                }
                 reviewGamesList.Add (reviewGame);
             }
         }

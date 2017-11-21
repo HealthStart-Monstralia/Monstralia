@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CreateMonster : MonoBehaviour {
-    public bool spawnMonsterOnStart = true;
+    public bool spawnMonsterOnStart = false;
     public bool allowMonsterTickle = true;
     public bool idleAnimationOn = true;
     public bool addRigidbody = false;
@@ -17,7 +17,10 @@ public class CreateMonster : MonoBehaviour {
     [HideInInspector] public Rigidbody2D rigBody;
 
     private void Start () {
-        if (spawnMonsterOnStart) { SpawnMonster (GameManager.GetInstance ().GetPlayerMonsterType ()); };
+        if (spawnMonsterOnStart) {
+            SpawnMonster (GameManager.GetInstance ().GetPlayerMonsterType ());
+            print ("Spawning monster on start from: " + gameObject);
+        };
     }
 
     public Monster SpawnMonster (GameObject monsterObject) {
@@ -39,7 +42,8 @@ public class CreateMonster : MonoBehaviour {
 
         if (replaceBoxCollider) {
             monster.GetComponent<BoxCollider2D> ().enabled = false;
-            monster.gameObject.AddComponent<CapsuleCollider2D> ();
+            CapsuleCollider2D capsule = monster.gameObject.AddComponent<CapsuleCollider2D> ();
+            capsule.size = capsule.size - new Vector2 (0.25f, 0.25f);
         }
 
         if (playSpawnAnimation) monster.PlaySpawnAnimation ();

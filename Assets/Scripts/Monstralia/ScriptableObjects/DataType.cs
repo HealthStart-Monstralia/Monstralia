@@ -28,6 +28,12 @@ public class DataType : ScriptableObject {
         MainframeMountain
     };
 
+    public enum Level {
+        LevelOne = 1,
+        LevelTwo = 2,
+        LevelThree = 3
+    }
+
     public enum MonsterType {
         Blue = 0,
         Green = 1,

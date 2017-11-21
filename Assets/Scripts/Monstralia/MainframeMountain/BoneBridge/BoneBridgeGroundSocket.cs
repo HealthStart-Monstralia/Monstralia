@@ -5,12 +5,10 @@ using UnityEngine;
 public class BoneBridgeGroundSocket : MonoBehaviour {
     public Color normalColor, touchColor, snapColor;
     private SpriteRenderer spr;
-    private BoneBridgeJoint joint;
 
     private void Awake () {
         spr = GetComponent<SpriteRenderer> ();
         spr.color = normalColor;
-        joint = GetComponent<BoneBridgeJoint> ();
     }
 
     private void OnEnable () {
@@ -40,15 +38,4 @@ public class BoneBridgeGroundSocket : MonoBehaviour {
                 break;
         }
     }
-
-    /*
-    private void OnTriggerEnter2D (Collider2D collision) {
-        BoneBridgeJoint joint = collision.gameObject.GetComponent<BoneBridgeJoint> ();
-        if (joint) {
-            if (joint.IsJointAvailible (joint.)) {
-                spr.color = touchColor;
-            }
-        }
-    }
-    */
 }

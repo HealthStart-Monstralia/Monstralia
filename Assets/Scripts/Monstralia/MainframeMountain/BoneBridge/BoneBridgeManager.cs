@@ -22,23 +22,25 @@ public class BoneBridgeManager : AbstractGameManager {
 
     [Header ("BoneBridgeManager Fields")]
     public BridgePhase bridgePhase;
+    public DataType.Level difficultyLevel;
+    public BoneBridgeLevel levelOne, levelTwo, levelThree;
+    [HideInInspector] public BoneBridgeLevel currentLevel;
 
     public VoiceOversData voData;
-    public BoneBridgeLevel[] config;
+    public BoneBridgeData config;
     public bool doCountdown, playIntro;
     public bool inputAllowed = false;
-    public bool isTutorialRunning = false;
+    [HideInInspector] public bool isTutorialRunning = false;
+    public bool getLevelFromGameManager = true;
     public ScoreGauge scoreGauge;
     public SubtitlePanel subtitlePanel;
 
     public Timer timerObject;
     public BoneBridgeCamera boneCamera;
-    public GameObject start, goal, chest;
+    public GameObject chest;
 
     [HideInInspector] public Monster monster;
     private Monster trappedMonster;
-    public Transform prize;
-    public Transform[] friendSpawns;
 
     [HideInInspector] public BoneBridgeMonster bridgeMonster;
 
@@ -48,7 +50,7 @@ public class BoneBridgeManager : AbstractGameManager {
 
     [SerializeField] private List<GameObject> monsterPool = new List<GameObject> ();
     [SerializeField] private List<DataType.MonsterType> savedMonsters = new List<DataType.MonsterType> ();
-    [SerializeField] private int difficultyLevel = 0;
+    private Transform start, goal;
     private Coroutine tutorialCoroutine;
     private bool gameStarted = false;
     private static BoneBridgeManager instance = null;
@@ -73,7 +75,7 @@ public class BoneBridgeManager : AbstractGameManager {
     private void Update () {
         if (bridgeMonster) {
             ChangeProgressBar (
-                (bridgeMonster.transform.position.x - start.transform.position.x) / (goal.transform.position.x - start.transform.position.x)
+                (bridgeMonster.transform.position.x - start.position.x) / (goal.position.x - start.transform.position.x)
             );
         }
     }
@@ -89,12 +91,15 @@ public class BoneBridgeManager : AbstractGameManager {
     }
 
     public override void PregameSetup () {
-        difficultyLevel = GameManager.GetInstance ().GetLevel (typeOfGame);
+        if (getLevelFromGameManager)
+            difficultyLevel = (DataType.Level)GameManager.GetInstance ().GetLevel (typeOfGame);
+        ChangeLevel (GetLevelObject(difficultyLevel));
+
         if (GameManager.GetInstance ().GetPendingTutorial (DataType.Minigame.BoneBridge)) {
-            StartCoroutine (Tutorial ());
+            tutorialCoroutine = StartCoroutine (Tutorial ());
         }
         else {
-            CameraSwitch (GetComponent<CreateMonster> ().spawnPosition.gameObject);
+            CameraSwitch (currentLevel.monsterSpawn.gameObject);
             OnPhaseChange (BridgePhase.Start);
             StartCoroutine (Intro ());
         }
@@ -109,11 +114,12 @@ public class BoneBridgeManager : AbstractGameManager {
             yield return new WaitForSeconds (1.0f);
             float initialDampTime = boneCamera.dampTime;
             boneCamera.dampTime = 1.5f;
-            CameraSwitch (prize.gameObject);
+            CameraSwitch (currentLevel.prizeSpawn.gameObject);
             CreatePrize ();
             yield return new WaitForSeconds (3.0f);
             boneCamera.dampTime = 1.0f;
             yield return new WaitForSeconds (0.5f);
+            if (trappedMonster) monster.ChangeEmotions (DataType.MonsterEmotions.Afraid);
             boneCamera.dampTime = 0.7f;
             yield return new WaitForSeconds (1.0f);
             boneCamera.dampTime = initialDampTime;
@@ -228,11 +234,14 @@ public class BoneBridgeManager : AbstractGameManager {
         }
 
         // Create player monster
-        monster = GetComponent<CreateMonster> ().SpawnMonster (GameManager.GetInstance().GetPlayerMonsterType());
+        monster = currentLevel
+            .monsterSpawn.GetComponent<CreateMonster> ()
+            .SpawnMonster (GameManager.GetInstance().GetPlayerMonsterType());
         bridgeMonster = monster.transform.parent.gameObject.AddComponent<BoneBridgeMonster> ();
         bridgeMonster.rigBody = monster.transform.parent.gameObject.GetComponent<Rigidbody2D>();
         monsterPool.Remove (GameManager.GetInstance ().GetPlayerMonsterType ());
 
+        Transform[] friendSpawns = currentLevel.friendSpawns;
         // Choose monsters
         for (int i = 0; i < friendSpawns.Length; i++) {
             int randomNumber = Random.Range (0, monsterPool.Count);
@@ -245,6 +254,32 @@ public class BoneBridgeManager : AbstractGameManager {
             monsterCreator.SpawnMonster (selectedMonster);
         }
 
+    }
+
+    void ChangeLevel(BoneBridgeLevel level) {
+        levelOne.gameObject.SetActive (false);
+        levelTwo.gameObject.SetActive (false);
+        levelThree.gameObject.SetActive (false);
+
+        level.gameObject.SetActive (true);
+        currentLevel = level;
+
+        start = currentLevel.start;
+        goal = currentLevel.goal;
+        boneCamera.xMinClamp = currentLevel.cameraXMin;
+        boneCamera.xMaxClamp = currentLevel.cameraXMax;
+    }
+
+    BoneBridgeLevel GetLevelObject(DataType.Level level) {
+        switch (level) {
+            case DataType.Level.LevelOne:
+                return levelOne;
+            case DataType.Level.LevelTwo:
+                return levelTwo;
+            case DataType.Level.LevelThree:
+                return levelThree;
+        }
+        return levelOne;
     }
 
     public void CameraSwitch(GameObject obj) {
@@ -269,18 +304,20 @@ public class BoneBridgeManager : AbstractGameManager {
     }
 
     public void CreatePrize () {
+        Transform prize = currentLevel.prizeSpawn;
+
         switch (difficultyLevel) {
-            case 1:
+            case DataType.Level.LevelOne:
                 trappedMonster = prize.GetComponent<CreateMonster> ().SpawnMonster (monsterPool[Random.Range(0,monsterPool.Count)]);
                 trappedMonster.ChangeEmotions (DataType.MonsterEmotions.Afraid);
                 subtitlePanel.Display ("Rescue the trapped monster!");
                 break;
-            case 2:
+            case DataType.Level.LevelTwo:
                 trappedMonster = prize.GetComponent<CreateMonster> ().SpawnMonster (monsterPool[Random.Range (0, monsterPool.Count)]);
                 trappedMonster.ChangeEmotions (DataType.MonsterEmotions.Afraid);
                 subtitlePanel.Display ("Rescue the trapped monster!");
                 break;
-            case 3:
+            case DataType.Level.LevelThree:
                 Instantiate (chest, prize.transform.position, Quaternion.identity, prize.transform.root);
                 break;
             default:
