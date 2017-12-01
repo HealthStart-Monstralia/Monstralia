@@ -20,8 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4430328903082578}
   - component: {fileID: 212541026014702270}
+  - component: {fileID: 114642663251011302}
   - component: {fileID: 61097293362834080}
-  - component: {fileID: 50505527856573484}
+  - component: {fileID: 50262072375496226}
   m_Layer: 0
   m_Name: Chest
   m_TagString: Untagged
@@ -36,13 +37,13 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1014160450455252}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.004282, y: 3.777602, z: 0}
-  m_LocalScale: {x: 1.0125675, y: 1.1370641, z: 0.66397876}
+  m_LocalPosition: {x: 14.004282, y: 2.8, z: 0}
+  m_LocalScale: {x: 0.21262918, y: 0.21262921, z: 0.21262921}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &50505527856573484
+--- !u!50 &50262072375496226
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 1
@@ -53,10 +54,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 3
+  m_Mass: 5
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0.25
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -74,19 +75,34 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.17553324}
+  m_Offset: {x: 0.042173386, y: -2.052614}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.56, y: 2.56}
+    oldSize: {x: 10.24, y: 10.24}
     newSize: {x: 10.24, y: 10.24}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.8701599, y: 1.8229966}
+  m_Size: {x: 9.631565, y: 5.9989724}
   m_EdgeRadius: 0
+--- !u!114 &114642663251011302
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1014160450455252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6137c38c20f4ca14093977e353eb282b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chestClosed: {fileID: 21300000, guid: d19844571b6252b42ae33a60d8f40bd7, type: 3}
+  chestOpened: {fileID: 21300000, guid: e66a4b04b3e485541942d04a4be0b068, type: 3}
+  popSfx: {fileID: 8300000, guid: a6686e3f910232b42bbec8620fc0895d, type: 3}
+  rewardSfx: {fileID: 8300000, guid: 35ecd8616d8133c44b3cd28890850741, type: 3}
 --- !u!212 &212541026014702270
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -121,7 +137,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c69e8aab7ad86a04f943afe5391bb12f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d19844571b6252b42ae33a60d8f40bd7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

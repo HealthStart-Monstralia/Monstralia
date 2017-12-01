@@ -37,10 +37,11 @@ public class BoneBridgeManager : AbstractGameManager {
 
     public Timer timerObject;
     public BoneBridgeCamera boneCamera;
-    public GameObject chest;
+    public GameObject chestPrefab;
 
     [HideInInspector] public Monster monster;
     private Monster trappedMonster;
+    private BoneBridgeChest chestObject;
 
     [HideInInspector] public BoneBridgeMonster bridgeMonster;
 
@@ -216,6 +217,7 @@ public class BoneBridgeManager : AbstractGameManager {
     IEnumerator GameOverSequence() {
         monster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
         if (trappedMonster) trappedMonster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
+        else chestObject.OpenChest ();
 
         SoundManager.GetInstance ().PlayVoiceOverClip (voData.FindVO ("youdidit"));
         timerObject.StopTimer ();
@@ -318,7 +320,8 @@ public class BoneBridgeManager : AbstractGameManager {
                 subtitlePanel.Display ("Rescue the trapped monster!");
                 break;
             case DataType.Level.LevelThree:
-                Instantiate (chest, prize.transform.position, Quaternion.identity, prize.transform.root);
+                chestObject = Instantiate (chestPrefab, prize.transform.position, Quaternion.identity, prize.transform.root).GetComponent<BoneBridgeChest>();
+                subtitlePanel.Display ("Reach the treasure chest!");
                 break;
             default:
                 break;

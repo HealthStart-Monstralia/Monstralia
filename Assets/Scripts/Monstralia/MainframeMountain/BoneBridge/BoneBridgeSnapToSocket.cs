@@ -56,7 +56,7 @@ public class BoneBridgeSnapToSocket : MonoBehaviour {
     private void SnapTo (BoneBridgeJoint joint) {
         transform.parent.position = joint.transform.position + (transform.parent.position - transform.position);
         jointAttached = joint;
-        hingeAttached = joint.AddJoint (transform.parent.gameObject, typeOfEnd);
+        hingeAttached = joint.AddJoint (this);
         BoneBridgeSnapToSocket snap = joint.GetComponent<BoneBridgeSnapToSocket> ();
 
         if (snap) {

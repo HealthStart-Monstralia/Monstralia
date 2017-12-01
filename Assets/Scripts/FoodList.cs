@@ -55,4 +55,8 @@ public class FoodList : MonoBehaviour {
 		}
 	}
 
+    public GameObject GetRandomGoodFood() {
+        return goodFoods[Random.Range (0, goodFoods.Count)];
+    }
+
 }

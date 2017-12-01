@@ -101,8 +101,8 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1923492556247952}
   m_LocalRotation: {x: -0, y: -0, z: 0.20723708, w: 0.9782908}
-  m_LocalPosition: {x: -8.39, y: -6.55, z: 0}
-  m_LocalScale: {x: 0.4263604, y: 0.4263604, z: 0.8527208}
+  m_LocalPosition: {x: -8.75, y: -5.76, z: -5.8554688}
+  m_LocalScale: {x: 0.42636007, y: 0.42636007, z: 0.85271996}
   m_Children:
   - {fileID: 4242036473515512}
   - {fileID: 4637982758632194}
@@ -234,9 +234,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c4fcb844219eb4b997d4854d308a2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceptedType: 0
   jointBreakForce: 400
-  rejectLeftEnd: 0
-  rejectRightEnd: 1
   boneDetachSfx: {fileID: 8300000, guid: d573ec18301b55d4a8e8911d0a70c62e, type: 3}
   boneJoint: {fileID: 0}
 --- !u!114 &114673834645218934
@@ -250,9 +249,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26c4fcb844219eb4b997d4854d308a2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  acceptedType: 1
   jointBreakForce: 400
-  rejectLeftEnd: 1
-  rejectRightEnd: 0
   boneDetachSfx: {fileID: 8300000, guid: d573ec18301b55d4a8e8911d0a70c62e, type: 3}
   boneJoint: {fileID: 0}
 --- !u!114 &114771033505647312
