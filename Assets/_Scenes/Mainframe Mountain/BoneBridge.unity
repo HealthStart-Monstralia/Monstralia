@@ -468,27 +468,30 @@ MonoBehaviour:
   typeOfGame: 5
   typeOfMonster: 1
   backgroundMusicArray: []
+  doCountdown: 0
+  playIntro: 0
+  getLevelFromGameManager: 0
+  inputAllowed: 1
+  isTutorialRunning: 0
   bridgePhase: 0
-  difficultyLevel: 3
+  difficultyLevel: 2
   levelOne: {fileID: 1770832040}
   levelTwo: {fileID: 494713045}
   levelThree: {fileID: 1025802594}
+  levelOneTimeLimit: 40
+  levelTwoTimeLimit: 50
+  levelThreeTimeLimit: 60
   currentLevel: {fileID: 0}
   voData: {fileID: 11400000, guid: 6b4a02b49b9fbc54f8ee454bb60412a5, type: 2}
   config: {fileID: 0}
-  doCountdown: 1
-  playIntro: 1
-  inputAllowed: 1
-  isTutorialRunning: 0
-  getLevelFromGameManager: 0
   scoreGauge: {fileID: 93788555}
   subtitlePanel: {fileID: 550395984}
   timerObject: {fileID: 589209368}
   boneCamera: {fileID: 885117229}
   chestPrefab: {fileID: 1014160450455252, guid: 71fd8fb1523527f44a2452e43f8c3b2c,
     type: 2}
-  monster: {fileID: 0}
   bridgeMonster: {fileID: 0}
+  monster: {fileID: 0}
   monsterPool: []
   savedMonsters: 
 --- !u!1 &137304928
@@ -2223,7 +2226,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 529470789}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 329, y: 453, z: 0}
+  m_LocalPosition: {x: 328.85028, y: 452.8004, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 949730957}
@@ -4308,7 +4311,7 @@ RectTransform:
   m_GameObject: {fileID: 949730953}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.75, y: 0, z: -20}
-  m_LocalScale: {x: 0.015625, y: 0.015625, z: 0.015625}
+  m_LocalScale: {x: 0.015631093, y: 0.015631093, z: 0.015631093}
   m_Children:
   - {fileID: 529470790}
   - {fileID: 850911714}
@@ -7879,7 +7882,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1716890114}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 31.5, y: 4.01, z: -15.166151}
+  m_LocalPosition: {x: 31.62, y: 2.58, z: -15.166151}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1025802595}
