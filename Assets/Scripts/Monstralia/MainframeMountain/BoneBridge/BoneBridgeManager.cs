@@ -328,6 +328,8 @@ public class BoneBridgeManager : AbstractGameManager {
         }
     }
 
+    public void AddTime(float timeToAdd) { timerObject.AddTime (timeToAdd); }
+
     public void CreatePrize () {
         Transform prize = currentLevel.prizeSpawn;
 

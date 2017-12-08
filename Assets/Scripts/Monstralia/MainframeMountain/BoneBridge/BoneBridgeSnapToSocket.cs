@@ -39,8 +39,8 @@ public class BoneBridgeSnapToSocket : MonoBehaviour {
     }
 
     public bool TrySnapping() {
-        print ("TrySnapping: " + typeOfEnd);
         if (jointTouching) {
+            print (typeOfEnd + " Snapping to: " + jointTouching);
             SnapTo (jointTouching);
             return true;
         }

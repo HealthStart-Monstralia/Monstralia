@@ -43,6 +43,7 @@ public class BoneBridgeTransition : MonoBehaviour {
         SoundManager.GetInstance ().PlayCorrectSFX ();
         BoneBridgeManager.GetInstance ().CameraSwitch (focus);
         BoneBridgeManager.GetInstance ().ChangePhase (BoneBridgeManager.BridgePhase.Building);
+        BoneBridgeManager.GetInstance ().AddTime (10f);
     }
 
     void WinGame() {

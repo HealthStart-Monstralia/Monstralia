@@ -58,6 +58,7 @@ public class BoneBridgePiece : PhysicsDrag {
     }
 
     public new void OnMouseDown () {
+        print ("MouseDown");
         if (BoneBridgeManager.GetInstance ().inputAllowed && !isAttached) {
             base.OnMouseDown ();
             leftJoint.ActivateJoint ();
@@ -69,14 +70,17 @@ public class BoneBridgePiece : PhysicsDrag {
     public new void OnMouseUp () {
         if (BoneBridgeManager.GetInstance ().inputAllowed && !isAttached) {
             base.OnMouseUp ();
-            if (leftJoint.TrySnapping ())
+            if (leftJoint.TrySnapping ()) {
                 isAttached = true;
-            if (rightJoint.TrySnapping ())
+                print (gameObject + " isAttached: " + isAttached);
+            }
+            if (rightJoint.TrySnapping ()) {
                 isAttached = true;
+                print (gameObject + "isAttached: " + isAttached);
+            }
             if (!isAttached) {
                 ResetBone ();
             }
-            print ("isAttached: " + isAttached);
         }
     }
 
