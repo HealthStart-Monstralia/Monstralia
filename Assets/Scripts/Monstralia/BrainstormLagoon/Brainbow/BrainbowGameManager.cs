@@ -40,10 +40,9 @@ public class BrainbowGameManager : AbstractGameManager {
 	public int foodScale;
 	public LayerMask foodLayerMask;
 	public ScoreGauge scoreGauge;
-	public Text timerText;
 	public float timeLimit;
 	public Timer timer;
-    public bool inputAllowed = false;
+    [HideInInspector] public bool inputAllowed = false;
 
     public GameObject endGameAnimation;
 	public SubtitlePanel subtitlePanel;
@@ -78,16 +77,14 @@ public class BrainbowGameManager : AbstractGameManager {
 		scoreGoals = new Dictionary<int, int> () {
 			{ 1, 8 },
 			{ 2, 12 },
-			{ 3, 20 },
-			{ 4, 20 },
-			{ 5, 20 }
+			{ 3, 20 }
 		};
 
         SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
-        //handAnim = tutorialHand.GetComponent<Animator> ();
         instructionPopup.gameObject.SetActive (false);
         tutorialHand.SetActive (false);
         waterNotification.SetActive (false);
+        timer.gameObject.SetActive (false);
         ChooseFoodsFromManager ();
     }
 
@@ -101,11 +98,9 @@ public class BrainbowGameManager : AbstractGameManager {
 		}
 
 		if (gameStarted) {
-			if(score == 20 || timer.TimeRemaining() <= 0.0f) {
-				// Animation.
-				if(!animIsPlaying) {
-					EndGameTearDown();
-				}
+			if (score == 20) {
+				// Animation
+				EndGameTearDown();
 			}
 
 			if (waterSpawnTime > 0f && spawnWater) {
@@ -115,22 +110,27 @@ public class BrainbowGameManager : AbstractGameManager {
 			}
 
 			// Create water bottle when waterSpawnTime is 0
-			else if (waterSpawnTime <= 0f && spawnWater) {
-				if (spawnWater && waterBottleList.Count < 1) {
-					waterSpawnTime = Random.Range (10f, 15f);
-					CreateWater ();
-				}
+			else if (waterSpawnTime <= 0f && spawnWater && waterBottleList.Count < 1) {
+				waterSpawnTime = Random.Range (10f, 15f);
+				CreateWater ();
 			}
 		}
 	}
 
-	void FixedUpdate() {
-		if (gameStarted) {
-			timerText.text = "Time: " + timer.TimeRemaining();
-		}
-	}
+    private void OnEnable () {
+        // Subscribe to events
+        Timer.OutOfTime += OnOutOfTime;
+    }
 
-	public override void PregameSetup () {
+    private void OnDisable () {
+        // Unsubscribe to events
+        Timer.OutOfTime -= OnOutOfTime;
+    }
+
+    // Event
+    void OnOutOfTime () { EndGameTearDown (); }
+
+    public override void PregameSetup () {
 		score = 0;
 		UpdateScoreGauge();
 
@@ -192,7 +192,6 @@ public class BrainbowGameManager : AbstractGameManager {
 		UpdateScoreGauge();
 		runningTutorial = false;
 
-
         AudioClip letsPlay = voData.FindVO ("letsplay");
         subtitlePanel.Display("Perfect!", letsPlay, true);
 		yield return new WaitForSeconds(letsPlay.length + 1f);
@@ -209,7 +208,7 @@ public class BrainbowGameManager : AbstractGameManager {
 		StartGame ();
 	}
 
-	public bool IsRunningTutorial() {
+	public bool GetRunningTutorial() {
 		return runningTutorial;
 	}
 
@@ -225,9 +224,8 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	public void StartGame() {
 		scoreGauge.gameObject.SetActive(true);
-		timerText.gameObject.SetActive(true);
+		timer.gameObject.SetActive(true);
 		timer.SetTimeLimit (timeLimit);
-		timerText.text = "Time: " + timer.TimeRemaining();
 		waterSpawnTime = Random.Range(5, 10);
 
 		StartCoroutine (DisplayGo());
@@ -354,20 +352,22 @@ public class BrainbowGameManager : AbstractGameManager {
     }
 
 	void EndGameTearDown () {
-		subtitlePanel.Hide ();
-		gameStarted = false;
-        inputAllowed = false;
+        if (gameStarted) {
+            subtitlePanel.Hide ();
+            gameStarted = false;
+            inputAllowed = false;
 
-        timer.StopTimer();
-		gameOver = true;
+            timer.StopTimer ();
+            gameOver = true;
 
-		if(activeFood != null) {
-			activeFood.StopMoving ();
-		}
+            if (activeFood != null) {
+                activeFood.StopMoving ();
+            }
 
-		timerText.gameObject.SetActive (false);
+            timer.gameObject.SetActive (false);
 
-		StartCoroutine(RunEndGameAnimation());
+            StartCoroutine (RunEndGameAnimation ());
+        }
 	}
 
 	IEnumerator RunEndGameAnimation() {
@@ -397,13 +397,9 @@ public class BrainbowGameManager : AbstractGameManager {
             scoreGauge.SetProgressTransition ((float)score / scoreGoals[difficultyLevel]);
     }
 
-    public bool GameStarted() {
-		return gameStarted;
-	}
+    public bool GetGameStarted() { return gameStarted; }
 
-	public bool isGameOver() {
-		return gameOver;
-	}
+	public bool GetGameOver() { return gameOver; }
 
 	void CreateMonster() {
         // Blue = 0, Green = 1, Red = 2, Yellow = 3

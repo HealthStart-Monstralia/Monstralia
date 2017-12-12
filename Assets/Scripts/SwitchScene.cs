@@ -4,15 +4,16 @@ using System.Collections;
 
 public class SwitchScene: MonoBehaviour {
 	public string sceneToLoadName;
-	private GameObject loadingScreen;
+	[HideInInspector] public GameObject loadingScreen;
 
-    private void Awake () {
+    private void Start () {
         if (GameManager.GetInstance ()) loadingScreen = GameManager.GetInstance ().loadingScreen;
     }
 
     public void LoadScene() {
-        if (loadingScreen)
+        if (loadingScreen) {
             Instantiate (loadingScreen, transform.root);
+        }
         if (sceneToLoadName != "")
             SceneManager.LoadScene (sceneToLoadName);
         else {
@@ -33,10 +34,12 @@ public class SwitchScene: MonoBehaviour {
         SceneManager.LoadScene (scene.name);
     }
 
-    public void LoadScene (string name, bool needLoadScreen) {
-        if (needLoadScreen)
-            Instantiate (loadingScreen, transform.root);
+    public void LoadSceneNoScreen (string name) {
         SceneManager.LoadScene (name);
+    }
+
+    public void LoadSceneNoScreen (Scene scene) {
+        SceneManager.LoadScene (scene.name);
     }
 
     public void LoadIslandSection () {

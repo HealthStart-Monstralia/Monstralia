@@ -28,7 +28,7 @@ public class BoneBridgeChest : MonoBehaviour {
 
         SoundManager.GetInstance ().PlaySFXClip (rewardSfx);
         foodObject.GetComponent<SpriteRenderer> ().sortingOrder = 3;
-        foodObject.transform.localScale = Vector3.one;
+        foodObject.transform.localScale = Vector3.one * 0.2f;
         Rigidbody2D rigBody = foodObject.GetComponent<Rigidbody2D> ();
         foodObject.GetComponent<Collider2D> ().isTrigger = false;
         rigBody.bodyType = RigidbodyType2D.Dynamic;

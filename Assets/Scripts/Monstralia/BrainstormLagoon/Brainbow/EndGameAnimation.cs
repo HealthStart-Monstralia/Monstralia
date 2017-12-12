@@ -10,6 +10,6 @@ public class EndGameAnimation : MonoBehaviour {
 		//animation.gameObject.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(GameManager.GetInstance().GetMonster());
 		// when when monster collides with food, destroy the food
 
-		gameManager.GameOver ();
+		//gameManager.GameOver ();
 	}
 }

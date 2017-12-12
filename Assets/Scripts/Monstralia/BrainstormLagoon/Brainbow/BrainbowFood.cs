@@ -10,7 +10,7 @@ public class BrainbowFood : MonoBehaviour {
 	private bool moving = false;
 
 	void OnMouseDown() {
-		if(!busy && !BrainbowGameManager.GetInstance().isGameOver() && BrainbowGameManager.GetInstance().inputAllowed) {
+		if(!busy && !BrainbowGameManager.GetInstance().GetGameOver() && BrainbowGameManager.GetInstance().inputAllowed) {
 			moving = true;
 			BrainbowGameManager.GetInstance().SetActiveFood(this);
 			offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
@@ -23,7 +23,7 @@ public class BrainbowFood : MonoBehaviour {
 	}
 	
 	void FixedUpdate() {
-		if(moving && !BrainbowGameManager.GetInstance().isGameOver()) {
+		if(moving && !BrainbowGameManager.GetInstance().GetGameOver()) {
 			Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
 			Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
 			gameObject.GetComponent<Rigidbody2D>().MovePosition(curPosition);
@@ -90,7 +90,7 @@ public class BrainbowFood : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (BrainbowGameManager.GetInstance ()) {
-			if (BrainbowGameManager.GetInstance ().isGameOver ()) {
+			if (BrainbowGameManager.GetInstance ().GetGameOver ()) {
 				if (other.tag == "Player") {
 					gameObject.SetActive (false);
 					SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().munchSound);

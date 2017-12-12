@@ -84,13 +84,12 @@ public class EmotionsGameManager : AbstractGameManager {
 
             score = 0;
             if (timer != null) {
-                timerText.gameObject.SetActive (true);
-                timer.SetTimeLimit (this.timeLimit);
+                timer.SetTimeLimit (timeLimit);
                 timer.StopTimer ();
             }
-            UpdateScoreGauge ();
 
-            timerText.text = "Time: " + timer.TimeRemaining ();
+            UpdateScoreGauge ();
+            timer.gameObject.SetActive (true);
             generator.cardHand.gameObject.SetActive (true);
             generator.cardHand.SpawnIn ();
             StartCoroutine (DisplayGo ());
@@ -190,7 +189,7 @@ public class EmotionsGameManager : AbstractGameManager {
 
         timer.StopTimer ();
         timer.StartTimer ();
-        print (timer);
+
         gameStarted = true;
         inputAllowed = true;
     }
@@ -231,12 +230,6 @@ public class EmotionsGameManager : AbstractGameManager {
         //print ("timer.TimeRemaining (): " + timer.TimeRemaining () + " | " + "gameStarted: " + gameStarted + " | " + "score: " + score);
         if (gameStarted && (timer.TimeRemaining () <= 0.0f || score >= scoreGoal)) {
             StartCoroutine (PostGame ());
-        }
-    }
-
-    void FixedUpdate () {
-        if (gameStarted) {
-            timerText.text = "Time: " + timer.TimeRemaining ();
         }
     }
 

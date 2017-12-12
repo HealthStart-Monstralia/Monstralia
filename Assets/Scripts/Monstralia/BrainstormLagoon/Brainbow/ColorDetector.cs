@@ -22,7 +22,7 @@ public class ColorDetector : Colorable {
 	 */
 	public void AddFood(GameObject food) {
 		food.transform.position = destinations[nextDest++].position;
-		if(BrainbowGameManager.GetInstance().IsRunningTutorial()) {
+		if(BrainbowGameManager.GetInstance().GetRunningTutorial()) {
 			nextDest = 0;
 		}
 	}

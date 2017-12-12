@@ -5,9 +5,10 @@ using UnityEngine.UI;
 
 public class IntroManager : MonoBehaviour {
 	public GameObject blockSlide;
-	public GameObject[] aboutMonstraliaSlides;
+	public GameObject[] aboutMonstraliaSlides = new GameObject[4];
 	public GameObject signUpPage;
 	public GameObject signedUpPage;
+    public GameObject didntSignUpPage;
 	public GameObject emailValid, passValid;
 	public InputField emailInput, reemailInput, passInput, repassInput;
 	public Toggle checkmark;
@@ -19,9 +20,9 @@ public class IntroManager : MonoBehaviour {
 	public string emailNoPeriod = "Email does not have a period.";
 
 	private static IntroManager instance = null;
-
-	private bool emailOkay = false;
+    private bool emailOkay = false;
 	private bool passOkay = false;
+    [SerializeField] private GameObject[] pages = new GameObject[7];
 
 	void Awake() {
 		if(instance == null) {
@@ -37,11 +38,50 @@ public class IntroManager : MonoBehaviour {
 		}
 		blockSlide.SetActive (true);
 		aboutMonstraliaSlides [0].SetActive (true);
-	}
 
-	void SubmitInformation() {
-		signUpPage.SetActive (false);
-		signedUpPage.SetActive (true);
+        int count = 0;
+        foreach (GameObject slide in aboutMonstraliaSlides) {
+            print (slide);
+            pages[count] = slide;
+            count++;
+        }
+
+        pages[count] = signUpPage;
+        pages[count + 1] = signedUpPage;
+        pages[count + 2] = didntSignUpPage;
+    }
+
+    private void OnEnable () {
+        StartManager.GetInstance ().DisableButtons ();
+    }
+
+    private void OnDisable () {
+        StartManager.GetInstance ().EnableButtons();
+    }
+
+    public void ShowPage(GameObject selectedPage) {
+        foreach (GameObject page in pages) {
+            print (page);
+            if (page.activeSelf && page != selectedPage) page.SetActive (false);
+            else if (page == selectedPage) page.SetActive (true);
+        }
+    }
+
+    public void ExitIntro(GameObject selectedPage) {
+        foreach (GameObject page in pages) {
+            if (page.activeSelf && page != selectedPage) page.SetActive (false);
+            else if (page == selectedPage) page.SetActive (true);
+            GetComponent<Animator> ().Play ("PopupFadeOut");
+        }
+    }
+
+    // Disable using animation from PopupFade
+    public void DisableFromAnim() {
+        gameObject.SetActive (false);
+    }
+
+    void SubmitInformation() {
+        ShowPage (signedUpPage);
 
 		/* Send information to web server */
 	}

@@ -30,8 +30,7 @@ public class GameManager : MonoBehaviour {
 
     public int numOfGamesPlayed = 0;
     public bool lagoonFirstSticker = true;
-    public bool playIntro = true;
-	public Canvas introObject;
+
     public GameObject loadingScreen;
     public GameObject endingScreen;
     public GameObject blueMonster, greenMonster, redMonster, yellowMonster;
@@ -53,9 +52,6 @@ public class GameManager : MonoBehaviour {
 
     void Start () {
         InitializeDictionaryEntries ();
-        if (playIntro) {
-            Instantiate (introObject);
-        }
     }
 
     void InitializeDictionaryEntries () {
