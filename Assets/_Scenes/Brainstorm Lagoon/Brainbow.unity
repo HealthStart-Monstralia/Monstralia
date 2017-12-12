@@ -2485,10 +2485,10 @@ RectTransform:
   m_Father: {fileID: 1522108995}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 132, y: -3.1999998}
-  m_SizeDelta: {x: 171.11, y: 128.37}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -112, y: -3.1999998}
+  m_SizeDelta: {x: 171.10999, y: 128.37}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &782487912
 MonoBehaviour:
@@ -3135,7 +3135,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4483596068642994, guid: d8728ea9321bb764babfb175ed04b070, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -89
+      value: -101.4
       objectReference: {fileID: 0}
     - target: {fileID: 4483596068642994, guid: d8728ea9321bb764babfb175ed04b070, type: 2}
       propertyPath: m_LocalPosition.y
@@ -3534,7 +3534,7 @@ Prefab:
     - target: {fileID: 224258163905983196, guid: acd22bf20657649ccb1fd20c60347a24,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 436
+      value: 465.16998
       objectReference: {fileID: 0}
     - target: {fileID: 224258163905983196, guid: acd22bf20657649ccb1fd20c60347a24,
         type: 2}
@@ -3574,7 +3574,7 @@ Prefab:
     - target: {fileID: 224258163905983196, guid: acd22bf20657649ccb1fd20c60347a24,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -76
+      value: -46.83
       objectReference: {fileID: 0}
     - target: {fileID: 224258163905983196, guid: acd22bf20657649ccb1fd20c60347a24,
         type: 2}
@@ -3584,7 +3584,7 @@ Prefab:
     - target: {fileID: 224258163905983196, guid: acd22bf20657649ccb1fd20c60347a24,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 129
+      value: 70.66
       objectReference: {fileID: 0}
     - target: {fileID: 224258163905983196, guid: acd22bf20657649ccb1fd20c60347a24,
         type: 2}
@@ -3615,6 +3615,25 @@ Prefab:
         type: 2}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224163478840462414, guid: acd22bf20657649ccb1fd20c60347a24,
+        type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -0.0000019073486
+      objectReference: {fileID: 0}
+    - target: {fileID: 224163478840462414, guid: acd22bf20657649ccb1fd20c60347a24,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -64.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224163478840462414, guid: acd22bf20657649ccb1fd20c60347a24,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: 129
+      objectReference: {fileID: 0}
+    - target: {fileID: 1100039459750380, guid: acd22bf20657649ccb1fd20c60347a24, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: acd22bf20657649ccb1fd20c60347a24, type: 2}
@@ -3654,16 +3673,16 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1193129677}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.800003, y: -158.5, z: 0}
+  m_LocalPosition: {x: -1.800003, y: -158.29999, z: 0}
   m_LocalScale: {x: 1.000448, y: 1.000448, z: 1.000448}
   m_Children: []
   m_Father: {fileID: 1522108995}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.8, y: -158.5}
-  m_SizeDelta: {x: 128, y: 128}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -1.8, y: 85.5}
+  m_SizeDelta: {x: 160, y: 160}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1193129679
 MonoBehaviour:
@@ -3684,7 +3703,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: a138106e05b21d84e9801a9c291474ec, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 862ad97d679094f09b18fb3e293905e7, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

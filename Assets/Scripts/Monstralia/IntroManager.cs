@@ -61,7 +61,6 @@ public class IntroManager : MonoBehaviour {
 
     public void ShowPage(GameObject selectedPage) {
         foreach (GameObject page in pages) {
-            print (page);
             if (page.activeSelf && page != selectedPage) page.SetActive (false);
             else if (page == selectedPage) page.SetActive (true);
         }

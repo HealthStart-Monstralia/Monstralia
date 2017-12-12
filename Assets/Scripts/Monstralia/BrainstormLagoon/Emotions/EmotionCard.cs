@@ -48,7 +48,7 @@ public class EmotionCard : MonoBehaviour {
         Vector2 pos = obj.transform.position;
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / 1.0f) {
             transform.position = Vector2.MoveTowards (transform.position, pos, 0.1f);
-            yield return null;
+            yield return new WaitForFixedUpdate ();
         }
         CardFlip ();
         transform.SetParent (obj.transform);
@@ -61,7 +61,7 @@ public class EmotionCard : MonoBehaviour {
         Vector2 pos = obj.transform.position;
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / 1.0f) {
             transform.position = Vector2.MoveTowards (transform.position, pos, 0.1f);
-            yield return null;
+            yield return new WaitForFixedUpdate ();
         }
         Destroy (gameObject);
     }
