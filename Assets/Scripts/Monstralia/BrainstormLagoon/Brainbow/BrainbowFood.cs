@@ -10,19 +10,20 @@ public class BrainbowFood : MonoBehaviour {
 	private bool moving = false;
 
 	void OnMouseDown() {
-		if(!busy && !BrainbowGameManager.GetInstance().isGameOver() && GameManager.GetInstance().GetIsInputAllowed()) {
+		if(!busy && !BrainbowGameManager.GetInstance().GetGameOver() && BrainbowGameManager.GetInstance().inputAllowed) {
 			moving = true;
 			BrainbowGameManager.GetInstance().SetActiveFood(this);
 			offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
 
 			//Display the food's name
 			//move this into game manager with method call
-			BrainbowGameManager.GetInstance().ShowSubtitles(gameObject.name, gameObject.GetComponent<Food>().clipOfName);
+			BrainbowGameManager.GetInstance().ShowSubtitles(gameObject.name);
+            SoundManager.GetInstance ().AddToVOQueue (gameObject.GetComponent<Food> ().clipOfName);
 		}
 	}
 	
 	void FixedUpdate() {
-		if(moving && !BrainbowGameManager.GetInstance().isGameOver()) {
+		if(moving && !BrainbowGameManager.GetInstance().GetGameOver()) {
 			Vector3 curScreenPoint = new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z);
 			Vector3 curPosition = Camera.main.ScreenToWorldPoint(curScreenPoint) + offset;
 			gameObject.GetComponent<Rigidbody2D>().MovePosition(curPosition);
@@ -30,7 +31,7 @@ public class BrainbowFood : MonoBehaviour {
 	}
 
 	void OnMouseUp() {
-		if (GameManager.GetInstance ().GetIsInputAllowed ()) {
+		if (BrainbowGameManager.GetInstance ().inputAllowed) {
 			if (!busy && moving) {
 				busy = true;
 
@@ -44,9 +45,9 @@ public class BrainbowFood : MonoBehaviour {
 					Vector3 oldPos = gameObject.transform.position;
 					detector.AddFood (gameObject);
 
-					if (Random.value < 0.3f) {
+					if (Random.value < 0.2f) {
 						int randomClipIndex = Random.Range (0, BrainbowGameManager.GetInstance ().correctMatchClips.Length);
-						SoundManager.GetInstance ().PlayVoiceOverClip (BrainbowGameManager.GetInstance ().correctMatchClips [randomClipIndex]);
+						SoundManager.GetInstance ().AddToVOQueue (BrainbowGameManager.GetInstance ().correctMatchClips [randomClipIndex]);
 					}
 
 					gameObject.GetComponent<Collider2D> ().enabled = false;
@@ -54,7 +55,7 @@ public class BrainbowFood : MonoBehaviour {
 				} else {
 					MoveBack ();
 					int randomClipIndex = Random.Range (0, BrainbowGameManager.GetInstance ().wrongMatchClips.Length);
-					SoundManager.GetInstance ().PlayVoiceOverClip (BrainbowGameManager.GetInstance ().wrongMatchClips [randomClipIndex]);
+					SoundManager.GetInstance ().AddToVOQueue (BrainbowGameManager.GetInstance ().wrongMatchClips [randomClipIndex]);
 				}
 			}
 			moving = false;
@@ -89,7 +90,7 @@ public class BrainbowFood : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D other) {
 		if (BrainbowGameManager.GetInstance ()) {
-			if (BrainbowGameManager.GetInstance ().isGameOver ()) {
+			if (BrainbowGameManager.GetInstance ().GetGameOver ()) {
 				if (other.tag == "Player") {
 					gameObject.SetActive (false);
 					SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().munchSound);

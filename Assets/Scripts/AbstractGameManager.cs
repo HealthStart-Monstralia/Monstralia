@@ -1,31 +1,50 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public abstract class AbstractGameManager : MonoBehaviour {
+    [Header ("AbstractGameManager Fields")]
     public DataType.Minigame typeOfGame;
 	public abstract void GameOver(); // Force GameOver() to be implemented in child classes
     public abstract void PregameSetup (); // Force PregameSetup() to be implemented in child classes
-    public Canvas stickerPopupCanvas;
+    public DataType.MonsterType typeOfMonster;
+    public AudioClip[] backgroundMusicArray;
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
+        GameManager.GetInstance ().SetLastGamePlayed (typeOfGame);
+    }
+
+    void OnEnable () {
+        typeOfMonster = GameManager.GetInstance ().GetMonsterType ();
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
 
     void OnDisable () {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
         ReviewManager.OnFinishReview -= EndReview;
     }
 
     // Go to Start scene if no Game Manager is present
     protected void CheckForGameManager () {
         if (!GameManager.GetInstance ()) {
-            SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
-            switchScene.loadScene ("Start", false);
+            SwitchScene switchScene = gameObject.AddComponent<SwitchScene> ();
+            switchScene.LoadSceneNoScreen ("Start");
         }
     }
 
     protected void Start() {
+        if (GameManager.GetInstance().GetLevel(typeOfGame) == 1) {
+            print ("First level of game, needs review from other games");
+        }
+        /*
         print ("AbstractGameManager Start running");
         if (ReviewManager.GetInstance ().needReview) {
             StartReview ();
         } else {
-            PregameSetup ();
+            
         }
+        */
+        PregameSetup ();
     }
 
     protected void StartReview () {
@@ -41,23 +60,7 @@ public abstract class AbstractGameManager : MonoBehaviour {
     }
 
     public virtual void UnlockSticker() {
-		if (stickerPopupCanvas) {
-			stickerPopupCanvas.gameObject.SetActive (true);
-			SoundManager.GetInstance ().PlayUnlockStickerVO ();
-
-			if (GameManager.GetInstance ().lagoonFirstSticker) {
-				GameManager.GetInstance ().lagoonFirstSticker = false;
-				stickerPopupCanvas.transform.Find ("BackButton").gameObject.SetActive (false);
-				stickerPopupCanvas.transform.Find ("StickerbookButton").gameObject.SetActive (true);
-			} else {
-				stickerPopupCanvas.transform.Find ("BackButton").gameObject.SetActive (true);
-				stickerPopupCanvas.transform.Find ("StickerbookButton").gameObject.SetActive (false);
-			}
-
-		} else {
-			//Debug.LogError ("Error: Sticker Popup Canvas not assigned to Manager.");
-		}
-
         GameManager.GetInstance ().ActivateSticker (typeOfGame);
+        GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.EarnedSticker);
     }
 }

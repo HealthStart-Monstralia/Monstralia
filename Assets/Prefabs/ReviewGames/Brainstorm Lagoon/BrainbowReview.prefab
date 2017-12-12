@@ -228,7 +228,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4209453181582108}
   - component: {fileID: 114519017115546362}
-  - component: {fileID: 95302342603553048}
   m_Layer: 0
   m_Name: BrainbowReview
   m_TagString: Untagged
@@ -496,23 +495,6 @@ PolygonCollider2D:
       - {x: 102.12952, y: -35.164635}
       - {x: 102.20083, y: -6.5101624}
       - {x: 49.860443, y: 9.834045}
---- !u!95 &95302342603553048
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1704188593890104}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 270592136289bd14a9eff93a0b9140f3, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
 --- !u!95 &95490674258693374
 Animator:
   serializedVersion: 3
@@ -1045,6 +1027,8 @@ SpriteRenderer:
   m_Size: {x: 12.75, y: 16.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
 --- !u!222 &222025828466065182
 CanvasRenderer:
   m_ObjectHideFlags: 1

@@ -6,25 +6,25 @@ public class BBMonster : MonoBehaviour {
 	
 	private Animator animComp;
 
-	public GameManager.MonsterType monster;
+	public DataType.MonsterType monster;
 
 	void Awake() {
 		animComp = GetComponentInChildren<Animator> ();
-		monster = GameManager.GetMonsterType();
+		monster = GameManager.GetInstance().GetMonsterType();
 	}
 
 	public void PlaySpawn() {
 		switch (monster) {
-		case GameManager.MonsterType.Blue:
+		case DataType.MonsterType.Blue:
 			animComp.Play ("BB_BlueBabySpawn");
 			break;
-		case GameManager.MonsterType.Green:
+		case DataType.MonsterType.Green:
 			animComp.Play ("BB_GreenBabySpawn");
 			break;
-		case GameManager.MonsterType.Red:
+		case DataType.MonsterType.Red:
 			animComp.Play ("BB_RedBabySpawn");
 			break;
-		case GameManager.MonsterType.Yellow:
+		case DataType.MonsterType.Yellow:
 			animComp.Play ("BB_YellowBabySpawn");
 			break;
 		}
@@ -51,16 +51,16 @@ public class BBMonster : MonoBehaviour {
 
 	public void PlayEat() {
 		switch (monster) {
-		case GameManager.MonsterType.Blue:
+		case DataType.MonsterType.Blue:
 			animComp.Play ("BB_BlueBabyEat", -1, 0f);
 			break;
-		case GameManager.MonsterType.Green:
+		case DataType.MonsterType.Green:
 			animComp.Play ("BB_GreenBabyEat", -1, 0f);
 			break;
-		case GameManager.MonsterType.Red:
+		case DataType.MonsterType.Red:
 			animComp.Play ("BB_RedBabyEat", -1, 0f);
 			break;
-		case GameManager.MonsterType.Yellow:
+		case DataType.MonsterType.Yellow:
 			animComp.Play ("BB_YellowBabyEat", -1, 0f);
 			break;
 		}

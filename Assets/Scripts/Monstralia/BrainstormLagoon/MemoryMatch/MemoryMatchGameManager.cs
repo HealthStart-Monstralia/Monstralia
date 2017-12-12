@@ -7,9 +7,9 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	private static MemoryMatchGameManager instance;
 	private bool gameStarted;
 	private bool gameStartup;
-	private int score;
+	[SerializeField] private int score;
 	private GameObject currentFoodToMatch;
-	private int numDishes;
+    [SerializeField] private int numDishes;
 	private int difficultyLevel;
 	private List<GameObject> activeFoods;
 	private List<Food> matchedFoods;
@@ -20,7 +20,6 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	private Coroutine tutorialCoroutine;
 
     public VoiceOversData voData;
-	public Canvas reviewCanvas;
 	public Canvas instructionPopup;
 	public Canvas gameOverCanvas;
 
@@ -38,7 +37,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	public List<GameObject> dishes;
     public GameObject dishAnchor;
 
-	public Slider scoreGauge;
+	public ScoreGauge scoreGauge;
 	public SubtitlePanel subtitlePanel;
 	[HideInInspector] public bool animIsPlaying = false;
 	[HideInInspector] public bool inputAllowed = false;
@@ -46,7 +45,6 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	public Transform rotationTarget;
 	public float rotationalSpeed;
 
-	public GameManager.MonsterType typeOfMonster;
 	[HideInInspector] public MMMonster monsterObject;
 	public GameObject[] monsterList;
 
@@ -65,9 +63,10 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		}
 
         CheckForGameManager ();
+        SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusicArray[Random.Range (0, backgroundMusicArray.Length)]);
+
 
         difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.MemoryMatch);
-		typeOfMonster = GameManager.GetMonsterType ();
 		CreateMonster ();
 		monsterObject.PlaySpawn ();
 		RetrieveFoodsFromManager ();
@@ -83,8 +82,8 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		}
 		else {
 			score = 0;
-
-			switch (difficultyLevel) {
+            instructionPopup.gameObject.SetActive (false);
+            switch (difficultyLevel) {
 			case (1):
 				numDishes = 3;
 				timer.SetTimeLimit (timeLimit[difficultyLevel - 1]);
@@ -102,8 +101,6 @@ public class MemoryMatchGameManager : AbstractGameManager {
 				timer.SetTimeLimit (60f);
 				break;
 			}
-
-			scoreGauge.maxValue = numDishes;
 
 			UpdateScoreGauge ();
 			StartGame ();
@@ -147,8 +144,10 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		print ("RunTutorial");
 		runningTutorial = true;
 		instructionPopup.gameObject.SetActive(true);
+        scoreGauge.gameObject.SetActive (false);
+        numDishes = 3;
 
-		DishObject tutDish1 = tutorialDishes[0];
+        DishObject tutDish1 = tutorialDishes[0];
 		DishObject tutDish2 = tutorialDishes[1];
 		DishObject tutDish3 = tutorialDishes[2];
 
@@ -161,9 +160,11 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		tutorialDishes [1].SetFood (tutFood2);
 		tutorialDishes [2].SetFood (tutFood3);
 
+        /*
 		tutFood1.transform.localPosition = new Vector3 (0, 1.25f, 0);
 		tutFood2.transform.localPosition = new Vector3 (0, 1.25f, 0);
 		tutFood3.transform.localPosition = new Vector3 (0, 1.25f, 0);
+        */
 
 		tutFood1.transform.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
 		tutFood2.transform.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
@@ -171,8 +172,8 @@ public class MemoryMatchGameManager : AbstractGameManager {
 
 		yield return new WaitForSeconds (1f);
 
-        AudioClip tutorial1 = voData.FindVO ("tutorial1");
-        AudioClip tutorial2 = voData.FindVO ("tutorial2");
+        AudioClip tutorial1 = voData.FindVO ("1_tutorial_welcome");
+        AudioClip tutorial2 = voData.FindVO ("2_tutorial_platters");
         SoundManager.GetInstance ().PlayVoiceOverClip (tutorial1);
 
 		yield return new WaitForSeconds (tutorial1.length);
@@ -194,8 +195,8 @@ public class MemoryMatchGameManager : AbstractGameManager {
 			dish.OpenLid ();
 		}
 
-        AudioClip tutorial3 = voData.FindVO ("tutorial3");
-        AudioClip tutorial4 = voData.FindVO ("tutorial4");
+        AudioClip tutorial3 = voData.FindVO ("3_tutorial_rememberfood");
+        AudioClip tutorial4 = voData.FindVO ("4_tutorial_letmeshow");
         SoundManager.GetInstance ().PlayVoiceOverClip (tutorial3);
 
         yield return new WaitForSeconds (tutorial3.length - 1.5f);
@@ -225,7 +226,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 
         handAnim.gameObject.SetActive (false);
         inputAllowed = true;
-        AudioClip tutorial5 = voData.FindVO ("tutorial5");
+        AudioClip tutorial5 = voData.FindVO ("5_tutorial_nowtry");
         subtitlePanel.Display ("Now you try!", tutorial5);
 
 
@@ -421,6 +422,11 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		matchedFoods.Add (food);
 	}
 
+    public List<Food> ReturnMatchedList ()
+    {
+        return matchedFoods;
+    }
+
 	IEnumerator RunEndGameAnimation(){
 		animIsPlaying = true;
 		timer.StopTimer();
@@ -447,19 +453,16 @@ public class MemoryMatchGameManager : AbstractGameManager {
 			currentFoodToMatch.SetActive (false);
 
 		if (score >= numDishes) {
-			//GameManager.GetInstance ().AddLagoonReviewGame ("MemoryMatchReviewGame");
-
 			if (difficultyLevel == 1) {
 				UnlockSticker ();	// Calling from AbstractGameManager
 			} else {
-				DisplayGameOverPopup ();
-			}
+                GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
+            }
 
 			GameManager.GetInstance ().LevelUp (DataType.Minigame.MemoryMatch);
 		} else {
 			if(difficultyLevel >= 1) {
-				//GameManager.GetInstance ().LagoonTutorial [(int)Constants.BrainstormLagoonLevels.MEMORY_MATCH] = false;
-				DisplayGameOverPopup();
+				GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
 			}
 		}
 	}
@@ -486,8 +489,9 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	}
 
 	void UpdateScoreGauge() {
-		scoreGauge.value = score;
-	}
+        if (scoreGauge.gameObject.activeSelf)
+            scoreGauge.SetProgressTransition ((float)score / numDishes);
+    }
 
 	public void SubtractTime(float delta) {
 		timer.SubtractTime(delta);
@@ -497,17 +501,17 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		// Blue = 0, Green = 1, Red = 2, Yellow = 3
 
 		switch (typeOfMonster) {
-		case GameManager.MonsterType.Blue:
-			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Blue]);
+		case DataType.MonsterType.Blue:
+			InstantiateMonster (monsterList [(int)DataType.MonsterType.Blue]);
 			break;
-		case GameManager.MonsterType.Green:
-			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Green]);
+		case DataType.MonsterType.Green:
+			InstantiateMonster (monsterList [(int)DataType.MonsterType.Green]);
 			break;
-		case GameManager.MonsterType.Red:
-			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Red]);
+		case DataType.MonsterType.Red:
+			InstantiateMonster (monsterList [(int)DataType.MonsterType.Red]);
 			break;
-		case GameManager.MonsterType.Yellow:
-			InstantiateMonster (monsterList [(int)GameManager.MonsterType.Yellow]);
+		case DataType.MonsterType.Yellow:
+			InstantiateMonster (monsterList [(int)DataType.MonsterType.Yellow]);
 			break;
 		}
 	}

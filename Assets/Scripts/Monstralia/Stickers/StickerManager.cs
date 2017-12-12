@@ -29,8 +29,8 @@ public class StickerManager : MonoBehaviour {
         AssignSlotsToDict ();
 
         if (!GameManager.GetInstance ()) {
-            SwitchScene switchScene = this.gameObject.AddComponent<SwitchScene> ();
-            switchScene.loadScene ("Start", false);
+            SwitchScene switchScene = gameObject.AddComponent<SwitchScene> ();
+            switchScene.LoadSceneNoScreen ("Start");
         }
 
         if (SoundManager.GetInstance())
@@ -48,17 +48,9 @@ public class StickerManager : MonoBehaviour {
     }
 
 	public void CreateSticker(GameManager.StickerStats sticker, DataType.StickerType typeOfSticker) {
-
         GameObject stickerObject = Instantiate (sticker.stickerObject, location.transform.position, Quaternion.identity, mainCanvas.transform);
         if (sticker.isStickerPlaced)
             stickerSlotDict[typeOfSticker].ReceiveSticker (stickerObject.GetComponent<StickerBehaviour> (), true);
-
-        /*
-		GameObject stickerObject;
-		stickerObject = Instantiate (stickersSpawnList [(int)stickerSelection], location.transform.position, Quaternion.identity, mainCanvas.transform);
-		if (isPlaced)
-			stickersSlotList [(int)stickerSelection].ReceiveSticker (stickerObject.GetComponent<StickerBehaviour>());
-        */
     }
 
     public void DisableOtherStickerSlots(DataType.StickerType type) {

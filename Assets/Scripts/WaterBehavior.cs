@@ -19,7 +19,7 @@ public class WaterBehavior : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(!isActive && BrainbowGameManager.GetInstance ().GameStarted() && Time.time > nextSpawnTime) {
+		if(!isActive && BrainbowGameManager.GetInstance ().GetGameStarted() && Time.time > nextSpawnTime) {
 			isActive = true;
 			despawnTime = Time.time + Random.Range (5,10);
 			Spawn();

@@ -2,15 +2,19 @@
 using System.Collections;
 using System.IO;
 using System.Collections.Generic;
-using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
-	public enum MonsterType {
-		Blue = 0, 
-		Green = 1, 
-		Red = 2, 
-		Yellow = 3
-	};
+    private Dictionary<DataType.Minigame, MinigameStats> gameStats;
+    private Dictionary<DataType.StickerType, StickerStats> stickerStats;
+    private Dictionary<DataType.Minigame, MinigameData> minigameDictionary;
+    private Dictionary<DataType.IslandSection, bool> visitedAreas;
+
+    private DataType.MonsterType monsterType;
+    private static GameManager instance = null;
+    [SerializeField] private MinigameData[] minigameAssetData;
+    private DataType.Minigame lastGamePlayed;
+    private DataType.IslandSection currentSection;
+    private bool activateReview = false; // Alternate activating review when game is lvl 3
 
     public struct MinigameStats {
         public int level;
@@ -24,29 +28,12 @@ public class GameManager : MonoBehaviour {
         public bool isStickerPlaced;
     }
 
-    private Dictionary<DataType.Minigame, MinigameStats> gameStats;
-    private Dictionary<DataType.StickerType, StickerStats> stickerStats;
+    public int numOfGamesPlayed = 0;
+    public bool lagoonFirstSticker = true;
 
-    private Dictionary<DataType.Minigame, int> gameLevels;
-    private Dictionary<DataType.Minigame, MinigameData> minigameDictionary;
-    private Dictionary<DataType.Minigame, bool> gameTutorials;
-    private Dictionary<DataType.Minigame, int> gameStars;
-    //private Dictionary<DataType.Minigame, DataType.StickerType> gameStickers;
-    //private Dictionary<DataType.StickerType, bool> stickers;
-    //private Dictionary<DataType.StickerType, bool> stickersPlaced;
-
-	private static GameManager instance = null;
-	private bool allowInput = true;
-    private string monster;
-    [SerializeField] private MinigameData[] minigameAssetData;
-    [SerializeField] private GameObject[] stickerObjects;
-
-    public bool firstTimeInMainMap, firstTimeInBrainstormLagoon;
-	public bool lagoonFirstSticker = true;
-	public bool playLagoonVoiceOver = true; // Prevents voiceover clip from playing when returning from a game inside Brainstorm Lagoon - CT
-	public bool playIntro = true;
-	public Canvas introObject;
-	public static MonsterType monsterType;
+    public GameObject loadingScreen;
+    public GameObject endingScreen;
+    public GameObject blueMonster, greenMonster, redMonster, yellowMonster;
 
     public static GameManager GetInstance () {
         return instance;
@@ -65,9 +52,6 @@ public class GameManager : MonoBehaviour {
 
     void Start () {
         InitializeDictionaryEntries ();
-        if (playIntro) {
-            Instantiate (introObject);
-        }
     }
 
     void InitializeDictionaryEntries () {
@@ -76,6 +60,12 @@ public class GameManager : MonoBehaviour {
         minigameDictionary = new Dictionary<DataType.Minigame, MinigameData> ();
         gameStats = new Dictionary<DataType.Minigame, MinigameStats> ();
         stickerStats = new Dictionary<DataType.StickerType, StickerStats> ();
+        visitedAreas = new Dictionary<DataType.IslandSection, bool> ();
+
+        // Initialize visitedAreas dictionary with false boolean
+        foreach (DataType.IslandSection island in System.Enum.GetValues (typeof (DataType.IslandSection))) {
+            visitedAreas.Add (island, false);
+        }
 
         // Initialize dictionary with a user assigned array since Unity does not support serialized dictionaries
         foreach (MinigameData entry in minigameAssetData) {
@@ -90,75 +80,17 @@ public class GameManager : MonoBehaviour {
             gameStats.Add (entry.typeOfGame, newGame);
 
             // Create and initialize stats for corresponding sticker and add it to stickerStats Dictionary
-            StickerStats newSticker;
-            newSticker.stickerObject = entry.stickerPrefab;
-            newSticker.isStickerPlaced = false;
-            newSticker.isStickerUnlocked = false;
-            stickerStats.Add (GetAssignedSticker(entry.typeOfGame), newSticker);
+            if (entry.stickerPrefab) {
+                StickerStats newSticker;
+                newSticker.stickerObject = entry.stickerPrefab;
+                newSticker.isStickerPlaced = false;
+                newSticker.isStickerUnlocked = false;
+                stickerStats.Add (GetAssignedSticker (entry.typeOfGame), newSticker);
+            }
         }
-
-        /*
-        gameLevels = new Dictionary<DataType.Minigame, int> ();
-        gameStars = new Dictionary<DataType.Minigame, int> ();
-        gameTutorials = new Dictionary<DataType.Minigame, bool> ();
-        */
-
-        /*
-        // Loop through each minigame enum to initialize the dictionary values to avoid typing all that damn stuff out
-        foreach (DataType.Minigame game in System.Enum.GetValues (typeof (DataType.Minigame))) {
-            gameLevels.Add (game, 1);
-            gameStars.Add (game, 0);
-            gameTutorials.Add (game, true);
-        }
-
-        // Associate each sticker with a certain minigame
-        gameStickers = new Dictionary<DataType.Minigame, DataType.StickerType> ();
-        gameStickers.Add (DataType.Minigame.Brainbow, DataType.StickerType.RainbowBrain);
-        gameStickers.Add (DataType.Minigame.BrainMaze, DataType.StickerType.Frontal);
-        gameStickers.Add (DataType.Minigame.MemoryMatch, DataType.StickerType.Hippocampus);
-        gameStickers.Add (DataType.Minigame.MonsterEmotions, DataType.StickerType.Amygdala);
-        gameStickers.Add (DataType.Minigame.MonsterSenses, DataType.StickerType.Cerebellum);
-
-        // Initialize sticker dictionaries
-        stickers = new Dictionary<DataType.StickerType, bool> ();
-        stickersPlaced = new Dictionary<DataType.StickerType, bool> ();
-
-        // Loop through each sticker enum to initialize the dictionary values to avoid typing more damn stuff
-        foreach (DataType.StickerType sticker in System.Enum.GetValues (typeof (DataType.StickerType))) {
-            stickers.Add (sticker, false);
-            stickersPlaced.Add (sticker, false);
-        }
-        */
     }
 
-    public void SetMonster(string color) {
-		monster = color;
-		DetermineMonster ();
-	}
-	
-	public string GetMonster() {
-		return monster;
-	}
-
-    /*
-	public bool LevelUp(DataType.Minigame gameName) {
-		if(gameStars[gameName] < 3) {
-            gameStars[gameName] += 1;
-
-            if (gameStars[gameName] == 1 || gameStars[gameName] == 3) {
-                ReviewManager.GetInstance ().AddReviewGameToList (gameName);
-            }
-
-            if (gameLevels[gameName] < 3){
-                gameLevels[gameName] += 1;
-			}
-
-			return true;
-		}
-		return false;
-	}
-    */
-
+    // Called at the end of a minigame
     public void LevelUp (DataType.Minigame gameName) {
         MinigameStats newStats = gameStats[gameName]; // Copy current struct to a new one
 
@@ -168,12 +100,25 @@ public class GameManager : MonoBehaviour {
 
         if (newStats.stars == 1 || newStats.stars == 3) {
             ReviewManager.GetInstance ().AddReviewGameToList (gameName);
+
+            // Set needReview to true when lvl 3 is completed every other time, temporary measure to reduce annoying reviews
+            if (newStats.stars >= 3) {
+                if (activateReview) {
+                    ReviewManager.GetInstance ().needReview = true;
+                }
+                activateReview = !activateReview;
+            }
+            else {
+                ReviewManager.GetInstance ().needReview = true;
+            }
+
         }
 
         if (newStats.level < 3) {
             newStats.level += 1;
         }
 
+        numOfGamesPlayed++;
         gameStats[gameName] = newStats; // Save changes to new struct
     }
 
@@ -212,14 +157,16 @@ public class GameManager : MonoBehaviour {
     public void ActivateSticker (DataType.Minigame game) {
         // Copy current struct to a new one
         DataType.StickerType gameSticker = GetAssignedSticker(game);
-        StickerStats newSticker = stickerStats[gameSticker];
+        if (gameSticker != DataType.StickerType.None) {
+            StickerStats newSticker = stickerStats[gameSticker];
 
-        // Modify desired variable
-        if (!newSticker.isStickerUnlocked) {
-            newSticker.isStickerUnlocked = true;
+            // Modify desired variable
+            if (!newSticker.isStickerUnlocked) {
+                newSticker.isStickerUnlocked = true;
 
-            // Save changes to new struct
-            stickerStats[gameSticker] = newSticker;
+                // Save changes to new struct
+                stickerStats[gameSticker] = newSticker;
+            }
         }
     }
 
@@ -238,6 +185,33 @@ public class GameManager : MonoBehaviour {
 
             // Save changes to new struct
             stickerStats[sticker] = newSticker;
+        }
+    }
+
+    public void SetMonsterType (DataType.MonsterType monster) {
+        monsterType = monster;
+    }
+
+    public DataType.MonsterType GetMonsterType () {
+        return monsterType;
+    }
+
+    public GameObject GetPlayerMonsterType () {
+        return GetMonsterObject (monsterType);
+    }
+
+    public GameObject GetMonsterObject (DataType.MonsterType typeOfMonster) {
+        switch (typeOfMonster) {
+            case DataType.MonsterType.Blue:
+                return blueMonster;
+            case DataType.MonsterType.Green:
+                return greenMonster;
+            case DataType.MonsterType.Red:
+                return redMonster;
+            case DataType.MonsterType.Yellow:
+                return yellowMonster;
+            default:
+                return greenMonster;
         }
     }
 
@@ -264,7 +238,11 @@ public class GameManager : MonoBehaviour {
     /// <returns>Returns a StickerType from DataType</returns>
 
     public DataType.StickerType GetAssignedSticker (DataType.Minigame game) {
-        return minigameDictionary[game].stickerPrefab.GetComponent<StickerBehaviour>().typeOfSticker;
+        GameObject stickerPrefab = minigameDictionary[game].stickerPrefab;
+        if (stickerPrefab)
+            return stickerPrefab.GetComponent<StickerBehaviour> ().typeOfSticker;
+        else
+            return DataType.StickerType.None;
     }
 
     /// <summary>
@@ -274,54 +252,15 @@ public class GameManager : MonoBehaviour {
     /// <returns>Returns whether sticker is unlocked or not.</returns>
 
     public bool GetStickerUnlock (DataType.Minigame game) {
-        return stickerStats[GetAssignedSticker(game)].isStickerUnlocked;
+        if (stickerStats.ContainsKey(GetAssignedSticker (game)))
+            return stickerStats[GetAssignedSticker (game)].isStickerUnlocked;
+        else
+            return false;
     }
 
     public Dictionary<DataType.StickerType, StickerStats> GetStickerDict () {
         return stickerStats;
     }
-
-    /*
-    public Dictionary<DataType.StickerType, bool> GetAllPlacedStickers () {
-        return stickersPlaced;
-    }
-
-    public Dictionary<DataType.StickerType, bool> GetAllStickers () {
-        return stickers;
-    }
-
-    public Dictionary<DataType.StickerType, bool> GetAllPlacedStickers () {
-        return stickersPlaced;
-    }
-    */
-
-    public static MonsterType GetMonsterType () {
-        return monsterType;
-    }
-
-    /// <summary>
-    /// Determines what kind of monster is chosen
-    /// </summary>
-
-    void DetermineMonster () {
-		if (instance) {
-			if (instance.GetMonster ().Contains ("Blue")) {
-				monsterType = MonsterType.Blue;
-			} else {
-				if (instance.GetMonster ().Contains ("Green")) {
-					monsterType = MonsterType.Green;
-				} else {
-					if (instance.GetMonster ().Contains ("Red")) {
-						monsterType = MonsterType.Red;
-					} else {
-						monsterType = MonsterType.Yellow;
-					}
-				}
-			}
-		} else {
-			monsterType = MonsterType.Green;
-		}
-	}
 
     /// <summary>
     /// Creates a countdown with a voiceover.
@@ -337,12 +276,50 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public bool GetIsInputAllowed() {
-		return allowInput;
-	}
+    public void SetLastGamePlayed (DataType.Minigame game) {
+        lastGamePlayed = game;
+    }
 
-	public void SetIsInputAllowed(bool boolean) {
-		allowInput = boolean;
-		print ("Input Allowed: " + boolean);
-	}
+    public DataType.Minigame GetLastGamePlayed() {
+        return lastGamePlayed;
+    }
+
+    public void SetIslandSection (DataType.IslandSection island) {
+        currentSection = island;
+    }
+
+    public DataType.IslandSection GetIslandSection () {
+        return currentSection;
+    }
+
+    public bool GetVisitedArea(DataType.IslandSection island) {
+        return visitedAreas[island];
+    }
+
+    public bool SetVisitedArea (DataType.IslandSection island, bool isVisited) {
+        return visitedAreas[island] = isVisited;
+    }
+
+    public EndScreen CreateEndScreen(DataType.Minigame game, EndScreen.EndScreenType type) {
+        print ("Created End Screen of type: " + type);
+        EndScreen screen = Instantiate (endingScreen).GetComponent<EndScreen> ();
+        screen.typeOfGame = game;
+        screen.typeOfScreen = type;
+
+        switch (type) {
+            case EndScreen.EndScreenType.EarnedSticker:
+                screen.EarnedSticker ();
+                break;
+            case EndScreen.EndScreenType.CompletedLevel:
+                screen.CompletedLevel ();
+                break;
+            case EndScreen.EndScreenType.FailedLevel:
+                screen.FailedLevel ();
+                break;
+            default:
+                break;
+        }
+
+        return screen;
+    }
 }

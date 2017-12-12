@@ -7,11 +7,14 @@ using UnityEngine.EventSystems;
 public class StickerSlot : MonoBehaviour, IDropHandler {
 	public DataType.StickerType typeOfSticker;
 	public bool isStickerFilled = false;
+    public AudioClip clipOfSticker;
+
+    private GameObject label;
 
 	void Start () {
-		if (isStickerFilled) {
-			GetComponent<Image> ().raycastTarget = false;
-		}
+        if (transform.childCount > 0)
+            label = transform.GetChild (0).gameObject;
+        if (label) label.SetActive (false);
 	}
 
 	public void OnDrop (PointerEventData eventData) {
@@ -19,6 +22,8 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
 			StickerBehaviour sticker = eventData.pointerDrag.GetComponent<StickerBehaviour> ();
 			if (!isStickerFilled && sticker.typeOfSticker == typeOfSticker) {
 				SoundManager.GetInstance ().PlayCorrectSFX ();
+                if (clipOfSticker)
+                    SoundManager.GetInstance ().AddToVOQueue (clipOfSticker);
 				ReceiveSticker (sticker, false);
 			}
 		}
@@ -42,7 +47,8 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
 		Canvas can = gameObject.AddComponent<Canvas> ();
 		can.overrideSorting = true;
 		can.sortingOrder = -1;
-		Destroy (sticker);
+        if (label) label.SetActive (true);
+        Destroy (sticker);
 	}
 
 	public bool GetIsStickerFilled () {

@@ -2,15 +2,16 @@
 using System.Collections;
 
 public class PlayVoiceOver : MonoBehaviour {
+    public bool playOnStart;
+    public AudioClip clipToPlay;
 
-	public AudioClip clipToPlay;
+    void Start () {
+        if (playOnStart)
+            PlayVO (clipToPlay);
+    }
 
-	// Use this for initialization
-	void Start () {
-		SoundManager.GetInstance().StopPlayingVoiceOver();
-		if (GameManager.GetInstance ().playLagoonVoiceOver) {
-			SoundManager.GetInstance ().PlayVoiceOverClip (clipToPlay);
-			GameManager.GetInstance ().playLagoonVoiceOver = false;
-		}
-	}
+    public void PlayVO(AudioClip clip) {
+        SoundManager.GetInstance ().StopPlayingVoiceOver ();
+        SoundManager.GetInstance ().PlayVoiceOverClip (clip);
+    }
 }

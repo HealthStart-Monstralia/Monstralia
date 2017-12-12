@@ -13,11 +13,13 @@ public class WaterBehaviorBrainbow : MonoBehaviour {
     }
 
 	void OnMouseDown() {
-        BrainbowGameManager.GetInstance().timer.AddTime(5.0f);
-		SoundManager.GetInstance ().PlaySFXClip (waterClip);
-		CreatePlusFive ();
-		BrainbowGameManager.GetInstance ().waterBottleList.Remove (gameObject);
-		Destroy (gameObject);
+        if (BrainbowGameManager.GetInstance ().inputAllowed) {
+            BrainbowGameManager.GetInstance ().timer.AddTime (5.0f);
+            SoundManager.GetInstance ().PlaySFXClip (waterClip);
+            CreatePlusFive ();
+            BrainbowGameManager.GetInstance ().waterBottleList.Remove (gameObject);
+            Destroy (gameObject);
+        }
 	}
 
 	void CreatePlusFive() {

@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e615b91cfc81e4408470e7d72a0b9b1, type: 3}
+  m_Name: EmotionsData_Green
+  m_EditorClassIdentifier: 
+  typeOfMonster: 1
+  afraid:
+    sprite: {fileID: 21300000, guid: 231ddbcb5bea948ad99544db05bb317d, type: 3}
+    emotion: 1
+    clipOfEmotion: {fileID: 8300000, guid: eb950239a2d9563408d299c966fd4621, type: 3}
+  disgusted:
+    sprite: {fileID: 21300000, guid: 273765dedfca74c5eb79a4c2853ea71f, type: 3}
+    emotion: 2
+    clipOfEmotion: {fileID: 8300000, guid: 95f016540b3bd734d8de2443557f2c67, type: 3}
+  happy:
+    sprite: {fileID: 21300000, guid: f9bbd4fecd2f4470a85a9de252887529, type: 3}
+    emotion: 0
+    clipOfEmotion: {fileID: 8300000, guid: 29246048d4981eb498ce254c98307a64, type: 3}
+  joyous:
+    sprite: {fileID: 21300000, guid: ef1bbd6aadaf2488b9613f6d6a03efe7, type: 3}
+    emotion: 3
+    clipOfEmotion: {fileID: 8300000, guid: 5c9013dc910514540b34f77adee58910, type: 3}
+  mad:
+    sprite: {fileID: 21300000, guid: 72387f7f72f2547b79355e0b1827734a, type: 3}
+    emotion: 4
+    clipOfEmotion: {fileID: 8300000, guid: 41d66f19688d51f46bc5c319922e18fc, type: 3}
+  sad:
+    sprite: {fileID: 21300000, guid: 78b39d45e6e6a4baeb8068404c3b7706, type: 3}
+    emotion: 5
+    clipOfEmotion: {fileID: 8300000, guid: 4578b30f71906a046a70bb2114951797, type: 3}
+  thoughtful:
+    sprite: {fileID: 21300000, guid: ba74a69c2c6c046c39482e2437e3f50e, type: 3}
+    emotion: 6
+    clipOfEmotion: {fileID: 8300000, guid: c182a02586c70e946975fca788f4a09d, type: 3}
+  worried:
+    sprite: {fileID: 21300000, guid: d0523c56cc73c4af88f42ea223dd9998, type: 3}
+    emotion: 7
+    clipOfEmotion: {fileID: 8300000, guid: f1f27eb9844e70f4da5e3d4eff4064a3, type: 3}

@@ -6,7 +6,7 @@ public class Countdown : MonoBehaviour {
 	public AudioClip countdownClip;
 	public GameObject countdown1, countdown2, countdown3, countdownGo;
 
-	Animator countdown3Anim, countdown2Anim, countdown1Anim, countdownGoAnim;
+    Animator countdown3Anim, countdown2Anim, countdown1Anim, countdownGoAnim;
 
 	void Awake() {
 		countdown3Anim = countdown3.GetComponent<Animator> ();
