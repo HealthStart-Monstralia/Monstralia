@@ -242,12 +242,12 @@ Prefab:
     - target: {fileID: 224258163905983196, guid: acd22bf20657649ccb1fd20c60347a24,
         type: 2}
       propertyPath: m_LocalPosition.x
-      value: 221.96448
+      value: 146.6
       objectReference: {fileID: 0}
     - target: {fileID: 224258163905983196, guid: acd22bf20657649ccb1fd20c60347a24,
         type: 2}
       propertyPath: m_LocalPosition.y
-      value: 553.05597
+      value: 452.57
       objectReference: {fileID: 0}
     - target: {fileID: 224258163905983196, guid: acd22bf20657649ccb1fd20c60347a24,
         type: 2}
@@ -277,7 +277,7 @@ Prefab:
     - target: {fileID: 224258163905983196, guid: acd22bf20657649ccb1fd20c60347a24,
         type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 224258163905983196, guid: acd22bf20657649ccb1fd20c60347a24,
         type: 2}
@@ -520,7 +520,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22466504, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 22466504, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
       propertyPath: m_AnchoredPosition.x
@@ -589,7 +589,6 @@ GameObject:
   m_Component:
   - component: {fileID: 175339457}
   - component: {fileID: 175339456}
-  - component: {fileID: 175339455}
   - component: {fileID: 175339454}
   - component: {fileID: 175339453}
   - component: {fileID: 175339458}
@@ -614,13 +613,6 @@ Behaviour:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 175339452}
   m_Enabled: 1
---- !u!92 &175339455
-Behaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 175339452}
-  m_Enabled: 1
 --- !u!20 &175339456
 Camera:
   m_ObjectHideFlags: 0
@@ -630,7 +622,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 1, g: 0.9204868, b: 0.58823526, a: 1}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -1021,10 +1013,10 @@ RectTransform:
   m_Father: {fileID: 596282573}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 192}
-  m_SizeDelta: {x: 921.7, y: 315.2}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -320}
+  m_SizeDelta: {x: 921.7, y: 315.19995}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &556029324
 MonoBehaviour:
@@ -1354,7 +1346,7 @@ Prefab:
     - target: {fileID: 224444818855852198, guid: 7ebdcb57adf25e7429af82c1ab7a9697,
         type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 224444818855852198, guid: 7ebdcb57adf25e7429af82c1ab7a9697,
         type: 2}
@@ -1832,7 +1824,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 279.19995, y: 23.199951}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1491541000
 MonoBehaviour:
@@ -1855,7 +1847,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: 76ffb81d9fa674c27a6d28783f4b862a, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1

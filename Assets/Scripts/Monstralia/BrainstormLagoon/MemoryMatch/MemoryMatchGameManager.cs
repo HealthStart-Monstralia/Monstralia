@@ -27,7 +27,6 @@ public class MemoryMatchGameManager : AbstractGameManager {
 
 	public Timer timer;
 	public float[] timeLimit;
-	public Text timerText;
 
 	public Transform foodToMatchSpawnPos;
 	public float foodScale;
@@ -124,10 +123,6 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	}
 
 	void FixedUpdate() {
-		if(gameStarted) {
-			timerText.text = "Time: " + timer.TimeRemaining();
-		}
-
 		if(hasSpawned && rotate && difficultyLevel > 1) {
 			RotateDishes();
 			if(Time.time > stopRotateTime) {
@@ -266,10 +261,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 
 	public void StartGame() {
 		scoreGauge.gameObject.SetActive (true);
-		timerText.gameObject.SetActive (true);
-
-		//timer.SetTimeLimit (timeLimit);
-		timerText.text = "Time: " + timer.TimeRemaining();
+		timer.gameObject.SetActive (true);
 		UpdateScoreGauge ();
 
 		gameStartup = true;
@@ -447,7 +439,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 
 	public override void GameOver() {
 		gameStarted = false;
-		timerText.gameObject.SetActive(false);
+		timer.gameObject.SetActive(false);
 		scoreGauge.gameObject.SetActive(false);
 		if (currentFoodToMatch)
 			currentFoodToMatch.SetActive (false);

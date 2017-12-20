@@ -38,7 +38,7 @@ public class BoneBridgeManager : AbstractGameManager {
     public BoneBridgeData config;
     public ScoreGauge scoreGauge;
     public SubtitlePanel subtitlePanel;
-    public Timer timerObject;
+    public TimerClock timerObject;
     public BoneBridgeCamera boneCamera;
     public GameObject chestPrefab;
 
@@ -86,13 +86,13 @@ public class BoneBridgeManager : AbstractGameManager {
     private void OnEnable () {
         // Subscribe to events
         PhaseChange += OnPhaseChange;
-        Timer.OutOfTime += OnOutOfTime;
+        TimerClock.OutOfTime += OnOutOfTime;
     }
 
     private void OnDisable () {
         // Unsubscribe to events
         PhaseChange -= OnPhaseChange;
-        Timer.OutOfTime -= OnOutOfTime;
+        TimerClock.OutOfTime -= OnOutOfTime;
     }
 
     public override void PregameSetup () {

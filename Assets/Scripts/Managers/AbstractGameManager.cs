@@ -36,14 +36,7 @@ public abstract class AbstractGameManager : MonoBehaviour {
         if (GameManager.GetInstance().GetLevel(typeOfGame) == 1) {
             print ("First level of game, needs review from other games");
         }
-        /*
-        print ("AbstractGameManager Start running");
-        if (ReviewManager.GetInstance ().needReview) {
-            StartReview ();
-        } else {
-            
-        }
-        */
+
         PregameSetup ();
     }
 

@@ -100,7 +100,6 @@ public class MasterHandler_LJ : AbstractGameManager
         voData.PlayVO ("welcome");
         //Created this public void for AbstractGameManager to access. The Senses Game is managed by this MasterHandler_LJ.cs script and a script called SceneManager_LJ.cs. 
         //The MasterHandler remains active in the Senses Game scene and activates/deactivates game objects that act as Level 1, Level 2, and Level 3.
-        Debug.Log("From MasterHandler_LJ.cs: The PregameSetup function for Senses Game has been called by ReviewGameWinLose.cs. ----- This method is temporarily empty.");
     }
 
     public override void GameOver () {

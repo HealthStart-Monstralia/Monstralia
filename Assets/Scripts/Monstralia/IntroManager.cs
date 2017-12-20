@@ -41,7 +41,6 @@ public class IntroManager : MonoBehaviour {
 
         int count = 0;
         foreach (GameObject slide in aboutMonstraliaSlides) {
-            print (slide);
             pages[count] = slide;
             count++;
         }
