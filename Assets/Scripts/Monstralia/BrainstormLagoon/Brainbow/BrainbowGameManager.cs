@@ -41,7 +41,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	public LayerMask foodLayerMask;
 	public ScoreGauge scoreGauge;
 	public float timeLimit;
-	public Timer timer;
+	public TimerClock timer;
     [HideInInspector] public bool inputAllowed = false;
 
     public GameObject endGameAnimation;

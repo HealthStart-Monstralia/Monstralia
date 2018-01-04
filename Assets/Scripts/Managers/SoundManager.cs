@@ -240,16 +240,16 @@ public class SoundManager : MonoBehaviour {
     }
 
     IEnumerator PlayQueue() {
-        print ("PlayQueue");
+        //print ("PlayQueue");
         isQueuePlaying = true;
         while (clipQueue.Count > 0) {
             AudioClip clip = clipQueue[0];
-            print ("clipQueue[0]: " + clipQueue[0]);
+            //print ("clipQueue[0]: " + clipQueue[0]);
             PlayVoiceOverClip (clip);
             yield return new WaitForSeconds (clip.length);
             clipQueue.RemoveAt (0);
         }
         isQueuePlaying = false;
-        print ("PlayQueue Stop");
+        //print ("PlayQueue Stop");
     }
 }

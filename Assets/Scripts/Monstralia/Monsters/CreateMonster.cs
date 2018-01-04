@@ -35,7 +35,8 @@ public class CreateMonster : MonoBehaviour {
     }
 
     private Monster Spawn(GameObject monsterObject) {
-        Monster monster = Instantiate (monsterObject, spawnPosition.position, Quaternion.identity, spawnPosition.parent).GetComponentInChildren<Monster> ();
+        Monster monster = Instantiate (monsterObject, spawnPosition.parent).GetComponentInChildren<Monster> ();
+        monster.transform.parent.position = spawnPosition.position;
         monster.allowMonsterTickle = allowMonsterTickle;
         monster.idleAnimationOn = idleAnimationOn;
         monster.transform.parent.localScale = scale;

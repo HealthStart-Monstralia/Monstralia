@@ -24,6 +24,7 @@ public class BoneBridgeManager : AbstractGameManager {
 
     public bool doCountdown;
     public bool playIntro;
+    public bool skipTutorial = false;
     public bool getLevelFromGameManager = true;
     [HideInInspector] public bool inputAllowed = false;
     [HideInInspector] public bool isTutorialRunning = false;
@@ -101,7 +102,7 @@ public class BoneBridgeManager : AbstractGameManager {
         ChangeLevel (GetLevelObject(difficultyLevel));
         
 
-        if (GameManager.GetInstance ().GetPendingTutorial (DataType.Minigame.BoneBridge)) {
+        if (GameManager.GetInstance ().GetPendingTutorial (DataType.Minigame.BoneBridge) && !skipTutorial) {
             tutorialCoroutine = StartCoroutine (Tutorial ());
         }
         else {

@@ -24,7 +24,6 @@ public class EmotionsGameManager : AbstractGameManager {
     public bool inputAllowed = false;
     [HideInInspector] public bool isDrawingCards = false;
 
-    public Text timerText;
 	public ScoreGauge scoreGauge;
 	public Timer timer;
 	public GameObject subtitlePanel;
@@ -64,6 +63,7 @@ public class EmotionsGameManager : AbstractGameManager {
 	}
 
 	public override void PregameSetup () {
+        print("loc: " + monsterLocation.position);
         if (!generator.monster)
             generator.CreateMonster ();
         generator.ChangeMonsterEmotion (DataType.MonsterEmotions.Happy);

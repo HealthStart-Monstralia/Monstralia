@@ -291,12 +291,13 @@ public class MemoryMatchGameManager : AbstractGameManager {
             reduceSize = true;
 
 		for(int i = 0; i < numDishes; ++i) {
-			GameObject newDish = Instantiate(dish);
+			GameObject newDish = Instantiate(dish, dishAnchor.transform);
 			float offset = 2f;
-			newDish.transform.SetParent (dishAnchor.transform);
-			newDish.transform.localPosition = new Vector3(
-				offset * Mathf.Cos (dishPositionAngleDelta*i + Mathf.PI / 2), 
-				offset * Mathf.Sin (dishPositionAngleDelta*i + Mathf.PI / 2), 
+            float dishX = offset * Mathf.Cos (dishPositionAngleDelta * i + Mathf.PI / 2);
+            float dishY = offset * Mathf.Sin (dishPositionAngleDelta * i + Mathf.PI / 2);
+            newDish.transform.localPosition = new Vector3(
+                dishX,
+                dishY,
 				0);
 			dishes[i] = newDish;
 
@@ -304,7 +305,6 @@ public class MemoryMatchGameManager : AbstractGameManager {
             if (reduceSize) {
                 newDish.transform.localScale = newDish.transform.localScale * 0.9f;
             }
-
 		}
 	}
 

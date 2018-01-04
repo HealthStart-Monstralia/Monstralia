@@ -82,7 +82,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 5cc013b032285864ebeda2df9e332417, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -102,6 +102,7 @@ MonoBehaviour:
   selectedEmotion: 0
   emotionData: {fileID: 11400000, guid: 4699797d3f297d840800d30591b735a6, type: 2}
   allowMonsterTickle: 1
+  spawnAnimation: 0
   _idleAnimationOn: 1
   monsterSfx: {fileID: 8300000, guid: b24e99fa0112142c79cc477b3a50ad46, type: 3}
 --- !u!212 &212399538445813630
@@ -113,6 +114,7 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -128,6 +130,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

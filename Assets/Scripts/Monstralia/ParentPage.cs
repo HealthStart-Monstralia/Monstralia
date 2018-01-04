@@ -25,10 +25,9 @@ public class ParentPage : MonoBehaviour {
 	}
 
 	public void EnableButtons() {
-		if (buttonsToEnable[0] != null) {
-			for (int i = 0; i < buttonsToEnable.Length; i++) {
-				buttonsToEnable [i].interactable = true;
-			}
+		for (int i = 0; i < buttonsToEnable.Length; i++) {
+            if (buttonsToEnable[i] != null)
+                buttonsToEnable [i].interactable = true;
 		}
 	}
 

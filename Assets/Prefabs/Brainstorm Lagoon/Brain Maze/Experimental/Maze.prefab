@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1794287646843726}
+  m_IsPrefabParent: 1
+--- !u!1 &1794287646843726
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4269896665059186}
+  - component: {fileID: 114098031982066522}
+  m_Layer: 0
+  m_Name: Maze
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4269896665059186
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1794287646843726}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114098031982066522
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1794287646843726}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb2d478e77b3c984ebde0be4643f807b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size:
+    x: 5
+    y: 5
+  player: {fileID: 1874061102094620, guid: fd30c3111d649d4498cba6c601eb1254, type: 2}
+  finish: {fileID: 1633111245420650, guid: 1036bea680d4caa49a23edfe36aa9084, type: 2}
+  cellPrefab: {fileID: 114991642337913904, guid: 2f45158b74528eb4bbd21fbb6b53357c,
+    type: 2}
+  numOfPickupsToSpawn: 5
+  generationStepDelay: 0
+  passagePrefab: {fileID: 114299560116083898, guid: add50233ec747464f9005126ce73ce69,
+    type: 2}
+  wallPrefab: {fileID: 114912667283155018, guid: 0691407888c85d742bc9d0e5fca79e76,
+    type: 2}
+  doorPrefab: {fileID: 114642533385264506, guid: 6fe1ca5e3a4cf1847b9276f8cae83ae8,
+    type: 2}
+  pickupPrefab: {fileID: 114559342937607948, guid: 82e3e562e928e7f47acae45095ae5ec5,
+    type: 2}

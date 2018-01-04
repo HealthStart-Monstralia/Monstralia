@@ -84,6 +84,6 @@ public class TimerClock : MonoBehaviour {
 
     void UpdateFill (float progress) {
         fill.fillAmount = progress;
-        fill.color = Color.Lerp (emptyColor, fullColor, progress);
+        fill.color = Color.Lerp (emptyColor, fullColor, progress * 2f);
     }
 }
