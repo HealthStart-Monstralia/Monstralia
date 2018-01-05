@@ -4,11 +4,24 @@ using UnityEngine;
 
 public class MazeManager : MonoBehaviour {
     public Maze mazePrefab;
-
     private Maze mazeInstance;
 
+    private static MazeManager instance;
+
+    private void Awake () {
+        if (instance == null) {
+            instance = this;
+        } else if (instance != this) {
+            Destroy (gameObject);
+        }
+    }
+
+    public static MazeManager GetInstance() {
+        return instance;
+    }
+
     private void Start () {
-        BeginGame ();
+        StartCoroutine (BeginGame ());
     }
 
     private void Update () {
@@ -17,15 +30,16 @@ public class MazeManager : MonoBehaviour {
         }
     }
 
-    private void BeginGame () {
-        mazeInstance = Instantiate (mazePrefab) as Maze;
-        //mazeInstance.Generate ();
+    IEnumerator BeginGame () {
+        yield return null;
+        mazeInstance = Instantiate (mazePrefab, transform.position, Quaternion.identity) as Maze;
         StartCoroutine (mazeInstance.Generate ());
     }
 
-    private void RestartGame () {
+    public void RestartGame () {
         StopAllCoroutines ();
         Destroy (mazeInstance.gameObject);
-        BeginGame ();
+        mazeInstance = null;
+        StartCoroutine (BeginGame ());
     }
 }

@@ -58,7 +58,7 @@ MonoBehaviour:
   finish: {fileID: 1633111245420650, guid: 1036bea680d4caa49a23edfe36aa9084, type: 2}
   cellPrefab: {fileID: 114991642337913904, guid: 2f45158b74528eb4bbd21fbb6b53357c,
     type: 2}
-  numOfPickupsToSpawn: 5
+  numOfPickupsToSpawn: 8
   generationStepDelay: 0
   passagePrefab: {fileID: 114299560116083898, guid: add50233ec747464f9005126ce73ce69,
     type: 2}
@@ -66,5 +66,9 @@ MonoBehaviour:
     type: 2}
   doorPrefab: {fileID: 114642533385264506, guid: 6fe1ca5e3a4cf1847b9276f8cae83ae8,
     type: 2}
-  pickupPrefab: {fileID: 114559342937607948, guid: 82e3e562e928e7f47acae45095ae5ec5,
-    type: 2}
+  pickupPrefab:
+  - {fileID: 114559342937607948, guid: 82e3e562e928e7f47acae45095ae5ec5, type: 2}
+  - {fileID: 114444147449490072, guid: 5745ee455d78394499de55e5e2b8f220, type: 2}
+  - {fileID: 114688046411434816, guid: ce1ecb3f3cdd44341ba0bab4e0773fca, type: 2}
+  - {fileID: 114362781149478796, guid: 261eab721ce8667469d210006e5c43fd, type: 2}
+  - {fileID: 114265934935425638, guid: 875694f2564521c49a4a86502a16a7e5, type: 2}

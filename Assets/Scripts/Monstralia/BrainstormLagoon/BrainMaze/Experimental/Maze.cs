@@ -15,26 +15,32 @@ public class Maze : MonoBehaviour {
     public MazePassage passagePrefab;
     public MazeWall wallPrefab;
     public MazeDoor doorPrefab;
-    public MazePickup pickupPrefab;
+    public MazePickup[] pickupPrefab;
 
     private static Maze instance = null;
     private MazeCell firstCell, lastCell;
     private MazePassage lastPassage;
-    private MazeDoor door;
+    private MazeDoor doorInstance;
     private MazeCell[,] cells;
+    private List<MazePickup> pickupList;
 
     private float time = 0f;
     private float pickupProb = 0.1f;
     private bool finished = false;
+    private bool backtracking = false;
     private int numOfPickups = 0;
+    private int numOfCells = 0;
+    private int totalNumOfCells = 0;
 
     private void Awake () {
-        print ("MAZE CREATED");
         if (instance == null) {
             instance = this;
         } else if (instance != this) {
             Destroy (gameObject);
         }
+
+        totalNumOfCells = size.x * size.y;
+        pickupList = new List<MazePickup> (pickupPrefab);
     }
 
     private void OnDestroy () {
@@ -48,9 +54,8 @@ public class Maze : MonoBehaviour {
     public void OnPickup(MazePickup pickup) {
         numOfPickups--;
         if (numOfPickups <= 0) {
-            Destroy (door);
+            Destroy (doorInstance.gameObject);
         }
-
     }
 
     public IntVector2 RandomCoordinates {
@@ -73,15 +78,26 @@ public class Maze : MonoBehaviour {
         List<MazeCell> activeCells = new List<MazeCell> ();
         DoFirstGenerationStep (activeCells);
         while (activeCells.Count > 0) {
-            //yield return delay;
-            yield return null;
+            yield return delay;
+            //yield return null;
             DoNextGenerationStep (activeCells);
         }
 
-        lastCell = transform.GetChild (transform.childCount - 1).GetComponent<MazeCell> ();
-        CreateDoor (lastCell, lastPassage.direction);
-        Instantiate (player, firstCell.transform.position, Quaternion.identity, transform.root);
+        doorInstance = CreateDoor (lastCell, lastPassage.direction);
+        //Instantiate (player, firstCell.transform.position, Quaternion.identity, transform.root);
         Instantiate (finish, lastCell.transform.position, Quaternion.identity, transform.root);
+
+        CreateMonster monsterSpawn = gameObject.AddComponent<CreateMonster> ();
+        monsterSpawn.spawnPosition = firstCell.transform;
+        monsterSpawn.allowMonsterTickle = false;
+        monsterSpawn.idleAnimationOn = false;
+        Monster monster = monsterSpawn.SpawnMonster (GameManager.GetInstance().GetMonsterObject(DataType.MonsterType.Blue));
+        monster.transform.parent.gameObject.AddComponent<BMaze_Monster> ();
+        monster.transform.parent.gameObject.AddComponent<BMaze_MonsterMovement> ();
+        monster.transform.parent.localScale = Vector3.one*0.1f;
+
+        transform.position = new Vector3 (0.75f, 0.5f, 0f);
+        transform.localScale = transform.localScale * 1.5f;
     }
 
     public void FixedUpdate () {
@@ -99,6 +115,10 @@ public class Maze : MonoBehaviour {
         MazeCell currentCell = activeCells[currentIndex];
         if (currentCell.IsFullyInitialized) {
             activeCells.RemoveAt (currentIndex);
+            if (!backtracking && numOfCells < totalNumOfCells) {
+                CreatePickup (currentCell);
+                backtracking = true;
+            }
             return;
         }
         MazeDirection direction = currentCell.RandomUninitializedDirection;
@@ -109,6 +129,7 @@ public class Maze : MonoBehaviour {
                 neighbor = CreateCell (coordinates);
                 CreatePassage (currentCell, neighbor, direction);
                 activeCells.Add (neighbor);
+                backtracking = false;
             } else {
                 CreateWall (currentCell, neighbor, direction);
             }
@@ -120,17 +141,14 @@ public class Maze : MonoBehaviour {
     private MazeCell CreateCell (IntVector2 coordinates) {
         MazeCell newCell = Instantiate (cellPrefab) as MazeCell;
         cells[coordinates.x, coordinates.y] = newCell;
+        numOfCells++;
         newCell.coordinates = coordinates;
         newCell.name = "Maze Cell " + coordinates.x + ", " + coordinates.y;
-        print (transform);
         newCell.transform.parent = transform;
         newCell.transform.localPosition = new Vector3 (coordinates.x - size.x * 0.5f + 0f, coordinates.y - size.y * 0.5f + 0f, 0f);
 
-        if (Random.value < pickupProb && numOfPickupsToSpawn > 0) {
-            Instantiate (pickupPrefab, newCell.transform.position, Quaternion.identity, transform.root);
-            numOfPickupsToSpawn--;
-            numOfPickups++;
-        }
+        ProbabilitySpawnPickup (newCell);
+        lastCell = newCell;
         return newCell;
     }
 
@@ -151,8 +169,36 @@ public class Maze : MonoBehaviour {
         }
     }
 
-    private void CreateDoor (MazeCell cell, MazeDirection direction) {
-        door = Instantiate (doorPrefab) as MazeDoor;
+    private MazeDoor CreateDoor (MazeCell cell, MazeDirection direction) {
+        MazeDoor door = Instantiate (doorPrefab) as MazeDoor;
         door.Initialize (cell, direction);
+        return door;
+    }
+
+    private void ProbabilitySpawnPickup (MazeCell cell) {
+        if (numOfPickupsToSpawn > 0) {
+            if (Random.value < pickupProb) {
+                pickupProb = 0.0f;
+                CreatePickup (cell);
+            } else {
+                pickupProb += 0.1f;
+            }
+        }
+    }
+
+    private GameObject CreatePickup(MazeCell cell) {
+        if (numOfPickupsToSpawn > 0 && !cell.hasPickup) {
+            int selection = Random.Range (0, pickupList.Count);
+            MazePickup pickup = Instantiate (pickupList[selection], cell.transform.position, Quaternion.identity, transform.root);
+            if (selection != 0)
+                pickupList.RemoveAt (selection);
+            numOfPickupsToSpawn--;
+            numOfPickups++;
+            cell.hasPickup = true;
+            return pickup.gameObject;
+        }
+        else {
+            return null;
+        }
     }
 }
