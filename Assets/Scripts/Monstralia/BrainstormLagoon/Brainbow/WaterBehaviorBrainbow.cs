@@ -14,7 +14,7 @@ public class WaterBehaviorBrainbow : MonoBehaviour {
 
 	void OnMouseDown() {
         if (BrainbowGameManager.GetInstance ().inputAllowed) {
-            BrainbowGameManager.GetInstance ().timer.AddTime (5.0f);
+            TimerClock.GetInstance().AddTime (5.0f);
             SoundManager.GetInstance ().PlaySFXClip (waterClip);
             CreatePlusFive ();
             BrainbowGameManager.GetInstance ().waterBottleList.Remove (gameObject);
@@ -23,7 +23,7 @@ public class WaterBehaviorBrainbow : MonoBehaviour {
 	}
 
 	void CreatePlusFive() {
-		GameObject plusFive = Instantiate (plus5, transform.position, Quaternion.identity, BrainbowGameManager.GetInstance ().mainCanvas.transform);
-		Destroy (plusFive, 2.5f);
+		//GameObject plusFive = Instantiate (plus5, transform.position, Quaternion.identity, BrainbowGameManager.GetInstance ().mainCanvas.transform);
+		//Destroy (plusFive, 2.5f);
 	}
 }

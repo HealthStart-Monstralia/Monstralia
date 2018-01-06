@@ -9,6 +9,7 @@ public class TimerClock : MonoBehaviour {
     public Text textObject;
     public Image fill;
     public Color fullColor, emptyColor;
+    public GameObject timeUpNotification;
 
     // Event
     public delegate void OutOfTimeAction ();
@@ -16,6 +17,24 @@ public class TimerClock : MonoBehaviour {
 
     private bool timing = false;    /*!< Flag to keep track of when to start/stop counting down */
     private float timeRemaining;    /*!< The time remaining */
+    private static TimerClock instance;
+
+    private void Awake () {
+        if (instance == null) {
+            instance = this;
+        } else if (instance != this) {
+            Destroy (gameObject);
+        }
+
+    }
+
+    public static TimerClock GetInstance() {
+        return instance;
+    }
+
+    private void OnDestroy () {
+        instance = null;
+    }
 
     /** \cond */
     void Start () {
@@ -31,6 +50,7 @@ public class TimerClock : MonoBehaviour {
             } else {
                 StopTimer ();
                 OutOfTime ();
+                StartCoroutine (ShowTimeUpNotification (3f));
             }
         }
 
@@ -85,5 +105,12 @@ public class TimerClock : MonoBehaviour {
     void UpdateFill (float progress) {
         fill.fillAmount = progress;
         fill.color = Color.Lerp (emptyColor, fullColor, progress * 2f);
+    }
+
+    IEnumerator ShowTimeUpNotification(float time) {
+        GameObject notification = Instantiate (timeUpNotification);
+        yield return new WaitForSeconds (time);
+        notification.GetComponent<Animator> ().Play ("FoodPanelFadeOut");
+        Destroy (notification, 1f);
     }
 }

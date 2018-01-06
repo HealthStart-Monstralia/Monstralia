@@ -44,7 +44,7 @@ public class WaterBehavior : MonoBehaviour {
 	void OnMouseDown() {
 		if(isActive) {
 //			gameObject.transform.Find("Subtitle").GetComponent<SubtitlePanel>().Display("Water", waterClip);
-			BrainbowGameManager.GetInstance().timer.AddTime(5.0f);
+			TimerClock.GetInstance().AddTime(5.0f);
 			nextSpawnTime = Time.time + Random.Range (5, 10);
 			Despawn();
 		}

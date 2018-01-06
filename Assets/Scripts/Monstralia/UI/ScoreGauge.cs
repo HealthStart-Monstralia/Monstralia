@@ -6,8 +6,27 @@ using UnityEngine.UI;
 public class ScoreGauge : MonoBehaviour {
     public Image scoreBar;
 
+    private static ScoreGauge instance;
     private Coroutine coroutine;
     private bool isTransitioning;
+
+    private void Awake () {
+        if (instance == null) {
+            instance = this;
+        } else if (instance != this) {
+            Destroy (gameObject);
+        }
+
+        SetProgress (0f);
+    }
+
+    public static ScoreGauge GetInstance() {
+        return instance;
+    }
+
+    private void OnDestroy () {
+        instance = null;
+    }
 
     public void SetProgress(float progress) {
         scoreBar.fillAmount = progress;

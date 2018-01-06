@@ -14,12 +14,17 @@ public class ReviewBrainbow : MonoBehaviour {
 	public SubtitlePanel subtitle;
 	public ReviewBrainbowSlot[] slots;
 	public GameObject[] spawnSlots;
+    public List<GameObject> restrictedFoods;
 
-	private int numOfFilledSlots = 0;
+    private int numOfFilledSlots = 0;
 	private GameObject currentFoodToMatch;
 	private static ReviewBrainbow instance;
+    private List<GameObject> redFoodsList = new List<GameObject> ();
+    private List<GameObject> yellowFoodsList = new List<GameObject> ();
+    private List<GameObject> greenFoodsList = new List<GameObject> ();
+    private List<GameObject> purpleFoodsList = new List<GameObject> ();
 
-	void Awake() {
+    void Awake() {
 		if(instance == null) {
 			instance = this;
 		}
@@ -76,11 +81,7 @@ public class ReviewBrainbow : MonoBehaviour {
     }
 
 	void ChooseFoodsFromManager() {
-		FoodList listOfFoods = GameManager.GetInstance ().GetComponent<FoodList> ();
-		List<GameObject> redFoodsList = new List<GameObject>(listOfFoods.GetBrainbowFoods (Colorable.Color.Red));
-		List<GameObject> yellowFoodsList = new List<GameObject>(listOfFoods.GetBrainbowFoods (Colorable.Color.Yellow));
-		List<GameObject> greenFoodsList = new List<GameObject>(listOfFoods.GetBrainbowFoods (Colorable.Color.Green));
-		List<GameObject> purpleFoodsList = new List<GameObject>(listOfFoods.GetBrainbowFoods (Colorable.Color.Purple));
+        SortBrainbowFoods ();
 
 		AddFoodsToList (redFoodsList);
 		AddFoodsToList (yellowFoodsList);
@@ -88,7 +89,43 @@ public class ReviewBrainbow : MonoBehaviour {
 		AddFoodsToList (purpleFoodsList);
 	}
 
-	void AddFoodsToList(List<GameObject> goList) {
+    // Sort foods into categories
+    void SortBrainbowFoods () {
+        FoodList foodList = GameManager.GetInstance ().GetComponent<FoodList> ();
+        Food foodComponent;
+
+        // Remove any restricted foods
+        List<GameObject> brainbowFoods = foodList.goodFoods;
+        foreach (GameObject food in restrictedFoods) {
+            brainbowFoods.Remove (food);
+        }
+
+        // Sort food into corresponding color categories
+        foreach (GameObject food in brainbowFoods) {
+            foodComponent = food.GetComponent<Food> ();
+            if (foodComponent.foodType == Food.TypeOfFood.Fruit || foodComponent.foodType == Food.TypeOfFood.Vegetable) {
+                switch (foodComponent.color) {
+                    case Colorable.Color.Red:
+                        redFoodsList.Add (food);
+                        break;
+
+                    case Colorable.Color.Yellow:
+                        yellowFoodsList.Add (food);
+                        break;
+
+                    case Colorable.Color.Green:
+                        greenFoodsList.Add (food);
+                        break;
+
+                    case Colorable.Color.Purple:
+                        purpleFoodsList.Add (food);
+                        break;
+                }
+            }
+        }
+    }
+
+    void AddFoodsToList(List<GameObject> goList) {
 		int randomIndex;
 		randomIndex = Random.Range (0, goList.Count);
 		foods.Add (goList [randomIndex]);

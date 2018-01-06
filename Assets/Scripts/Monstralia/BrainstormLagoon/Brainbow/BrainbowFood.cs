@@ -12,7 +12,7 @@ public class BrainbowFood : MonoBehaviour {
 	void OnMouseDown() {
 		if(!busy && !BrainbowGameManager.GetInstance().GetGameOver() && BrainbowGameManager.GetInstance().inputAllowed) {
 			moving = true;
-			BrainbowGameManager.GetInstance().SetActiveFood(this);
+			//BrainbowGameManager.GetInstance().SetActiveFood(this);
 			offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, screenPoint.z));
 
 			//Display the food's name
@@ -29,7 +29,7 @@ public class BrainbowFood : MonoBehaviour {
 			gameObject.GetComponent<Rigidbody2D>().MovePosition(curPosition);
 		}
 	}
-
+    /*
 	void OnMouseUp() {
 		if (BrainbowGameManager.GetInstance ().inputAllowed) {
 			if (!busy && moving) {
@@ -64,6 +64,7 @@ public class BrainbowFood : MonoBehaviour {
 			StartCoroutine (HideSubtitle ());
 		}
 	}
+    */
 
 	IEnumerator HideSubtitle() {
 		yield return new WaitForSeconds(0.5f);
