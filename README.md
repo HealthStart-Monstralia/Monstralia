@@ -3,7 +3,7 @@
 Gamifying good healthy habits for kids! Children ages 2-6 take control of a baby monster avatar and teach it to make healthy choices. Using the HealthStart Foundation's curriculum Healthy Education for Youngsters (HEY), we are making a game using the Unity game engine to teach children how they can take care of their body through healthy eating and exercise.
 
 # If you would like to contribute
-All current development is on the 'BrainstormLagoon' branch and the 'master' branch is for finalized changes. If you are new to version control, please check out the YouTube links at the bottom. Please check out the Wiki to familiarize yourself with the structure of the game and the procedures.
+Core development will be on the **MainframeMountain** branch with each new minigame inside their own branches (e.g. BoneBridge branch). The 'master' branch is for finalized changes. If you are new to version control, please check out the YouTube links at the bottom. Please check out the Wiki to familiarize yourself with the structure of the game and the procedures.
 
 ## Setup:
 ### Check out the [Setting Up Unity for Monstralia](https://www.youtube.com/watch?v=z7IWprAU3A0) YouTube video for an easier guide.
