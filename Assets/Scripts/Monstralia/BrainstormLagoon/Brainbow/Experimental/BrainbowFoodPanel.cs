@@ -41,6 +41,16 @@ public class BrainbowFoodPanel : MonoBehaviour {
 
     // For animator
     public void DeactivateGameObject() {
+        ClearFood ();
         gameObject.SetActive (false);
+    }
+
+    public void ClearFood () {
+        foreach (Transform slot in slots) {
+            if (slot.childCount > 0) {
+                GameObject foodItem = slot.GetChild (0).gameObject;
+                if (foodItem) Destroy (foodItem);
+            }
+        }
     }
 }

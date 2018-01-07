@@ -5,27 +5,12 @@ using UnityEngine;
 public class BrainbowStripe : MonoBehaviour {
     public Colorable.Color stripeColor;
     public Transform[] foodSlots;
+    [HideInInspector] public BrainbowFoodItem detectedFood;
 
     private int slotIndex = 0;
-    private BrainbowFoodItem detectedFood;
 
     private void Awake () {
-        transform.parent.gameObject.SetActive (false);
-    }
-
-    private void OnTriggerEnter2D (Collider2D collision) {
-        detectedFood = collision.GetComponent<BrainbowFoodItem> ();
-        if (detectedFood) {
-            Colorable.Color foodColor = collision.GetComponent<Food> ().color;
-            if (foodColor == stripeColor) {
-                detectedFood.stripeToAttach = this;
-            }
-        }
-    }
-
-    private void OnTriggerExit2D (Collider2D collision) {
-        if (detectedFood && detectedFood.stripeToAttach == this)
-            detectedFood.stripeToAttach = null;
+        transform.gameObject.SetActive (false);
     }
 
     public void MoveItemToSlot (GameObject item) {
@@ -37,8 +22,11 @@ public class BrainbowStripe : MonoBehaviour {
 
     public void ClearStripe() {
         foreach (Transform slot in foodSlots) {
-            GameObject foodItem = slot.GetChild (0).gameObject;
-            if (foodItem) Destroy (foodItem);
+            if (slot.childCount > 0) {
+                GameObject foodItem = slot.GetChild (0).gameObject;
+                if (foodItem) Destroy (foodItem);
+            }
         }
+        slotIndex = 0;
     }
 }
