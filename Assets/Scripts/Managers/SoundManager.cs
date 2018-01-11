@@ -95,16 +95,17 @@ public class SoundManager : MonoBehaviour {
 	 */
     public void PlayVoiceOverClip(AudioClip clip) {
         if (isPlayingVoiceOver) {
-            StopCoroutine (voiceCoroutine);
+            if (voiceCoroutine != null)
+                StopCoroutine (voiceCoroutine);
             StopPlayingVoiceOver ();
         }
         voiceCoroutine = StartCoroutine (PlayVoiceOverClipCoroutine (clip));
 	}
 
     IEnumerator PlayVoiceOverClipCoroutine (AudioClip clip) {
-        isPlayingVoiceOver = true;
         voiceOverSource.clip = clip;
         voiceOverSource.Play ();
+        isPlayingVoiceOver = true;
         yield return new WaitForSeconds(clip.length);
         isPlayingVoiceOver = false;
     }

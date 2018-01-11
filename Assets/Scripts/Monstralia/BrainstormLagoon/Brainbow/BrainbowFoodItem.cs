@@ -7,7 +7,7 @@ public class BrainbowFoodItem : MonoBehaviour {
 
     private Vector3 offset;
     private Rigidbody2D rigBody;
-    private bool moving = false;
+    private bool isMoved = false;
     private bool isPlaced = false;
     private bool isBeingEaten = false;
     private SpriteRenderer spriteRenderer;
@@ -33,7 +33,6 @@ public class BrainbowFoodItem : MonoBehaviour {
 
     private void OnMouseDown () {
         if (BrainbowGameManager.GetInstance().inputAllowed) {
-            moving = true;
             offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0f));
             BrainbowGameManager.GetInstance ().ShowSubtitles (gameObject.name);
             SoundManager.GetInstance ().AddToVOQueue (gameObject.GetComponent<Food> ().clipOfName);
@@ -42,7 +41,7 @@ public class BrainbowFoodItem : MonoBehaviour {
     }
 
     private void OnMouseUp () {
-        if (moving) {
+        if (isMoved) {
             if (stripeToAttach) {
                 BrainbowGameManager.GetInstance ().ScoreAndReplace (transform.parent);
                 SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().correctSound);
@@ -57,16 +56,20 @@ public class BrainbowFoodItem : MonoBehaviour {
             } else {
                 MoveBack ();
             }
+            isMoved = false;
         }
         spriteRenderer.sortingOrder = 3;
-        moving = false;
     }
 
-    void FixedUpdate () {
-        if (moving) {
-            Vector3 curScreenPoint = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0f);
-            Vector3 curPosition = Camera.main.ScreenToWorldPoint (curScreenPoint) + offset;
-            rigBody.MovePosition (curPosition);
+    void OnMouseDrag () {
+        if (BrainbowGameManager.GetInstance ().inputAllowed) {
+            if (!isMoved)
+                isMoved = true;
+            if (isMoved) {
+                Vector3 curScreenPoint = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0f);
+                Vector3 curPosition = Camera.main.ScreenToWorldPoint (curScreenPoint) + offset;
+                rigBody.MovePosition (curPosition);
+            }
         }
     }
 

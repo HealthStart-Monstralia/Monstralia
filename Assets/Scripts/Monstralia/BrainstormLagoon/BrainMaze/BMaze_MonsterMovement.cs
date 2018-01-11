@@ -14,8 +14,9 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 	private Rigidbody2D rigBody;
 
 	void Start () {
-        //rigBody = GetComponent<Rigidbody2D> ();
-        rigBody = gameObject.AddComponent<Rigidbody2D> ();
+        rigBody = GetComponent<Rigidbody2D> ();
+        if (!rigBody)
+            rigBody = gameObject.AddComponent<Rigidbody2D> ();
         rigBody.gravityScale = 0.0f;
         rigBody.freezeRotation = true;
         rigBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
