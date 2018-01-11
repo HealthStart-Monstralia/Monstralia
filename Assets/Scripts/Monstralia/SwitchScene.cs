@@ -7,7 +7,7 @@ public class SwitchScene: MonoBehaviour {
 	[HideInInspector] public GameObject loadingScreen;
 
     private void Start () {
-        if (GameManager.GetInstance ()) loadingScreen = GameManager.GetInstance ().loadingScreen;
+        if (GameManager.GetInstance ()) loadingScreen = GameManager.GetInstance ().loadingScreenPrefab;
     }
 
     public void LoadScene() {

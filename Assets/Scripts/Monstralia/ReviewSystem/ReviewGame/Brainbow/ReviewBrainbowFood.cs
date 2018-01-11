@@ -4,55 +4,79 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ReviewBrainbowFood : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler {
-	private bool isPlaced = false;
-	private Vector2 pointerOffset;
-	private CanvasGroup canvasGroup;
-	private Vector3 origin;
+public class ReviewBrainbowFood : MonoBehaviour {
+    [HideInInspector] public ReviewBrainbowStripe stripeToAttach;
+    private Vector3 offset;
+    private Rigidbody2D rigBody;
+    private bool moving = false;
+    private bool isPlaced = false;
+    private bool isBeingEaten = false;
 
-	void Awake() {
-        canvasGroup = gameObject.AddComponent<CanvasGroup> ();
-		SetOrigin ();
-	}
+    private void Awake () {
+        rigBody = gameObject.GetComponent<Rigidbody2D> ();
+    }
 
-	public void OnPointerDown (PointerEventData eventData) {
-		if (!isPlaced) {
-            canvasGroup.blocksRaycasts = false;
-		}
-	}
+    private void OnMouseDown () {
+        moving = true;
+        offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0f));
+        ReviewBrainbow.GetInstance ().subtitle.Display (gameObject.name);
+        SoundManager.GetInstance ().AddToVOQueue (gameObject.GetComponent<Food> ().clipOfName);
+    }
 
-	public void OnPointerUp (PointerEventData eventData) {
-		if (!isPlaced) {
-            RaycastHit2D hit = Physics2D.Raycast (transform.position, -Vector2.up, 1.0f, ReviewBrainbow.GetInstance().mask);
-
-            if (hit.collider != null && hit.collider.gameObject.GetComponent<ReviewBrainbowSlot> ().color == GetComponent<Food> ().color) {
-                SoundManager.GetInstance ().PlayCorrectSFX();
-                SetPlaced (true, hit.collider.gameObject.transform);
-                ReviewBrainbow.GetInstance ().IncreaseNumOfFilledSlots ();
+    private void OnMouseUp () {
+        if (moving) {
+            if (stripeToAttach) {
+                SoundManager.GetInstance ().PlayCorrectSFX ();
+                InsertItemIntoStripe (stripeToAttach);
+            } else {
+                MoveBack ();
             }
-            else {
-                transform.position = origin;
-            }
-
-            canvasGroup.blocksRaycasts = true;
         }
-	}
+        moving = false;
+    }
 
-	public void OnDrag (PointerEventData eventData) {
-		if (!isPlaced) {
-			Vector3 screenPoint = new Vector3 (eventData.position.x, eventData.position.y, 0f);
-			screenPoint.z = -Camera.main.transform.position.z;
-			transform.position = Camera.main.ScreenToWorldPoint(screenPoint);
-		}
-	}
+    void FixedUpdate () {
+        if (moving) {
+            Vector3 curScreenPoint = new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0f);
+            Vector3 curPosition = Camera.main.ScreenToWorldPoint (curScreenPoint) + offset;
+            rigBody.MovePosition (curPosition);
+        }
+    }
 
-	public void SetPlaced (bool placed, Transform trans) {
-		isPlaced = placed;
-		gameObject.transform.SetParent (trans);
-		gameObject.transform.localPosition = Vector3.zero;
-	}
+    void MoveBack () {
+        gameObject.transform.localPosition = Vector3.zero;
+    }
 
-	public void SetOrigin () {
-		origin = transform.position;
-	}
+    IEnumerator HideSubtitle () {
+        yield return new WaitForSeconds (0.5f);
+        BrainbowGameManager.GetInstance ().HideSubtitles ();
+    }
+
+    public void InsertItemIntoStripe (ReviewBrainbowStripe stripe) {
+        stripe.MoveItemToSlot (gameObject);
+        gameObject.GetComponent<Collider2D> ().enabled = false;
+        isPlaced = true;
+    }
+
+    public IEnumerator GetEaten () {
+        isBeingEaten = true;
+        gameObject.GetComponent<Collider2D> ().enabled = true;
+        yield return new WaitForSeconds (0.5f);
+
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 1f) {
+            transform.position = Vector2.MoveTowards (transform.position, new Vector3 (0f, transform.position.y, 0f), t * 0.3f);
+            Debug.DrawLine (transform.position, new Vector3 (0f, transform.position.y, 0f), Color.yellow);
+            yield return new WaitForFixedUpdate ();
+        }
+        rigBody.bodyType = RigidbodyType2D.Dynamic;
+        rigBody.gravityScale = 2.0f;
+        yield return new WaitForSeconds (2f);
+        Destroy (gameObject);
+    }
+
+    private void OnTriggerEnter2D (Collider2D collision) {
+        if (collision.tag == "Monster" && isPlaced) {
+            Destroy (gameObject);
+        }
+    }
 }

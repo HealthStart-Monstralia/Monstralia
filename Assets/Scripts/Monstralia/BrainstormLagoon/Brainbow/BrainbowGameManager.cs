@@ -58,13 +58,13 @@ public class BrainbowGameManager : AbstractGameManager {
     private List<GameObject> greenFoodsList = new List<GameObject> ();
     private List<GameObject> purpleFoodsList = new List<GameObject> ();
 
-    void Awake() {
-		if(instance == null) {
-			instance = this;
-		}
-		else if(instance != this) {
-			Destroy(gameObject);
-		}
+    void Awake () {
+        if (instance == null) {
+            instance = this;
+        } else if (instance != this) {
+            Destroy (gameObject);
+        }
+
         CheckForGameManager ();
 
         SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
@@ -138,6 +138,7 @@ public class BrainbowGameManager : AbstractGameManager {
 		timer.gameObject.SetActive(true);
 		timer.SetTimeLimit (GetLevelConfig().timeLimit);
         foodPanel.gameObject.SetActive (true);
+        activeFoods.Clear ();
         StartCoroutine (StartSpawningFoods ());
         StartCoroutine (TurnOnRainbows ());
         ChooseFoodsFromManager ();
@@ -290,7 +291,6 @@ public class BrainbowGameManager : AbstractGameManager {
         monsterObject.ChangeEmotions (DataType.MonsterEmotions.Joyous);
 
         foreach (BrainbowFoodItem item in activeFoods) {
-            print (item);
             item.StartCoroutine (item.GetEaten ());
             item.transform.SetParent (transform.root);
             yield return new WaitForSeconds (0.1f);

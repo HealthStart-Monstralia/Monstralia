@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     private DataType.Minigame lastGamePlayed;
     private DataType.IslandSection currentSection;
     private bool activateReview = false; // Alternate activating review when game is lvl 3
+    private int numOfGamesPlayed = 0;
 
     public struct MinigameStats {
         public int level;
@@ -28,11 +29,8 @@ public class GameManager : MonoBehaviour {
         public bool isStickerPlaced;
     }
 
-    public int numOfGamesPlayed = 0;
-    public bool lagoonFirstSticker = true;
-
-    public GameObject loadingScreen;
-    public GameObject endingScreen;
+    public GameObject loadingScreenPrefab;
+    public GameObject endingScreenPrefab;
     public GameObject blueMonster, greenMonster, redMonster, yellowMonster;
 
     public static GameManager GetInstance () {
@@ -302,7 +300,7 @@ public class GameManager : MonoBehaviour {
 
     public EndScreen CreateEndScreen(DataType.Minigame game, EndScreen.EndScreenType type) {
         print ("Created End Screen of type: " + type);
-        EndScreen screen = Instantiate (endingScreen).GetComponent<EndScreen> ();
+        EndScreen screen = Instantiate (endingScreenPrefab).GetComponent<EndScreen> ();
         screen.typeOfGame = game;
         screen.typeOfScreen = type;
 
@@ -321,5 +319,9 @@ public class GameManager : MonoBehaviour {
         }
 
         return screen;
+    }
+
+    public int GetNumOfGamesPlayed() {
+        return numOfGamesPlayed;
     }
 }

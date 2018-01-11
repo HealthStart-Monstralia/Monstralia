@@ -4,21 +4,31 @@ using UnityEngine;
 
 public class BrainbowFoodItem : MonoBehaviour {
     [HideInInspector] public BrainbowStripe stripeToAttach;
+
     private Vector3 offset;
     private Rigidbody2D rigBody;
     private bool moving = false;
     private bool isPlaced = false;
     private bool isBeingEaten = false;
+    private SpriteRenderer spriteRenderer;
 
     private void Awake () {
         rigBody = gameObject.GetComponent<Rigidbody2D> ();
+        spriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
     }
 
     private void OnDestroy () {
+        /*
         if (isBeingEaten)
             SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().munchSound);
+        */
         if (BrainbowGameManager.GetInstance ().activeFoods.Contains (this))
             BrainbowGameManager.GetInstance ().activeFoods.Remove (this);
+    }
+
+    private void OnDisable () {
+        if (isBeingEaten)
+            SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().munchSound);
     }
 
     private void OnMouseDown () {
@@ -27,6 +37,7 @@ public class BrainbowFoodItem : MonoBehaviour {
             offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0f));
             BrainbowGameManager.GetInstance ().ShowSubtitles (gameObject.name);
             SoundManager.GetInstance ().AddToVOQueue (gameObject.GetComponent<Food> ().clipOfName);
+            spriteRenderer.sortingOrder = 6;
         }
     }
 
@@ -47,6 +58,7 @@ public class BrainbowFoodItem : MonoBehaviour {
                 MoveBack ();
             }
         }
+        spriteRenderer.sortingOrder = 3;
         moving = false;
     }
 
@@ -88,12 +100,14 @@ public class BrainbowFoodItem : MonoBehaviour {
         rigBody.bodyType = RigidbodyType2D.Dynamic;
         rigBody.gravityScale = 2.0f;
         yield return new WaitForSeconds (2f);
-        Destroy (gameObject);
+        gameObject.SetActive (false);
     }
 
     private void OnTriggerEnter2D (Collider2D collision) {
         if (collision.tag == "Monster" && isPlaced) {
-            Destroy (gameObject);
+            gameObject.SetActive (false);
+            if (isBeingEaten)
+                SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().munchSound);
         }
     }
 }

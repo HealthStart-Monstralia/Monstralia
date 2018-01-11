@@ -14,12 +14,19 @@ public class DataType : ScriptableObject {
 
     // Enum name should match scene name so MinigameButton can load the game.
     public enum Minigame {
+        // Brainstorm Lagoon
         Brainbow,
         BrainMaze,
         MemoryMatch,
         MonsterEmotions,
         MonsterSenses,
-        BoneBridge
+
+        // Mainframe Mountain
+        BoneBridge,
+        MonsterBasket,
+        BoneBuilder,
+        BalanceGame,
+        ListeningGame
     };
 
     public enum IslandSection {

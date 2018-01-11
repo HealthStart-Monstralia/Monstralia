@@ -161,11 +161,11 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		tutFood3.transform.localPosition = new Vector3 (0, 1.25f, 0);
         */
 
-		tutFood1.transform.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
-		tutFood2.transform.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
-		tutFood3.transform.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
+		tutFood1.transform.localScale = new Vector3 (0.65f, 0.65f, 1f);
+		tutFood2.transform.localScale = new Vector3 (0.65f, 0.65f, 1f);
+        tutFood3.transform.localScale = new Vector3 (0.65f, 0.65f, 1f);
 
-		yield return new WaitForSeconds (1f);
+        yield return new WaitForSeconds (1f);
 
         AudioClip tutorial1 = voData.FindVO ("1_tutorial_welcome");
         AudioClip tutorial2 = voData.FindVO ("2_tutorial_platters");
@@ -393,12 +393,15 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		GameObject newFood = Instantiate(foodsList[randomIndex]);
 		newFood.name = foodsList[randomIndex].name;
 		newFood.GetComponent<Food>().Spawn(spawnPos, parent, scale);
-		if(setAnchor) {
+
+		if (setAnchor) {
 			newFood.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1f);
 			newFood.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1f);
 		}
+
 		foodsList.RemoveAt(randomIndex);
 		newFood.GetComponent<Collider2D> ().enabled = false;
+        newFood.transform.localPosition = new Vector3 (0f, 1.1f, 0f);
 		//newFood.GetComponent<SpriteRenderer> ().sortingOrder = 4;
 		return newFood;
 	}
