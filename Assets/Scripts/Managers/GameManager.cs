@@ -102,12 +102,12 @@ public class GameManager : MonoBehaviour {
             // Set needReview to true when lvl 3 is completed every other time, temporary measure to reduce annoying reviews
             if (newStats.stars >= 3) {
                 if (activateReview) {
-                    ReviewManager.GetInstance ().needReview = true;
+                    ReviewManager.GetInstance ().NeedReview = true;
                 }
                 activateReview = !activateReview;
             }
             else {
-                ReviewManager.GetInstance ().needReview = true;
+                ReviewManager.GetInstance ().NeedReview = true;
             }
 
         }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CreateMonster : MonoBehaviour {
     public bool spawnMonsterOnStart = false;
-    public bool allowMonsterTickle = true;
-    public bool idleAnimationOn = true;
+    public bool allowMonsterTickle = false;
+    public bool idleAnimationOn = false;
     public bool addRigidbody = false;
     public bool replaceBoxCollider = false;
     public bool playSpawnAnimation = true;
@@ -21,6 +21,12 @@ public class CreateMonster : MonoBehaviour {
             SpawnMonster (GameManager.GetInstance ().GetPlayerMonsterType ());
             print ("Spawning monster on start from: " + gameObject);
         };
+    }
+
+    public Monster SpawnPlayerMonster () {
+        if (!spawnPosition)
+            spawnPosition = transform;
+        return Spawn (GameManager.GetInstance().GetPlayerMonsterType());
     }
 
     public Monster SpawnMonster (GameObject monsterObject) {

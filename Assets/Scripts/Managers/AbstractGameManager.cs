@@ -21,7 +21,7 @@ public abstract class AbstractGameManager : MonoBehaviour {
 
     void OnDisable () {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        ReviewManager.OnFinishReview -= EndReview;
+        //ReviewManager.OnFinishReview -= EndReview;
     }
 
     // Go to Start scene if no Game Manager is present
@@ -40,6 +40,7 @@ public abstract class AbstractGameManager : MonoBehaviour {
         PregameSetup ();
     }
 
+    /*
     protected void StartReview () {
         print ("AbstractGameManager StartReview");
         ReviewManager.OnFinishReview += EndReview;
@@ -51,6 +52,7 @@ public abstract class AbstractGameManager : MonoBehaviour {
         ReviewManager.OnFinishReview -= EndReview;
         PregameSetup ();
     }
+    */
 
     public virtual void UnlockSticker() {
         GameManager.GetInstance ().ActivateSticker (typeOfGame);
