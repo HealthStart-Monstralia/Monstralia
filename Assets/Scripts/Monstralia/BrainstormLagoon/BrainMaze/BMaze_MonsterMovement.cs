@@ -27,6 +27,7 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 			FinishMove (gotoPos);
 	}
 
+    /*
     public void OnMouseDown () {
         cursorPos = Input.mousePosition;
         cursorPos.z -= (Camera.main.transform.position.z + 10f);
@@ -38,8 +39,8 @@ public class BMaze_MonsterMovement : MonoBehaviour {
         cursorPos.z -= (Camera.main.transform.position.z + 10f);
         MoveTowards (Camera.main.ScreenToWorldPoint (cursorPos) - pointerOffset);
     }
+    */
 
-    /*	
 	public void OnMouseDown() {
 		if (BMaze_Manager.GetInstance().inputAllowed) {
 			cursorPos = Input.mousePosition;
@@ -55,7 +56,6 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 			MoveTowards (Camera.main.ScreenToWorldPoint (cursorPos) - pointerOffset);
 		}
 	}
-    */
 
     public void MoveTowards (Vector2 pos) {
 		rigBody.MovePosition (Vector2.MoveTowards (rigBody.position, pos, 0.8f));

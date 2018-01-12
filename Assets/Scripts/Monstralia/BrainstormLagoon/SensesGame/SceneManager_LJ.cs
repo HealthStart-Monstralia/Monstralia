@@ -36,9 +36,8 @@ public class SceneManager_LJ : MonoBehaviour {
 
 
     [Header("Timer Text")]
-    public Text timeCountdownText;
-    public Timer timeCountdownSystem;
-    public float timeIsUp = 15f;
+    public TimerClock timeCountdownSystem;
+    public float timeLimit = 15f;
 
     public bool starAdded;
     public bool roundIsOver;
@@ -148,8 +147,6 @@ public class SceneManager_LJ : MonoBehaviour {
     void FixedUpdate()
     {
         TimeCountdown();
-        timerColorSetter();
-        timerColor();
     }
 
 
@@ -158,55 +155,15 @@ public class SceneManager_LJ : MonoBehaviour {
     {
         if (gameReady && !gameOver)
         {
-            timeIsUp -= Time.deltaTime;
-            //Debug.Log("TimeIsUp at: " + TimeIsUp.ToString("f2"));
-            timeCountdownText.text = "Time: " + timeIsUp.ToString("f0");
-
-            if (timeIsUp <= 0)
+            if (timeCountdownSystem.TimeRemaining() <= 0)
             {
                 gameOver = true;
-                timeCountdownText.text = "Time's Up!";
-                GameIsOver();
+                timeCountdownSystem.StopTimer ();
+                GameIsOver ();
             }
 
         }
     }
-
-
-    //Dirty method to set timer color change based on time left
-    private void timerColorSetter()
-    {
-        if (timeIsUp >= 9)
-        {
-            WhiteColor = true;
-        }
-        if (timeIsUp <= 8.999)
-        {
-            OrangeColor = true;
-        }
-        if (timeIsUp <= 0)
-        {
-            RedColor = true;
-        }
-    }
-
-    //Set the timer color
-    private void timerColor()
-    {
-        if (WhiteColor)
-        {
-            timeCountdownText.color = Color.white;
-        }
-        if (OrangeColor)
-        {
-            timeCountdownText.color = Color.yellow;
-        }
-        if (RedColor)
-        {
-            timeCountdownText.color = Color.red;
-        }
-    }
-
 
     //-----VICTORY CONDITION LOGIC-----//
     //Called from InteractableObject_LJ.cs
@@ -435,6 +392,7 @@ public class SceneManager_LJ : MonoBehaviour {
     void LevelComplete()
     {
         //GoodJobScreen.enabled = true;
+        timeCountdownSystem.StopTimer ();
         getAudio.PlayVictoryJingle();
 
         // Unlock corresponding sticker if the first level was completed
@@ -457,6 +415,8 @@ public class SceneManager_LJ : MonoBehaviour {
     {
         yield return new WaitForSeconds(0f);
         gameReady = true;
+        timeCountdownSystem.SetTimeLimit (timeLimit);
+        timeCountdownSystem.StartTimer ();
     }
 
     public IEnumerator GameOverDelay()

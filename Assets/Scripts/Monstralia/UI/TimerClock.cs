@@ -10,6 +10,7 @@ public class TimerClock : MonoBehaviour {
     public Image fill;
     public Color fullColor, emptyColor;
     public GameObject timeUpNotification;
+    public bool allowTimeNotification = false;
 
     // Event
     public delegate void OutOfTimeAction ();
@@ -49,8 +50,10 @@ public class TimerClock : MonoBehaviour {
                 UpdateFill (timeRemaining / timeLimit);
             } else {
                 StopTimer ();
-                OutOfTime ();
-                StartCoroutine (ShowTimeUpNotification (3f));
+                if (OutOfTime != null)
+                    OutOfTime ();
+                if (allowTimeNotification)
+                    StartCoroutine (ShowTimeUpNotification (3f));
             }
         }
 
