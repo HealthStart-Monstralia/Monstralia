@@ -21,7 +21,6 @@ GameObject:
   - component: {fileID: 4000013273197352}
   - component: {fileID: 212000010880390522}
   - component: {fileID: 58000013530602402}
-  - component: {fileID: 114000012820131838}
   - component: {fileID: 114544848301358490}
   m_Layer: 0
   m_Name: Water Pickup
@@ -58,19 +57,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 2.56
---- !u!114 &114000012820131838
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000010484756878}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12e2945a42d69174f8d8ed01f556da09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pickup: 0
-  pickupSfx: {fileID: 8300000, guid: 2e2c67c9e62fe4aa389ceffa809bace3, type: 3}
 --- !u!114 &114544848301358490
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -82,6 +68,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5db2687edbfa2c842b182c201c4a321f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickup: 0
+  pickupSfx: {fileID: 8300000, guid: 2e2c67c9e62fe4aa389ceffa809bace3, type: 3}
   timeIncrease: 8
 --- !u!212 &212000010880390522
 SpriteRenderer:
@@ -92,6 +80,7 @@ SpriteRenderer:
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -107,6 +96,7 @@ SpriteRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 0
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5

@@ -12,7 +12,6 @@ public class EmotionsGameManager : AbstractGameManager {
 	private List<GameObject> activeEmotions;
 	private GameObject currentEmotionToMatch;
 	private int difficultyLevel;
-	private bool gameOver = false;
 	private Coroutine tutorialCoroutine, drawingCoroutine;
 
     [HideInInspector] public EmotionsGenerator generator;
@@ -99,7 +98,7 @@ public class EmotionsGameManager : AbstractGameManager {
 	public IEnumerator DisplayGo() {
         yield return new WaitForSeconds (2.0f);
         DrawCards (0.5f);
-        GameManager.GetInstance ().Countdown ();
+        GameManager.GetInstance ().StartCountdown ();
 		yield return new WaitForSeconds (3.0f);
         generator.ChangeMonsterEmotion (generator.currentTargetEmotion);
         yield return new WaitForSeconds (1.0f);
@@ -198,7 +197,6 @@ public class EmotionsGameManager : AbstractGameManager {
         print ("PostGame");
         gameStarted = false;
         StopCoroutine (drawingCoroutine);
-        gameOver = true;
         inputAllowed = false;
         yield return new WaitForSeconds (1.0f);
         generator.RemoveCards ();
@@ -209,25 +207,19 @@ public class EmotionsGameManager : AbstractGameManager {
         if (generator.cardHand.gameObject.activeSelf)
             generator.cardHand.ExitAnimation ();
         yield return new WaitForSeconds (1.0f);
-        GameOver ();
-    }
 
-    override public void GameOver () {
-        if (gameOver) {
-            print ("GameOver");
-            backButton.SetActive (true);
+        if (score >= scoreGoal) {
             if (difficultyLevel == 1) {
-                UnlockSticker ();
+                GameOver (DataType.GameEnd.EarnedSticker);
             } else {
-                GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
+                GameOver (DataType.GameEnd.CompletedLevel);
             }
-            // "Great job! You matched " + score + " emotions!";
-            GameManager.GetInstance ().LevelUp (DataType.Minigame.MonsterEmotions);
+        } else {
+            GameOver (DataType.GameEnd.FailedLevel);
         }
     }
 
     void Update () {
-        //print ("timer.TimeRemaining (): " + timer.TimeRemaining () + " | " + "gameStarted: " + gameStarted + " | " + "score: " + score);
         if (gameStarted && (timer.TimeRemaining () <= 0.0f || score >= scoreGoal)) {
             StartCoroutine (PostGame ());
         }

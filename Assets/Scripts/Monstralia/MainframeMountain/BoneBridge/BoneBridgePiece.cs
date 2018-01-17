@@ -122,9 +122,6 @@ public class BoneBridgePiece : MonoBehaviour {
 
         transform.position = startPos;
         transform.rotation = startRot;
-
-        //leftJoint.ActivateJoint ();
-        //rightJoint.ActivateJoint ();
         col.enabled = true;
     }
 }

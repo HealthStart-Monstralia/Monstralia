@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 11463820}
   - component: {fileID: 114098536541401310}
   - component: {fileID: 114512505591055792}
+  - component: {fileID: 114295109203130798}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Manager
@@ -49,10 +50,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9c8e2f21ab55d4f4a81d902979cf7a1e, type: 2}
   - {fileID: 11400000, guid: b2d9dce9aaa7c4743af77566e905dfab, type: 2}
   - {fileID: 11400000, guid: c2ec19e9afafe4249aa8e270744f5a3c, type: 2}
-  numOfGamesPlayed: 0
-  lagoonFirstSticker: 1
-  loadingScreen: {fileID: 117540, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
-  endingScreen: {fileID: 1252322694986208, guid: 37bd93cc4902a65489a71fcd16534923,
+  - {fileID: 11400000, guid: 27dd3fd4f48652849930198f2655162c, type: 2}
+  loadingScreenPrefab: {fileID: 117540, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
+  endingScreenPrefab: {fileID: 1252322694986208, guid: 37bd93cc4902a65489a71fcd16534923,
     type: 2}
   blueMonster: {fileID: 1934710441688178, guid: 86acf8d9efd860e44a9a37e47bbbbe86,
     type: 2}
@@ -106,6 +106,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   countdownObject: {fileID: 1610565465255964, guid: c40ee300e4ab6684f8ab1ed5fb529a6b,
     type: 2}
+--- !u!114 &114295109203130798
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 122832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29defd09f514a4943b5a20bc3c60f948, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114512505591055792
 MonoBehaviour:
   m_ObjectHideFlags: 1

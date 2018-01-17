@@ -161,11 +161,11 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		tutFood3.transform.localPosition = new Vector3 (0, 1.25f, 0);
         */
 
-		tutFood1.transform.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
-		tutFood2.transform.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
-		tutFood3.transform.localScale = new Vector3 (0.75f, 0.75f, 0.75f);
+		tutFood1.transform.localScale = new Vector3 (0.65f, 0.65f, 1f);
+		tutFood2.transform.localScale = new Vector3 (0.65f, 0.65f, 1f);
+        tutFood3.transform.localScale = new Vector3 (0.65f, 0.65f, 1f);
 
-		yield return new WaitForSeconds (1f);
+        yield return new WaitForSeconds (1f);
 
         AudioClip tutorial1 = voData.FindVO ("1_tutorial_welcome");
         AudioClip tutorial2 = voData.FindVO ("2_tutorial_platters");
@@ -328,7 +328,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		gameStartup = false;
 
 		if(!runningTutorial) {
-			GameManager.GetInstance ().Countdown ();
+			GameManager.GetInstance ().StartCountdown ();
 
 			yield return new WaitForSeconds (4.0f);
 			gameStarted = true;
@@ -393,12 +393,15 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		GameObject newFood = Instantiate(foodsList[randomIndex]);
 		newFood.name = foodsList[randomIndex].name;
 		newFood.GetComponent<Food>().Spawn(spawnPos, parent, scale);
-		if(setAnchor) {
+
+		if (setAnchor) {
 			newFood.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1f);
 			newFood.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1f);
 		}
+
 		foodsList.RemoveAt(randomIndex);
 		newFood.GetComponent<Collider2D> ().enabled = false;
+        newFood.transform.localPosition = new Vector3 (0f, 1.1f, 0f);
 		//newFood.GetComponent<SpriteRenderer> ().sortingOrder = 4;
 		return newFood;
 	}
@@ -422,8 +425,9 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	IEnumerator RunEndGameAnimation(){
 		animIsPlaying = true;
 		timer.StopTimer();
+        gameStarted = false;
 
-		for(int i = 0; i < numDishes; ++i) {
+        for (int i = 0; i < numDishes; ++i) {
 			if(dishes[i].GetComponent<DishObject>().IsMatched ()) {
 				Destroy(dishes[i].GetComponent<DishObject>().foodObject.gameObject);
 				SoundManager.GetInstance().PlaySFXClip(munchClip);
@@ -434,11 +438,11 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		}
 		monsterObject.PlayDance ();
 		yield return new WaitForSeconds (1f);
-		GameOver ();
+        GameEnd ();
 	}
 
-	public override void GameOver() {
-		gameStarted = false;
+	public void GameEnd() {
+
 		timer.gameObject.SetActive(false);
 		scoreGauge.gameObject.SetActive(false);
 		if (currentFoodToMatch)
@@ -446,17 +450,14 @@ public class MemoryMatchGameManager : AbstractGameManager {
 
 		if (score >= numDishes) {
 			if (difficultyLevel == 1) {
-				UnlockSticker ();	// Calling from AbstractGameManager
-			} else {
-                GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
+                GameOver (DataType.GameEnd.EarnedSticker);
+            } else {
+                GameOver (DataType.GameEnd.CompletedLevel);
             }
 
-			GameManager.GetInstance ().LevelUp (DataType.Minigame.MemoryMatch);
 		} else {
-			if(difficultyLevel >= 1) {
-				GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
-			}
-		}
+            GameOver (DataType.GameEnd.FailedLevel);
+        }
 	}
 
 	public void DisplayGameOverPopup () {
@@ -472,11 +473,11 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		}
 	}
 
-	public bool isGameStarted() {
+	public bool IsGameStarted() {
 		return gameStarted;
 	}
 
-	public bool isRunningTutorial() {
+	public bool IsRunningTutorial() {
 		return runningTutorial;
 	}
 

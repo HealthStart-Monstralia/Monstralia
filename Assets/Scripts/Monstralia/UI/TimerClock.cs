@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class TimerClock : MonoBehaviour {
 
@@ -10,14 +11,15 @@ public class TimerClock : MonoBehaviour {
     public Image fill;
     public Color fullColor, emptyColor;
     public GameObject timeUpNotification;
+    public bool allowTimeNotification = false;
+    public AudioClip tick, tock, alarm;
+    public UnityEvent OutOfTimeEvent;
 
-    // Event
-    public delegate void OutOfTimeAction ();
-    public static event OutOfTimeAction OutOfTime;
-
-    private bool timing = false;    /*!< Flag to keep track of when to start/stop counting down */
+    [SerializeField] private bool timing = false;    /*!< Flag to keep track of when to start/stop counting down */
+    [SerializeField] private bool timeIsLow = false;
     private float timeRemaining;    /*!< The time remaining */
     private static TimerClock instance;
+    private AudioSource audioSrc;
 
     private void Awake () {
         if (instance == null) {
@@ -25,7 +27,7 @@ public class TimerClock : MonoBehaviour {
         } else if (instance != this) {
             Destroy (gameObject);
         }
-
+        audioSrc = GetComponent<AudioSource> ();
     }
 
     public static TimerClock GetInstance() {
@@ -34,6 +36,10 @@ public class TimerClock : MonoBehaviour {
 
     private void OnDestroy () {
         instance = null;
+        audioSrc = null;
+        timing = false;
+        timeIsLow = false;
+        timeLimit = 5f;
     }
 
     /** \cond */
@@ -44,13 +50,22 @@ public class TimerClock : MonoBehaviour {
 
     void FixedUpdate () {
         if (timing) {
+            float timePercentage = timeRemaining / timeLimit;
             if (timeRemaining >= 0f) {
                 timeRemaining -= Time.deltaTime;
-                UpdateFill (timeRemaining / timeLimit);
+                UpdateFill (timePercentage);
+                if (!timeIsLow && timeRemaining < timeLimit * 0.25f) {
+                    timeIsLow = true;
+                    StartCoroutine (TickTock ());
+                }
+                else if (timeIsLow && timeRemaining >= timeLimit * 0.25f) {
+                    timeIsLow = false;
+                }
             } else {
                 StopTimer ();
-                OutOfTime ();
-                StartCoroutine (ShowTimeUpNotification (3f));
+                OutOfTimeEvent.Invoke ();
+                if (allowTimeNotification)
+                    StartCoroutine (ShowTimeUpNotification (3f));
             }
         }
 
@@ -69,8 +84,8 @@ public class TimerClock : MonoBehaviour {
     }
 
     /**
-	 * \brief Tell the timer to start counting down
-	 */
+    * \brief Tell the timer to start counting down
+    */
     public void StartTimer () {
         timing = true;
     }
@@ -108,9 +123,17 @@ public class TimerClock : MonoBehaviour {
     }
 
     IEnumerator ShowTimeUpNotification(float time) {
-        GameObject notification = Instantiate (timeUpNotification);
+        GameObject notification = Instantiate (timeUpNotification, transform.parent);
+        audioSrc.PlayOneShot (alarm);
         yield return new WaitForSeconds (time);
-        notification.GetComponent<Animator> ().Play ("FoodPanelFadeOut");
         Destroy (notification, 1f);
+    }
+
+    IEnumerator TickTock () {
+        while (timing && timeIsLow) {
+            audioSrc.PlayOneShot (tick);
+            yield return new WaitForSeconds (0.5f);
+            audioSrc.PlayOneShot (tock);
+        }
     }
 }

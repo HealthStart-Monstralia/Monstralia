@@ -110,14 +110,14 @@ public class DishObject : MonoBehaviour {
 
     IEnumerator OnMouseDown () {
 		MemoryMatchGameManager manager = MemoryMatchGameManager.GetInstance ();
-		if(manager.inputAllowed && !isGuessing && (manager.isGameStarted() || manager.isRunningTutorial())) {
+		if(manager.inputAllowed && !isGuessing && (manager.IsGameStarted() || manager.IsRunningTutorial())) {
 			isGuessing = true;
-            List<Food> matchedList = manager.ReturnMatchedList(); 
+            //List<Food> matchedList = manager.ReturnMatchedList(); 
             OpenLid();
 			manager.subtitlePanel.Display(myFood.name, myFood.clipOfName);
 
 			if(manager.GetFoodToMatch().name != myFood.name) {
-			     if (!matched && !manager.isRunningTutorial()) {
+			     if (!matched && !manager.IsRunningTutorial()) {
 				    	manager.SubtractTime (3.0f);
 				        }
 				 yield return new WaitForSeconds (2f);

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
 using System.Collections;
+using System.Collections.Generic;
 
 /* CREATED BY: Colby Tang
  * GAME: Brain Maze
@@ -15,21 +14,20 @@ public class BMaze_Manager : AbstractGameManager {
     public VoiceOversData voData;
     public bool inputAllowed = false;
 
-	public AudioClip backgroundMusic;
 	public ScoreGauge scoreGauge;
-	public Text timerText;
-	public float timeLimit;
-	public float timeLeft;
-    public BMaze_PickupManager pickupMan;
-	public BMaze_SceneAssets[] assetList;
+    public int score;
+    public int scoreGoal = 1;
 
-	public GameObject subtitlePanel;
+    [HideInInspector] public TimerClock timerClock;
+	public float timeLimit;
+	public BMaze_SceneAssets[] assetList;
+    public GameObject subtitlePanel;
 
 	public GameObject backButton;
 	public GameObject tutorialHand;
-	public GameObject tutorialPickup;
-	public bool isTutorialRunning = false;
+    [HideInInspector] public bool isTutorialRunning = false;
 
+    private List<GameObject> pickupList = new List<GameObject> ();
     private GameObject monsterObject;
     private int level = 0;
     private GameObject skipButton;
@@ -37,6 +35,8 @@ public class BMaze_Manager : AbstractGameManager {
 	private static BMaze_Manager instance = null;
 	private Coroutine tutorialCoroutine;
     private BMaze_SceneAssets selectedAsset;
+    [SerializeField] private AudioClip ambientSound;
+    [SerializeField] private GameObject tutorialPickup;
 
     void Awake () {
 		if(instance == null) {
@@ -49,7 +49,7 @@ public class BMaze_Manager : AbstractGameManager {
         CheckForGameManager ();
 
 		if (SoundManager.GetInstance ()) {
-			SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
+			SoundManager.GetInstance ().ChangeAmbientSound (ambientSound);
 			SoundManager.GetInstance ().StopPlayingVoiceOver ();
 		}
 
@@ -61,12 +61,10 @@ public class BMaze_Manager : AbstractGameManager {
             assetList[i].gameObject.SetActive (false);
         }
 
-		ChangeProgressBar (0f);
-		timeLeft = timeLimit;
-		if (timerText == null)
-			Debug.LogError ("No Timer Found!");
-		timerText.text = Mathf.Round (timeLeft).ToString ();
+        // To avoid division by zero
+        if (scoreGoal <= 0) scoreGoal = 1;
 
+		UpdateScoreGauge ();
 		typeOfMonster = GameManager.GetInstance().GetMonsterType ();
 	}
 
@@ -75,42 +73,38 @@ public class BMaze_Manager : AbstractGameManager {
     }
 
     public override void PregameSetup () {
+        timerClock = TimerClock.GetInstance ();
+        timerClock.SetTimeLimit (timeLimit);
+        pickupList.Clear ();
+        ResetScore ();
+        if (monsterObject)
+            RemoveMonster ();
+
         if (GameManager.GetInstance ().GetPendingTutorial (DataType.Minigame.BrainMaze)) {
             selectedAsset = assetList[0];
             tutorialCoroutine = StartCoroutine (RunTutorial ());
         } else {
-            pickupMan.pickupList.Clear ();
-            pickupMan.ResetScore ();
+
             level = GameManager.GetInstance ().GetLevel (DataType.Minigame.BrainMaze);
             selectedAsset = assetList[level];
             selectedAsset.gameObject.SetActive (true);
 
-            if (monsterObject)
-                RemoveMonster ();
             monsterObject = CreateMonster ();
             StartCoroutine (Countdown ());
         }
 
     }
 
-	void Update () {
-		if (timeLeft > 0f && gameStarted) {
-			timeLeft -= Time.deltaTime;
-			timerText.text = Mathf.Round (timeLeft).ToString ();
-		}
-	}
-
 	IEnumerator RunTutorial () {
 		isTutorialRunning = true;
         selectedAsset.gameObject.SetActive (true);
 		print ("RunTutorial");
 		scoreGauge.gameObject.SetActive (false);
-		timerText.transform.parent.gameObject.SetActive (false);
+		timerClock.gameObject.SetActive (false);
 
         yield return new WaitForSeconds(0.25f);
-        BMaze_Pickup[] tutorialPickupList = new BMaze_Pickup[2];
-        tutorialPickupList[0] = pickupMan.pickupList[0].GetComponent<BMaze_Pickup> ();
-        tutorialPickupList[1] = pickupMan.pickupList[1].GetComponent<BMaze_Pickup> ();
+        pickupList[0].GetComponent<BMaze_Pickup> ();
+        pickupList[1].GetComponent<BMaze_Pickup> ();
 
         subtitlePanel.SetActive (true);
 		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Welcome to Brain Maze!", null);
@@ -146,11 +140,10 @@ public class BMaze_Manager : AbstractGameManager {
             voData.FindVO ("nowyoutry")
             );
 
-        pickupMan.ResetScore ();
+        ResetScore ();
         GameObject startingLocation = selectedAsset.GetStartLocation();
 		monsterObject.transform.position = GetStartingLocationVector (startingLocation);
-        tutorialPickupList[0].ReActivate ();
-        tutorialPickupList[1].ReActivate ();
+        tutorialPickup.SetActive (true);
         inputAllowed = true;
 
         subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
@@ -179,16 +172,42 @@ public class BMaze_Manager : AbstractGameManager {
         PregameSetup ();
 	}
 
-	public void ChangeProgressBar (float value) {
-        if (scoreGauge.gameObject.activeSelf)
-            scoreGauge.SetProgressTransition(value);
-	}
+    public void OnScore(GameObject obj) {
+        score++;
+        UpdateScoreGauge ();
+        if (score >= scoreGoal)
+            UnlockDoor ();
+    }
 
-	IEnumerator Countdown() {
+    public void UpdateScoreGauge () {
+        if (scoreGauge.gameObject.activeSelf)
+            scoreGauge.SetProgressTransition ((float)score / scoreGoal);
+    }
+
+    public void ResetScore () {
+        score = 0;
+        UpdateScoreGauge ();
+    }
+
+    public void OnOutOfTime() {
+        GameEnd ();
+    }
+
+    public void OnFinish() {
+        if (!isTutorialRunning) {
+            AudioClip youdidit = voData.FindVO ("youdidit");
+            SoundManager.GetInstance ().AddToVOQueue (youdidit);
+            GameEnd ();
+        } else {
+            TutorialFinished ();
+        }
+    }
+
+    IEnumerator Countdown() {
         yield return new WaitForSeconds (1.0f);
-        GameManager.GetInstance ().Countdown ();
+        GameManager.GetInstance ().StartCountdown ();
         scoreGauge.gameObject.SetActive (true);
-		timerText.transform.parent.gameObject.SetActive (true);
+		timerClock.gameObject.SetActive (true);
 		yield return new WaitForSeconds (4.0f);
 		GameStart ();
 	}
@@ -196,30 +215,30 @@ public class BMaze_Manager : AbstractGameManager {
 	public void GameStart () {
 		gameStarted = true;
         inputAllowed = true;
-        if (instance.skipButton)
-			instance.skipButton.SetActive (true);
+        timerClock.StartTimer ();
 	}
+
+    public void GameEnd() {
+        gameStarted = false;
+        inputAllowed = false;
+        timerClock.StopTimer ();
+        StartCoroutine (EndGameWait (3f));
+    }
 
     public IEnumerator EndGameWait (float duration) {
         yield return new WaitForSeconds (duration);
-        GameOver ();
-    }
-
-    public override void GameOver () {
-		if (!isTutorialRunning && gameStarted ) {
-			gameStarted = false;
-            inputAllowed = false;
-
-            if (level == 1)
-				UnlockSticker();
-			else {
-                GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
+        if (!isTutorialRunning && !gameStarted) {
+            if (score >= scoreGoal) {
+                if (level == 1) {
+                    GameOver (DataType.GameEnd.EarnedSticker);
+                } else {
+                    GameOver (DataType.GameEnd.CompletedLevel);
+                }
+            } else {
+                GameOver (DataType.GameEnd.FailedLevel);
             }
-
-            if (GameManager.GetInstance ())
-				GameManager.GetInstance ().LevelUp (DataType.Minigame.BrainMaze);
-		}
-	}
+        }
+    }
 
 	public void ChangeScene () {
 		GetComponent<SwitchScene> ().LoadScene ();
@@ -292,7 +311,7 @@ public class BMaze_Manager : AbstractGameManager {
 
 	void ScaleMonster() {
 		monsterObject.transform.localScale = new Vector3(monsterScale[level], monsterScale[level], monsterScale[level]);
-		monsterObject.GetComponent<CircleCollider2D> ().radius = (monsterScale[level]);
+		monsterObject.GetComponent<CircleCollider2D> ().radius = (monsterScale[level] * 4);
 	}
 
 	public GameObject GetMonster() {
@@ -315,12 +334,9 @@ public class BMaze_Manager : AbstractGameManager {
 		subtitlePanel.GetComponent<SubtitlePanel> ().Display (text, null);
 	}
 
-    public BMaze_PickupManager GetPickupManager() {
-        return pickupMan;
+    public void AddPickupToList (GameObject obj) {
+        pickupList.Add (obj);
+        scoreGoal = pickupList.Count;
     }
 
-    public void FinishGame() {
-        AudioClip youdidit = voData.FindVO ("youdidit");
-        SoundManager.GetInstance ().AddToVOQueue (youdidit);
-    }
 }

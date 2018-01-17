@@ -47,7 +47,7 @@ public class BoneBridgeTransition : MonoBehaviour {
     }
 
     void WinGame() {
-        BoneBridgeManager.GetInstance ().GameOver ();
+        BoneBridgeManager.GetInstance ().GameEnd ();
         if (focus)
             BoneBridgeManager.GetInstance ().CameraSwitch (focus);
     }

@@ -6,18 +6,27 @@ public class ReviewManager : MonoBehaviour {
     /* Review games are only added after completing the first level of a game.
      * A review game appears as a popup when a player selects a new game.
      * After completing the review game, the player will proceed to the originally intended game.
-     * If the selected review game matches the one selected by player, it will be replaced by another from the pool
+     * If the selected review game matches the one selected by player, a review will not be created.
      * As a temporary measure to avoid aggrevating the player, review games will not appear every time.
      */
       
-    public Dictionary<GameObject, DataType.Minigame> reviewGamesDict; // <review prefab object> <review prefab type>
-    public List<GameObject> reviewGamesList = new List<GameObject> ();  // Pool of review games to pull from
+    public List<DataType.Minigame> reviewGamesList = new List<DataType.Minigame> ();  // Pool of review games to pull from
     public GameObject currentReview;
-    public bool needReview;
+    public bool NeedReview {
+        get {
+            print ("needReview: " + _needReview);
+            return _needReview;
+        }
+        set {
+            print ("SET needReview to: " + value);
+            _needReview = value;
+        }
+    }
 
     public delegate void ReviewAction ();
     public static event ReviewAction OnFinishReview;
 
+    private bool _needReview = false;
     private int reviewLevelIndex;
     private static ReviewManager instance;
     private GameObject reviewGameBase;      // Relies on child structure to find
@@ -38,77 +47,34 @@ public class ReviewManager : MonoBehaviour {
         reviewGameBase = transform.GetChild (0).gameObject;
         reviewGameBase.GetComponent<Animator> ().SetBool ("ReviewEnd", false);
         reviewGameBase.SetActive (false);
-        reviewGamesDict = new Dictionary<GameObject, DataType.Minigame> (); 
     }
 
     public void AddReviewGameToList(DataType.Minigame minigame) {
         print ("Adding review game for " + minigame);
-        GameObject reviewGame = GameManager.GetInstance ().GetMinigameData (minigame).reviewPrefab; // Retrieve corresponding review prefab from MinigameData
-        
-        // If a review prefab exists
-        if (reviewGame) {
-            bool foundObject = reviewGamesList.Contains (reviewGame);
-
-            // If selected review is not already loaded
-            if (!foundObject) {
-
-                // Check if review game is not already in dictionary
-                if (!reviewGamesDict.ContainsKey (reviewGame)) {
-                    reviewGamesDict.Add (reviewGame, minigame);
-                }
-
-                // Add the review game to the pool
-                reviewGamesList.Add (reviewGame);
-                print ("+ADDED review game for " + minigame);
-            }
+        if (!reviewGamesList.Contains(minigame) && GameManager.GetInstance ().GetMinigameData (minigame).reviewPrefab) {
+            reviewGamesList.Add (minigame);
         }
     }
 
     public void RemoveReviewGameFromList(DataType.Minigame minigame) {
-        reviewGamesList.Remove (currentReview);
+        reviewGamesList.Remove (minigame);
     }
 
     public void StartReview(DataType.Minigame minigame) {
         // Check if there is at least 1 review game in the pool, otherwise terminate review
-        print ("*STARTING REVIEW*");
+        print ("*CHECKING REVIEW CONDITIONS*");
+
         if (reviewGamesList.Count > 0) {
-            print ("reviewGamesList.Count > 0");
-            // Check if review game is assigned to a value in dictionary
-            if (reviewGamesDict.ContainsKey(GameManager.GetInstance().GetMinigameData(minigame).reviewPrefab)) {
-                print ("Checking if review game is assigned to a value in dictionary");
-                int randNum = Random.Range (0, reviewGamesList.Count - 1);
-                GameObject selectedReview = reviewGamesList[randNum];
-                DataType.Minigame typeOfGame = reviewGamesDict[selectedReview];
+            int randNum = Random.Range (0, reviewGamesList.Count - 1);
+            DataType.Minigame selectedReview = reviewGamesList[randNum];
 
-                // If the same type of game matches review, choose another
-                if (typeOfGame == minigame) {
-                    print ("If type == minigame");
-                    if (reviewGamesList.Count <= 1) {
-                        GameObject temp = reviewGamesList[randNum];
-                        reviewGamesList.RemoveAt (randNum);
-
-                        if (reviewGamesList.Count != 0) {
-                            randNum = Random.Range (0, reviewGamesList.Count - 1);
-                            selectedReview = reviewGamesList[randNum];
-
-                        } else {
-                            selectedReview = null;
-                        }
-
-                        reviewGamesList.Add (temp);
-                    }
-                }
-
-                if (selectedReview) {
-                    SpawnReview (selectedReview);
-                } else
-                    TerminateReview ();
+            // If the same type of game matches review, don't review
+            if (minigame != selectedReview) {
+                SpawnReview (GameManager.GetInstance ().GetMinigameData (selectedReview).reviewPrefab);
             }
-
             else {
                 TerminateReview ();
             }
-
         }
         else {
             TerminateReview ();
@@ -117,6 +83,7 @@ public class ReviewManager : MonoBehaviour {
 
     // For review manager use
     void SpawnReview(GameObject objToSpawn) {
+        print ("**STARTING REVIEW**");
         SoundManager.GetInstance ().PlayReviewVO ();
         currentReview = Instantiate (objToSpawn, reviewGameBase.transform) as GameObject;
         reviewGameBase.SetActive (true);
@@ -145,16 +112,16 @@ public class ReviewManager : MonoBehaviour {
     }
 
     void TerminateReview () {
+        print ("**TERMINATING REVIEW**");
         reviewGameBase.SetActive (true);
         reviewGameBase.GetComponent<Animator> ().SetBool ("ReviewEnd", false);
         reviewGameBase.SetActive (false);
-        needReview = false;
+        NeedReview = false;
         if (currentReview) {
             Destroy (currentReview);
             currentReview = null;
         } else if (GameObject.FindGameObjectWithTag ("ReviewPrefab"))
             Destroy (GameObject.FindGameObjectWithTag ("ReviewPrefab"));
-        print ("ReviewManager OnFinishReview");
         if (OnFinishReview != null)
             OnFinishReview ();
         else

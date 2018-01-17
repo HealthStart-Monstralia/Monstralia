@@ -1,8 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿// Define globally used enums in here
 
-public class DataType : ScriptableObject {
+public static class DataType {
+    public enum GameEnd {
+        EarnedSticker,
+        CompletedLevel,
+        FailedLevel
+    };
+
     public enum StickerType {
         None = -1,
         Amygdala = 0,
@@ -14,12 +18,19 @@ public class DataType : ScriptableObject {
 
     // Enum name should match scene name so MinigameButton can load the game.
     public enum Minigame {
+        // Brainstorm Lagoon
         Brainbow,
         BrainMaze,
         MemoryMatch,
         MonsterEmotions,
         MonsterSenses,
-        BoneBridge
+
+        // Mainframe Mountain
+        BoneBridge,
+        MonsterBasket,
+        BoneBuilder,
+        BalanceGame,
+        ListeningGame
     };
 
     public enum IslandSection {
@@ -52,4 +63,15 @@ public class DataType : ScriptableObject {
         Thoughtful = 6,
         Worried = 7
     };
+
+    // Referenced by SensesButton.cs
+    //enumerates to elements 0, 1, 2, 3, 4
+    public enum Senses {
+        See,
+        Hear,
+        Feel,
+        Smell,
+        Taste,
+        NONE
+    }
 }

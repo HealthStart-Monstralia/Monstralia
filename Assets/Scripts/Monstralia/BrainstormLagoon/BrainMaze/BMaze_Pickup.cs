@@ -16,31 +16,20 @@ public class BMaze_Pickup : MonoBehaviour {
 	public TypeOfPickup pickup;
 	public AudioClip pickupSfx;
 
-    private BMaze_PickupManager pickupMan;
-
     private void Start () {
-        pickupMan = BMaze_Manager.GetInstance ().pickupMan;
-        pickupMan.AddToList (gameObject);
+        BMaze_Manager.GetInstance().AddPickupToList (gameObject);
     }
 
-	void OnTriggerEnter2D(Collider2D col) {
+	protected void OnTriggerEnter2D(Collider2D col) {
 		if (col.GetComponent<BMaze_MonsterMovement> ()) {
 			if (BMaze_Manager.GetInstance ()) {
                 SoundManager.GetInstance ().AddToVOQueue (pickupSfx);
-
-                if (pickup == TypeOfPickup.Water)
-					GetComponent<BMaze_WaterPickup> ().IncreaseTime ();
-                else
-                    SoundManager.GetInstance ().PlayCorrectSFX ();
+                SoundManager.GetInstance ().PlayCorrectSFX ();
 
                 BMaze_Manager.GetInstance ().ShowSubtitle (pickup.ToString ());
-				pickupMan.PickupScored (gameObject);
+                BMaze_Manager.GetInstance ().OnScore (gameObject);
 			}
 			gameObject.SetActive (false);
 		}
 	}
-
-	public void ReActivate() {
-        pickupMan.ReactivatePickup (gameObject);
-    }
 }

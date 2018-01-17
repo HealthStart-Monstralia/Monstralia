@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ReviewMemoryMatch : MonoBehaviour {
-	public GameObject monster;
+	public CreateMonster monsterCreator;
 	public Sprite[] spriteList;
 	public bool isReviewRunning = false;
 	public ReviewMemoryMatchDish[] dishes;
@@ -32,20 +32,7 @@ public class ReviewMemoryMatch : MonoBehaviour {
 
 	void Start() {
 		// Change monster sprite depending on player choice
-		switch (GameManager.GetInstance().GetMonsterType ()) {
-		case DataType.MonsterType.Blue:
-			monster.GetComponentInChildren<SpriteRenderer>().sprite = spriteList [(int)DataType.MonsterType.Blue];
-			break;
-		case DataType.MonsterType.Green:
-			monster.GetComponentInChildren<SpriteRenderer>().sprite = spriteList [(int)DataType.MonsterType.Green];
-			break;
-		case DataType.MonsterType.Red:
-			monster.GetComponentInChildren<SpriteRenderer>().sprite = spriteList [(int)DataType.MonsterType.Red];
-			break;
-		case DataType.MonsterType.Yellow:
-			monster.GetComponentInChildren<SpriteRenderer>().sprite = spriteList [(int)DataType.MonsterType.Yellow];
-			break;
-		}
+
 		PrepareReview ();
 	}
 
@@ -56,7 +43,11 @@ public class ReviewMemoryMatch : MonoBehaviour {
 	public void PrepareReview() {
 		RetrieveFoodsFromManager ();
 		SelectFoods ();
-		List<GameObject> copy = new List<GameObject>(activeFoods);
+        GameObject monsterObject = monsterCreator.SpawnPlayerMonster ().gameObject;
+        monsterObject.GetComponent<SpriteRenderer> ().sortingLayerName = "UI";
+        monsterObject.GetComponent<SpriteRenderer> ().sortingOrder = 5;
+
+        List<GameObject> copy = new List<GameObject>(activeFoods);
 
 		for(int i = 0; i < dishes.Length; ++i) {
 			GameObject newFood = SpawnFood(copy, true, dishes[i].lid.transform, dishes[i].dish.transform, foodScale);
@@ -131,7 +122,8 @@ public class ReviewMemoryMatch : MonoBehaviour {
 		}
 
 		foodsList.RemoveAt(randomIndex);
-		newFood.GetComponent<Collider2D> ().enabled = false;
+        newFood.transform.localPosition = new Vector3 (0f, 1.1f, 0f);
+        newFood.GetComponent<Collider2D> ().enabled = false;
 
 		return newFood;
 	}

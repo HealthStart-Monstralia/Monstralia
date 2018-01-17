@@ -21,8 +21,7 @@ public class MinigameButton : MonoBehaviour {
     public void LoadGame() {
         print ("Loading: " + typeOfGame);
         if (ReviewManager.GetInstance()) {
-            print ("StartReview: " + typeOfGame);
-            if (ReviewManager.GetInstance().needReview) StartReview ();
+            if (ReviewManager.GetInstance().NeedReview) StartReview ();
             else scene.LoadScene ();
         }
         else scene.LoadScene ();
