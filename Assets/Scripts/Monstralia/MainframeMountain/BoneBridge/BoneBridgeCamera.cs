@@ -23,7 +23,7 @@ public class BoneBridgeCamera : MonoBehaviour {
         if (target) transform.position = target.transform.position;
     }
 
-    void moveCamera (Vector3 pos) {
+    void MoveCamera (Vector3 pos) {
         Vector3 point = new Vector3 (pos.x, pos.y, zVal);
         Vector3 delta = point - cam.ViewportToWorldPoint (new Vector3 (0.5f, 0.5f, 0f));
         Vector3 destination = transform.position + delta;
@@ -36,6 +36,6 @@ public class BoneBridgeCamera : MonoBehaviour {
     }
 
     private void LateUpdate () {
-        moveCamera (target.transform.position);
+        MoveCamera (target.transform.position);
     }
 }

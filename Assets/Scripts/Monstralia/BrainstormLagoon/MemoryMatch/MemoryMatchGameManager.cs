@@ -328,7 +328,7 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		gameStartup = false;
 
 		if(!runningTutorial) {
-			GameManager.GetInstance ().Countdown ();
+			GameManager.GetInstance ().StartCountdown ();
 
 			yield return new WaitForSeconds (4.0f);
 			gameStarted = true;
@@ -425,8 +425,9 @@ public class MemoryMatchGameManager : AbstractGameManager {
 	IEnumerator RunEndGameAnimation(){
 		animIsPlaying = true;
 		timer.StopTimer();
+        gameStarted = false;
 
-		for(int i = 0; i < numDishes; ++i) {
+        for (int i = 0; i < numDishes; ++i) {
 			if(dishes[i].GetComponent<DishObject>().IsMatched ()) {
 				Destroy(dishes[i].GetComponent<DishObject>().foodObject.gameObject);
 				SoundManager.GetInstance().PlaySFXClip(munchClip);
@@ -437,11 +438,11 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		}
 		monsterObject.PlayDance ();
 		yield return new WaitForSeconds (1f);
-		GameOver ();
+        GameEnd ();
 	}
 
-	public override void GameOver() {
-		gameStarted = false;
+	public void GameEnd() {
+
 		timer.gameObject.SetActive(false);
 		scoreGauge.gameObject.SetActive(false);
 		if (currentFoodToMatch)
@@ -449,17 +450,14 @@ public class MemoryMatchGameManager : AbstractGameManager {
 
 		if (score >= numDishes) {
 			if (difficultyLevel == 1) {
-				UnlockSticker ();	// Calling from AbstractGameManager
-			} else {
-                GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
+                GameOver (DataType.GameEnd.EarnedSticker);
+            } else {
+                GameOver (DataType.GameEnd.CompletedLevel);
             }
 
-			GameManager.GetInstance ().LevelUp (DataType.Minigame.MemoryMatch);
 		} else {
-			if(difficultyLevel >= 1) {
-				GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
-			}
-		}
+            GameOver (DataType.GameEnd.FailedLevel);
+        }
 	}
 
 	public void DisplayGameOverPopup () {
@@ -475,11 +473,11 @@ public class MemoryMatchGameManager : AbstractGameManager {
 		}
 	}
 
-	public bool isGameStarted() {
+	public bool IsGameStarted() {
 		return gameStarted;
 	}
 
-	public bool isRunningTutorial() {
+	public bool IsRunningTutorial() {
 		return runningTutorial;
 	}
 

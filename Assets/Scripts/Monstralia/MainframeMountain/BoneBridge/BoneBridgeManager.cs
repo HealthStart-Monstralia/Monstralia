@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 /* CREATED BY: Colby Tang
@@ -50,6 +50,8 @@ public class BoneBridgeManager : AbstractGameManager {
     public delegate void PhaseChangeAction (BridgePhase phase);
     public static event PhaseChangeAction PhaseChange;
 
+    public UnityEvent PhaseChangeEvent;
+
     private Monster trappedMonster;
     private BoneBridgeChest chestObject;
     [SerializeField] private List<GameObject> monsterPool = new List<GameObject> ();
@@ -87,13 +89,11 @@ public class BoneBridgeManager : AbstractGameManager {
     private void OnEnable () {
         // Subscribe to events
         PhaseChange += OnPhaseChange;
-        TimerClock.OutOfTime += OnOutOfTime;
     }
 
     private void OnDisable () {
         // Unsubscribe to events
         PhaseChange -= OnPhaseChange;
-        TimerClock.OutOfTime -= OnOutOfTime;
     }
 
     public override void PregameSetup () {
@@ -157,7 +157,7 @@ public class BoneBridgeManager : AbstractGameManager {
     IEnumerator Countdown () {
         ChangePhase (BridgePhase.Countdown);
         yield return new WaitForSeconds (1.0f);
-        GameManager.GetInstance ().Countdown ();
+        GameManager.GetInstance ().StartCountdown ();
         yield return new WaitForSeconds (4.0f);
         doCountdown = false;
         GameStart ();
@@ -175,10 +175,10 @@ public class BoneBridgeManager : AbstractGameManager {
     }
 
     public bool GetGameStarted () { return gameStarted; }
-    public override void GameOver () { ChangePhase(BridgePhase.Finish); }
+    public void GameEnd () { ChangePhase(BridgePhase.Finish); }
 
     // Event
-    void OnOutOfTime () { ChangePhase (BridgePhase.Lose); }
+    public void OnOutOfTime () { ChangePhase (BridgePhase.Lose); }
 
     // Public Event
     public void ChangePhase (BridgePhase phase) {
@@ -213,7 +213,7 @@ public class BoneBridgeManager : AbstractGameManager {
             case BridgePhase.Lose:
                 inputAllowed = false;
                 gameStarted = false;
-                GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.FailedLevel);
+                GameOver (DataType.GameEnd.FailedLevel);
                 break;
             case BridgePhase.Finish:
                 inputAllowed = false;
@@ -235,7 +235,11 @@ public class BoneBridgeManager : AbstractGameManager {
         SoundManager.GetInstance ().PlayCorrectSFX ();
         GameManager.GetInstance ().LevelUp (DataType.Minigame.BoneBridge);
         yield return new WaitForSeconds (3.0f);
-        GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
+        if (difficultyLevel == DataType.Level.LevelOne) {
+            GameOver (DataType.GameEnd.EarnedSticker);
+        } else {
+            GameOver (DataType.GameEnd.CompletedLevel);
+        }
     }
 
     void CreateMonsters() {

@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour {
     private DataType.Minigame lastGamePlayed;
     private DataType.IslandSection currentSection;
     private bool activateReview = false; // Alternate activating review when game is lvl 3
-    private int numOfGamesPlayed = 0;
+    private int numOfGamesCompleted = 0;
 
     public struct MinigameStats {
         public int level;
@@ -46,9 +46,6 @@ public class GameManager : MonoBehaviour {
 		}
 
 		DontDestroyOnLoad(this);
-	}
-
-    void Start () {
         InitializeDictionaryEntries ();
     }
 
@@ -116,7 +113,7 @@ public class GameManager : MonoBehaviour {
             newStats.level += 1;
         }
 
-        numOfGamesPlayed++;
+        numOfGamesCompleted++;
         gameStats[gameName] = newStats; // Save changes to new struct
     }
 
@@ -222,7 +219,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public int GetNumStars(DataType.Minigame gameName) {
-		return gameStats[gameName].stars;
+        return gameStats[gameName].stars;
 	}
 
     public MinigameData GetMinigameData(DataType.Minigame gameName) {
@@ -264,7 +261,7 @@ public class GameManager : MonoBehaviour {
     /// Creates a countdown with a voiceover.
     /// </summary>
 
-    public void Countdown() {
+    public void StartCountdown() {
 		GetComponent<CreateCountdown>().SpawnCountdown();
 	}
 
@@ -298,20 +295,20 @@ public class GameManager : MonoBehaviour {
         return visitedAreas[island] = isVisited;
     }
 
-    public EndScreen CreateEndScreen(DataType.Minigame game, EndScreen.EndScreenType type) {
+    public EndScreen CreateEndScreen(DataType.Minigame game, DataType.GameEnd type) {
         print ("Created End Screen of type: " + type);
         EndScreen screen = Instantiate (endingScreenPrefab).GetComponent<EndScreen> ();
         screen.typeOfGame = game;
         screen.typeOfScreen = type;
 
         switch (type) {
-            case EndScreen.EndScreenType.EarnedSticker:
+            case DataType.GameEnd.EarnedSticker:
                 screen.EarnedSticker ();
                 break;
-            case EndScreen.EndScreenType.CompletedLevel:
+            case DataType.GameEnd.CompletedLevel:
                 screen.CompletedLevel ();
                 break;
-            case EndScreen.EndScreenType.FailedLevel:
+            case DataType.GameEnd.FailedLevel:
                 screen.FailedLevel ();
                 break;
             default:
@@ -321,7 +318,7 @@ public class GameManager : MonoBehaviour {
         return screen;
     }
 
-    public int GetNumOfGamesPlayed() {
-        return numOfGamesPlayed;
+    public int GetNumOfGamesCompleted() {
+        return numOfGamesCompleted;
     }
 }

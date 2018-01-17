@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,27 +10,28 @@ using System.Collections.Generic;
  */
 
 public class SoundManager : MonoBehaviour {
-	private static SoundManager instance = null; 	/*!< The singleton instance of this class */
-	private bool isMuted = false;				    /*!< Flag for if the sound has been muted */
-	private bool setup;								/*!< Flag for if the sound manager is being set up */
-	private bool isPlayingClip = false;				/*!< Flag to prevent a clip from playing more than once at a time */
-    [SerializeField] private List<AudioClip> clipQueue = new List<AudioClip> ();
+    [Header ("Audio Sources")]
+    public AudioSource backgroundSource;            /*!< The AudioSource for the background music */
+    public AudioSource ambientSource;            /*!< The AudioSource for the ambient sound */
+    public AudioSource sfxSource;					/*!< The AudioSource for the sound effects */
+	public AudioSource voiceOverSource;             /*!< The AudioSource for the voice-overs */
+
+    [Header ("Audio Clips")]
+    public AudioClip gameBackgroundMusic;           /*!< The game's main background music */
+    public AudioClip voiceTestClip;					/*!< AudioClip used to test ChangeVoiceOverVolume */
+	public AudioClip stickerVO;						/*!< AudioClip used to tell the player they unlocked a sticker */
+	public AudioClip correctSfx;                    /*!< AudioClip used to tell the player they are correct */
+    public AudioClip reviewVO;                      /*!< AudioClip used to tell the player they are reviewing */
+
+    [SerializeField] private AudioClip incorrectSfx;
+    private static SoundManager instance = null;    /*!< The singleton instance of this class */
+    private bool isMuted = false;                   /*!< Flag for if the sound has been muted */
+    private bool isPlayingClip = false;				/*!< Flag to prevent a clip from playing more than once at a time */
+    private List<AudioClip> clipQueue = new List<AudioClip> ();
     private bool isQueuePlaying = false;
     private Coroutine queueCoroutine, voiceCoroutine;
-
-	public AudioClip gameBackgroundMusic;			/*!< The game's main background music */
-	public bool isPlayingVoiceOver = false;         /*!< Way to check if a voice over is already playing */
-    public AudioSource backgroundSource;			/*!< The AudioSource for the background music */
-	public AudioSource SFXsource;					/*!< The AudioSource for the sound effects */
-	public AudioSource voiceOverSource;				/*!< The AudioSource for the voice-overs */
-	public Slider volumeSlider;						/*!< The Slider that controls the background music volume */
-	public AudioClip SFXtestClip;					/*!< AudioClip used to test ChangeSoundEffectsVolume */
-	public Slider SFXslider;						/*!< The Slider that controls the sound effects volume */
-	public AudioClip voiceTestClip;					/*!< AudioClip used to test ChangeVoiceOverVolume */
-	public Slider VoiceOverSlider;					/*!< The Slider that controls the voice-over volume */
-	public AudioClip stickerVO;						/*!< AudioClip used to tell the player they unlocked a sticker */
-	public AudioClip correctSFX;                    /*!< AudioClip used to tell the player they are correct */
-    public AudioClip reviewVO;                      /*!< AudioClip used to tell the player they are reviewing */
+    private bool isPlayingVoiceOver = false;        /*!< Way to check if a voice over is already playing */
+    private int sourceCount;                        /*!< Keep track of how many sfx sources there are */
 
     /** \cond */
     void Awake () {
@@ -44,17 +44,6 @@ public class SoundManager : MonoBehaviour {
 		}
 
 		DontDestroyOnLoad(this);
-	}
-
-	void Start() {
-		setup = true;
-        //set the value of the volume slider
-        if (volumeSlider) {
-            volumeSlider.value = backgroundSource.volume;
-            SFXslider.value = SFXsource.volume;
-            VoiceOverSlider.value = voiceOverSource.volume;
-        }
-		setup = false;
 	}
 	/** /endcond */
 
@@ -81,13 +70,29 @@ public class SoundManager : MonoBehaviour {
 	}
 
 	/**
-	 * \brief Play a single AudioClip through the SFXsource.
+	 * \brief Creates a SFX Source and play a single AudioClip through it. Only allows certain amount of sources.
 	 * @param clip: the sound effect AudioClip to be played.
 	 */
 	public void PlaySFXClip(AudioClip clip) {
-			SFXsource.clip = clip;
-			SFXsource.Play ();
+        if (sourceCount < Constants.NUM_OF_SFXSOURCES)
+            StartCoroutine (PlaySFX (clip));
+        else {
+            print (string.Format("{0} was ignored due to exceeding maximum sourceCount ({1})", clip, Constants.NUM_OF_SFXSOURCES));
+        }
 	}
+
+    IEnumerator PlaySFX (AudioClip clip) {
+        isPlayingClip = true;
+        AudioSource source = Instantiate (sfxSource, transform);
+        sourceCount++;
+        source.clip = clip;
+        source.Play ();
+        yield return new WaitForSeconds (clip.length);
+
+        sourceCount--;
+        isPlayingClip = false;
+        Destroy (source.gameObject);
+    }
 
     /**
 	 * \brief Play a single AudioClip through the SFXsource with a coroutine.
@@ -115,10 +120,9 @@ public class SoundManager : MonoBehaviour {
 	 * @param newBackgroundMusic: the AudioClip of the new background music.
 	 */
     public void ChangeBackgroundMusic(AudioClip newBackgroundMusic) {
-		if(!backgroundSource.clip.Equals(newBackgroundMusic) && newBackgroundMusic != null) {
-			backgroundSource.clip = newBackgroundMusic;
-			backgroundSource.Play ();
-		}
+        if (!backgroundSource.clip.Equals (newBackgroundMusic) && newBackgroundMusic != null) {
+            PlayBackgroundMusic (newBackgroundMusic);
+        }
 	}
 
     /**
@@ -138,28 +142,28 @@ public class SoundManager : MonoBehaviour {
 	}
 
     /**
-	 * \brief Change the sound effect volume.
-	 * @param newVolume: the float value of the new volume, will go into the coroutine function ChangeSFXVolumeHelper
-	 */
-    public void ChangeSFXVolume(float newVolume) {
-		if(!isPlayingClip) {
-			StartCoroutine(ChangeSFXVolumeHelper(newVolume));
-		}
-	}
+     * \brief Change the ambient sound to a new clip.
+     * @param newAmbientSound: the AudioClip of the new ambient sound.
+     */
+    public void ChangeAmbientSound (AudioClip newAmbientSound) {
+        if (newAmbientSound != null) {
+            PlayAmbientSound (newAmbientSound);
+        }
+    }
 
     /**
-	 * \brief Change the volume of the sound effect helper.
-	 * @param newVolume: the float value of the new volume.
-	 */
-    private IEnumerator ChangeSFXVolumeHelper(float newVolume) {
-		SFXsource.volume = newVolume;
-		if(!setup && !isPlayingClip) {
-			isPlayingClip = true;
-			PlaySFXClip(SFXtestClip);
-		}
-		yield return new WaitForSeconds(SFXtestClip.length);
-		isPlayingClip = false;
-	}
+    * \brief Change the volume of the sound effect helper.
+    * @param newVolume: the float value of the new volume.
+    */
+    public IEnumerator ChangeSFXVolumeHelper (float newVolume, AudioClip testClip) {
+        sfxSource.volume = newVolume;
+        if (!isPlayingClip) {
+            isPlayingClip = true;
+            PlaySFXClip (testClip);
+        }
+        yield return new WaitForSeconds (testClip.length);
+        isPlayingClip = false;
+    }
 
     /**
 	 * \brief Change the voice over volume.
@@ -177,8 +181,8 @@ public class SoundManager : MonoBehaviour {
 	 */
     private IEnumerator ChangeVoiceOverVolumeHelper(float newVolume) {
 		voiceOverSource.volume = newVolume;
-		if(!setup && !isPlayingVoiceOver) {
-			isPlayingClip = true;
+		if(!isPlayingVoiceOver) {
+            isPlayingVoiceOver = true;
 			PlayVoiceOverClip(voiceTestClip);
 		}
 		yield return new WaitForSeconds(voiceTestClip.length);
@@ -193,17 +197,39 @@ public class SoundManager : MonoBehaviour {
 		ChangeBackgroundMusic(lagoonBG);
 	}
 
-	/**
+    /**
 	 * \brief Play the background music
 	 */
-	void PlayBackgroundMusic() {
+    public void PlayBackgroundMusic (AudioClip newBackgroundMusic) {
 		backgroundSource.Play ();
 	}
 
-	/**
+    /**
+     * \brief Play the background music
+     */
+    public void StopBackgroundMusic () {
+        backgroundSource.Stop ();
+    }
+
+    /**
+     * \brief Play the ambient sound
+     */
+    public void PlayAmbientSound (AudioClip newAmbientSound) {
+        ambientSource.clip = newAmbientSound;
+        ambientSource.Play ();
+    }
+
+    /**
+     * \brief Stop the ambient sound
+     */
+    public void StopAmbientSound () {
+        ambientSource.Stop ();
+    }
+
+    /**
 	 * \brief Teardown the sounds in Brainstorm Lagoon and prepare sounds for MainMap
 	 */
-	public void LagoonTearDown(bool toMainMap) {
+    public void LagoonTearDown(bool toMainMap) {
 		//only play the original bg music if returning to MainMap
 		if(toMainMap) 
 			ChangeBackgroundMusic(gameBackgroundMusic);
@@ -220,8 +246,15 @@ public class SoundManager : MonoBehaviour {
     * \brief Play a generic sound effect for when something is correct
     */
     public void PlayCorrectSFX() {
-		PlaySFXClip (correctSFX);
+		PlaySFXClip (correctSfx);
 	}
+
+    /**
+    * \brief Play a generic sound effect for when something is incorrect
+    */
+    public void PlayIncorrectSFX () {
+        PlaySFXClip (incorrectSfx);
+    }
 
     /**
      * \brief Play the voice over associated with starting a review game
@@ -240,7 +273,16 @@ public class SoundManager : MonoBehaviour {
         }
     }
 
-    IEnumerator PlayQueue() {
+    public void StopVOQueue() {
+        if (isQueuePlaying) {
+            StopCoroutine (queueCoroutine);
+        }
+    }
+
+    /**
+     * \brief Play the queue
+     */
+    IEnumerator PlayQueue () {
         //print ("PlayQueue");
         isQueuePlaying = true;
         while (clipQueue.Count > 0) {
@@ -252,5 +294,13 @@ public class SoundManager : MonoBehaviour {
         }
         isQueuePlaying = false;
         //print ("PlayQueue Stop");
+    }
+
+    public bool GetIsPlayingClip() {
+        return isPlayingClip;
+    }
+
+    public bool GetIsPlayingVoiceOver () {
+        return isPlayingVoiceOver;
     }
 }

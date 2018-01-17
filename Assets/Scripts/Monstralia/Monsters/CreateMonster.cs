@@ -29,6 +29,11 @@ public class CreateMonster : MonoBehaviour {
         return Spawn (GameManager.GetInstance().GetPlayerMonsterType());
     }
 
+    public Monster SpawnPlayerMonster (Transform spot) {
+        spawnPosition = spot;
+        return Spawn (GameManager.GetInstance ().GetPlayerMonsterType ());
+    }
+
     public Monster SpawnMonster (GameObject monsterObject) {
         if (!spawnPosition)
             spawnPosition = transform;

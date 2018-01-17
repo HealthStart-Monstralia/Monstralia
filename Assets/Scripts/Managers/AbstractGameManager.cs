@@ -5,9 +5,9 @@ using System.Collections;
 public abstract class AbstractGameManager : MonoBehaviour {
     [Header ("AbstractGameManager Fields")]
     public DataType.Minigame typeOfGame;
-	public abstract void GameOver(); // Force GameOver() to be implemented in child classes
     public abstract void PregameSetup (); // Force PregameSetup() to be implemented in child classes
     public DataType.MonsterType typeOfMonster;
+    public bool randomizeMusic = true;
     public AudioClip[] backgroundMusicArray;
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
@@ -15,13 +15,17 @@ public abstract class AbstractGameManager : MonoBehaviour {
     }
 
     void OnEnable () {
-        typeOfMonster = GameManager.GetInstance ().GetMonsterType ();
+        if (GameManager.GetInstance ()) {
+            typeOfMonster = GameManager.GetInstance ().GetMonsterType ();
+        }
+        else {
+            typeOfMonster = DataType.MonsterType.Blue;
+        }
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void OnDisable () {
         SceneManager.sceneLoaded -= OnSceneLoaded;
-        //ReviewManager.OnFinishReview -= EndReview;
     }
 
     // Go to Start scene if no Game Manager is present
@@ -33,29 +37,33 @@ public abstract class AbstractGameManager : MonoBehaviour {
     }
 
     protected void Start() {
-        if (GameManager.GetInstance().GetLevel(typeOfGame) == 1) {
-            print ("First level of game, needs review from other games");
+        if (backgroundMusicArray.Length > 0) {
+            if (randomizeMusic) {
+                SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusicArray[Random.Range (0, backgroundMusicArray.Length)]);
+            } else {
+                SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusicArray[0]);
+            }
         }
 
         PregameSetup ();
     }
 
-    /*
-    protected void StartReview () {
-        print ("AbstractGameManager StartReview");
-        ReviewManager.OnFinishReview += EndReview;
-        ReviewManager.GetInstance ().StartReview (typeOfGame);
+    public virtual void GameOver (DataType.GameEnd typeOfEnd) {
+        switch (typeOfEnd) {
+            case DataType.GameEnd.EarnedSticker:
+                SoundManager.GetInstance ().PlayCorrectSFX ();
+                GameManager.GetInstance ().LevelUp (typeOfGame);
+                GameManager.GetInstance ().ActivateSticker (typeOfGame);
+                break;
+            case DataType.GameEnd.CompletedLevel:
+                SoundManager.GetInstance ().PlayCorrectSFX ();
+                GameManager.GetInstance ().LevelUp (typeOfGame);
+                break;
+            case DataType.GameEnd.FailedLevel:
+                break;
+        }
+
+        GameManager.GetInstance ().CreateEndScreen (typeOfGame, typeOfEnd);
     }
 
-    protected void EndReview () {
-        print ("AbstractGameManager EndReview");
-        ReviewManager.OnFinishReview -= EndReview;
-        PregameSetup ();
-    }
-    */
-
-    public virtual void UnlockSticker() {
-        GameManager.GetInstance ().ActivateSticker (typeOfGame);
-        GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.EarnedSticker);
-    }
 }

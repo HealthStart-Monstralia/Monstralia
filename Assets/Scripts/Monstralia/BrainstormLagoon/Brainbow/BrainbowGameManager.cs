@@ -84,18 +84,8 @@ public class BrainbowGameManager : AbstractGameManager {
 		}
 	}
 
-    private void OnEnable () {
-        // Subscribe to events
-        Timer.OutOfTime += OnOutOfTime;
-    }
-
-    private void OnDisable () {
-        // Unsubscribe to events
-        Timer.OutOfTime -= OnOutOfTime;
-    }
-
     // Event
-    void OnOutOfTime () { EndGameTearDown (); }
+    public void OnOutOfTime () { EndGameTearDown (); }
 
     public override void PregameSetup () {
         if (skipTutorial) GameManager.GetInstance ().CompleteTutorial (DataType.Minigame.Brainbow);
@@ -114,12 +104,10 @@ public class BrainbowGameManager : AbstractGameManager {
         monsterObject.transform.GetComponent<SpriteRenderer> ().sortingOrder = 0;
         monsterObject.ChangeEmotions (DataType.MonsterEmotions.Joyous);
 
-        if (GameManager.GetInstance ().GetPendingTutorial(DataType.Minigame.Brainbow)) {
+        if (GameManager.GetInstance ().GetPendingTutorial(DataType.Minigame.Brainbow))
             tutorialManager.StartTutorial ();
-		}
-		else {
-			StartGame ();
-		}
+        else
+	        StartGame ();
     }
 
 
@@ -148,7 +136,7 @@ public class BrainbowGameManager : AbstractGameManager {
 
 	public IEnumerator DisplayGo () {
         yield return new WaitForSeconds (1.0f);
-        GameManager.GetInstance ().Countdown ();
+        GameManager.GetInstance ().StartCountdown ();
 		yield return new WaitForSeconds (3.5f);
 		PostCountdownSetup ();
 	}
@@ -249,26 +237,11 @@ public class BrainbowGameManager : AbstractGameManager {
 
         // Name the created food item and give it a BrainbowFoodItem component
         newFood.name = foods[randomIndex].name;
-		BrainbowFoodItem brainbowComponent = newFood.AddComponent<BrainbowFoodItem> ();
+		newFood.AddComponent<BrainbowFoodItem> ();
 		newFood.GetComponent<Food>().Spawn(spawnPos, spawnPos, foodScale);
 
         // Remove created food item from food pool
 		foods.RemoveAt(randomIndex);
-    }
-
-    override public void GameOver() {
-		if (score >= scoreGoal) {
-            GameManager.GetInstance ().LevelUp (DataType.Minigame.Brainbow);
-            if (difficultyLevel == 1) {
-                UnlockSticker ();
-            } else {
-                SoundManager.GetInstance ().PlayCorrectSFX ();
-                GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.CompletedLevel);
-            }
-        }
-        else {
-            GameManager.GetInstance ().CreateEndScreen (typeOfGame, EndScreen.EndScreenType.FailedLevel);
-        }
     }
 
 	void EndGameTearDown () {
@@ -279,8 +252,6 @@ public class BrainbowGameManager : AbstractGameManager {
 
             timer.StopTimer ();
             foodPanel.Deactivate ();
-
-            timer.gameObject.SetActive (false);
 
             StartCoroutine (RunEndGameAnimation ());
         }
@@ -301,8 +272,24 @@ public class BrainbowGameManager : AbstractGameManager {
         monsterObject.ChangeEmotions (DataType.MonsterEmotions.Thoughtful);
         StartCoroutine (TurnOffRainbows ());
         yield return new WaitForSeconds (3f);
-		GameOver ();
-	}
+        
+        // Player reached goal
+        if (score >= scoreGoal) {
+
+            // If level one, give player a sticker and complete the level, 
+            // otherwise complete the level normally.
+            if (difficultyLevel == 1) {
+                GameOver (DataType.GameEnd.EarnedSticker);
+            } else {
+                GameOver (DataType.GameEnd.CompletedLevel);
+            }
+        } 
+        
+        // Player did not reach goal, show game over
+        else {
+            GameOver (DataType.GameEnd.FailedLevel);
+        }
+    }
 
     void UpdateScoreGauge () {
         if (scoreGauge.gameObject.activeSelf)

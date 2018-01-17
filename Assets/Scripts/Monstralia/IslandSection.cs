@@ -6,7 +6,7 @@ public class IslandSection : MonoBehaviour {
     public DataType.IslandSection island;
     public GameObject monsterLocation;
     [HideInInspector] public GameObject monster;
-    public AudioClip introAudio, welcomeBackClip, backgroundMusic;
+    public AudioClip introAudio, welcomeBackClip, ambientSound, backgroundMusic;
     public AudioClip[] voice;
 
     private void Awake () {
@@ -16,6 +16,8 @@ public class IslandSection : MonoBehaviour {
     private void Start () {
         CreateMonsterOnMap ();
         //PlayWelcomeVO ();
+        SoundManager.GetInstance ().StopAmbientSound ();
+        SoundManager.GetInstance ().ChangeAmbientSound (ambientSound);
         SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
     }
 

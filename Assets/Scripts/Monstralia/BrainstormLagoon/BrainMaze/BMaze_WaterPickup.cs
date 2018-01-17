@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BMaze_WaterPickup : MonoBehaviour {
+public class BMaze_WaterPickup : BMaze_Pickup {
 	/* CREATED BY: Colby Tang
 	 * GAME: Brain Maze
 	 */
@@ -11,6 +11,11 @@ public class BMaze_WaterPickup : MonoBehaviour {
 
 	/*! Increase time on pickup, called from BMaze_Pickup */
 	public void IncreaseTime() {
-		BMaze_Manager.GetInstance().timeLeft += timeIncrease;
+		TimerClock.GetInstance().AddTime(timeIncrease);
 	}
+
+    new void OnTriggerEnter2D (Collider2D col) {
+        base.OnTriggerEnter2D (col);
+        IncreaseTime ();
+    }
 }

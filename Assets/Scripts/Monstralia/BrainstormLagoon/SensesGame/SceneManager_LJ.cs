@@ -397,10 +397,10 @@ public class SceneManager_LJ : MonoBehaviour {
 
         // Unlock corresponding sticker if the first level was completed
         if (PlayingLevel1) {
-            MasterHandler_LJ.GetInstance ().GameOver ();
+            //MasterHandler_LJ.GetInstance ().GameOver ();
         }
         else {
-            GameManager.GetInstance ().CreateEndScreen (MasterHandler_LJ.GetInstance ().typeOfGame, EndScreen.EndScreenType.CompletedLevel);
+            //GameManager.GetInstance ().CreateEndScreen (MasterHandler_LJ.GetInstance ().typeOfGame, EndScreen.EndScreenType.CompletedLevel);
         }
     }
 

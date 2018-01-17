@@ -5,13 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class EndScreen : MonoBehaviour {
-    public enum EndScreenType {
-        EarnedSticker,
-        CompletedLevel,
-        FailedLevel
-    }
-
-    public EndScreenType typeOfScreen;
+    public DataType.GameEnd typeOfScreen;
     public DataType.Minigame typeOfGame;
     public bool earnedSticker;
     public Text headerText, footerText;

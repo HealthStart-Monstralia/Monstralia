@@ -7,25 +7,19 @@ public class BMaze_Finishline : MonoBehaviour {
 	 */
 	public GameObject finishSpot;
 
-	private bool finished = false;
+    private void Awake () {
+        GetComponent<Collider2D> ().enabled = false;
+    }
 
-	public void UnlockFinishline () {
-		finished = true;
+    public void UnlockFinishline () {
+        GetComponent<Collider2D> ().enabled = true;
 	}
 
 	void OnTriggerEnter2D (Collider2D col) {
 		print ("Finish");
-		if (finished) {
-			col.GetComponentInChildren<BMaze_Monster> ().PlayDance ();
-			col.GetComponent<BMaze_MonsterMovement> ().finished = true;
-			col.GetComponent<BMaze_MonsterMovement> ().gotoPos = finishSpot.transform.position;
-
-            if (!BMaze_Manager.GetInstance ().isTutorialRunning) {
-                BMaze_Manager.GetInstance ().FinishGame ();
-                StartCoroutine (BMaze_Manager.GetInstance ().EndGameWait (3f));
-            } else {
-                BMaze_Manager.GetInstance ().TutorialFinished ();
-            }
-		}
+		col.GetComponentInChildren<BMaze_Monster> ().PlayDance ();
+		col.GetComponent<BMaze_MonsterMovement> ().finished = true;
+		col.GetComponent<BMaze_MonsterMovement> ().gotoPos = finishSpot.transform.position;
+        BMaze_Manager.GetInstance ().OnFinish ();
 	}
 }

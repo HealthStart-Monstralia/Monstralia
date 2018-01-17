@@ -9,7 +9,6 @@ public class ReviewBrainbowFood : MonoBehaviour {
     private Vector3 offset;
     private Rigidbody2D rigBody;
     private bool moving = false;
-    private bool isPlaced = false;
     private bool isBeingEaten = false;
 
     private void Awake () {
@@ -55,7 +54,6 @@ public class ReviewBrainbowFood : MonoBehaviour {
     public void InsertItemIntoStripe (ReviewBrainbowStripe stripe) {
         stripe.MoveItemToSlot (gameObject);
         gameObject.GetComponent<Collider2D> ().enabled = false;
-        isPlaced = true;
     }
 
     public IEnumerator GetEaten () {
@@ -75,7 +73,7 @@ public class ReviewBrainbowFood : MonoBehaviour {
     }
 
     private void OnTriggerEnter2D (Collider2D collision) {
-        if (collision.tag == "Monster" && isPlaced) {
+        if (collision.tag == "Monster" && isBeingEaten) {
             Destroy (gameObject);
         }
     }

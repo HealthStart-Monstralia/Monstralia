@@ -186,7 +186,7 @@ public class EmotionsGenerator : MonoBehaviour {
         monster = Instantiate(GameManager.GetInstance ().GetPlayerMonsterType (), pos, Quaternion.identity);
         monster.transform.position = pos;
         monster.transform.localScale = new Vector3 (0.8f, 0.8f, 0.8f);
-        monster.AddComponent<EmotionsMonster> ();
+        monster.gameObject.AddComponent<Animator> ();
         monster.GetComponentInChildren<Monster> ().idleAnimationOn = false;
         monster.GetComponentInChildren<Monster> ().allowMonsterTickle = false;
     }

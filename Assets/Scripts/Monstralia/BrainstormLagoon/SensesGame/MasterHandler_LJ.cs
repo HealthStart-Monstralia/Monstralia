@@ -43,7 +43,8 @@ public class MasterHandler_LJ : AbstractGameManager
     public GameObject LevelOne;
     public GameObject LevelTwo;
     public GameObject LevelThree;
-    public Text Timer;
+    public ScoreGauge scoreGauge;
+    public TimerClock timerClock;
     public GameObject PlayButton;
     public GameObject BabyMonsters;
     public GameObject[] FireWorksPrefab;
@@ -63,7 +64,8 @@ public class MasterHandler_LJ : AbstractGameManager
         }
 
         SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusicArray[Random.Range (0, backgroundMusicArray.Length)]);
-
+        scoreGauge.gameObject.SetActive (false);
+        timerClock.gameObject.SetActive (false);
 
         //Get references to objects/scripts to call their function here in this script
         GameObject sceneScript = GameObject.Find("MasterHandlerScript");
@@ -102,10 +104,6 @@ public class MasterHandler_LJ : AbstractGameManager
         //The MasterHandler remains active in the Senses Game scene and activates/deactivates game objects that act as Level 1, Level 2, and Level 3.
     }
 
-    public override void GameOver () {
-        UnlockSticker ();
-    }
-
     void Update()
     {
         FadePlayButton();
@@ -124,7 +122,7 @@ public class MasterHandler_LJ : AbstractGameManager
         {
             playButtonPressed = true;
             fadeButton = true;
-            GameManager.GetInstance().Countdown();
+            GameManager.GetInstance().StartCountdown();
             getAudio.PlayIntroJingle();
             Invoke("PlayMagicWoosh", 4.3f);
             Invoke("FireWorksClearOut", 4.45f);
@@ -156,7 +154,7 @@ public class MasterHandler_LJ : AbstractGameManager
     //Intro screen tutorial timer becomes inactive
     public void HideIntroTimer()
     {
-        Timer.enabled = false;
+        timerClock.gameObject.SetActive(false);
     }
 
 
