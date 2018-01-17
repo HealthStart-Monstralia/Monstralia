@@ -21,6 +21,7 @@ public class SoundManager : MonoBehaviour {
     public AudioClip voiceTestClip;					/*!< AudioClip used to test ChangeVoiceOverVolume */
 	public AudioClip stickerVO;						/*!< AudioClip used to tell the player they unlocked a sticker */
 	public AudioClip correctSfx;                    /*!< AudioClip used to tell the player they are correct */
+    public AudioClip correctSfx2;                   /*!< AudioClip used to tell the player they are correct */
     public AudioClip reviewVO;                      /*!< AudioClip used to tell the player they are reviewing */
 
     [SerializeField] private AudioClip incorrectSfx;

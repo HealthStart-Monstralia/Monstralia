@@ -8,7 +8,7 @@ public class SensesGameManager : AbstractGameManager {
     public bool skipTutorial = false;
     public VoiceOversData voData;
     public SensesLevelManager levelOne, levelTwo, levelThree;
-    public SensesFireworks fireworksSystem;
+    public SensesFireworksSystem fireworksSystem;
     [HideInInspector] public bool hasGameStarted;
     [HideInInspector] public int score;
 
@@ -16,6 +16,7 @@ public class SensesGameManager : AbstractGameManager {
     [Tooltip ("Drag and drop the appropriate audio files to the appropriate function.")]
     [SerializeField] private AudioClip introChime;
     [SerializeField] private AudioClip correctSfx;
+    [SerializeField] private AudioClip finishedSfx;
 
     [Header ("Voiceovers")]
     public AudioClip[] rightChoiceVO;
@@ -51,6 +52,10 @@ public class SensesGameManager : AbstractGameManager {
         } else if (instance != this) {
             Destroy (gameObject);
         }
+
+        levelOne.gameObject.SetActive (false);
+        levelTwo.gameObject.SetActive (false);
+        levelThree.gameObject.SetActive (false);
     }
 
     public static SensesGameManager GetInstance() {
@@ -59,8 +64,9 @@ public class SensesGameManager : AbstractGameManager {
 
     public override void PregameSetup () {
         ActivateHUD (false);
-        difficultyLevel = (DataType.Level)GameManager.GetInstance ().GetLevel (DataType.Minigame.Brainbow);
+        difficultyLevel = (DataType.Level)GameManager.GetInstance ().GetLevel (DataType.Minigame.MonsterSenses);
         currentLevelManager = GetLevelConfig ();
+        currentLevelManager.gameObject.SetActive (true);
     }
 
     public void ActivateHUD(bool activate) {
@@ -83,11 +89,13 @@ public class SensesGameManager : AbstractGameManager {
     public void OnGameStart() {
         hasGameStarted = true;
         IsInputAllowed = true;
+        timerClock.StartTimer ();
     }
 
     public void OnGameEnd () {
         hasGameStarted = false;
         IsInputAllowed = false;
+        timerClock.StopTimer ();
         StartCoroutine (GameOverSequence ());
     }
 
@@ -99,6 +107,10 @@ public class SensesGameManager : AbstractGameManager {
         if (score >= currentLevelManager.scoreGoal) {
             currentLevelManager.EndGame ();
         }
+    }
+
+    public void OnOutOfTime() {
+        OnGameEnd ();
     }
 
     public void OnWrongScore () {
@@ -115,24 +127,31 @@ public class SensesGameManager : AbstractGameManager {
 
     IEnumerator OnGuess(bool isCorrect) {
         IsInputAllowed = false;
+        if (isCorrect)
+            timerClock.StopTimer ();
         yield return new WaitForSeconds (2f);
         if (hasGameStarted) {
             IsInputAllowed = true;
             if (isCorrect) {
                 currentLevelManager.NextQuestion ();
+                timerClock.StartTimer ();
             }
+            currentLevelManager.monster.ChangeEmotions (DataType.MonsterEmotions.Happy);
         }
     }
 
     IEnumerator GameOverSequence () {
-        yield return new WaitForSeconds (3f);
+        yield return new WaitForSeconds (1f);
         if (score >= currentLevelManager.scoreGoal) {
-            if (difficultyLevel == DataType.Level.LevelOne) {
+            SoundManager.GetInstance ().PlaySFXClip (finishedSfx);
+            yield return new WaitForSeconds (2f);
+            if (!GameManager.GetInstance().GetStickerUnlock(typeOfGame)) {
                 GameOver (DataType.GameEnd.EarnedSticker);
             } else {
                 GameOver (DataType.GameEnd.CompletedLevel);
             }
         } else {
+            yield return new WaitForSeconds (3f);
             GameOver (DataType.GameEnd.FailedLevel);
         }
     }

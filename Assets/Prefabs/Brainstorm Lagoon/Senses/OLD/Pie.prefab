@@ -38,7 +38,6 @@ GameObject:
   - component: {fileID: 33917037398317838}
   - component: {fileID: 65482317056887062}
   - component: {fileID: 23724338215342910}
-  - component: {fileID: 114400438906568842}
   m_Layer: 14
   m_Name: Pie
   m_TagString: Untagged
@@ -126,21 +125,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.83, y: 1.82, z: 1}
   m_Center: {x: 0, y: 0.17, z: 0}
---- !u!114 &114400438906568842
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1267301478642050}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3ac8e3c0d46e9e43a188e23c7f76191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  growthMultiplier: 3
-  objectName: Pie
-  assignSenses: 00000000030000000200000004000000
-  AssignMultiSenses: 000000000200000003000000
 --- !u!212 &212567041195321092
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -9,10 +9,18 @@ public class SensesLevelManager : MonoBehaviour {
     public UnityStandardAssets.ImageEffects.BlurOptimized blur;
     public CreateMonster[] monsterCreators;
     public AudioClip transitionSfx;
-    public DataType.Senses selectedSense;
+    [HideInInspector] public Monster monster;
 
-    private List<DataType.Senses> senseList = new List<DataType.Senses>();
-    [SerializeField] private Text textObject;
+    [Header ("References")]
+    [SerializeField] private SensesFactory senseFactory;
+    [SerializeField] private List<DataType.Senses> senseList = new List<DataType.Senses>();
+    [SerializeField] private Text senseText, commentText;
+    [SerializeField] private string[] correctLines;
+    [SerializeField] private string[] wrongLines;
+    private bool isCommentHiding = false;
+    private Coroutine commentCoroutine;
+    private DataType.Senses selectedSense;
+    private GameObject selectedObject;
 
     private void Awake () {
         foreach (DataType.Senses sense in System.Enum.GetValues (typeof (DataType.Senses))) {
@@ -43,7 +51,7 @@ public class SensesLevelManager : MonoBehaviour {
     }
 
     IEnumerator PrepareToStartGame () {
-        monsterCreators[0].SpawnPlayerMonster ();
+        monster = monsterCreators[0].SpawnPlayerMonster ();
         SensesGameManager.GetInstance ().ActivateHUD(true);
         GameManager.GetInstance ().StartCountdown ();
         yield return new WaitForSeconds (3.5f);
@@ -55,30 +63,62 @@ public class SensesLevelManager : MonoBehaviour {
     }
 
     private DataType.Senses SelectRandomSense() {
-        DataType.Senses sense = senseList[Random.Range (0, Constants.NUM_OF_SENSES)];
-        textObject.text = sense.ToString();
+        DataType.Senses sense = senseList.RandomItem();
         return sense;
     }
 
     void StartGame() {
         SensesGameManager.GetInstance ().OnGameStart ();
-        selectedSense = SelectRandomSense ();
+        NextQuestion ();
     }
 
     public void NextQuestion() {
+        monster.ChangeEmotions (DataType.MonsterEmotions.Happy);
         selectedSense = SelectRandomSense ();
+        ResetComment ();
+
+        Destroy (selectedObject);
+        selectedObject = senseFactory.ManufactureRandomPrefab ();
+        senseText.text = string.Format ("What do I use to {0} this {1}?", selectedSense.ToString ().ToLower(), selectedObject.name);
+    }
+
+    public void ResetComment() {
+        commentText.text = "";
     }
 
     public void EndGame() {
         SensesGameManager.GetInstance ().OnGameEnd ();
+        monster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
     }
 
     public bool IsSenseCorrect (DataType.Senses sense) {
         if (selectedSense != DataType.Senses.NONE) {
-            if (sense == selectedSense) return true;
-            else return false;
+            if (sense == selectedSense) {
+                ShowComment(correctLines.RandomItem ());
+                monster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
+                return true;
+            } else {
+                ShowComment (wrongLines.RandomItem ());
+                monster.ChangeEmotions (DataType.MonsterEmotions.Sad);
+                return false;
+            }
+
         }
         
         else return false;
+    }
+
+    void ShowComment (string text) {
+        commentText.text = text;
+        if (isCommentHiding)
+            StopCoroutine (commentCoroutine);
+        commentCoroutine = StartCoroutine (HideComment());
+    }
+
+    IEnumerator HideComment() {
+        isCommentHiding = true;
+        yield return new WaitForSeconds (4f);
+        commentText.text = "";
+        isCommentHiding = false;
     }
 }

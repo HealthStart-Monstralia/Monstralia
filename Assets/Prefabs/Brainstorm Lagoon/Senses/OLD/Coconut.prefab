@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 33530772651403978}
   - component: {fileID: 65071883034947554}
   - component: {fileID: 23104507104630908}
-  - component: {fileID: 114967018085903596}
   m_Layer: 14
   m_Name: Coconut
   m_TagString: Untagged
@@ -126,21 +125,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.83, y: 2.6, z: 1}
   m_Center: {x: 0, y: 0.77, z: 0}
---- !u!114 &114967018085903596
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1033173103134478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3ac8e3c0d46e9e43a188e23c7f76191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  growthMultiplier: 3
-  objectName: Coconut
-  assignSenses: 00000000030000000200000004000000
-  AssignMultiSenses: 000000000200000003000000
 --- !u!212 &212008866979526760
 SpriteRenderer:
   m_ObjectHideFlags: 1

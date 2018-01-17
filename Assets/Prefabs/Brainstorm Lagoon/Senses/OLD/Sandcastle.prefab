@@ -38,7 +38,6 @@ GameObject:
   - component: {fileID: 33171324854187614}
   - component: {fileID: 65710203077249720}
   - component: {fileID: 23124362430270240}
-  - component: {fileID: 114658414554820282}
   m_Layer: 14
   m_Name: Sandcastle
   m_TagString: Untagged
@@ -126,21 +125,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.33, y: 4.16, z: 1}
   m_Center: {x: 0, y: 1.4, z: 0}
---- !u!114 &114658414554820282
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1796702076524436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3ac8e3c0d46e9e43a188e23c7f76191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  growthMultiplier: 3
-  objectName: Sandcastle
-  assignSenses: 0000000004000000
-  AssignMultiSenses: 
 --- !u!212 &212884205321220272
 SpriteRenderer:
   m_ObjectHideFlags: 1

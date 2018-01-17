@@ -51,6 +51,7 @@ public abstract class AbstractGameManager : MonoBehaviour {
     public virtual void GameOver (DataType.GameEnd typeOfEnd) {
         switch (typeOfEnd) {
             case DataType.GameEnd.EarnedSticker:
+                SoundManager.GetInstance ().PlaySFXClip (SoundManager.GetInstance ().correctSfx2);
                 SoundManager.GetInstance ().PlayCorrectSFX ();
                 GameManager.GetInstance ().LevelUp (typeOfGame);
                 GameManager.GetInstance ().ActivateSticker (typeOfGame);

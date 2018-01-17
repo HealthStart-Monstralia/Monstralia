@@ -38,7 +38,6 @@ GameObject:
   - component: {fileID: 33676670363843204}
   - component: {fileID: 65302605034746496}
   - component: {fileID: 23106791185502934}
-  - component: {fileID: 114351385156522010}
   m_Layer: 14
   m_Name: Seagull
   m_TagString: Untagged
@@ -126,21 +125,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.42, y: 3.76, z: 1}
   m_Center: {x: 0, y: 1.1, z: 0}
---- !u!114 &114351385156522010
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1651446053270378}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3ac8e3c0d46e9e43a188e23c7f76191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  growthMultiplier: 3
-  objectName: Seagull
-  assignSenses: 000000000100000004000000
-  AssignMultiSenses: 
 --- !u!212 &212893453970323722
 SpriteRenderer:
   m_ObjectHideFlags: 1

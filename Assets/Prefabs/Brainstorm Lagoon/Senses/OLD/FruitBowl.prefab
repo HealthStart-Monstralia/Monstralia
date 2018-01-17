@@ -38,7 +38,6 @@ GameObject:
   - component: {fileID: 33706418807984476}
   - component: {fileID: 65632585921844284}
   - component: {fileID: 23520051892926340}
-  - component: {fileID: 114994878363991706}
   m_Layer: 14
   m_Name: FruitBowl
   m_TagString: Untagged
@@ -126,21 +125,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.56, y: 1.88, z: 1}
   m_Center: {x: 0, y: 0.29, z: 0}
---- !u!114 &114994878363991706
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1239816938444212}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3ac8e3c0d46e9e43a188e23c7f76191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  growthMultiplier: 3
-  objectName: FruitBowl
-  assignSenses: 00000000030000000200000004000000
-  AssignMultiSenses: 000000000200000003000000
 --- !u!212 &212920331161484854
 SpriteRenderer:
   m_ObjectHideFlags: 1

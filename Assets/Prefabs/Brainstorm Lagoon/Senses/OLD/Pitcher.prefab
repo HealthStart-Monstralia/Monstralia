@@ -38,7 +38,6 @@ GameObject:
   - component: {fileID: 33484214170722846}
   - component: {fileID: 65657886945378190}
   - component: {fileID: 23732748356450328}
-  - component: {fileID: 114176038926147918}
   m_Layer: 14
   m_Name: Pitcher
   m_TagString: Untagged
@@ -126,21 +125,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.41, y: 2.9, z: 1}
   m_Center: {x: 0, y: 0.8, z: 0}
---- !u!114 &114176038926147918
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1934801039703924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3ac8e3c0d46e9e43a188e23c7f76191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  growthMultiplier: 3
-  objectName: Pitcher
-  assignSenses: 000000000300000004000000
-  AssignMultiSenses: 0000000002000000
 --- !u!212 &212495308891585330
 SpriteRenderer:
   m_ObjectHideFlags: 1

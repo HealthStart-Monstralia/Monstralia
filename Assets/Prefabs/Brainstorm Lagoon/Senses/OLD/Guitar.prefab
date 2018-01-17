@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 33636121188656360}
   - component: {fileID: 65020558846666242}
   - component: {fileID: 23109880202009932}
-  - component: {fileID: 114882622521514956}
   m_Layer: 14
   m_Name: Guitar
   m_TagString: Untagged
@@ -126,21 +125,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.96, y: 5.19, z: 1}
   m_Center: {x: 0, y: 2.02, z: 0}
---- !u!114 &114882622521514956
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1313431217200508}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3ac8e3c0d46e9e43a188e23c7f76191, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  growthMultiplier: 3
-  objectName: Guitar
-  assignSenses: 000000000100000004000000
-  AssignMultiSenses: 0000000001000000
 --- !u!212 &212845109145493332
 SpriteRenderer:
   m_ObjectHideFlags: 1
