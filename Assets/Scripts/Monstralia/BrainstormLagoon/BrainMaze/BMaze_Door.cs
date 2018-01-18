@@ -6,7 +6,7 @@ public class BMaze_Door : MonoBehaviour {
     [SerializeField] private AudioClip unlockClip;
 
 	public void OpenDoor() {
-        SoundManager.GetInstance ().PlaySFXClip (unlockClip);
+        SoundManager.Instance.PlaySFXClip (unlockClip);
         Invoke ("Hide", 0.5f);
 	}
 

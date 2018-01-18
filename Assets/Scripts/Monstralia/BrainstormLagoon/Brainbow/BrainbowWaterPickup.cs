@@ -9,9 +9,9 @@ public class BrainbowWaterPickup : MonoBehaviour {
     [HideInInspector] public BrainbowWaterManager manager;
 
 	void OnMouseDown() {
-        if (BrainbowGameManager.GetInstance ().inputAllowed) {
-            TimerClock.GetInstance().AddTime (waterTimeBoost);
-            SoundManager.GetInstance ().PlaySFXClip (waterClip);
+        if (BrainbowGameManager.Instance.inputAllowed) {
+            TimerClock.Instance.AddTime (waterTimeBoost);
+            SoundManager.Instance.PlaySFXClip (waterClip);
             manager.waterBottleList.Remove (gameObject);
             Destroy (gameObject);
         }

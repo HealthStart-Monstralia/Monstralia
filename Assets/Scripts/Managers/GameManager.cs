@@ -3,15 +3,14 @@ using System.Collections;
 using System.IO;
 using System.Collections.Generic;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : SingletonPersistent<GameManager> {
     private Dictionary<DataType.Minigame, MinigameStats> gameStats;
     private Dictionary<DataType.StickerType, StickerStats> stickerStats;
     private Dictionary<DataType.Minigame, MinigameData> minigameDictionary;
     private Dictionary<DataType.IslandSection, bool> visitedAreas;
 
     private DataType.MonsterType monsterType;
-    private static GameManager instance = null;
-    [SerializeField] private MinigameData[] minigameAssetData;
+    private MinigameData[] minigameAssetData;   // Loaded from InitializeDictionaryEntries()
     private DataType.Minigame lastGamePlayed;
     private DataType.IslandSection currentSection;
     private bool activateReview = false; // Alternate activating review when game is lvl 3
@@ -31,25 +30,17 @@ public class GameManager : MonoBehaviour {
 
     public GameObject loadingScreenPrefab;
     public GameObject endingScreenPrefab;
+    public GameObject countdownPrefab;
     public GameObject blueMonster, greenMonster, redMonster, yellowMonster;
 
-    public static GameManager GetInstance () {
-        return instance;
-    }
-
-    void Awake() {
-		if (instance == null) {
-			instance = this;
-		}
-		else if(instance != this) {
-			Destroy(gameObject);
-		}
-
-		DontDestroyOnLoad(this);
+    new void Awake() {
+        base.Awake ();
         InitializeDictionaryEntries ();
     }
 
     void InitializeDictionaryEntries () {
+        // Load all minigame asset data in the Minigames folder
+        minigameAssetData = Resources.LoadAll<MinigameData> ("Data/Minigames");
 
         // Initialize dictionaries
         minigameDictionary = new Dictionary<DataType.Minigame, MinigameData> ();
@@ -88,34 +79,28 @@ public class GameManager : MonoBehaviour {
     // Called at the end of a minigame
     public void LevelUp (DataType.Minigame gameName) {
         MinigameStats newStats = gameStats[gameName]; // Copy current struct to a new one
+        numOfGamesCompleted++;
 
-        if (newStats.stars < 3) {
-            newStats.stars += 1;
-        }
+        if (newStats.stars < 3) newStats.stars += 1;
+        if (newStats.level < 3) newStats.level += 1;
 
         if (newStats.stars == 1 || newStats.stars == 3) {
-            if (ReviewManager.GetInstance())
-                ReviewManager.GetInstance ().AddReviewGameToList (gameName);
+            if (ReviewManager.Instance)
+                ReviewManager.Instance.AddReviewGameToList (gameName);
 
             // Set needReview to true when lvl 3 is completed every other time, temporary measure to reduce annoying reviews
             if (newStats.stars >= 3) {
                 if (activateReview) {
-                    ReviewManager.GetInstance ().NeedReview = true;
+                    ReviewManager.Instance.NeedReview = true;
                 }
                 activateReview = !activateReview;
             }
             else {
-                if (ReviewManager.GetInstance ())
-                    ReviewManager.GetInstance ().NeedReview = true;
+                if (ReviewManager.Instance)
+                    ReviewManager.Instance.NeedReview = true;
             }
 
         }
-
-        if (newStats.level < 3) {
-            newStats.level += 1;
-        }
-
-        numOfGamesCompleted++;
         gameStats[gameName] = newStats; // Save changes to new struct
     }
 
@@ -262,10 +247,6 @@ public class GameManager : MonoBehaviour {
     /// <summary>
     /// Creates a countdown with a voiceover.
     /// </summary>
-
-    public void StartCountdown() {
-		GetComponent<CreateCountdown>().SpawnCountdown();
-	}
 
     public void DebugStickers() {
         foreach (DataType.StickerType sticker in System.Enum.GetValues (typeof (DataType.StickerType))) {

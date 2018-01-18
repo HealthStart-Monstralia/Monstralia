@@ -1,8 +1,21 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
-public abstract class AbstractGameManager : MonoBehaviour {
+public abstract class AbstractGameManager<T> : MonoBehaviour where T : Component {
+    // Singleton property
+    private static T instance = null;
+
+    public static T Instance {
+        get {
+            if (!instance) {
+                instance = (T)FindObjectOfType (typeof (T));
+                print ("Instance FOUND: " + instance + instance.GetInstanceID ());
+            }
+
+            return instance;
+        }
+    }
+
     [Header ("AbstractGameManager Fields")]
     public DataType.Minigame typeOfGame;
     public abstract void PregameSetup (); // Force PregameSetup() to be implemented in child classes
@@ -11,16 +24,19 @@ public abstract class AbstractGameManager : MonoBehaviour {
     public AudioClip[] backgroundMusicArray;
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
-        GameManager.GetInstance ().SetLastGamePlayed (typeOfGame);
+        GameManager.Instance.SetLastGamePlayed (typeOfGame);
+    }
+
+    public virtual void Awake () {
+        if (!instance) {
+            instance = this as T;
+        } else if (instance != this)  {
+            Destroy (gameObject);
+        }
     }
 
     void OnEnable () {
-        if (GameManager.GetInstance ()) {
-            typeOfMonster = GameManager.GetInstance ().GetMonsterType ();
-        }
-        else {
-            typeOfMonster = DataType.MonsterType.Blue;
-        }
+        typeOfMonster = GameManager.Instance.GetMonsterType ();
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -28,20 +44,12 @@ public abstract class AbstractGameManager : MonoBehaviour {
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    // Go to Start scene if no Game Manager is present
-    protected void CheckForGameManager () {
-        if (!GameManager.GetInstance ()) {
-            SwitchScene switchScene = gameObject.AddComponent<SwitchScene> ();
-            switchScene.LoadSceneNoScreen ("Start");
-        }
-    }
-
     protected void Start() {
         if (backgroundMusicArray.Length > 0) {
             if (randomizeMusic) {
-                SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusicArray[Random.Range (0, backgroundMusicArray.Length)]);
+                SoundManager.Instance.ChangeAndPlayMusic (backgroundMusicArray.GetRandomItem());
             } else {
-                SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusicArray[0]);
+                SoundManager.Instance.ChangeAndPlayMusic (backgroundMusicArray[0]);
             }
         }
 
@@ -51,20 +59,31 @@ public abstract class AbstractGameManager : MonoBehaviour {
     public virtual void GameOver (DataType.GameEnd typeOfEnd) {
         switch (typeOfEnd) {
             case DataType.GameEnd.EarnedSticker:
-                SoundManager.GetInstance ().PlaySFXClip (SoundManager.GetInstance ().correctSfx2);
-                SoundManager.GetInstance ().PlayCorrectSFX ();
-                GameManager.GetInstance ().LevelUp (typeOfGame);
-                GameManager.GetInstance ().ActivateSticker (typeOfGame);
+                SoundManager.Instance.PlaySFXClip (SoundManager.Instance.correctSfx2);
+                SoundManager.Instance.PlayCorrectSFX ();
+                GameManager.Instance.LevelUp (typeOfGame);
+                GameManager.Instance.ActivateSticker (typeOfGame);
                 break;
             case DataType.GameEnd.CompletedLevel:
-                SoundManager.GetInstance ().PlayCorrectSFX ();
-                GameManager.GetInstance ().LevelUp (typeOfGame);
+                SoundManager.Instance.PlayCorrectSFX ();
+                GameManager.Instance.LevelUp (typeOfGame);
                 break;
             case DataType.GameEnd.FailedLevel:
                 break;
         }
 
-        GameManager.GetInstance ().CreateEndScreen (typeOfGame, typeOfEnd);
+        GameManager.Instance.CreateEndScreen (typeOfGame, typeOfEnd);
     }
 
+    public void StartCountdown (Countdown.CountdownCallback callback) {
+        Instantiate (GameManager.Instance.countdownPrefab).GetComponent<Countdown>().StartCountDown (callback);
+    }
+
+    public void SetTimeLimit (float timeLimit) {
+        TimerClock.Instance.SetTimeLimit (timeLimit);
+    }
+
+    public void AddTime (float time) {
+        TimerClock.Instance.AddTime (time);
+    }
 }

@@ -6,11 +6,11 @@ public class SensesFirework : MonoBehaviour {
     private SensesFireworksSystem fireworkSystem;
 
     private void Start () {
-        fireworkSystem = SensesGameManager.GetInstance ().fireworksSystem;
+        fireworkSystem = SensesGameManager.Instance.fireworksSystem;
         CreateFirework ();
     }
 
     public void CreateFirework() {
-        fireworkSystem.CreateSmallFirework (transform);
+        fireworkSystem.CreateSmallFirework (transform, true);
     }
 }

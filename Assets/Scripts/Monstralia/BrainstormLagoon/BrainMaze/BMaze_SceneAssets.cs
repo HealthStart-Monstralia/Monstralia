@@ -6,6 +6,7 @@ public class BMaze_SceneAssets : MonoBehaviour {
 	public BMaze_Door doorObject;
 	public BMaze_Finishline finishLine;
 	public GameObject startingLocation;
+    public BMaze_Pickup[] pickups;
 
 	void Start() {
 		if (!doorObject)

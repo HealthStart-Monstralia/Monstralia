@@ -1029,7 +1029,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneToLoadName: MainMap
-  loadingScreen: {fileID: 0}
+  loadingScreen: {fileID: 117540, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
 --- !u!114 &374538518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1399,18 +1399,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onSprite: {fileID: 21300000, guid: 1b175f1e00bdb4268aea9c4dffa7e42b, type: 3}
   offSprite: {fileID: 21300000, guid: fd68e2cf656034b1cb3c02a718adcb38, type: 3}
---- !u!114 &578656033 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114379387748722300, guid: 4561956bb614a8b42a9c7c1eaab61766,
-    type: 2}
-  m_PrefabInternal: {fileID: 877129150}
-  m_Script: {fileID: -113659843, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
---- !u!114 &580856756 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114229729266631910, guid: 4561956bb614a8b42a9c7c1eaab61766,
-    type: 2}
-  m_PrefabInternal: {fileID: 877129150}
-  m_Script: {fileID: -113659843, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &669340236
 GameObject:
   m_ObjectHideFlags: 0
@@ -3150,7 +3138,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_Sprite: {fileID: 21300000, guid: f1479667d9fc049969516587d3439589, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -4218,12 +4206,6 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1799616508}
---- !u!114 &1835389040 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114036275752927146, guid: 4561956bb614a8b42a9c7c1eaab61766,
-    type: 2}
-  m_PrefabInternal: {fileID: 877129150}
-  m_Script: {fileID: -113659843, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1001 &1889662992
 Prefab:
   m_ObjectHideFlags: 0
@@ -4383,31 +4365,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 2
       objectReference: {fileID: 0}
-    - target: {fileID: 114949498355727566, guid: 8bd65d8284338464083a6a1dd41b7817,
-        type: 2}
-      propertyPath: volumeSlider
-      value: 
-      objectReference: {fileID: 578656033}
-    - target: {fileID: 114949498355727566, guid: 8bd65d8284338464083a6a1dd41b7817,
-        type: 2}
-      propertyPath: SFXslider
-      value: 
-      objectReference: {fileID: 580856756}
-    - target: {fileID: 114949498355727566, guid: 8bd65d8284338464083a6a1dd41b7817,
-        type: 2}
-      propertyPath: VoiceOverSlider
-      value: 
-      objectReference: {fileID: 1835389040}
-    - target: {fileID: 114949498355727566, guid: 8bd65d8284338464083a6a1dd41b7817,
-        type: 2}
-      propertyPath: voiceTestClip
-      value: 
-      objectReference: {fileID: 8300000, guid: aad509a0e4abf5546925f7f0496030e1, type: 3}
-    - target: {fileID: 114949498355727566, guid: 8bd65d8284338464083a6a1dd41b7817,
-        type: 2}
-      propertyPath: SFXtestClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 2e2c67c9e62fe4aa389ceffa809bace3, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8bd65d8284338464083a6a1dd41b7817, type: 2}
   m_IsPrefabParent: 0

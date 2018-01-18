@@ -16,18 +16,14 @@ public class BMaze_Pickup : MonoBehaviour {
 	public TypeOfPickup pickup;
 	public AudioClip pickupSfx;
 
-    private void Start () {
-        BMaze_Manager.GetInstance().AddPickupToList (gameObject);
-    }
-
-	protected void OnTriggerEnter2D(Collider2D col) {
+    protected void OnTriggerEnter2D(Collider2D col) {
 		if (col.GetComponent<BMaze_MonsterMovement> ()) {
-			if (BMaze_Manager.GetInstance ()) {
-                SoundManager.GetInstance ().AddToVOQueue (pickupSfx);
-                SoundManager.GetInstance ().PlayCorrectSFX ();
+			if (BMaze_Manager.Instance) {
+                SoundManager.Instance.AddToVOQueue (pickupSfx);
+                SoundManager.Instance.PlaySFXClip (SoundManager.Instance.correctSfx2);
 
-                BMaze_Manager.GetInstance ().ShowSubtitle (pickup.ToString ());
-                BMaze_Manager.GetInstance ().OnScore (gameObject);
+                BMaze_Manager.Instance.ShowSubtitle (pickup.ToString ());
+                BMaze_Manager.Instance.OnScore (gameObject);
 			}
 			gameObject.SetActive (false);
 		}

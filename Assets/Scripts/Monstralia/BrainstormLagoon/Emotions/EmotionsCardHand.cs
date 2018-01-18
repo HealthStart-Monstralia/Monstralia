@@ -18,7 +18,7 @@ public class EmotionsCardHand : MonoBehaviour {
             cardLocations[i].SetActive (false);
         }
 
-        slots = GameManager.GetInstance ().GetLevel (DataType.Minigame.MonsterEmotions) + 1;
+        slots = GameManager.Instance.GetLevel (DataType.Minigame.MonsterEmotions) + 1;
 
         for (int i = 0; i < slots; i++) {
             cardLocations[i].SetActive (true);
@@ -28,7 +28,7 @@ public class EmotionsCardHand : MonoBehaviour {
     public void SpawnCard (int iteration, DataType.MonsterEmotions changeToEmotion, Sprite img, AudioClip audio) {
         EmotionCard card = Instantiate (
             cardObject, 
-            EmotionsGameManager.GetInstance().monsterLocation.position, 
+            EmotionsGameManager.Instance.monsterLocation.position, 
             Quaternion.identity, 
             transform.parent).GetComponent<EmotionCard> ();
 
@@ -42,7 +42,7 @@ public class EmotionsCardHand : MonoBehaviour {
             for (int i = 0; i < slots; i++) {
                 EmotionCard card = cards[0].GetComponent<EmotionCard> ();
                 cards.Remove (card.gameObject);
-                card.StartCoroutine (card.MoveToAndRemove (EmotionsGameManager.GetInstance ().monsterLocation.gameObject));
+                card.StartCoroutine (card.MoveToAndRemove (EmotionsGameManager.Instance.monsterLocation.gameObject));
             }
         }
     }

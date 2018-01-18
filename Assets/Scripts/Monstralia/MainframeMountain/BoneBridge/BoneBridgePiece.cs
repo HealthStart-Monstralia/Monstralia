@@ -67,7 +67,7 @@ public class BoneBridgePiece : MonoBehaviour {
     }
 
     public void OnMouseDown () {
-        if (BoneBridgeManager.GetInstance ().inputAllowed && !isAttached) {
+        if (BoneBridgeManager.Instance.inputAllowed && !isAttached) {
             boneHeld = this;
             rigBody.gravityScale = 0f;
             rigBody.freezeRotation = true;
@@ -81,13 +81,13 @@ public class BoneBridgePiece : MonoBehaviour {
 
             leftJoint.ActivateJoint ();
             rightJoint.ActivateJoint ();
-            SoundManager.GetInstance ().PlaySFXClip (bonePickupSfx);
+            SoundManager.Instance.PlaySFXClip (bonePickupSfx);
         }
     }
 
     public void OnMouseUp () {
         boneHeld = null;
-        if (BoneBridgeManager.GetInstance ().inputAllowed && !isAttached) {
+        if (BoneBridgeManager.Instance.inputAllowed && !isAttached) {
             rigBody.gravityScale = 1f;
             rigBody.freezeRotation = false;
             rigBody.velocity = Vector2.zero;
@@ -108,7 +108,7 @@ public class BoneBridgePiece : MonoBehaviour {
     }
 
     public void OnMouseDrag () {
-        if (BoneBridgeManager.GetInstance ().inputAllowed && !isAttached && boneHeld) {
+        if (BoneBridgeManager.Instance.inputAllowed && !isAttached && boneHeld) {
             cursorPos = Input.mousePosition;
             cursorPos.z -= (Camera.main.transform.position.z + 10f);
             transform.position = Camera.main.ScreenToWorldPoint (cursorPos) - pointerOffset;

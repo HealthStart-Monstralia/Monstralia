@@ -9,10 +9,10 @@ using System.Collections.Generic;
  * A singleton class that will manipulate all sounds in the game.
  */
 
-public class SoundManager : MonoBehaviour {
+public class SoundManager : SingletonPersistent<SoundManager> {
     [Header ("Audio Sources")]
-    public AudioSource backgroundSource;            /*!< The AudioSource for the background music */
-    public AudioSource ambientSource;            /*!< The AudioSource for the ambient sound */
+    public AudioSource musicScore;                  /*!< The AudioSource for the background music */
+    public AudioSource ambientSource;               /*!< The AudioSource for the ambient sound */
     public AudioSource sfxSource;					/*!< The AudioSource for the sound effects */
 	public AudioSource voiceOverSource;             /*!< The AudioSource for the voice-overs */
 
@@ -25,7 +25,6 @@ public class SoundManager : MonoBehaviour {
     public AudioClip reviewVO;                      /*!< AudioClip used to tell the player they are reviewing */
 
     [SerializeField] private AudioClip incorrectSfx;
-    private static SoundManager instance = null;    /*!< The singleton instance of this class */
     private bool isMuted = false;                   /*!< Flag for if the sound has been muted */
     private bool isPlayingClip = false;				/*!< Flag to prevent a clip from playing more than once at a time */
     private List<AudioClip> clipQueue = new List<AudioClip> ();
@@ -33,28 +32,6 @@ public class SoundManager : MonoBehaviour {
     private Coroutine queueCoroutine, voiceCoroutine;
     private bool isPlayingVoiceOver = false;        /*!< Way to check if a voice over is already playing */
     private int sourceCount;                        /*!< Keep track of how many sfx sources there are */
-
-    /** \cond */
-    void Awake () {
-		//check to see if we already have an instance of the SoundManager
-		if(instance == null) {
-			instance = this;
-		}
-		else if(instance != this) {
-			Destroy(gameObject);
-		}
-
-		DontDestroyOnLoad(this);
-	}
-	/** /endcond */
-
-	/**
-	 * \brief Access the singleton instance of the class.
-	 * @return the singleton instance of the SoundManager class.
-	 */ 
-	public static SoundManager GetInstance() {
-		return instance;
-	}
 		
 	/**
 	 * \brief Mute the game music.
@@ -74,21 +51,22 @@ public class SoundManager : MonoBehaviour {
 	 * \brief Creates a SFX Source and play a single AudioClip through it. Only allows certain amount of sources.
 	 * @param clip: the sound effect AudioClip to be played.
 	 */
-	public void PlaySFXClip(AudioClip clip) {
-        if (sourceCount < Constants.NUM_OF_SFXSOURCES)
-            StartCoroutine (PlaySFX (clip));
-        else {
-            print (string.Format("{0} was ignored due to exceeding maximum sourceCount ({1})", clip, Constants.NUM_OF_SFXSOURCES));
+	public AudioSource PlaySFXClip(AudioClip clip) {
+        if (sourceCount < Constants.NUM_OF_SFXSOURCES) {
+            AudioSource source = Instantiate (sfxSource, transform);
+            sourceCount++;
+            source.clip = clip;
+            StartCoroutine (UseSFXSource (source));
+            return source;
         }
+        print (string.Format ("{0} was ignored due to exceeding maximum sourceCount ({1})", clip, Constants.NUM_OF_SFXSOURCES));
+        return null;
 	}
 
-    IEnumerator PlaySFX (AudioClip clip) {
+    IEnumerator UseSFXSource (AudioSource source) {
         isPlayingClip = true;
-        AudioSource source = Instantiate (sfxSource, transform);
-        sourceCount++;
-        source.clip = clip;
         source.Play ();
-        yield return new WaitForSeconds (clip.length);
+        yield return new WaitForSeconds (source.clip.length);
 
         sourceCount--;
         isPlayingClip = false;
@@ -120,9 +98,9 @@ public class SoundManager : MonoBehaviour {
 	 * \brief Change the background music to a new clip.
 	 * @param newBackgroundMusic: the AudioClip of the new background music.
 	 */
-    public void ChangeBackgroundMusic(AudioClip newBackgroundMusic) {
-        if (!backgroundSource.clip.Equals (newBackgroundMusic) && newBackgroundMusic != null) {
-            PlayBackgroundMusic (newBackgroundMusic);
+    public void ChangeAndPlayMusic(AudioClip newMusic) {
+        if (!musicScore.clip.Equals (newMusic) && newMusic != null) {
+            PlayBackgroundMusic (newMusic);
         }
 	}
 
@@ -139,7 +117,7 @@ public class SoundManager : MonoBehaviour {
 	 * @param newVolume: the float value of the new volume.
 	 */
 	public void ChangeBackgroundVolume(float newVolume) {
-		backgroundSource.volume = newVolume;
+		musicScore.volume = newVolume;
 	}
 
     /**
@@ -195,21 +173,23 @@ public class SoundManager : MonoBehaviour {
 	 * @param clips: an array of AudioClips to be played
 	 */
 	public void LagoonSetup (AudioClip lagoonBG) {
-		ChangeBackgroundMusic(lagoonBG);
+		ChangeAndPlayMusic(lagoonBG);
 	}
 
     /**
 	 * \brief Play the background music
 	 */
-    public void PlayBackgroundMusic (AudioClip newBackgroundMusic) {
-		backgroundSource.Play ();
+    void PlayBackgroundMusic (AudioClip newBackgroundMusic) {
+        print ("Play Music");
+        musicScore.clip = newBackgroundMusic;
+		musicScore.Play ();
 	}
 
     /**
      * \brief Play the background music
      */
     public void StopBackgroundMusic () {
-        backgroundSource.Stop ();
+        musicScore.Stop ();
     }
 
     /**
@@ -233,7 +213,7 @@ public class SoundManager : MonoBehaviour {
     public void LagoonTearDown(bool toMainMap) {
 		//only play the original bg music if returning to MainMap
 		if(toMainMap) 
-			ChangeBackgroundMusic(gameBackgroundMusic);
+			ChangeAndPlayMusic(gameBackgroundMusic);
 	}
 
     /**

@@ -20,7 +20,7 @@ public class EmotionCard : MonoBehaviour {
     }
 
     public void ChangeCardColor () {
-        Color emoColor = EmotionsGameManager.GetInstance ().generator.GetEmotionColor (emotion);
+        Color emoColor = EmotionsGameManager.Instance.generator.GetEmotionColor (emotion);
         cardFront.GetComponent<Image> ().color = emoColor;
     }
 
@@ -67,9 +67,9 @@ public class EmotionCard : MonoBehaviour {
     }
 
     private void OnMouseDown () {
-        if (EmotionsGameManager.GetInstance ().inputAllowed && (EmotionsGameManager.GetInstance ().isTutorialRunning || EmotionsGameManager.GetInstance ().gameStarted)) {
-            EmotionsGameManager.GetInstance ().CheckEmotion (emotion);
-            EmotionsGameManager.GetInstance ().subtitlePanel.GetComponent<SubtitlePanel> ().Display (emotion.ToString (), clipOfName);
+        if (EmotionsGameManager.Instance.inputAllowed && (EmotionsGameManager.Instance.isTutorialRunning || EmotionsGameManager.Instance.gameStarted)) {
+            EmotionsGameManager.Instance.CheckEmotion (emotion);
+            EmotionsGameManager.Instance.subtitlePanel.GetComponent<SubtitlePanel> ().Display (emotion.ToString (), clipOfName);
         }
     }
 }

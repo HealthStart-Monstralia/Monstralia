@@ -3,17 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class EmotionsGameManager : AbstractGameManager {		
-	private static EmotionsGameManager instance;
-	private int score;
-	private int scoreGoal = 3;
-	private List<GameObject> primaryEmotions;
-	private List<GameObject> secondaryEmotions;
-	private List<GameObject> activeEmotions;
-	private GameObject currentEmotionToMatch;
-	private int difficultyLevel;
-	private Coroutine tutorialCoroutine, drawingCoroutine;
-
+public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
     [HideInInspector] public EmotionsGenerator generator;
     public VoiceOversData voData;
     public Transform monsterLocation;
@@ -35,38 +25,27 @@ public class EmotionsGameManager : AbstractGameManager {
 	public GameObject tutorialHand;
 	public Canvas tutorialCanvas;
 
-    void Awake() {
-		if(instance == null) {
-			instance = this;
-		}
-		else if(instance != this) {
-			Destroy(gameObject);
-		}
+    private int score;
+    private int scoreGoal = 3;
+    private List<GameObject> primaryEmotions;
+    private List<GameObject> secondaryEmotions;
+    private List<GameObject> activeEmotions;
+    private GameObject currentEmotionToMatch;
+    private int difficultyLevel;
+    private Coroutine tutorialCoroutine, drawingCoroutine;
 
-        CheckForGameManager ();
-
-        SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusicArray[Random.Range (0, backgroundMusicArray.Length)]);
-
+    public override void PregameSetup () {
         generator = GetComponent<EmotionsGenerator> ();
-		tutorialCanvas.gameObject.SetActive (false);
-		tutorialHand.SetActive (false);
+        tutorialCanvas.gameObject.SetActive (false);
+        tutorialHand.SetActive (false);
         generator.cardHand.gameObject.SetActive (false);
+        difficultyLevel = GameManager.Instance.GetLevel (DataType.Minigame.MonsterEmotions);
 
-		if (GameManager.GetInstance ()) {
-			difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.MonsterEmotions);
-		}
-	}
-
-	public static EmotionsGameManager GetInstance() {
-		return instance;
-	}
-
-	public override void PregameSetup () {
-        print("loc: " + monsterLocation.position);
+        print ("loc: " + monsterLocation.position);
         if (!generator.monster)
             generator.CreateMonster ();
         generator.ChangeMonsterEmotion (DataType.MonsterEmotions.Happy);
-        if (GameManager.GetInstance ().GetPendingTutorial (DataType.Minigame.MonsterEmotions)) {
+        if (GameManager.Instance.GetPendingTutorial (DataType.Minigame.MonsterEmotions)) {
             tutorialCoroutine = StartCoroutine (RunTutorial ());
         } else {
             switch (difficultyLevel) {
@@ -91,18 +70,15 @@ public class EmotionsGameManager : AbstractGameManager {
             timer.gameObject.SetActive (true);
             generator.cardHand.gameObject.SetActive (true);
             generator.cardHand.SpawnIn ();
-            StartCoroutine (DisplayGo ());
+            StartCoroutine (DuringCountdown ());
+            StartCountdown (PostCountdownSetup);
         }
 	}
 
-	public IEnumerator DisplayGo() {
-        yield return new WaitForSeconds (2.0f);
+	public IEnumerator DuringCountdown() {
         DrawCards (0.5f);
-        GameManager.GetInstance ().StartCountdown ();
 		yield return new WaitForSeconds (3.0f);
         generator.ChangeMonsterEmotion (generator.currentTargetEmotion);
-        yield return new WaitForSeconds (1.0f);
-        PostCountdownSetup ();
 	}
 
 	IEnumerator RunTutorial () { 
@@ -117,9 +93,9 @@ public class EmotionsGameManager : AbstractGameManager {
 		subtitlePanel.SetActive (true);
 
 		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Welcome to Monster Feelings!", null);
-		SoundManager.GetInstance().StopPlayingVoiceOver();
+		SoundManager.Instance.StopPlayingVoiceOver();
         AudioClip tutorial1 = voData.FindVO ("1_tutorial_start");
-		SoundManager.GetInstance().PlayVoiceOverClip(tutorial1);
+		SoundManager.Instance.PlayVoiceOverClip(tutorial1);
         
         float secsToRemove = 6f;
         yield return new WaitForSeconds(tutorial1.length - secsToRemove);
@@ -137,7 +113,7 @@ public class EmotionsGameManager : AbstractGameManager {
 		tutorialHand.GetComponent<Animator> ().Play ("EM_HandMoveMonster");
 		yield return new WaitForSeconds(1.75f);
 		subtitlePanel.GetComponent<SubtitlePanel> ().Display (generator.currentTargetEmotion.ToString(), null);
-		SoundManager.GetInstance ().PlaySFXClip (answerSounds [1]);
+		SoundManager.Instance.PlaySFXClip (answerSounds [1]);
 		yield return new WaitForSeconds(2.0f);
 		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
 		yield return new WaitForSeconds(1.0f);
@@ -152,7 +128,7 @@ public class EmotionsGameManager : AbstractGameManager {
 
         isTutorialRunning = false;
         tutorialHand.SetActive (false);
-		GameManager.GetInstance ().CompleteTutorial(DataType.Minigame.MonsterEmotions);
+		GameManager.Instance.CompleteTutorial(DataType.Minigame.MonsterEmotions);
 		StopCoroutine (tutorialCoroutine);
 		StartCoroutine(TutorialTearDown ());
 	}
@@ -166,7 +142,7 @@ public class EmotionsGameManager : AbstractGameManager {
         generator.ChangeMonsterEmotion (DataType.MonsterEmotions.Joyous);
         generator.RemoveCards ();
         AudioClip letsplay = voData.FindVO ("letsplay");
-        SoundManager.GetInstance ().StopPlayingVoiceOver ();
+        SoundManager.Instance.StopPlayingVoiceOver ();
         subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Let's play!", letsplay);
 		yield return new WaitForSeconds(letsplay.length);
         if (generator.cardHand.gameObject.activeSelf)
@@ -228,7 +204,7 @@ public class EmotionsGameManager : AbstractGameManager {
     public void CheckEmotion (DataType.MonsterEmotions emotion) {
         PauseGame ();
         if (emotion == generator.currentTargetEmotion) {
-            SoundManager.GetInstance ().PlaySFXClip (answerSounds[1]);
+            SoundManager.Instance.PlaySFXClip (answerSounds[1]);
             if (isTutorialRunning) {
                 TutorialFinished ();
             } else {

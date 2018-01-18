@@ -20,22 +20,22 @@ public class BrainbowFoodItem : MonoBehaviour {
     private void OnDestroy () {
         /*
         if (isBeingEaten)
-            SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().munchSound);
+            SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.munchSound);
         */
-        if (BrainbowGameManager.GetInstance ().activeFoods.Contains (this))
-            BrainbowGameManager.GetInstance ().activeFoods.Remove (this);
+        if (BrainbowGameManager.Instance.activeFoods.Contains (this))
+            BrainbowGameManager.Instance.activeFoods.Remove (this);
     }
 
     private void OnDisable () {
         if (isBeingEaten)
-            SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().munchSound);
+            SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.munchSound);
     }
 
     private void OnMouseDown () {
-        if (BrainbowGameManager.GetInstance().inputAllowed) {
+        if (BrainbowGameManager.Instance.inputAllowed) {
             offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0f));
-            BrainbowGameManager.GetInstance ().ShowSubtitles (gameObject.name);
-            SoundManager.GetInstance ().AddToVOQueue (gameObject.GetComponent<Food> ().clipOfName);
+            BrainbowGameManager.Instance.ShowSubtitles (gameObject.name);
+            SoundManager.Instance.AddToVOQueue (gameObject.GetComponent<Food> ().clipOfName);
             spriteRenderer.sortingOrder = 6;
         }
     }
@@ -43,14 +43,14 @@ public class BrainbowFoodItem : MonoBehaviour {
     private void OnMouseUp () {
         if (isMoved) {
             if (stripeToAttach) {
-                BrainbowGameManager.GetInstance ().ScoreAndReplace (transform.parent);
-                SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().correctSound);
+                BrainbowGameManager.Instance.ScoreAndReplace (transform.parent);
+                SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.correctSound);
                 InsertItemIntoStripe (stripeToAttach);
 
                 // Random praise VO line
                 if (Random.value < 0.2f) {
-                    int randomClipIndex = Random.Range (0, BrainbowGameManager.GetInstance ().correctMatchClips.Length);
-                    SoundManager.GetInstance ().AddToVOQueue (BrainbowGameManager.GetInstance ().correctMatchClips[randomClipIndex]);
+                    int randomClipIndex = Random.Range (0, BrainbowGameManager.Instance.correctMatchClips.Length);
+                    SoundManager.Instance.AddToVOQueue (BrainbowGameManager.Instance.correctMatchClips[randomClipIndex]);
                 }
 
             } else {
@@ -62,7 +62,7 @@ public class BrainbowFoodItem : MonoBehaviour {
     }
 
     void OnMouseDrag () {
-        if (BrainbowGameManager.GetInstance ().inputAllowed) {
+        if (BrainbowGameManager.Instance.inputAllowed) {
             if (!isMoved)
                 isMoved = true;
             if (isMoved) {
@@ -75,19 +75,19 @@ public class BrainbowFoodItem : MonoBehaviour {
 
     void MoveBack () {
         gameObject.transform.localPosition = Vector3.zero;
-        SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().incorrectSound);
+        SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.incorrectSound);
     }
 
     IEnumerator HideSubtitle () {
         yield return new WaitForSeconds (0.5f);
-        BrainbowGameManager.GetInstance ().HideSubtitles ();
+        BrainbowGameManager.Instance.HideSubtitles ();
     }
 
     public void InsertItemIntoStripe (BrainbowStripe stripe) {
         stripe.MoveItemToSlot (gameObject);
         gameObject.GetComponent<Collider2D> ().enabled = false;
         isPlaced = true;
-        BrainbowGameManager.GetInstance ().activeFoods.Add (this);
+        BrainbowGameManager.Instance.activeFoods.Add (this);
     }
 
     public IEnumerator GetEaten () {
@@ -110,7 +110,7 @@ public class BrainbowFoodItem : MonoBehaviour {
         if (collision.tag == "Monster" && isPlaced) {
             gameObject.SetActive (false);
             if (isBeingEaten)
-                SoundManager.GetInstance ().PlaySFXClip (BrainbowGameManager.GetInstance ().munchSound);
+                SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.munchSound);
         }
     }
 }

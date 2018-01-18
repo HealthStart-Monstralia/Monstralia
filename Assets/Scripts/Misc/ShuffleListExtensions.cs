@@ -27,7 +27,7 @@ public static class ShuffleListExtensions
     /// <typeparam name="T"></typeparam>
     /// <param name="list"></param>
     /// <returns></returns>
-    public static T RandomItem<T>(this IList<T> list) {
+    public static T GetRandomItem<T>(this IList<T> list) {
         if (list.Count == 0) throw new System.IndexOutOfRangeException("Cannot select a random item from an empty list");
         return list[UnityEngine.Random.Range(0, list.Count)];
     }
@@ -54,7 +54,7 @@ public static class ShuffleListExtensions
     /// <typeparam name="T"></typeparam>
     /// <param name="array"></param>
     /// <returns></returns>
-    public static T RandomItem<T> (this T[] array) {
+    public static T GetRandomItem<T> (this T[] array) {
         if (array.Length == 0) throw new System.IndexOutOfRangeException ("Cannot select a random item from an empty list");
         return array[UnityEngine.Random.Range (0, array.Length)];
     }

@@ -3,25 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StartManager : MonoBehaviour {
+public class StartManager : Singleton<StartManager> {
     public GameObject introObject;
     public bool playIntro = true;
     public Button[] buttonsToDisable;
     public Fader fader;
 
     private SwitchScene sceneLoader;
-    private static StartManager instance = null;
 
-    public static StartManager GetInstance () {
-        return instance;
-    }
-
-    void Awake () {
-        if (instance == null) {
-            instance = this;
-        } else if (instance != this) {
-            Destroy (gameObject);
-        }
+    new void Awake () {
+        base.Awake ();
         fader.gameObject.SetActive (true);
         fader.FadeIn ();
     }

@@ -46,11 +46,10 @@ public class BrainbowWaterManager : MonoBehaviour {
         water.GetComponent<BrainbowWaterPickup> ().waterTimeBoost = waterTimeBoost;
         waterBottleList.Add (water);
         water.transform.localPosition = new Vector3 (0f, 0f, 0f);
-        water.transform.localScale = new Vector3 (30f, 30f, 30f);
     }
 
     void Update () {
-        if (BrainbowGameManager.GetInstance().GetGameStarted()) {
+        if (BrainbowGameManager.Instance.GetGameStarted()) {
             if (waterSpawnTime > 0f && spawnWater) {
                 if (waterBottleList.Count < 1) {
                     waterSpawnTime -= Time.deltaTime;

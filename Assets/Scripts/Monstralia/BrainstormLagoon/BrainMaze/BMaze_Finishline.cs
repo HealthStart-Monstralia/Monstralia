@@ -20,6 +20,6 @@ public class BMaze_Finishline : MonoBehaviour {
 		col.GetComponentInChildren<BMaze_Monster> ().PlayDance ();
 		col.GetComponent<BMaze_MonsterMovement> ().finished = true;
 		col.GetComponent<BMaze_MonsterMovement> ().gotoPos = finishSpot.transform.position;
-        BMaze_Manager.GetInstance ().OnFinish ();
+        BMaze_Manager.Instance.OnFinish ();
 	}
 }

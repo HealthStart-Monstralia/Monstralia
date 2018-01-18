@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /* Created with online tutorial at http://catlikecoding.com/unity/tutorials/maze/ */
-public class Maze : MonoBehaviour {
+public class Maze : Singleton<Maze> {
 
     public IntVector2 size;
     public GameObject player;
@@ -17,7 +17,6 @@ public class Maze : MonoBehaviour {
     public MazeDoor doorPrefab;
     public MazePickup[] pickupPrefab;
 
-    private static Maze instance = null;
     private MazeCell firstCell, lastCell;
     private MazePassage lastPassage;
     private MazeDoor doorInstance;
@@ -32,24 +31,18 @@ public class Maze : MonoBehaviour {
     private int numOfCells = 0;
     private int totalNumOfCells = 0;
 
-    private void Awake () {
-        if (instance == null) {
-            instance = this;
-        } else if (instance != this) {
-            Destroy (gameObject);
-        }
+    new void Awake () {
+        base.Awake ();
 
         totalNumOfCells = size.x * size.y;
         pickupList = new List<MazePickup> (pickupPrefab);
     }
 
+    /*
     private void OnDestroy () {
         instance = null;
     }
-
-    public static Maze GetInstance() {
-        return instance;
-    }
+    */
 
     public void OnPickup(MazePickup pickup) {
         numOfPickups--;
@@ -91,7 +84,7 @@ public class Maze : MonoBehaviour {
         monsterSpawn.spawnPosition = firstCell.transform;
         monsterSpawn.allowMonsterTickle = false;
         monsterSpawn.idleAnimationOn = false;
-        Monster monster = monsterSpawn.SpawnMonster (GameManager.GetInstance().GetMonsterObject(DataType.MonsterType.Blue));
+        Monster monster = monsterSpawn.SpawnMonster (GameManager.Instance.GetMonsterObject(DataType.MonsterType.Blue));
         monster.transform.parent.gameObject.AddComponent<BMaze_Monster> ();
         monster.transform.parent.gameObject.AddComponent<BMaze_MonsterMovement> ();
         monster.transform.parent.localScale = Vector3.one*0.1f;

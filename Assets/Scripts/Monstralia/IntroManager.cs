@@ -51,11 +51,11 @@ public class IntroManager : MonoBehaviour {
     }
 
     private void OnEnable () {
-        StartManager.GetInstance ().DisableButtons ();
+        StartManager.Instance.DisableButtons ();
     }
 
     private void OnDisable () {
-        StartManager.GetInstance ().EnableButtons();
+        StartManager.Instance.EnableButtons();
     }
 
     public void ShowPage(GameObject selectedPage) {

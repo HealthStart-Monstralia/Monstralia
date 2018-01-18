@@ -12,41 +12,41 @@ public class DebugPanel : MonoBehaviour {
     private int starCount;
 
 	void Awake () {
-        starCount = GameManager.GetInstance ().GetNumStars (gameName);
+        starCount = GameManager.Instance.GetNumStars (gameName);
         starsText.text = "Stars: " + starCount;
         titleText.text = gameName.ToString ();
-        if (!GameManager.GetInstance ().GetPendingTutorial (gameName)) {
+        if (!GameManager.Instance.GetPendingTutorial (gameName)) {
             tutorialButton.SetActive (false);
         }
 
-        if (GameManager.GetInstance ().GetStickerUnlock (gameName)) {
+        if (GameManager.Instance.GetStickerUnlock (gameName)) {
             stickerButton.SetActive (false);
         }
     }
 	
 	void Update () {
-        starCount = GameManager.GetInstance ().GetNumStars (gameName);
+        starCount = GameManager.Instance.GetNumStars (gameName);
         starsText.text = "Stars: " + starCount;
     }
 
     public void LevelComplete () {
-        GameManager.GetInstance ().LevelUp (gameName);
+        GameManager.Instance.LevelUp (gameName);
     }
 
     public void TutorialComplete () {
-        GameManager.GetInstance ().CompleteTutorial(gameName);
-        if (!GameManager.GetInstance ().GetPendingTutorial (gameName)) {
+        GameManager.Instance.CompleteTutorial(gameName);
+        if (!GameManager.Instance.GetPendingTutorial (gameName)) {
             tutorialButton.SetActive (false);
         }
     }
 
     public void CreateReview() {
-        ReviewManager.GetInstance ().CreateReviewImmediately (gameName);
+        ReviewManager.Instance.CreateReviewImmediately (gameName);
     }
 
     public void ActivateSticker () {
-        GameManager.GetInstance ().ActivateSticker (gameName);
-        if (GameManager.GetInstance ().GetStickerUnlock (gameName)) {
+        GameManager.Instance.ActivateSticker (gameName);
+        if (GameManager.Instance.GetStickerUnlock (gameName)) {
             stickerButton.SetActive (false);
         }
     }

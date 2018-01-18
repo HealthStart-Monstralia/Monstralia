@@ -19,7 +19,7 @@ public class BoneBridgeCamera : MonoBehaviour {
 
     void Start () {
         if (!target)
-            target = BoneBridgeManager.GetInstance ().monster.gameObject;
+            target = BoneBridgeManager.Instance.monster.gameObject;
         if (target) transform.position = target.transform.position;
     }
 

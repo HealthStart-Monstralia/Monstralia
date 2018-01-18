@@ -6,7 +6,7 @@ public class BrainbowTutorialHand : MonoBehaviour {
 
 	/* Used in animation events in DragBananaToStripe */
 	public void GrabBanana() {
-		BrainbowGameManager.GetInstance ().
+		BrainbowGameManager.Instance.
             tutorialManager.
             tutorialBanana.
             transform.SetParent (gameObject.transform);
@@ -14,11 +14,11 @@ public class BrainbowTutorialHand : MonoBehaviour {
 
 	/* Used in animation events in DragBananaToStripe */
 	public void DropBanana() {
-        BrainbowGameManager.GetInstance ().
+        BrainbowGameManager.Instance.
             tutorialManager.
             tutorialBanana.
             GetComponent<BrainbowFoodItem> ().
-            InsertItemIntoStripe (BrainbowGameManager.GetInstance ().
+            InsertItemIntoStripe (BrainbowGameManager.Instance.
                 stripes[1]
             );
     }

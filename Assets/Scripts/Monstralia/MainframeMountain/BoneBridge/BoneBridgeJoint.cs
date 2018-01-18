@@ -57,6 +57,6 @@ public class BoneBridgeJoint : MonoBehaviour {
     private void OnJointBreak2D (Joint2D joint) {
         print ("Joint broke: " + joint);
         DestroyJoint ();
-        SoundManager.GetInstance ().PlaySFXClip (boneDetachSfx);
+        SoundManager.Instance.PlaySFXClip (boneDetachSfx);
     }
 }

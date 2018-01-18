@@ -2,32 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MilestoneManager : MonoBehaviour {
+public class MilestoneManager : SingletonPersistent<MilestoneManager> {
 
     // Track milestone unlock status with their name
     private Dictionary<string, bool> unlockedMilestone;
-
-    private static MilestoneManager instance = null;
-
-    void Awake () {
-        // Singleton
-        if (instance == null) {
-            instance = this;
-        } else if (instance != this) {
-            Destroy (gameObject);
-        }
-
-        DontDestroyOnLoad (this);
-    }
 
     private void Start () {
         // Initialize dictionary
         unlockedMilestone = new Dictionary<string, bool> ();
 
-    }
-
-    public static MilestoneManager GetInstance () {
-        return instance;
     }
 
     // Add a milestone name to the dictionary and set the boolean value to false.

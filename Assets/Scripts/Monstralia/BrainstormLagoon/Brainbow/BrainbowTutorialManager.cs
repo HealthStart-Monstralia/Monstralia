@@ -24,8 +24,8 @@ public class BrainbowTutorialManager : MonoBehaviour {
     }
 
     public void StartTutorial() {
-        if (!BrainbowGameManager.GetInstance().GetGameStarted()) {
-            brainbowManager = BrainbowGameManager.GetInstance ();
+        if (!BrainbowGameManager.Instance.GetGameStarted()) {
+            brainbowManager = BrainbowGameManager.Instance;
             tutorialCoroutine = StartCoroutine (RunTutorial ());
         }
     }
@@ -38,7 +38,7 @@ public class BrainbowTutorialManager : MonoBehaviour {
         brainbowManager.monsterObject.ChangeEmotions (DataType.MonsterEmotions.Happy);
         StartCoroutine (TurnOnRainbows ());
         AudioClip tutorial1 = brainbowManager.voData.FindVO ("1_tutorial_start");
-        SoundManager.GetInstance ().PlayVoiceOverClip (tutorial1);
+        SoundManager.Instance.PlayVoiceOverClip (tutorial1);
         yield return new WaitForSeconds (tutorial1.length);
 
         brainbowManager.foodPanel.gameObject.SetActive (true);
@@ -46,14 +46,14 @@ public class BrainbowTutorialManager : MonoBehaviour {
         CreateBanana ();
 
         AudioClip tutorial2 = brainbowManager.voData.FindVO ("2_tutorial_goodfood");
-        SoundManager.GetInstance ().PlayVoiceOverClip (tutorial2);
+        SoundManager.Instance.PlayVoiceOverClip (tutorial2);
         yield return new WaitForSeconds (tutorial2.length - 0.5f);
 
         brainbowManager.foodPanel.GetComponent<Outline> ().enabled = true;
         yield return new WaitForSeconds (1f);
 
         AudioClip tutorial3 = brainbowManager.voData.FindVO ("3_tutorial_likethis");
-        SoundManager.GetInstance ().PlayVoiceOverClip (tutorial3);
+        SoundManager.Instance.PlayVoiceOverClip (tutorial3);
         yield return new WaitForSeconds (tutorial3.length - 1f);
 
         tutorialHand.SetActive (true);
@@ -80,7 +80,7 @@ public class BrainbowTutorialManager : MonoBehaviour {
         brainbowManager.inputAllowed = false;
         AudioClip letsPlay = brainbowManager.voData.FindVO ("letsplay");
         brainbowManager.subtitlePanel.Display ("Perfect! Let's play!");
-        SoundManager.GetInstance ().PlayVoiceOverClip (letsPlay);
+        SoundManager.Instance.PlayVoiceOverClip (letsPlay);
         brainbowManager.foodPanel.Deactivate ();
 
         yield return new WaitForSeconds (0.5f);
@@ -92,7 +92,7 @@ public class BrainbowTutorialManager : MonoBehaviour {
         brainbowManager.subtitlePanel.Hide ();
         waterNotification.SetActive (true);
         AudioClip water = brainbowManager.voData.FindVO ("water");
-        SoundManager.GetInstance ().PlayVoiceOverClip (water);
+        SoundManager.Instance.PlayVoiceOverClip (water);
 
         yield return new WaitForSeconds (water.length + 1f);
         waterNotification.GetComponent<Animator> ().SetBool ("Active", true);
@@ -103,7 +103,7 @@ public class BrainbowTutorialManager : MonoBehaviour {
         StopCoroutine (tutorialCoroutine);
         yield return new WaitForSeconds (1f);
         StartCoroutine (TurnOffRainbows ());
-        GameManager.GetInstance ().CompleteTutorial (DataType.Minigame.Brainbow);
+        GameManager.Instance.CompleteTutorial (DataType.Minigame.Brainbow);
         brainbowManager.inputAllowed = false;
         isRunningTutorial = false;
         brainbowManager.foodPanel.GetComponent<Outline> ().enabled = false;
@@ -113,7 +113,7 @@ public class BrainbowTutorialManager : MonoBehaviour {
         yield return new WaitForSeconds (1.25f);
 
         instructionPopup.gameObject.SetActive (false);
-        BrainbowGameManager.GetInstance().StartGame ();
+        BrainbowGameManager.Instance.StartGame ();
     }
 
     public void SkipTutorialButton (GameObject button) {

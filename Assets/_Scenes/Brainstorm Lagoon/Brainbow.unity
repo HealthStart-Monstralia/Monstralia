@@ -165,7 +165,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &12190441
 GameObject:
@@ -263,7 +263,7 @@ Transform:
   - {fileID: 1057987077}
   - {fileID: 1829888355}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &12190445
 MonoBehaviour:
@@ -296,7 +296,7 @@ GameObject:
   m_Layer: 5
   m_Name: WaterSpawnPoint 3
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -982381405332843317, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -308,15 +308,15 @@ RectTransform:
   m_GameObject: {fileID: 24290160}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.000448, y: 1.000448, z: 1.000448}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2108971580}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -91, y: -164}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -0.01, y: -0.348}
+  m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &24290162
 MonoBehaviour:
@@ -705,7 +705,7 @@ Transform:
   - {fileID: 1762648576}
   - {fileID: 1019213216}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &150673350
 Animator:
@@ -823,6 +823,21 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
+--- !u!1 &198697204
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1063174941}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1063174942}
+  m_Layer: 0
+  m_Name: Missing Prefab (Dummy)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &245603665
 GameObject:
   m_ObjectHideFlags: 0
@@ -1030,6 +1045,35 @@ PolygonCollider2D:
       - {x: -5, y: -0.87}
       - {x: -4.62, y: -0.77}
       - {x: -4.36, y: -0.71}
+--- !u!1 &326989209
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1063174941}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 326989210}
+  m_Layer: 0
+  m_Name: Missing Prefab
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &326989210
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 1063174941}
+  m_GameObject: {fileID: 326989209}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1063174942}
+  m_Father: {fileID: 1522108995}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &328175544 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 224055966327885810, guid: e8c7890cf7d36d64684ba1373cc8156a,
@@ -1789,7 +1833,7 @@ GameObject:
   m_Layer: 5
   m_Name: WaterSpawnPoint 4
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -982381405332843317, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1801,15 +1845,15 @@ RectTransform:
   m_GameObject: {fileID: 780988775}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.000448, y: 1.000448, z: 1.000448}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2108971580}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 204, y: -86}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 2.23, y: -0.538}
+  m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &780988777
 MonoBehaviour:
@@ -2273,7 +2317,7 @@ Transform:
   - {fileID: 556975181}
   - {fileID: 90185297}
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &856630446
 Animator:
@@ -2323,7 +2367,7 @@ GameObject:
   m_Layer: 5
   m_Name: WaterSpawnPoint 1
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -982381405332843317, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2342,8 +2386,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0000009536743, y: -60}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -2.638, y: -2.92}
+  m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &880443932
 MonoBehaviour:
@@ -2464,7 +2508,7 @@ GameObject:
   m_Layer: 5
   m_Name: WaterSpawnPoint 2
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -982381405332843317, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2476,15 +2520,15 @@ RectTransform:
   m_GameObject: {fileID: 906410007}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.000448, y: 1.000448, z: 1.000448}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2108971580}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -217, y: -81}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -2.14, y: -0.53}
+  m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &906410009
 MonoBehaviour:
@@ -2955,11 +2999,19 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d8728ea9321bb764babfb175ed04b070, type: 2}
   m_IsPrefabParent: 0
---- !u!4 &1063174942 stripped
+--- !u!4 &1063174942
 Transform:
-  m_PrefabParentObject: {fileID: 4483596068642994, guid: d8728ea9321bb764babfb175ed04b070,
-    type: 2}
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 1063174941}
+  m_GameObject: {fileID: 198697204}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 326989210}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1116159790
 Prefab:
   m_ObjectHideFlags: 0
@@ -3804,7 +3856,7 @@ Transform:
   - {fileID: 1830988342}
   - {fileID: 334530281}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1298286131
 Animator:
@@ -3972,9 +4024,8 @@ RectTransform:
   - {fileID: 621425949}
   - {fileID: 1118033066}
   - {fileID: 940040231}
-  - {fileID: 2108971580}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4186,7 +4237,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1063174942}
+  - {fileID: 326989210}
   - {fileID: 891507394}
   - {fileID: 782487911}
   - {fileID: 1193129678}
@@ -4527,6 +4578,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeOfGame: 0
   typeOfMonster: 0
+  randomizeMusic: 1
   backgroundMusicArray:
   - {fileID: 8300000, guid: 8e038355eb8874c4f840d00addb9c7be, type: 3}
   voData: {fileID: 11400000, guid: c8e58596a1a2d6543bcbc506ead2c294, type: 2}
@@ -4576,7 +4628,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: af5808b958d69ac4794c197c5626a061, type: 3}
   - {fileID: 8300000, guid: a4ad2b7dcfc90ea47893877434c9e4ce, type: 3}
   munchSound: {fileID: 8300000, guid: be67d8fae89d24304b9b1e19c15686e5, type: 3}
-  backgroundMusic: {fileID: 8300000, guid: 3265aca7dd7cb4256a906218743de845, type: 3}
+  ambientSound: {fileID: 8300000, guid: 3265aca7dd7cb4256a906218743de845, type: 3}
   correctSound: {fileID: 8300000, guid: 2a5d4400613f94b80b68d7eb65259fdb, type: 3}
   incorrectSound: {fileID: 8300000, guid: 12e21f6ae835d402c8fb59a9c6ab4023, type: 3}
   score: 0
@@ -4873,7 +4925,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5119,7 +5171,7 @@ GameObject:
   m_Layer: 5
   m_Name: WaterSpawnPoint 5
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -982381405332843317, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5131,15 +5183,15 @@ RectTransform:
   m_GameObject: {fileID: 1999550991}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.000448, y: 1.000448, z: 1.000448}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2108971580}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 91, y: -164}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 2.887, y: -2.87}
+  m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1999550993
 MonoBehaviour:
@@ -5234,8 +5286,8 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2108971579}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 90}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 880443931}
@@ -5243,8 +5295,8 @@ RectTransform:
   - {fileID: 24290161}
   - {fileID: 780988776}
   - {fileID: 1999550992}
-  m_Father: {fileID: 1448859531}
-  m_RootOrder: 6
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

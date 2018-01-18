@@ -11,7 +11,7 @@ public class BMaze_WaterPickup : BMaze_Pickup {
 
 	/*! Increase time on pickup, called from BMaze_Pickup */
 	public void IncreaseTime() {
-		TimerClock.GetInstance().AddTime(timeIncrease);
+		TimerClock.Instance.AddTime(timeIncrease);
 	}
 
     new void OnTriggerEnter2D (Collider2D col) {

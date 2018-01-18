@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ParentPage : MonoBehaviour {
+public class ParentPage : Singleton<ParentPage> {
 	public Button[] buttonsToEnable;
 	public int currentPage = 0;
 	public GameObject[] pageList;
@@ -11,16 +11,8 @@ public class ParentPage : MonoBehaviour {
 	public int selectedPosition = 470;
 	public int unselectedPosition = 450;
 
-	private static ParentPage instance;
-
-	void Awake() {
-		/* Ensure singleton status */
-		if (instance == null) {
-			instance = this;
-		} else if (instance != this) {
-			Destroy (gameObject);
-		}
-		print ("Parent Page Created");
+	new void Awake() {
+        base.Awake ();
 		SetCurrentPage (0);
 	}
 
@@ -33,13 +25,8 @@ public class ParentPage : MonoBehaviour {
 
 	public void DeleteParentPage() {
 		gameObject.SetActive (false);
-		instance = null;
 		Destroy(gameObject);
 		print ("Parent Page Deleted");
-	}
-
-	public static ParentPage GetInstance() {
-		return instance;
 	}
 
 	public void SetCurrentPage(int page) {

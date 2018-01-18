@@ -11,7 +11,7 @@ public class PlayVoiceOver : MonoBehaviour {
     }
 
     public void PlayVO(AudioClip clip) {
-        SoundManager.GetInstance ().StopPlayingVoiceOver ();
-        SoundManager.GetInstance ().PlayVoiceOverClip (clip);
+        SoundManager.Instance.StopPlayingVoiceOver ();
+        SoundManager.Instance.PlayVoiceOverClip (clip);
     }
 }

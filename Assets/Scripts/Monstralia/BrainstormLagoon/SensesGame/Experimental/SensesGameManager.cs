@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SensesGameManager : AbstractGameManager {
+public class SensesGameManager : AbstractGameManager<SensesGameManager> {
     [Header ("Senses Game Manager Fields")]
+
     public bool skipTutorial = false;
     public VoiceOversData voData;
     public SensesLevelManager levelOne, levelTwo, levelThree;
@@ -23,7 +24,7 @@ public class SensesGameManager : AbstractGameManager {
     public AudioClip[] wrongChoiceVO;
 
     private DataType.Level difficultyLevel;
-    private static SensesGameManager instance;
+
     private SensesLevelManager currentLevelManager;
     private bool isInputAllowed;
 
@@ -45,26 +46,16 @@ public class SensesGameManager : AbstractGameManager {
         }
     }
 
-    private void Awake () {
-        // Apply singleton property
-        if (instance == null) {
-            instance = this;
-        } else if (instance != this) {
-            Destroy (gameObject);
-        }
-
+    new void Awake () {
+        base.Awake ();
         levelOne.gameObject.SetActive (false);
         levelTwo.gameObject.SetActive (false);
         levelThree.gameObject.SetActive (false);
     }
 
-    public static SensesGameManager GetInstance() {
-        return instance;
-    }
-
     public override void PregameSetup () {
         ActivateHUD (false);
-        difficultyLevel = (DataType.Level)GameManager.GetInstance ().GetLevel (DataType.Minigame.MonsterSenses);
+        difficultyLevel = (DataType.Level)GameManager.Instance.GetLevel (DataType.Minigame.MonsterSenses);
         currentLevelManager = GetLevelConfig ();
         currentLevelManager.gameObject.SetActive (true);
     }
@@ -75,14 +66,14 @@ public class SensesGameManager : AbstractGameManager {
         sensePanel.SetActive (activate);
         if (activate) {
             UpdateScoreGauge ();
-            timerClock.SetTimeLimit (GetLevelConfig ().timeLimit);
+            SetTimeLimit (GetLevelConfig ().timeLimit);
         }
     }
 
     public void StartLevel() {
         welcomeObject.SetActive (false);
         playButton.SetActive (false);
-        SoundManager.GetInstance ().PlaySFXClip (introChime);
+        SoundManager.Instance.PlaySFXClip (introChime);
         GetLevelConfig ().SetupGame ();
     }
 
@@ -101,8 +92,9 @@ public class SensesGameManager : AbstractGameManager {
 
     public void OnScore() {
         StartCoroutine (OnGuess (true));
-        SoundManager.GetInstance ().PlaySFXClip (correctSfx);
+        SoundManager.Instance.PlaySFXClip (correctSfx);
         score++;
+        AddTime (4f);
         UpdateScoreGauge ();
         if (score >= currentLevelManager.scoreGoal) {
             currentLevelManager.EndGame ();
@@ -115,7 +107,7 @@ public class SensesGameManager : AbstractGameManager {
 
     public void OnWrongScore () {
         StartCoroutine (OnGuess (false));
-        SoundManager.GetInstance ().PlayIncorrectSFX ();
+        SoundManager.Instance.PlayIncorrectSFX ();
     }
 
     public void OnSense (DataType.Senses sense) {
@@ -143,9 +135,9 @@ public class SensesGameManager : AbstractGameManager {
     IEnumerator GameOverSequence () {
         yield return new WaitForSeconds (1f);
         if (score >= currentLevelManager.scoreGoal) {
-            SoundManager.GetInstance ().PlaySFXClip (finishedSfx);
+            SoundManager.Instance.PlaySFXClip (finishedSfx);
             yield return new WaitForSeconds (2f);
-            if (!GameManager.GetInstance().GetStickerUnlock(typeOfGame)) {
+            if (!GameManager.Instance.GetStickerUnlock(typeOfGame)) {
                 GameOver (DataType.GameEnd.EarnedSticker);
             } else {
                 GameOver (DataType.GameEnd.CompletedLevel);

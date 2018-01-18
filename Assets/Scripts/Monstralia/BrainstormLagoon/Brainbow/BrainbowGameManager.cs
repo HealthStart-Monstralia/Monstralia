@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class BrainbowGameManager : AbstractGameManager {
+public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
     [System.Serializable]
     public struct BrainbowLevelConfig {
         public int scoreGoal;
@@ -34,7 +34,7 @@ public class BrainbowGameManager : AbstractGameManager {
 	public AudioClip[] correctMatchClips;
 	public AudioClip[] wrongMatchClips;
 	public AudioClip munchSound;
-	public AudioClip backgroundMusic;
+	public AudioClip ambientSound;
 	public AudioClip correctSound;
 	public AudioClip incorrectSound;
 
@@ -42,7 +42,6 @@ public class BrainbowGameManager : AbstractGameManager {
     public delegate void GameAction ();
     public static event GameAction OnGameStart, OnGameEnd;
 
-    private static BrainbowGameManager instance;
     [SerializeField] private int score = 0;
     private int scoreGoal = 10;
     private bool gameStarted;
@@ -58,23 +57,6 @@ public class BrainbowGameManager : AbstractGameManager {
     private List<GameObject> greenFoodsList = new List<GameObject> ();
     private List<GameObject> purpleFoodsList = new List<GameObject> ();
 
-    void Awake () {
-        if (instance == null) {
-            instance = this;
-        } else if (instance != this) {
-            Destroy (gameObject);
-        }
-
-        CheckForGameManager ();
-
-        SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
-        foodPanel.DeactivateGameObject ();
-    }
-
-	public static BrainbowGameManager GetInstance() {
-		return instance;
-	}
-
 	void Update() {
 		if (gameStarted) {
 			if (score >= GetLevelConfig().maxFoodItems) {
@@ -88,23 +70,26 @@ public class BrainbowGameManager : AbstractGameManager {
     public void OnOutOfTime () { EndGameTearDown (); }
 
     public override void PregameSetup () {
-        if (skipTutorial) GameManager.GetInstance ().CompleteTutorial (DataType.Minigame.Brainbow);
-        difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.Brainbow);
-        timer = TimerClock.GetInstance ();
-        scoreGauge = ScoreGauge.GetInstance ();
+        SoundManager.Instance.ChangeAmbientSound (ambientSound);
+        foodPanel.DeactivateGameObject ();
+
+        if (skipTutorial) GameManager.Instance.CompleteTutorial (DataType.Minigame.Brainbow);
+        difficultyLevel = GameManager.Instance.GetLevel (DataType.Minigame.Brainbow);
+        timer = TimerClock.Instance;
+        scoreGauge = ScoreGauge.Instance;
         scoreGauge.gameObject.SetActive (false);
         timer.gameObject.SetActive (false);
         scoreGoal = GetLevelConfig ().scoreGoal;
         waterManager.waterTimeBoost = GetLevelConfig ().waterTimeBoost;
 
         monsterObject = monsterCreator.SpawnMonster (
-            GameManager.GetInstance ().GetPlayerMonsterType ());
+            GameManager.Instance.GetPlayerMonsterType ());
         monsterObject.transform.parent.localPosition = monsterCreator.transform.position;
         monsterObject.transform.parent.localScale = Vector3.one * 0.4f;
         monsterObject.transform.GetComponent<SpriteRenderer> ().sortingOrder = 0;
         monsterObject.ChangeEmotions (DataType.MonsterEmotions.Joyous);
 
-        if (GameManager.GetInstance ().GetPendingTutorial(DataType.Minigame.Brainbow))
+        if (GameManager.Instance.GetPendingTutorial(DataType.Minigame.Brainbow))
             tutorialManager.StartTutorial ();
         else
 	        StartGame ();
@@ -130,16 +115,8 @@ public class BrainbowGameManager : AbstractGameManager {
         StartCoroutine (StartSpawningFoods ());
         StartCoroutine (TurnOnRainbows ());
         ChooseFoodsFromManager ();
-        StartCoroutine (DisplayGo());
-	}
-
-
-	public IEnumerator DisplayGo () {
-        yield return new WaitForSeconds (1.0f);
-        GameManager.GetInstance ().StartCountdown ();
-		yield return new WaitForSeconds (3.5f);
-		PostCountdownSetup ();
-	}
+        StartCountdown (PostCountdownSetup);
+    }
 
 	void PostCountdownSetup () {
         inputAllowed = true;
@@ -182,7 +159,7 @@ public class BrainbowGameManager : AbstractGameManager {
 
     // Sort foods into categories
     void SortBrainbowFoods () {
-        FoodList foodList = GameManager.GetInstance ().GetComponent<FoodList> ();
+        FoodList foodList = GameManager.Instance.GetComponent<FoodList> ();
         Food foodComponent;
 
         // Remove any restricted foods
@@ -268,7 +245,7 @@ public class BrainbowGameManager : AbstractGameManager {
         }
 
         yield return new WaitForSeconds (2f + 0.1f*activeFoods.Count);
-        SoundManager.GetInstance().AddToVOQueue(voData.FindVO("yay"));
+        SoundManager.Instance.AddToVOQueue(voData.FindVO("yay"));
         monsterObject.ChangeEmotions (DataType.MonsterEmotions.Thoughtful);
         StartCoroutine (TurnOffRainbows ());
         yield return new WaitForSeconds (3f);

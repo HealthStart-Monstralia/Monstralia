@@ -4,13 +4,10 @@ using System.Collections;
 
 public class SwitchScene: MonoBehaviour {
 	public string sceneToLoadName;
-	[HideInInspector] public GameObject loadingScreen;
-
-    private void Start () {
-        if (GameManager.GetInstance ()) loadingScreen = GameManager.GetInstance ().loadingScreenPrefab;
-    }
+    public GameObject loadingScreen;
 
     public void LoadScene() {
+        loadingScreen = GameManager.Instance.loadingScreenPrefab;
         if (loadingScreen) {
             Instantiate (loadingScreen, transform.root);
         }
@@ -43,8 +40,8 @@ public class SwitchScene: MonoBehaviour {
     }
 
     public void LoadIslandSection () {
-        if (GameManager.GetInstance ()) {
-            switch(GameManager.GetInstance ().GetIslandSection()) {
+        if (GameManager.Instance) {
+            switch (GameManager.Instance.GetIslandSection()) {
                 case DataType.IslandSection.Monstralia:
                     LoadScene ("MainMap");
                     break;

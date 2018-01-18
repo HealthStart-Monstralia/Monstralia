@@ -14,7 +14,8 @@ public class SensesLevelManager : MonoBehaviour {
     [Header ("References")]
     [SerializeField] private SensesFactory senseFactory;
     [SerializeField] private List<DataType.Senses> senseList = new List<DataType.Senses>();
-    [SerializeField] private Text senseText, commentText;
+    [SerializeField] private Text senseText;
+    [SerializeField] private Text commentText;
     [SerializeField] private string[] correctLines;
     [SerializeField] private string[] wrongLines;
     private bool isCommentHiding = false;
@@ -31,10 +32,11 @@ public class SensesLevelManager : MonoBehaviour {
 
     public void SetupGame() {
         StopAllCoroutines ();
-        StartCoroutine (TransitionBlur ());
+        StartCoroutine (PrepareToStart ());
     }
 
-    IEnumerator TransitionBlur() {
+    IEnumerator PrepareToStart() {
+        // Lower blur
         float t = 3.0f;
         while (t > 0.0f) {
             t -= Time.deltaTime * 2;
@@ -42,33 +44,23 @@ public class SensesLevelManager : MonoBehaviour {
             yield return null;
         }
 
-        SoundManager.GetInstance ().PlaySFXClip (transitionSfx);
-        SensesGameManager.GetInstance ().fireworksSystem.ActivateFireworks ();
+        SoundManager.Instance.PlaySFXClip (transitionSfx);
+        SensesGameManager.Instance.fireworksSystem.ActivateFireworks ();
         yield return new WaitForSeconds(0.1f);
 
         blur.enabled = false;
-        StartCoroutine(PrepareToStartGame ());
-    }
-
-    IEnumerator PrepareToStartGame () {
         monster = monsterCreators[0].SpawnPlayerMonster ();
-        SensesGameManager.GetInstance ().ActivateHUD(true);
-        GameManager.GetInstance ().StartCountdown ();
-        yield return new WaitForSeconds (3.5f);
-
-        SensesGameManager.GetInstance ().fireworksSystem.ActivateFireworks ();
-        yield return new WaitForSeconds (0.5f);
-
-        StartGame ();
+        SensesGameManager.Instance.ActivateHUD (true);
+        SensesGameManager.Instance.StartCountdown (StartGame);
     }
 
     private DataType.Senses SelectRandomSense() {
-        DataType.Senses sense = senseList.RandomItem();
+        DataType.Senses sense = senseList.GetRandomItem();
         return sense;
     }
 
     void StartGame() {
-        SensesGameManager.GetInstance ().OnGameStart ();
+        SensesGameManager.Instance.OnGameStart ();
         NextQuestion ();
     }
 
@@ -87,18 +79,18 @@ public class SensesLevelManager : MonoBehaviour {
     }
 
     public void EndGame() {
-        SensesGameManager.GetInstance ().OnGameEnd ();
+        SensesGameManager.Instance.OnGameEnd ();
         monster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
     }
 
     public bool IsSenseCorrect (DataType.Senses sense) {
         if (selectedSense != DataType.Senses.NONE) {
             if (sense == selectedSense) {
-                ShowComment(correctLines.RandomItem ());
+                ShowComment(correctLines.GetRandomItem ());
                 monster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
                 return true;
             } else {
-                ShowComment (wrongLines.RandomItem ());
+                ShowComment (wrongLines.GetRandomItem ());
                 monster.ChangeEmotions (DataType.MonsterEmotions.Sad);
                 return false;
             }

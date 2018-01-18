@@ -6,7 +6,7 @@ public class MazePickup : MonoBehaviour {
     private void OnTriggerEnter2D (Collider2D collision) {
         if (collision.gameObject.GetComponent<Monster> ()) {
             Destroy (gameObject);
-            Maze.GetInstance ().OnPickup (this);
+            Maze.Instance.OnPickup (this);
         }
     }
 }

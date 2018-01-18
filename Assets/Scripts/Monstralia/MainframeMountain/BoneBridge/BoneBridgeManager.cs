@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
  * GAME: Bone Bridge
  */
 
-public class BoneBridgeManager : AbstractGameManager {
+public class BoneBridgeManager : AbstractGameManager<BoneBridgeManager> {
     public enum BridgePhase {
         Start,
         Countdown,
@@ -59,24 +59,8 @@ public class BoneBridgeManager : AbstractGameManager {
     private Transform start, goal;
     private Coroutine tutorialCoroutine;
     private bool gameStarted = false;
-    private static BoneBridgeManager instance = null;
+    public new static BoneBridgeManager Instance = null;
     private Rigidbody2D rigBody;
-
-    void Awake () {
-        if (instance == null) {
-            instance = this;
-        } else if (instance != this) {
-            Destroy (gameObject);
-        }
-
-        scoreGauge.gameObject.SetActive (false);
-        timerObject.gameObject.SetActive (false);
-        inputAllowed = false;
-    }
-
-    public static BoneBridgeManager GetInstance () {
-        return instance;
-    }
 
     private void Update () {
         if (bridgeMonster) {
@@ -97,12 +81,16 @@ public class BoneBridgeManager : AbstractGameManager {
     }
 
     public override void PregameSetup () {
+        scoreGauge.gameObject.SetActive (false);
+        timerObject.gameObject.SetActive (false);
+        inputAllowed = false;
+
         if (getLevelFromGameManager)
-            difficultyLevel = (DataType.Level)GameManager.GetInstance ().GetLevel (typeOfGame);
+            difficultyLevel = (DataType.Level)GameManager.Instance.GetLevel (typeOfGame);
         ChangeLevel (GetLevelObject(difficultyLevel));
         
 
-        if (GameManager.GetInstance ().GetPendingTutorial (DataType.Minigame.BoneBridge) && !skipTutorial) {
+        if (GameManager.Instance.GetPendingTutorial (DataType.Minigame.BoneBridge) && !skipTutorial) {
             tutorialCoroutine = StartCoroutine (Tutorial ());
         }
         else {
@@ -149,18 +137,22 @@ public class BoneBridgeManager : AbstractGameManager {
         subtitlePanel.Display ("Welcome to Bone Bridge!");
         yield return new WaitForSeconds (3.0f);
 
-        GameManager.GetInstance ().CompleteTutorial (typeOfGame);
+        GameManager.Instance.CompleteTutorial (typeOfGame);
         isTutorialRunning = false;
+        TutorialTearDown ();
+    }
+
+    void TutorialTearDown() {
+        if (isTutorialRunning)
+            StopCoroutine (tutorialCoroutine);
         PregameSetup ();
     }
 
     IEnumerator Countdown () {
         ChangePhase (BridgePhase.Countdown);
         yield return new WaitForSeconds (1.0f);
-        GameManager.GetInstance ().StartCountdown ();
-        yield return new WaitForSeconds (4.0f);
+        StartCountdown (GameStart);
         doCountdown = false;
-        GameStart ();
     }
 
     public void GameStart () {
@@ -191,32 +183,27 @@ public class BoneBridgeManager : AbstractGameManager {
 
     // Event
     void OnPhaseChange (BridgePhase phase) {
+        inputAllowed = false;
         switch (phase) {
             case BridgePhase.Start:
-                inputAllowed = false;
                 break;
             case BridgePhase.Countdown:
-                inputAllowed = false;
                 break;
             case BridgePhase.Building:
                 inputAllowed = true;
                 timerObject.StartTimer ();
                 break;
             case BridgePhase.Falling:
-                inputAllowed = false;
                 timerObject.StartTimer ();
                 break;
             case BridgePhase.Crossing:
-                inputAllowed = false;
                 timerObject.StopTimer ();
                 break;
             case BridgePhase.Lose:
-                inputAllowed = false;
                 gameStarted = false;
                 GameOver (DataType.GameEnd.FailedLevel);
                 break;
             case BridgePhase.Finish:
-                inputAllowed = false;
                 gameStarted = false;
                 StartCoroutine (GameOverSequence ());
                 break;
@@ -230,10 +217,10 @@ public class BoneBridgeManager : AbstractGameManager {
         if (trappedMonster) trappedMonster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
         else chestObject.OpenChest ();
 
-        SoundManager.GetInstance ().PlayVoiceOverClip (voData.FindVO ("youdidit"));
+        SoundManager.Instance.PlayVoiceOverClip (voData.FindVO ("youdidit"));
         timerObject.StopTimer ();
-        SoundManager.GetInstance ().PlayCorrectSFX ();
-        GameManager.GetInstance ().LevelUp (DataType.Minigame.BoneBridge);
+        SoundManager.Instance.PlayCorrectSFX ();
+        GameManager.Instance.LevelUp (DataType.Minigame.BoneBridge);
         yield return new WaitForSeconds (3.0f);
         if (difficultyLevel == DataType.Level.LevelOne) {
             GameOver (DataType.GameEnd.EarnedSticker);
@@ -246,17 +233,17 @@ public class BoneBridgeManager : AbstractGameManager {
         // Populate monster pool
         foreach (DataType.MonsterType typeOfMonster in System.Enum.GetValues (typeof (DataType.MonsterType))) {
             int count = 0;
-            monsterPool.Add (GameManager.GetInstance ().GetMonsterObject (typeOfMonster));
+            monsterPool.Add (GameManager.Instance.GetMonsterObject (typeOfMonster));
             count++;
         }
 
         // Create player monster
         monster = currentLevel
             .monsterSpawn.GetComponent<CreateMonster> ()
-            .SpawnMonster (GameManager.GetInstance().GetPlayerMonsterType());
+            .SpawnMonster (GameManager.Instance.GetPlayerMonsterType());
         bridgeMonster = monster.transform.parent.gameObject.AddComponent<BoneBridgeMonster> ();
         bridgeMonster.rigBody = monster.transform.parent.gameObject.GetComponent<Rigidbody2D>();
-        monsterPool.Remove (GameManager.GetInstance ().GetPlayerMonsterType ());
+        monsterPool.Remove (GameManager.Instance.GetPlayerMonsterType ());
 
         Transform[] friendSpawns = currentLevel.friendSpawns;
 

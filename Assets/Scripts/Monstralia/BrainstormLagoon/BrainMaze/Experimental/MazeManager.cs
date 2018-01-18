@@ -2,23 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MazeManager : MonoBehaviour {
+public class MazeManager : Singleton<MazeManager> {
     public Maze mazePrefab;
     private Maze mazeInstance;
-
-    private static MazeManager instance;
-
-    private void Awake () {
-        if (instance == null) {
-            instance = this;
-        } else if (instance != this) {
-            Destroy (gameObject);
-        }
-    }
-
-    public static MazeManager GetInstance() {
-        return instance;
-    }
 
     private void Start () {
         StartCoroutine (BeginGame ());

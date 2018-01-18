@@ -6,7 +6,7 @@ public class SensesFactory : MonoBehaviour {
     [SerializeField] private GameObject[] sensesPrefabs;
 
     public GameObject SelectRandomPrefab() {
-        return sensesPrefabs.RandomItem();
+        return sensesPrefabs.GetRandomItem();
     }
 
     public GameObject Manufacture (GameObject prefab) {

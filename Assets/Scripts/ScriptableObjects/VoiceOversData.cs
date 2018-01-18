@@ -16,7 +16,7 @@ public class VoiceOversData : ScriptableObject {
     public void PlayVO(string voName) {
         AudioClip foundClip = FindVO (voName);
         if (foundClip)
-            SoundManager.GetInstance ().PlayVoiceOverClip (foundClip);
+            SoundManager.Instance.PlayVoiceOverClip (foundClip);
     }
 
     // Find the voice over in VO and return the clip, return null if not found

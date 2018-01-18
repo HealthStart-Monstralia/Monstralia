@@ -6,6 +6,6 @@ public class SensesButton : MonoBehaviour {
     public DataType.Senses typeOfSense;
 
     public void OnPress() {
-        SensesGameManager.GetInstance ().OnSense (typeOfSense);
+        SensesGameManager.Instance.OnSense (typeOfSense);
     }
 }
