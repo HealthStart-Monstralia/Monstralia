@@ -5,9 +5,8 @@ using UnityEngine;
 public class IslandSection : MonoBehaviour {
     public DataType.IslandSection island;
     public GameObject monsterLocation;
-    [HideInInspector] public GameObject monster;
+    [HideInInspector] public Monster monster;
     public AudioClip introAudio, welcomeBackClip, ambientSound, backgroundMusic;
-    public AudioClip[] voice;
 
     private void Awake () {
         GameManager.Instance.SetIslandSection (island);
@@ -33,7 +32,9 @@ public class IslandSection : MonoBehaviour {
     }
 
     void CreateMonsterOnMap() {
-        monster = GameManager.Instance.GetPlayerMonsterType ();
-        Instantiate (monster, monsterLocation.transform);
+        GameObject monsterObject = GameManager.Instance.GetPlayerMonsterObject ();
+        monster = Instantiate (monsterObject, monsterLocation.transform).GetComponent<Monster>();
+        monster.allowMonsterTickle = true;
+        monster.IdleAnimationOn = true;
     }
 }

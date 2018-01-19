@@ -137,16 +137,16 @@ public class TimerClock : Singleton<TimerClock> {
 
     IEnumerator ShowTimeUpNotification(float time) {
         GameObject notification = Instantiate (timeUpNotification, transform.parent);
-        audioSrc.PlayOneShot (alarm);
+        audioSrc = SoundManager.Instance.PlaySFXClip(alarm);
         yield return new WaitForSeconds (time);
         Destroy (notification, 1f);
     }
 
     IEnumerator TickTock () {
         while (isTiming && isTimeLow) {
-            audioSrc.PlayOneShot (tick);
+            audioSrc = SoundManager.Instance.PlaySFXClip (tick);
             yield return new WaitForSeconds (0.5f);
-            audioSrc.PlayOneShot (tock);
+            audioSrc = SoundManager.Instance.PlaySFXClip (tock);
         }
     }
 }

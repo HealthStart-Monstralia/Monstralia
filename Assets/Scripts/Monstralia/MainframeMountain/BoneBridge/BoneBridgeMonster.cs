@@ -21,7 +21,7 @@ public class BoneBridgeMonster : MonoBehaviour {
 
     private void Awake () {
         transform.SetParent (transform.root.parent);
-        monster = GetComponentInChildren<Monster> ();
+        monster = GetComponent<Monster> ();
     }
 
     public void OnMouseDown () {

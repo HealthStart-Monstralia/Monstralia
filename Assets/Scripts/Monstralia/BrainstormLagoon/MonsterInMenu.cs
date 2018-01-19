@@ -15,7 +15,7 @@ public class MonsterInMenu : MonoBehaviour {
 	private Animator animComp;
 
 	void Awake () {
-		typeOfMonster = GameManager.Instance.GetMonsterType ();
+		typeOfMonster = GameManager.Instance.GetPlayerMonsterType ();
 		animComp = GetComponent<Animator> ();
 
 	}

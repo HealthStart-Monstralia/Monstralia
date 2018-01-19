@@ -14,7 +14,7 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
     [HideInInspector] public bool isDrawingCards = false;
 
 	public ScoreGauge scoreGauge;
-	public Timer timer;
+	public TimerClock timerClock;
 	public GameObject subtitlePanel;
 	public Transform[] emotionSpawnLocs;
 	public GameObject backButton;
@@ -61,13 +61,13 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
             }
 
             score = 0;
-            if (timer != null) {
-                timer.SetTimeLimit (timeLimit);
-                timer.StopTimer ();
+            if (timerClock != null) {
+                timerClock.SetTimeLimit (timeLimit);
+                timerClock.StopTimer ();
             }
 
             UpdateScoreGauge ();
-            timer.gameObject.SetActive (true);
+            timerClock.gameObject.SetActive (true);
             generator.cardHand.gameObject.SetActive (true);
             generator.cardHand.SpawnIn ();
             StartCoroutine (DuringCountdown ());
@@ -87,7 +87,7 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
 		tutorialCanvas.gameObject.SetActive (true);
 		inputAllowed = false;
 		scoreGauge.gameObject.SetActive (false);
-		timer.gameObject.SetActive (false);
+		timerClock.gameObject.SetActive (false);
 
 		yield return new WaitForSeconds(0.5f);
 		subtitlePanel.SetActive (true);
@@ -162,8 +162,8 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
     private void StartGame () {
         scoreGauge.gameObject.SetActive (true);
 
-        timer.StopTimer ();
-        timer.StartTimer ();
+        timerClock.StopTimer ();
+        timerClock.StartTimer ();
 
         gameStarted = true;
         inputAllowed = true;
@@ -195,10 +195,8 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
         }
     }
 
-    void Update () {
-        if (gameStarted && (timer.TimeRemaining () <= 0.0f || score >= scoreGoal)) {
-            StartCoroutine (PostGame ());
-        }
+    public void OnOutOfTime() {
+        StartCoroutine (PostGame ());
     }
 
     public void CheckEmotion (DataType.MonsterEmotions emotion) {
@@ -210,8 +208,12 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
             } else {
                 ++score;
                 UpdateScoreGauge ();
-                if (gameStarted)
+                if (gameStarted) {
                     DrawCards (waitDuration);
+                    if (score >= scoreGoal) {
+                        StartCoroutine (PostGame ());
+                    }
+                }
             }
 
         } else {
@@ -233,12 +235,12 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
         if (gameStarted) {
             generator.ChangeMonsterEmotion (generator.currentTargetEmotion);
             inputAllowed = true;
-            timer.StartTimer ();
+            timerClock.StartTimer ();
         }
     }
 
     public void PauseGame() {
-        timer.StopTimer ();
+        timerClock.StopTimer ();
         inputAllowed = false;
     }
 

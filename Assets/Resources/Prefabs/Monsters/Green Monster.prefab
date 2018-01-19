@@ -19,7 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224308459385512856}
-  m_Layer: 5
+  - component: {fileID: 114145915989962166}
+  m_Layer: 15
   m_Name: Green Monster
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -34,11 +35,11 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224224925562923412}
-  - component: {fileID: 114700440007746566}
+  - component: {fileID: 114114439374259304}
   - component: {fileID: 212399538445813630}
   - component: {fileID: 61309460334114854}
   - component: {fileID: 95464542218736534}
-  m_Layer: 5
+  m_Layer: 15
   m_Name: Monster Sprite
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -87,7 +88,7 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114700440007746566
+--- !u!114 &114114439374259304
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -95,16 +96,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 1045545446047004}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70b263746973719449a20e39ad707fca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 95464542218736534}
+  emotionData: {fileID: 11400000, guid: 4699797d3f297d840800d30591b735a6, type: 2}
+  monster: {fileID: 114145915989962166}
+  monsterGiggle: {fileID: 8300000, guid: b24e99fa0112142c79cc477b3a50ad46, type: 3}
+--- !u!114 &114145915989962166
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1009545858497262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8981ec17cb1be4848bbc12fc4d4406ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   typeOfMonster: 1
   selectedEmotion: 0
-  emotionData: {fileID: 11400000, guid: 4699797d3f297d840800d30591b735a6, type: 2}
-  allowMonsterTickle: 1
-  spawnAnimation: 0
-  _idleAnimationOn: 1
-  monsterSfx: {fileID: 8300000, guid: b24e99fa0112142c79cc477b3a50ad46, type: 3}
+  allowMonsterTickle: 0
+  spawnAnimation: 1
+  spriteRenderer: {fileID: 212399538445813630}
+  colliderComponent: {fileID: 61309460334114854}
+  monsterAnimator: {fileID: 114114439374259304}
 --- !u!212 &212399538445813630
 SpriteRenderer:
   m_ObjectHideFlags: 1

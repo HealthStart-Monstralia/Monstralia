@@ -6,6 +6,6 @@ public class ChooseMonster : MonoBehaviour {
     public DataType.MonsterType typeOfMonster;
 
     public void SetMonsterChosen() {
-		GameManager.Instance.SetMonsterType(typeOfMonster);
+		GameManager.Instance.SetPlayerMonsterType(typeOfMonster);
     }
 }

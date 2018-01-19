@@ -19,9 +19,10 @@ public abstract class AbstractGameManager<T> : MonoBehaviour where T : Component
     [Header ("AbstractGameManager Fields")]
     public DataType.Minigame typeOfGame;
     public abstract void PregameSetup (); // Force PregameSetup() to be implemented in child classes
-    public DataType.MonsterType typeOfMonster;
     public bool randomizeMusic = true;
     public AudioClip[] backgroundMusicArray;
+    [HideInInspector] public Monster playerMonster;
+    [HideInInspector] public CreateMonster monsterCreator;
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) {
         GameManager.Instance.SetLastGamePlayed (typeOfGame);
@@ -36,7 +37,6 @@ public abstract class AbstractGameManager<T> : MonoBehaviour where T : Component
     }
 
     void OnEnable () {
-        typeOfMonster = GameManager.Instance.GetMonsterType ();
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -56,7 +56,7 @@ public abstract class AbstractGameManager<T> : MonoBehaviour where T : Component
         PregameSetup ();
     }
 
-    public virtual void GameOver (DataType.GameEnd typeOfEnd) {
+    public virtual EndScreen GameOver (DataType.GameEnd typeOfEnd) {
         switch (typeOfEnd) {
             case DataType.GameEnd.EarnedSticker:
                 SoundManager.Instance.PlaySFXClip (SoundManager.Instance.correctSfx2);
@@ -72,7 +72,7 @@ public abstract class AbstractGameManager<T> : MonoBehaviour where T : Component
                 break;
         }
 
-        GameManager.Instance.CreateEndScreen (typeOfGame, typeOfEnd);
+        return CreateEndScreen (typeOfGame, typeOfEnd);
     }
 
     public void StartCountdown (Countdown.CountdownCallback callback) {
@@ -85,5 +85,55 @@ public abstract class AbstractGameManager<T> : MonoBehaviour where T : Component
 
     public void AddTime (float time) {
         TimerClock.Instance.AddTime (time);
+    }
+
+    public void SubtractTime (float time) {
+        TimerClock.Instance.SubtractTime (time);
+    }
+
+    public void StartTimer () {
+        TimerClock.Instance.StartTimer ();
+    }
+
+    public void StopTimer() {
+        TimerClock.Instance.StopTimer ();
+    }
+
+    public float GetTimeRemaining() {
+        return TimerClock.Instance.TimeRemaining;
+    }
+
+    public Monster CreatePlayerMonster (Transform pos) {
+        monsterCreator = gameObject.AddComponent<CreateMonster> ();
+        playerMonster = monsterCreator.SpawnPlayerMonster (pos);
+        return playerMonster;
+    }
+
+    public void CreateMonster (DataType.MonsterType typeOfMonster, Transform pos) {
+        monsterCreator = gameObject.AddComponent<CreateMonster> ();
+        playerMonster = monsterCreator.SpawnMonster (typeOfMonster, pos);
+    }
+
+    public EndScreen CreateEndScreen (DataType.Minigame game, DataType.GameEnd type) {
+        print ("Created End Screen of type: " + type);
+        EndScreen screen = Instantiate (GameManager.Instance.endingScreenPrefab).GetComponent<EndScreen> ();
+        screen.typeOfGame = game;
+        screen.typeOfScreen = type;
+
+        switch (type) {
+            case DataType.GameEnd.EarnedSticker:
+                screen.EarnedSticker ();
+                break;
+            case DataType.GameEnd.CompletedLevel:
+                screen.CompletedLevel ();
+                break;
+            case DataType.GameEnd.FailedLevel:
+                screen.FailedLevel ();
+                break;
+            default:
+                break;
+        }
+
+        return screen;
     }
 }

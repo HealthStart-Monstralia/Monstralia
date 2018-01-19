@@ -7,10 +7,15 @@ public class SwitchScene: MonoBehaviour {
     public GameObject loadingScreen;
 
     public void LoadScene() {
-        loadingScreen = GameManager.Instance.loadingScreenPrefab;
+
         if (loadingScreen) {
             Instantiate (loadingScreen, transform.root);
         }
+        if (GameManager.Instance) {
+            loadingScreen = GameManager.Instance.loadingScreenPrefab;
+            Instantiate (loadingScreen, transform.root);
+        }
+
         if (sceneToLoadName != "")
             SceneManager.LoadScene (sceneToLoadName);
         else {

@@ -3,86 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Monster : MonoBehaviour {
+    // WARNING: POORLY WRITTEN CODE
+
     public DataType.MonsterType typeOfMonster;
     public DataType.MonsterEmotions selectedEmotion;
-    public EmotionData emotionData;
     public bool allowMonsterTickle, spawnAnimation;
-
-    public bool idleAnimationOn {
-        get { return _idleAnimationOn; }
+    public SpriteRenderer spriteRenderer;
+    public Collider2D colliderComponent;
+    public MonsterAnimations monsterAnimator;
+    public bool IdleAnimationOn {
+        get {
+            return monsterAnimator.IdleAnimationOn;
+        }
         set {
-            _idleAnimationOn = value;
-            if (_idleAnimationOn) {
-                StartCoroutine (PlayIdleAnimation ());
-            }
+            monsterAnimator.IdleAnimationOn = value;
         }
     }
 
-    [SerializeField] private bool _idleAnimationOn;
-    [SerializeField] private AudioClip monsterSfx;
-    private Animator animComp;
-    private SpriteRenderer sprRenderer;
-    private Dictionary<DataType.MonsterEmotions, EmotionData.EmotionStruct> emoDict;
-    private DataType.MonsterEmotions[] selectableEmotions;
-
     void Awake () {
-        emoDict = new Dictionary<DataType.MonsterEmotions, EmotionData.EmotionStruct> ();
-        animComp = GetComponent<Animator> ();
-        sprRenderer = GetComponent<SpriteRenderer> ();
-
-        SetupEmotionSprites (emotionData.afraid);
-        SetupEmotionSprites (emotionData.disgusted);
-        SetupEmotionSprites (emotionData.happy);
-        SetupEmotionSprites (emotionData.joyous);
-        SetupEmotionSprites (emotionData.mad);
-        SetupEmotionSprites (emotionData.sad);
-        SetupEmotionSprites (emotionData.thoughtful);
-        SetupEmotionSprites (emotionData.worried);
-
-        selectableEmotions = new DataType.MonsterEmotions[4];
-        selectableEmotions[0] = DataType.MonsterEmotions.Happy;
-        selectableEmotions[1] = DataType.MonsterEmotions.Thoughtful;
-        selectableEmotions[2] = DataType.MonsterEmotions.Afraid;
-        selectableEmotions[3] = DataType.MonsterEmotions.Joyous;
-
-        ChangeEmotions (selectedEmotion);
-        if (spawnAnimation) PlaySpawnAnimation ();
-        StartCoroutine (PlayIdleAnimation ());
-    }
-
-    void SetupEmotionSprites(EmotionData.EmotionStruct emoStruct) {
-        emoDict.Add (emoStruct.emotion, emoStruct);
+        if (spawnAnimation) monsterAnimator.PlaySpawnAnimation ();
     }
 
     public void ChangeEmotions (DataType.MonsterEmotions emotionToChangeTo) {
-        EmotionData.EmotionStruct emoStruct = emoDict[emotionToChangeTo];
-
-        sprRenderer.sprite = emoStruct.sprite;
-        selectedEmotion = emoStruct.emotion;
+        monsterAnimator.ChangeEmotions (emotionToChangeTo);
     }
 
     void OnMouseDown () {
         if (allowMonsterTickle) {
             if (!ParentPage.Instance) {
-                animComp.Play ("Giggle", -1, 0f);
+                monsterAnimator.animator.Play ("Giggle", -1, 0f);
             }
-        }
-    }
-
-    public void PlayGiggle () {
-        SoundManager.Instance.PlaySFXClip (monsterSfx);
-    }
-
-    public void PlaySpawnAnimation() {
-        animComp.Play ("MonsterSpawn", -1, 0f);
-    }
-
-    IEnumerator PlayIdleAnimation() {
-        while (_idleAnimationOn) {
-            ChangeEmotions (
-                selectableEmotions[Random.Range (0, selectableEmotions.Length)]
-                );
-            yield return new WaitForSeconds(Random.Range(2f, 6f));
         }
     }
 

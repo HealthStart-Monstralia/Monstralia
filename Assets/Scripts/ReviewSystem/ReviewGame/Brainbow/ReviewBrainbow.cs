@@ -38,7 +38,7 @@ public class ReviewBrainbow : Singleton<ReviewBrainbow> {
 
 	public void PrepareReview() {
 		ChooseFoodsFromManager ();
-        monsterObject = monster.SpawnMonster (GameManager.Instance.GetPlayerMonsterType());
+        monsterObject = monster.SpawnMonster (GameManager.Instance.GetPlayerMonsterObject());
         monsterObject.GetComponent<SpriteRenderer> ().sortingOrder = 4;
         monsterObject.GetComponent<SpriteRenderer> ().sortingLayerName = "UI";
         StartCoroutine (BeginReview ());

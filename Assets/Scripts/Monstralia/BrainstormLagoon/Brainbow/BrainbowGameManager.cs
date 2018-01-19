@@ -29,7 +29,6 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
     public List<BrainbowFoodItem> activeFoods = new List<BrainbowFoodItem> ();
 
     [HideInInspector] public Monster monsterObject;
-    public CreateMonster monsterCreator;
 
 	public AudioClip[] correctMatchClips;
 	public AudioClip[] wrongMatchClips;
@@ -83,10 +82,10 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
         waterManager.waterTimeBoost = GetLevelConfig ().waterTimeBoost;
 
         monsterObject = monsterCreator.SpawnMonster (
-            GameManager.Instance.GetPlayerMonsterType ());
-        monsterObject.transform.parent.localPosition = monsterCreator.transform.position;
-        monsterObject.transform.parent.localScale = Vector3.one * 0.4f;
-        monsterObject.transform.GetComponent<SpriteRenderer> ().sortingOrder = 0;
+            GameManager.Instance.GetPlayerMonsterObject ());
+        monsterObject.transform.localPosition = monsterCreator.transform.position;
+        monsterObject.transform.localScale = Vector3.one * 0.4f;
+        monsterObject.spriteRenderer.sortingOrder = 0;
         monsterObject.ChangeEmotions (DataType.MonsterEmotions.Joyous);
 
         if (GameManager.Instance.GetPendingTutorial(DataType.Minigame.Brainbow))

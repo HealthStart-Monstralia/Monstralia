@@ -3497,21 +3497,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeOfGame: 1
-  typeOfMonster: 0
   randomizeMusic: 1
   backgroundMusicArray:
   - {fileID: 8300000, guid: 8e038355eb8874c4f840d00addb9c7be, type: 3}
   - {fileID: 8300000, guid: 08d54f33f870ae247ba0d95dd54cfe60, type: 3}
   - {fileID: 8300000, guid: b64dda38d7801594eae4be7b16551529, type: 3}
+  playerMonster: {fileID: 0}
+  monsterCreator: {fileID: 0}
   monsterList:
   - {fileID: 1000010047442250, guid: 1d7370fd27e64554db1e19af9ce62b59, type: 2}
   - {fileID: 1000010047442250, guid: 52b85add49cd00e4da6e87e3278b637b, type: 2}
   - {fileID: 1000010047442250, guid: ca3b2a66d1cfdf342b3d2c5637aa7391, type: 2}
   - {fileID: 1000010047442250, guid: 8473edbdd19a37e44b119a673223a66f, type: 2}
   monsterScale:
-  - 0.4
-  - 0.4
-  - 0.3
+  - 0.35
+  - 0.35
+  - 0.25
   - 0.25
   - 0.25
   voData: {fileID: 11400000, guid: 788bb78fac969cf40bb161f2b347f8e1, type: 2}

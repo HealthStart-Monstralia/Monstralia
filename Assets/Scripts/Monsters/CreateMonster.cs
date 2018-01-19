@@ -18,7 +18,7 @@ public class CreateMonster : MonoBehaviour {
 
     private void Start () {
         if (spawnMonsterOnStart) {
-            SpawnMonster (GameManager.Instance.GetPlayerMonsterType ());
+            SpawnMonster (GameManager.Instance.GetPlayerMonsterObject ());
             print ("Spawning monster on start from: " + gameObject);
         };
     }
@@ -26,12 +26,26 @@ public class CreateMonster : MonoBehaviour {
     public Monster SpawnPlayerMonster () {
         if (!spawnPosition)
             spawnPosition = transform;
-        return Spawn (GameManager.Instance.GetPlayerMonsterType());
+        return Spawn (GameManager.Instance.GetPlayerMonsterObject());
     }
 
     public Monster SpawnPlayerMonster (Transform spot) {
         spawnPosition = spot;
-        return Spawn (GameManager.Instance.GetPlayerMonsterType ());
+        return Spawn (GameManager.Instance.GetPlayerMonsterObject ());
+    }
+
+    public Monster SpawnMonster (DataType.MonsterType monsterType) {
+        if (!spawnPosition)
+            spawnPosition = transform;
+        GameObject monsterObject = GameManager.Instance.GetMonsterObject (monsterType);
+        return Spawn (monsterObject);
+    }
+
+    public Monster SpawnMonster (DataType.MonsterType monsterType, Transform spot) {
+        if (!spawnPosition)
+            spawnPosition = transform;
+        GameObject monsterObject = GameManager.Instance.GetMonsterObject (monsterType);
+        return Spawn (monsterObject);
     }
 
     public Monster SpawnMonster (GameObject monsterObject) {
@@ -46,22 +60,22 @@ public class CreateMonster : MonoBehaviour {
     }
 
     private Monster Spawn(GameObject monsterObject) {
-        Monster monster = Instantiate (monsterObject, spawnPosition.parent).GetComponentInChildren<Monster> ();
-        monster.transform.parent.position = spawnPosition.position;
+        Monster monster = Instantiate (monsterObject, spawnPosition.parent).GetComponent<Monster> ();
+        monster.transform.position = spawnPosition.position;
         monster.allowMonsterTickle = allowMonsterTickle;
-        monster.idleAnimationOn = idleAnimationOn;
-        monster.transform.parent.localScale = scale;
+        monster.IdleAnimationOn = idleAnimationOn;
+        monster.transform.localScale = scale;
 
         if (replaceBoxCollider) {
-            monster.GetComponent<BoxCollider2D> ().enabled = false;
+            monster.colliderComponent.enabled = false;
             CapsuleCollider2D capsule = monster.gameObject.AddComponent<CapsuleCollider2D> ();
-            capsule.size = capsule.size - new Vector2 (0.25f, 0.25f);
+            capsule.size = new Vector2 (4f, 5f);
         }
 
-        if (playSpawnAnimation) monster.PlaySpawnAnimation ();
+        if (playSpawnAnimation) monster.spawnAnimation = true;
 
         if (addRigidbody) {
-            Rigidbody2D rigBody = monster.transform.parent.gameObject.AddComponent<Rigidbody2D> ();
+            Rigidbody2D rigBody = monster.transform.gameObject.AddComponent<Rigidbody2D> ();
             rigBody.mass = monsterMass;
             rigBody.drag = 0.3f;
             rigBody.freezeRotation = true;

@@ -13,7 +13,6 @@ using UnityEngine.EventSystems;
 
 public class DishObject : MonoBehaviour {
 	private Food myFood;
-	private static bool isGuessing = false;
 	private bool matched = false;
 	private Animator dishAnim;
 	private SpriteRenderer lidSpriteComponent, dishSpriteComponent, foodSpriteComponent;
@@ -113,9 +112,10 @@ public class DishObject : MonoBehaviour {
     IEnumerator OnMouseDown () {
 		MemoryMatchGameManager manager = MemoryMatchGameManager.Instance;
 		if (manager.inputAllowed && !manager.isGuessing) {
-            manager.subtitlePanel.Display (myFood.name, myFood.clipOfName);
+            manager.subtitlePanel.Display (myFood.name);
+            SoundManager.Instance.AddToVOQueue (myFood.clipOfName);
             OpenLid ();
-            if (!manager.OnGuess (this, myFood)) {
+            if (!manager.OnGuess (this, myFood.gameObject)) {
                 Invoke("CloseLid", 2f);
             }
 
@@ -123,7 +123,7 @@ public class DishObject : MonoBehaviour {
 
             //The player can now guess again.
             manager.subtitlePanel.Hide ();
-			isGuessing = false;
+            manager.isGuessing = false;
 		     
 	    }
     }

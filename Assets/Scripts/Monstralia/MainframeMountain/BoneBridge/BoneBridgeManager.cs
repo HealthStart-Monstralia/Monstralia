@@ -59,7 +59,6 @@ public class BoneBridgeManager : AbstractGameManager<BoneBridgeManager> {
     private Transform start, goal;
     private Coroutine tutorialCoroutine;
     private bool gameStarted = false;
-    public new static BoneBridgeManager Instance = null;
     private Rigidbody2D rigBody;
 
     private void Update () {
@@ -104,6 +103,7 @@ public class BoneBridgeManager : AbstractGameManager<BoneBridgeManager> {
         yield return new WaitForSeconds (1.0f);
         CreateMonsters ();
         CreatePrize ();
+        timerObject.gameObject.SetActive (true);
         timerObject.timeLimit = GetTimeLimitFromDifficultySetting ();
 
         if (playIntro) {
@@ -240,10 +240,10 @@ public class BoneBridgeManager : AbstractGameManager<BoneBridgeManager> {
         // Create player monster
         monster = currentLevel
             .monsterSpawn.GetComponent<CreateMonster> ()
-            .SpawnMonster (GameManager.Instance.GetPlayerMonsterType());
-        bridgeMonster = monster.transform.parent.gameObject.AddComponent<BoneBridgeMonster> ();
-        bridgeMonster.rigBody = monster.transform.parent.gameObject.GetComponent<Rigidbody2D>();
-        monsterPool.Remove (GameManager.Instance.GetPlayerMonsterType ());
+            .SpawnMonster (GameManager.Instance.GetPlayerMonsterObject());
+        bridgeMonster = monster.transform.gameObject.AddComponent<BoneBridgeMonster> ();
+        bridgeMonster.rigBody = monster.transform.gameObject.GetComponent<Rigidbody2D>();
+        monsterPool.Remove (GameManager.Instance.GetPlayerMonsterObject ());
 
         Transform[] friendSpawns = currentLevel.friendSpawns;
 
@@ -252,7 +252,7 @@ public class BoneBridgeManager : AbstractGameManager<BoneBridgeManager> {
             int randomNumber = Random.Range (0, monsterPool.Count);
             GameObject selectedMonster = monsterPool[randomNumber];
             print (string.Format ("selectedMonster: {0} [{1}] randomNumber: {2} monsterPool.Count: {3}", selectedMonster, i, randomNumber, monsterPool.Count));
-            savedMonsters.Add (selectedMonster.GetComponentInChildren<Monster> ().typeOfMonster);
+            savedMonsters.Add (selectedMonster.GetComponent<Monster> ().typeOfMonster);
             monsterPool.Remove (selectedMonster);
 
             // Move this to Bone Bridge Section
@@ -319,8 +319,6 @@ public class BoneBridgeManager : AbstractGameManager<BoneBridgeManager> {
                 return levelThreeTimeLimit;
         }
     }
-
-    public void AddTime(float timeToAdd) { timerObject.AddTime (timeToAdd); }
 
     public void CreatePrize () {
         Transform prize = currentLevel.prizeSpawn;

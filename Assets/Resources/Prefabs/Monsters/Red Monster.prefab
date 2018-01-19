@@ -19,7 +19,8 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224727481681752484}
-  m_Layer: 5
+  - component: {fileID: 114930974037175278}
+  m_Layer: 15
   m_Name: Red Monster
   m_TagString: Monster
   m_Icon: {fileID: 0}
@@ -34,18 +35,18 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224598215526444962}
-  - component: {fileID: 114501992731748080}
   - component: {fileID: 212949500528184480}
-  - component: {fileID: 61343212521258868}
-  - component: {fileID: 95276295569799180}
-  m_Layer: 5
+  - component: {fileID: 114443691642257414}
+  - component: {fileID: 61728172716890660}
+  - component: {fileID: 95330204069084276}
+  m_Layer: 15
   m_Name: Monster Sprite
   m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!61 &61343212521258868
+--- !u!61 &61728172716890660
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -68,9 +69,9 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4, y: 4}
+  m_Size: {x: 3.3191981, y: 4}
   m_EdgeRadius: 0
---- !u!95 &95276295569799180
+--- !u!95 &95330204069084276
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 1
@@ -82,12 +83,12 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 5cc013b032285864ebeda2df9e332417, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &114501992731748080
+--- !u!114 &114443691642257414
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -95,16 +96,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 1678822761254922}
   m_Enabled: 1
   m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70b263746973719449a20e39ad707fca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 95330204069084276}
+  emotionData: {fileID: 11400000, guid: 113dad1fbdcc90745874f4186c3b11d8, type: 2}
+  monster: {fileID: 114930974037175278}
+  monsterGiggle: {fileID: 8300000, guid: b24e99fa0112142c79cc477b3a50ad46, type: 3}
+--- !u!114 &114930974037175278
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1552179627441006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8981ec17cb1be4848bbc12fc4d4406ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   typeOfMonster: 2
   selectedEmotion: 0
-  emotionData: {fileID: 11400000, guid: 113dad1fbdcc90745874f4186c3b11d8, type: 2}
-  allowMonsterTickle: 1
-  spawnAnimation: 0
-  _idleAnimationOn: 1
-  monsterSfx: {fileID: 8300000, guid: b24e99fa0112142c79cc477b3a50ad46, type: 3}
+  allowMonsterTickle: 0
+  spawnAnimation: 1
+  spriteRenderer: {fileID: 212949500528184480}
+  colliderComponent: {fileID: 61728172716890660}
+  monsterAnimator: {fileID: 114443691642257414}
 --- !u!212 &212949500528184480
 SpriteRenderer:
   m_ObjectHideFlags: 1

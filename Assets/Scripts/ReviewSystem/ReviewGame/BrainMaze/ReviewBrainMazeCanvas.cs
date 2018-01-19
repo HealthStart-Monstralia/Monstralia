@@ -14,7 +14,7 @@ public class ReviewBrainMazeCanvas : Singleton<ReviewBrainMazeCanvas> {
 
 	void Start() {
         // Change monster sprite depending on player choice
-		switch (GameManager.Instance.GetMonsterType ()) {
+		switch (GameManager.Instance.GetPlayerMonsterType ()) {
 		case DataType.MonsterType.Blue:
 			monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Blue];
 				break;

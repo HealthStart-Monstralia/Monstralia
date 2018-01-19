@@ -19,21 +19,13 @@ public class EndScreen : MonoBehaviour {
         stickerButton.SetActive (true);
         brain.SetActive (false);
         SoundManager.Instance.PlayCorrectSFX ();
-        GameObject sticker = Instantiate (GameManager.Instance.GetMinigameData (typeOfGame).stickerPrefab, imageLocation.transform);
-        sticker.transform.localPosition = Vector3.zero;
-        Destroy (sticker.GetComponent<StickerBehaviour> ());
+        if (GameManager.Instance.GetMinigameData (typeOfGame).stickerPrefab) {
+            GameObject sticker = Instantiate (GameManager.Instance.GetMinigameData (typeOfGame).stickerPrefab, imageLocation.transform);
+            sticker.transform.localPosition = Vector3.zero;
+            Destroy (sticker.GetComponent<StickerBehaviour> ());
+        }
         headerText.text = "Congratulations you earned a new sticker!";
         footerText.text = "Tap on the button below to use your new sticker!";
-    }
-
-    public void EarnedSticker (string header, string footer) {
-        stickerButton.SetActive (true);
-        brain.SetActive (false);
-        GameObject sticker = Instantiate (GameManager.Instance.GetMinigameData (typeOfGame).stickerPrefab, imageLocation.transform);
-        sticker.transform.localPosition = Vector3.zero;
-        Destroy (sticker.GetComponent<StickerBehaviour> ());
-        headerText.text = header;
-        footerText.text = footer;
     }
 
     public void CompletedLevel () {
@@ -44,13 +36,6 @@ public class EndScreen : MonoBehaviour {
             + " or play again!";
     }
 
-    public void CompletedLevel (string header, string footer) {
-        stickerButton.SetActive (false);
-        brain.SetActive (true);
-        headerText.text = header;
-        footerText.text = footer;
-    }
-
     public void FailedLevel () {
         stickerButton.SetActive (false);
         brain.SetActive (true);
@@ -59,10 +44,11 @@ public class EndScreen : MonoBehaviour {
             " tap on the play again button to try again";
     }
 
-    public void FailedLevel (string header, string footer) {
-        stickerButton.SetActive (false);
-        brain.SetActive (true);
+    public void EditHeader(string header) {
         headerText.text = header;
+    }
+
+    public void EditFooter (string footer) {
         footerText.text = footer;
     }
 }

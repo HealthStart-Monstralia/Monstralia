@@ -54,7 +54,6 @@ public class BMaze_Manager : AbstractGameManager<BMaze_Manager> {
         if (scoreGoal <= 0) scoreGoal = 1;
 
         UpdateScoreGauge ();
-        typeOfMonster = GameManager.Instance.GetMonsterType ();
 
         timerClock = TimerClock.Instance;
         timerClock.SetTimeLimit (timeLimit);
@@ -74,7 +73,7 @@ public class BMaze_Manager : AbstractGameManager<BMaze_Manager> {
             pickupList.AddRange (assetList[level].pickups);
             scoreGoal = pickupList.Count;
 
-            monsterObject = CreateMonster ();
+            CreateMonster ();
             scoreGauge.gameObject.SetActive (true);
             timerClock.gameObject.SetActive (true);
             StartCountdown (GameStart);
@@ -104,7 +103,7 @@ public class BMaze_Manager : AbstractGameManager<BMaze_Manager> {
 		yield return new WaitForSeconds(tutorial1.length);
 		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
 
-		monsterObject = CreateMonster ();
+		CreateMonster ();
         inputAllowed = false;
 
         SoundManager.Instance.PlayVoiceOverClip (tutorial2);
@@ -116,9 +115,9 @@ public class BMaze_Manager : AbstractGameManager<BMaze_Manager> {
         tutorialHand.SetActive (true);
 		tutorialHand.GetComponent<Animator> ().Play ("BMaze_HandMoveMonster");
 		yield return new WaitForSeconds(1.5f);
-		monsterObject.transform.SetParent (tutorialHand.transform);
+		playerMonster.transform.SetParent (tutorialHand.transform);
 		yield return new WaitForSeconds(1.5f);
-		monsterObject.transform.SetParent (null);
+        playerMonster.transform.SetParent (null);
         yield return new WaitForSeconds (1.5f);
 
         ShowSubtitle ("Now you try!");
@@ -128,7 +127,7 @@ public class BMaze_Manager : AbstractGameManager<BMaze_Manager> {
 
         ResetScore ();
         GameObject startingLocation = selectedAsset.GetStartLocation();
-		monsterObject.transform.position = GetStartingLocationVector (startingLocation);
+        playerMonster.transform.position = GetStartingLocationVector (startingLocation);
         tutorialPickup.SetActive (true);
         inputAllowed = true;
 
@@ -240,54 +239,22 @@ public class BMaze_Manager : AbstractGameManager<BMaze_Manager> {
 			0f);
 	}
 
-	GameObject CreateMonster() {
+	void CreateMonster() {
         GameObject startingLocation = selectedAsset.GetStartLocation();
+        CreatePlayerMonster (startingLocation.transform);
+        SetScaleMonster (playerMonster.transform);
+        playerMonster.transform.SetParent (startingLocation.transform.root);
+        playerMonster.transform.gameObject.AddComponent<BMaze_Monster> ();
+        playerMonster.transform.gameObject.AddComponent<BMaze_MonsterMovement> ();
+    }
 
-		Vector3 monsterPosition = GetStartingLocationVector (startingLocation);
-		
-		Quaternion monsterRotation = startingLocation.transform.rotation;
-
-		switch (typeOfMonster) {
-		    case DataType.MonsterType.Blue:
-			    monsterObject = Instantiate (
-				    monsterList [0], 
-				    monsterPosition,
-				    monsterRotation) as GameObject;
-			    ScaleMonster ();
-                monsterObject.GetComponent<BMaze_Monster> ().PlaySpawn ();
-                return monsterObject;
-		    case DataType.MonsterType.Green:
-			    monsterObject = Instantiate (
-				    monsterList [1], 
-				    monsterPosition,
-				    monsterRotation) as GameObject;
-			    ScaleMonster ();
-                monsterObject.GetComponent<BMaze_Monster> ().PlaySpawn ();
-                return monsterObject;
-                case DataType.MonsterType.Red:
-		    monsterObject = Instantiate (
-				    monsterList [2], 
-				    monsterPosition,
-				    monsterRotation) as GameObject;
-			    ScaleMonster ();
-                monsterObject.GetComponent<BMaze_Monster> ().PlaySpawn ();
-                return monsterObject;
-		    case DataType.MonsterType.Yellow:
-			    monsterObject = Instantiate (
-				    monsterList [3], 
-				    monsterPosition,
-				    monsterRotation) as GameObject;
-			    ScaleMonster ();
-                monsterObject.GetComponent<BMaze_Monster> ().PlaySpawn ();
-                return monsterObject;
-            default:
-                return null;
-		}
-	}
-
-	void ScaleMonster() {
-		monsterObject.transform.localScale = new Vector3(monsterScale[level], monsterScale[level], monsterScale[level]);
-		monsterObject.GetComponent<CircleCollider2D> ().radius = (monsterScale[level] * 4);
+	void SetScaleMonster(Transform monsterTransform) {
+        monsterTransform.localScale = new Vector3(monsterScale[level], monsterScale[level], monsterScale[level]);
+        if (monsterTransform.GetComponent<Collider2D>()) {
+            monsterTransform.GetComponent<Collider2D> ().enabled = false;
+        }
+        monsterTransform.gameObject.AddComponent<CircleCollider2D> ().radius = (monsterScale[level] * 4);
+        //monsterTransform.GetComponent<CircleCollider2D> ().radius = (monsterScale[level] * 4);
 	}
 
 	public GameObject GetMonster() {

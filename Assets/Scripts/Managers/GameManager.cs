@@ -9,7 +9,7 @@ public class GameManager : SingletonPersistent<GameManager> {
     private Dictionary<DataType.Minigame, MinigameData> minigameDictionary;
     private Dictionary<DataType.IslandSection, bool> visitedAreas;
 
-    private DataType.MonsterType monsterType;
+    private DataType.MonsterType playerMonsterType;
     private MinigameData[] minigameAssetData;   // Loaded from InitializeDictionaryEntries()
     private DataType.Minigame lastGamePlayed;
     private DataType.IslandSection currentSection;
@@ -170,16 +170,16 @@ public class GameManager : SingletonPersistent<GameManager> {
         }
     }
 
-    public void SetMonsterType (DataType.MonsterType monster) {
-        monsterType = monster;
+    public void SetPlayerMonsterType (DataType.MonsterType monster) {
+        playerMonsterType = monster;
     }
 
-    public DataType.MonsterType GetMonsterType () {
-        return monsterType;
+    public DataType.MonsterType GetPlayerMonsterType () {
+        return playerMonsterType;
     }
 
-    public GameObject GetPlayerMonsterType () {
-        return GetMonsterObject (monsterType);
+    public GameObject GetPlayerMonsterObject () {
+        return GetMonsterObject (playerMonsterType);
     }
 
     public GameObject GetMonsterObject (DataType.MonsterType typeOfMonster) {
@@ -193,7 +193,7 @@ public class GameManager : SingletonPersistent<GameManager> {
             case DataType.MonsterType.Yellow:
                 return yellowMonster;
             default:
-                return greenMonster;
+                return blueMonster;
         }
     }
 
@@ -276,29 +276,6 @@ public class GameManager : SingletonPersistent<GameManager> {
 
     public bool SetVisitedArea (DataType.IslandSection island, bool isVisited) {
         return visitedAreas[island] = isVisited;
-    }
-
-    public EndScreen CreateEndScreen(DataType.Minigame game, DataType.GameEnd type) {
-        print ("Created End Screen of type: " + type);
-        EndScreen screen = Instantiate (endingScreenPrefab).GetComponent<EndScreen> ();
-        screen.typeOfGame = game;
-        screen.typeOfScreen = type;
-
-        switch (type) {
-            case DataType.GameEnd.EarnedSticker:
-                screen.EarnedSticker ();
-                break;
-            case DataType.GameEnd.CompletedLevel:
-                screen.CompletedLevel ();
-                break;
-            case DataType.GameEnd.FailedLevel:
-                screen.FailedLevel ();
-                break;
-            default:
-                break;
-        }
-
-        return screen;
     }
 
     public int GetNumOfGamesCompleted() {

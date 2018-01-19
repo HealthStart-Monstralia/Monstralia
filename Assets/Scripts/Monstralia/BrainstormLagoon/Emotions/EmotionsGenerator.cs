@@ -23,7 +23,7 @@ public class EmotionsGenerator : MonoBehaviour {
     private int slots;
 
     private void Awake () {
-        typeOfMonster = GameManager.Instance.GetMonsterType ();
+        typeOfMonster = GameManager.Instance.GetPlayerMonsterType ();
         difficultyLevel = GameManager.Instance.GetLevel (DataType.Minigame.MonsterEmotions);
         slots = difficultyLevel + 1;
     }
@@ -183,16 +183,16 @@ public class EmotionsGenerator : MonoBehaviour {
 
     public void CreateMonster() {
         Vector2 pos = EmotionsGameManager.Instance.monsterLocation.position;
-        monster = Instantiate(GameManager.Instance.GetPlayerMonsterType (), pos, Quaternion.identity);
+        monster = Instantiate(GameManager.Instance.GetPlayerMonsterObject (), pos, Quaternion.identity);
         monster.transform.position = pos;
         monster.transform.localScale = new Vector3 (0.8f, 0.8f, 0.8f);
         monster.gameObject.AddComponent<Animator> ();
-        monster.GetComponentInChildren<Monster> ().idleAnimationOn = false;
-        monster.GetComponentInChildren<Monster> ().allowMonsterTickle = false;
+        monster.GetComponent<Monster> ().IdleAnimationOn = false;
+        monster.GetComponent<Monster> ().allowMonsterTickle = false;
     }
 
     public void ChangeMonsterEmotion (DataType.MonsterEmotions emo) {
-        monster.GetComponentInChildren<Monster> ().ChangeEmotions (emo);
+        monster.GetComponent<Monster> ().ChangeEmotions (emo);
     }
 
 }
