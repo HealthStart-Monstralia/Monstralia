@@ -12,6 +12,8 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
     public SensesFireworksSystem fireworksSystem;
     [HideInInspector] public bool hasGameStarted;
     [HideInInspector] public int score;
+    public delegate void GameStart ();
+    public static event GameStart OnGameStartEvent;
 
     [Header ("Audio Clips")]
     [Tooltip ("Drag and drop the appropriate audio files to the appropriate function.")]

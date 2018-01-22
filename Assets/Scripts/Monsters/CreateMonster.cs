@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CreateMonster : MonoBehaviour {
+    public DataType.MonsterType typeToSpawn;
     public bool spawnMonsterOnStart = false;
+    public bool selectPlayerMonsterToSpawn = false;
     public bool allowMonsterTickle = false;
     public bool idleAnimationOn = false;
     public bool addRigidbody = false;
@@ -18,45 +20,51 @@ public class CreateMonster : MonoBehaviour {
 
     private void Start () {
         if (spawnMonsterOnStart) {
-            SpawnMonster (GameManager.Instance.GetPlayerMonsterObject ());
+            if (selectPlayerMonsterToSpawn) {
+                SpawnPlayerMonster ();
+            } else {
+                SpawnMonster (typeToSpawn);
+            }
             print ("Spawning monster on start from: " + gameObject);
         };
     }
 
-    public Monster SpawnPlayerMonster () {
-        if (!spawnPosition)
-            spawnPosition = transform;
-        return Spawn (GameManager.Instance.GetPlayerMonsterObject());
-    }
-
-    public Monster SpawnPlayerMonster (Transform spot) {
-        spawnPosition = spot;
-        return Spawn (GameManager.Instance.GetPlayerMonsterObject ());
+    // Spawn Monster overloads
+    // Uses typeToSpawn to decide which monster to spawn
+    public Monster SpawnMonster () {
+        return SpawnMonster (GameManager.Instance.GetMonsterObject (typeToSpawn), spawnPosition);
     }
 
     public Monster SpawnMonster (DataType.MonsterType monsterType) {
-        if (!spawnPosition)
-            spawnPosition = transform;
-        GameObject monsterObject = GameManager.Instance.GetMonsterObject (monsterType);
-        return Spawn (monsterObject);
-    }
-
-    public Monster SpawnMonster (DataType.MonsterType monsterType, Transform spot) {
-        if (!spawnPosition)
-            spawnPosition = transform;
-        GameObject monsterObject = GameManager.Instance.GetMonsterObject (monsterType);
-        return Spawn (monsterObject);
+        return SpawnMonster (GameManager.Instance.GetMonsterObject (monsterType), spawnPosition);
     }
 
     public Monster SpawnMonster (GameObject monsterObject) {
-        if (!spawnPosition)
-            spawnPosition = transform;
-        return Spawn (monsterObject);
+        return SpawnMonster (monsterObject, spawnPosition);
+    }
+
+    public Monster SpawnMonster (DataType.MonsterType monsterType, Transform spot) {
+        spawnPosition = spot;
+        return SpawnMonster (GameManager.Instance.GetMonsterObject (monsterType), spawnPosition);
     }
 
     public Monster SpawnMonster(GameObject monsterObject, Transform spot) {
         spawnPosition = spot;
+        if (!spawnPosition)
+            spawnPosition = transform;
         return Spawn (monsterObject);
+    }
+
+    // Spawn Player Monster overloads
+    public Monster SpawnPlayerMonster () {
+        return SpawnPlayerMonster (spawnPosition);
+    }
+
+    public Monster SpawnPlayerMonster (Transform spot) {
+        spawnPosition = spot;
+        if (!spawnPosition)
+            spawnPosition = transform;
+        return Spawn (GameManager.Instance.GetPlayerMonsterObject ());
     }
 
     private Monster Spawn(GameObject monsterObject) {

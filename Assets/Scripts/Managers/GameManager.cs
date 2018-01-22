@@ -177,7 +177,7 @@ public class GameManager : SingletonPersistent<GameManager> {
     public DataType.MonsterType GetPlayerMonsterType () {
         return playerMonsterType;
     }
-
+    
     public GameObject GetPlayerMonsterObject () {
         return GetMonsterObject (playerMonsterType);
     }
@@ -195,6 +195,24 @@ public class GameManager : SingletonPersistent<GameManager> {
             default:
                 return blueMonster;
         }
+    }
+
+    public GameObject[] GetMonstersInArray () {
+        GameObject[] monsterGroup = new GameObject[Constants.NUM_OF_MONSTERS];
+        for (int i = 0; i < Constants.NUM_OF_MONSTERS; i++) {
+            monsterGroup[i] = GetMonsterObject ((DataType.MonsterType)i);
+        }
+
+        return monsterGroup;
+    }
+
+    public List<GameObject> GetMonstersInList () {
+        List<GameObject> monsterList = new List<GameObject>(Constants.NUM_OF_MONSTERS);
+        for (int i = 0; i < Constants.NUM_OF_MONSTERS; i++) {
+            monsterList.Add(GetMonsterObject ( (DataType.MonsterType)i ) );
+        }
+
+        return monsterList;
     }
 
     public int GetLevel (DataType.Minigame gameName) {

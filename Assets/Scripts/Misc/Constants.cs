@@ -6,4 +6,5 @@ using UnityEngine;
 public static class Constants {
     public const int NUM_OF_SFXSOURCES = 8;
     public const int NUM_OF_SENSES = 5;
+    public const int NUM_OF_MONSTERS = 4;
 }

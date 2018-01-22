@@ -329,7 +329,7 @@ Transform:
   - {fileID: 934287226}
   - {fileID: 274941977}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &231101603
 GameObject:
@@ -457,7 +457,7 @@ RectTransform:
   - {fileID: 1665644341}
   - {fileID: 108262020}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -504,7 +504,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c8f4c2d7c22bd41b1368f61d66ffc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typeToSpawn: 0
   spawnMonsterOnStart: 0
+  selectPlayerMonsterToSpawn: 0
   allowMonsterTickle: 0
   idleAnimationOn: 0
   addRigidbody: 0
@@ -851,7 +853,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4078996590943060, guid: 8bd65d8284338464083a6a1dd41b7817, type: 2}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8bd65d8284338464083a6a1dd41b7817, type: 2}
@@ -1097,9 +1099,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeOfGame: 4
-  typeOfMonster: 0
   randomizeMusic: 1
   backgroundMusicArray: []
+  playerMonster: {fileID: 0}
+  monsterCreator: {fileID: 0}
   skipTutorial: 0
   voData: {fileID: 11400000, guid: a20f80c44f1634f4ebfd21c812c2c4aa, type: 2}
   levelOne: {fileID: 1920319228}
@@ -1227,7 +1230,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -219.8}
+  m_AnchoredPosition: {x: 0, y: -94.40195}
   m_SizeDelta: {x: 466, y: 208}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &884254379
@@ -2128,7 +2131,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 459380, guid: f0dc9094486b54cde866a940d24c8363, type: 2}
       propertyPath: m_RootOrder
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f0dc9094486b54cde866a940d24c8363, type: 2}
@@ -2232,7 +2235,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c8f4c2d7c22bd41b1368f61d66ffc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typeToSpawn: 0
   spawnMonsterOnStart: 0
+  selectPlayerMonsterToSpawn: 0
   allowMonsterTickle: 0
   idleAnimationOn: 0
   addRigidbody: 0
@@ -2483,6 +2488,65 @@ RectTransform:
   m_PrefabParentObject: {fileID: 224783964808245912, guid: fd04754ed0685aa40ae678b07706b495,
     type: 2}
   m_PrefabInternal: {fileID: 1920619060}
+--- !u!1 &1766354695
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1196964483300838, guid: 2184dc0b3c5d23947b4548055442060d,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1766354696}
+  - component: {fileID: 1766354697}
+  m_Layer: 5
+  m_Name: Player Monster Spawn
+  m_TagString: Untagged
+  m_Icon: {fileID: -982381405332843317, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1766354696
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 224567306321852168, guid: 2184dc0b3c5d23947b4548055442060d,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1766354695}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -3.4162664}
+  m_SizeDelta: {x: 5, y: 5}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1766354697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1766354695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c8f4c2d7c22bd41b1368f61d66ffc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeToSpawn: 0
+  spawnMonsterOnStart: 1
+  selectPlayerMonsterToSpawn: 1
+  allowMonsterTickle: 0
+  idleAnimationOn: 0
+  addRigidbody: 0
+  replaceBoxCollider: 0
+  playSpawnAnimation: 0
+  scale: {x: 0.8, y: 0.8, z: 1}
+  spawnPosition: {fileID: 0}
+  monsterMass: 1.5
+  rigBody: {fileID: 0}
 --- !u!1 &1790930441
 GameObject:
   m_ObjectHideFlags: 0
@@ -2737,7 +2801,7 @@ Transform:
   - {fileID: 1291547613}
   - {fileID: 1409335639}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1920619060
 Prefab:
@@ -3164,7 +3228,7 @@ Prefab:
     - target: {fileID: 224876366615609656, guid: 92f9f41badd084340877349a1aaf125b,
         type: 2}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 224876366615609656, guid: 92f9f41badd084340877349a1aaf125b,
         type: 2}

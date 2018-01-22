@@ -15,18 +15,18 @@ public class ReviewBrainMazeCanvas : Singleton<ReviewBrainMazeCanvas> {
 	void Start() {
         // Change monster sprite depending on player choice
 		switch (GameManager.Instance.GetPlayerMonsterType ()) {
-		case DataType.MonsterType.Blue:
-			monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Blue];
-				break;
-		case DataType.MonsterType.Green:
-		monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Green];
-			break;
-		case DataType.MonsterType.Red:
-		monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Red];
-			break;
-		case DataType.MonsterType.Yellow:
-		monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Yellow];
-			break;
+		    case DataType.MonsterType.Blue:
+			    monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Blue];
+				    break;
+		    case DataType.MonsterType.Green:
+		    monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Green];
+			    break;
+		    case DataType.MonsterType.Red:
+		    monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Red];
+			    break;
+		    case DataType.MonsterType.Yellow:
+		    monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Yellow];
+			    break;
 		}
 		PrepareReview ();
 	}
