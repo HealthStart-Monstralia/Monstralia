@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SensesFactory : MonoBehaviour {
-    [SerializeField] private GameObject[] sensesPrefabs;
+    public GameObject[] sensesPrefabs;
 
     public GameObject SelectRandomPrefab() {
         return sensesPrefabs.GetRandomItem();

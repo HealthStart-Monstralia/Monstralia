@@ -52,7 +52,6 @@ public class TimerClock : Singleton<TimerClock> {
         while (isTiming) {
             yield return new WaitForSeconds (seconds);
             if (isTiming) {
-                float timePercentage = TimeRemaining / timeLimit;
                 if (TimeRemaining >= 0f) {
                     TimeRemaining -= seconds;
                     if (!isTimeLow && timeRemaining < timeLimit * 0.25f) {

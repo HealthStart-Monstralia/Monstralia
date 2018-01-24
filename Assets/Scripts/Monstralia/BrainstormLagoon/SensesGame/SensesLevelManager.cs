@@ -18,6 +18,7 @@ public class SensesLevelManager : MonoBehaviour {
     [SerializeField] private Text commentText;
     [SerializeField] private string[] correctLines;
     [SerializeField] private string[] wrongLines;
+    [SerializeField] private string itemDirectory;
     private bool isCommentHiding = false;
     private Coroutine commentCoroutine;
     private DataType.Senses selectedSense;
@@ -28,6 +29,7 @@ public class SensesLevelManager : MonoBehaviour {
             senseList.Add (sense);
         }
         senseList.Remove (DataType.Senses.NONE);
+        senseFactory.sensesPrefabs = Resources.LoadAll<GameObject> (itemDirectory);
     }
 
     public void SetupGame() {

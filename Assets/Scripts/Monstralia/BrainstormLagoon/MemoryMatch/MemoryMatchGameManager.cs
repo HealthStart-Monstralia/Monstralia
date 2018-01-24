@@ -232,7 +232,7 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
 
 	GameObject SpawnFood(GameObject foodObject, Transform spawnPos, Transform parent, float scale, bool needAnchor) {
 		GameObject newFood = Instantiate(foodObject);
-		newFood.name = foodObject.name;
+		newFood.name = foodObject.GetComponent<Food>().foodName;
 		newFood.GetComponent<Food>().Spawn(spawnPos, parent, scale);
 
         if (needAnchor) {

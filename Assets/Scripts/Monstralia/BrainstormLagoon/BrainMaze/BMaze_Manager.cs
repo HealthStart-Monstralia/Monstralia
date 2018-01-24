@@ -27,7 +27,6 @@ public class BMaze_Manager : AbstractGameManager<BMaze_Manager> {
     [HideInInspector] public bool isTutorialRunning = false;
 
     [SerializeField] private List<BMaze_Pickup> pickupList = new List<BMaze_Pickup> ();
-    private GameObject monsterObject;
     private int level = 0;
 	private static bool gameStarted = false;
 	private Coroutine tutorialCoroutine;
@@ -59,7 +58,7 @@ public class BMaze_Manager : AbstractGameManager<BMaze_Manager> {
         timerClock.SetTimeLimit (timeLimit);
         pickupList.Clear ();
         ResetScore ();
-        if (monsterObject)
+        if (playerMonster)
             RemoveMonster ();
 
         if (GameManager.Instance.GetPendingTutorial (DataType.Minigame.BrainMaze)) {
@@ -257,12 +256,12 @@ public class BMaze_Manager : AbstractGameManager<BMaze_Manager> {
         //monsterTransform.GetComponent<CircleCollider2D> ().radius = (monsterScale[level] * 4);
 	}
 
-	public GameObject GetMonster() {
-		return monsterObject;
+	public GameObject GetMonsterObject() {
+		return playerMonster.gameObject;
 	}
 
 	public void RemoveMonster() {
-		Destroy(monsterObject);
+		Destroy(playerMonster);
 	}
 
 	public void UnlockDoor () {

@@ -13,7 +13,9 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
     [HideInInspector] public bool hasGameStarted;
     [HideInInspector] public int score;
     public delegate void GameStart ();
+    public delegate void GameEnd ();
     public static event GameStart OnGameStartEvent;
+    public static event GameStart OnGameEndEvent;
 
     [Header ("Audio Clips")]
     [Tooltip ("Drag and drop the appropriate audio files to the appropriate function.")]
@@ -31,8 +33,7 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
     private bool isInputAllowed;
 
     [Header ("References")]
-    [SerializeField] private GameObject playButton;
-    [SerializeField] private GameObject welcomeObject;
+    [SerializeField] private GameObject introCanvas;
     [SerializeField] private ScoreGauge scoreGauge;
     [SerializeField] private TimerClock timerClock;
     [SerializeField] private GameObject sensePanel;
@@ -73,8 +74,7 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
     }
 
     public void StartLevel() {
-        welcomeObject.SetActive (false);
-        playButton.SetActive (false);
+        introCanvas.SetActive (false);
         SoundManager.Instance.PlaySFXClip (introChime);
         GetLevelConfig ().SetupGame ();
     }
@@ -83,12 +83,16 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
         hasGameStarted = true;
         IsInputAllowed = true;
         timerClock.StartTimer ();
+        if (OnGameStartEvent != null)
+            OnGameStartEvent ();
     }
 
     public void OnGameEnd () {
         hasGameStarted = false;
         IsInputAllowed = false;
         timerClock.StopTimer ();
+        if (OnGameEndEvent != null)
+            OnGameEndEvent ();
         StartCoroutine (GameOverSequence ());
     }
 
@@ -176,4 +180,6 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
                 return levelOne;
         }
     }
+
+
 }

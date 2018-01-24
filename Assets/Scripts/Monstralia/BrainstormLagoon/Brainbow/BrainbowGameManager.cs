@@ -212,7 +212,7 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
         GameObject newFood = foodPanel.CreateItemAtSlot (foods[randomIndex], spawnPos);
 
         // Name the created food item and give it a BrainbowFoodItem component
-        newFood.name = foods[randomIndex].name;
+        newFood.name = foods[randomIndex].GetComponent<Food> ().foodName;
 		newFood.AddComponent<BrainbowFoodItem> ();
 		newFood.GetComponent<Food>().Spawn(spawnPos, spawnPos, foodScale);
 
