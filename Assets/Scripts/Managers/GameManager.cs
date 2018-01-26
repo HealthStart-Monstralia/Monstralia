@@ -91,7 +91,8 @@ public class GameManager : SingletonPersistent<GameManager> {
             // Set needReview to true when lvl 3 is completed every other time, temporary measure to reduce annoying reviews
             if (newStats.stars >= 3) {
                 if (activateReview) {
-                    ReviewManager.Instance.NeedReview = true;
+                    if (ReviewManager.Instance)
+                        ReviewManager.Instance.NeedReview = true;
                 }
                 activateReview = !activateReview;
             }

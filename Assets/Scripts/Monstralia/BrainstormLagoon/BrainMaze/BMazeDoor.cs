@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BMaze_Door : MonoBehaviour {
+public class BMazeDoor : MonoBehaviour {
     [SerializeField] private AudioClip unlockClip;
 
 	public void OpenDoor() {

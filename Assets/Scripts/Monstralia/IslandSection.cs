@@ -34,7 +34,7 @@ public class IslandSection : MonoBehaviour {
     void CreateMonsterOnMap() {
         GameObject monsterObject = GameManager.Instance.GetPlayerMonsterObject ();
         monster = Instantiate (monsterObject, monsterLocation.transform).GetComponent<Monster>();
-        monster.allowMonsterTickle = true;
+        monster.AllowMonsterTickle = true;
         monster.IdleAnimationOn = true;
     }
 }

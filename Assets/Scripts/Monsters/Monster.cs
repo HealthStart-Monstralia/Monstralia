@@ -7,10 +7,19 @@ public class Monster : MonoBehaviour {
 
     public DataType.MonsterType typeOfMonster;
     public DataType.MonsterEmotions selectedEmotion;
-    public bool allowMonsterTickle, spawnAnimation;
+    public bool spawnAnimation;
     public SpriteRenderer spriteRenderer;
     public Collider2D colliderComponent;
     public MonsterAnimations monsterAnimator;
+    public bool AllowMonsterTickle {
+        get {
+            return monsterAnimator.allowMonsterTickle;
+        }
+        set {
+            monsterAnimator.allowMonsterTickle = value;
+        }
+    }
+
     public bool IdleAnimationOn {
         get {
             return monsterAnimator.IdleAnimationOn;
@@ -22,18 +31,11 @@ public class Monster : MonoBehaviour {
 
     void Awake () {
         if (spawnAnimation) monsterAnimator.PlaySpawnAnimation ();
+        monsterAnimator.allowMonsterTickle = AllowMonsterTickle;
     }
 
     public void ChangeEmotions (DataType.MonsterEmotions emotionToChangeTo) {
         monsterAnimator.ChangeEmotions (emotionToChangeTo);
-    }
-
-    void OnMouseDown () {
-        if (allowMonsterTickle) {
-            if (!ParentPage.Instance) {
-                monsterAnimator.animator.Play ("Giggle", -1, 0f);
-            }
-        }
     }
 
 }

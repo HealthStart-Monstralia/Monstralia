@@ -509,7 +509,6 @@ MonoBehaviour:
   - That's not right.
   - Try another one.
   - I don't think so, try again.
-  itemDirectory: Prefabs/Brainstorm Lagoon/MonsterSenses/Sense Items
 --- !u!4 &166982316
 Transform:
   m_ObjectHideFlags: 0
@@ -1361,7 +1360,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 630.9946}
-  m_SizeDelta: {x: 512, y: 62.099976}
+  m_SizeDelta: {x: 667.9, y: 62.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &549095396
 MonoBehaviour:
@@ -1409,7 +1408,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: KNOW THE FIVE SENSES
+  m_Text: LET'S LEARN THE FIVE SENSES
 --- !u!222 &549095398
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1443,7 +1442,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e6711ccc0dda084f9cce66bfd901396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensesPrefabs: []
+  prefabPath: Brainstorm Lagoon/MonsterSenses/Sense Items
+  pickupPrefabList: []
+  scale: {x: 0.4, y: 0.4, z: 0.4}
 --- !u!4 &557897097
 Transform:
   m_ObjectHideFlags: 0
@@ -1484,7 +1485,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e6711ccc0dda084f9cce66bfd901396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensesPrefabs: []
+  prefabPath: Brainstorm Lagoon/MonsterSenses/Sense Items
+  pickupPrefabList: []
+  scale: {x: 0.4, y: 0.4, z: 0.4}
 --- !u!4 &592291537
 Transform:
   m_ObjectHideFlags: 0
@@ -1842,7 +1845,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeOfGame: 4
   randomizeMusic: 1
-  backgroundMusicArray: []
+  backgroundMusicArray:
+  - {fileID: 8300000, guid: 8e038355eb8874c4f840d00addb9c7be, type: 3}
+  - {fileID: 8300000, guid: b64dda38d7801594eae4be7b16551529, type: 3}
+  - {fileID: 8300000, guid: 08d54f33f870ae247ba0d95dd54cfe60, type: 3}
   playerMonster: {fileID: 0}
   monsterCreator: {fileID: 0}
   skipTutorial: 0
@@ -3465,7 +3471,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e6711ccc0dda084f9cce66bfd901396, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensesPrefabs: []
+  prefabPath: Brainstorm Lagoon/MonsterSenses/Sense Items
+  pickupPrefabList: []
+  scale: {x: 0.4, y: 0.4, z: 0.4}
 --- !u!4 &1404075270
 Transform:
   m_ObjectHideFlags: 0
@@ -4261,7 +4269,6 @@ MonoBehaviour:
   - That's not right.
   - Try another one.
   - I don't think so, try again.
-  itemDirectory: Prefabs/Brainstorm Lagoon/MonsterSenses/Sense Items
 --- !u!4 &1793134487
 Transform:
   m_ObjectHideFlags: 0
@@ -4455,7 +4462,6 @@ MonoBehaviour:
   - That's not right.
   - Try another one.
   - I don't think so, try again.
-  itemDirectory: Prefabs/Brainstorm Lagoon/MonsterSenses/Sense Items
 --- !u!4 &1920319229
 Transform:
   m_ObjectHideFlags: 0
@@ -4529,12 +4535,12 @@ Prefab:
     - target: {fileID: 224783964808245912, guid: fd04754ed0685aa40ae678b07706b495,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 142
+      value: 101
       objectReference: {fileID: 0}
     - target: {fileID: 224783964808245912, guid: fd04754ed0685aa40ae678b07706b495,
         type: 2}
       propertyPath: m_SizeDelta.x
-      value: 589.4
+      value: 714.1
       objectReference: {fileID: 0}
     - target: {fileID: 224783964808245912, guid: fd04754ed0685aa40ae678b07706b495,
         type: 2}
@@ -4584,7 +4590,7 @@ Prefab:
     - target: {fileID: 224088039831999498, guid: fd04754ed0685aa40ae678b07706b495,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 66.94
+      value: 79.409996
       objectReference: {fileID: 0}
     - target: {fileID: 224088039831999498, guid: fd04754ed0685aa40ae678b07706b495,
         type: 2}
@@ -4604,7 +4610,7 @@ Prefab:
     - target: {fileID: 224824680495665122, guid: fd04754ed0685aa40ae678b07706b495,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 180.82
+      value: 218.22998
       objectReference: {fileID: 0}
     - target: {fileID: 224824680495665122, guid: fd04754ed0685aa40ae678b07706b495,
         type: 2}
@@ -4624,7 +4630,7 @@ Prefab:
     - target: {fileID: 224063206822066690, guid: fd04754ed0685aa40ae678b07706b495,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 294.7
+      value: 357.05
       objectReference: {fileID: 0}
     - target: {fileID: 224063206822066690, guid: fd04754ed0685aa40ae678b07706b495,
         type: 2}
@@ -4644,7 +4650,7 @@ Prefab:
     - target: {fileID: 224088397753110106, guid: fd04754ed0685aa40ae678b07706b495,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 408.58002
+      value: 495.86996
       objectReference: {fileID: 0}
     - target: {fileID: 224088397753110106, guid: fd04754ed0685aa40ae678b07706b495,
         type: 2}
@@ -4664,7 +4670,7 @@ Prefab:
     - target: {fileID: 224193049084207480, guid: fd04754ed0685aa40ae678b07706b495,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 522.46
+      value: 634.68994
       objectReference: {fileID: 0}
     - target: {fileID: 224193049084207480, guid: fd04754ed0685aa40ae678b07706b495,
         type: 2}

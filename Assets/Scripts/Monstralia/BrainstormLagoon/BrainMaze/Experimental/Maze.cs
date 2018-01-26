@@ -38,12 +38,6 @@ public class Maze : Singleton<Maze> {
         pickupList = new List<MazePickup> (pickupPrefab);
     }
 
-    /*
-    private void OnDestroy () {
-        instance = null;
-    }
-    */
-
     public void OnPickup(MazePickup pickup) {
         numOfPickups--;
         if (numOfPickups <= 0) {
@@ -85,12 +79,12 @@ public class Maze : Singleton<Maze> {
         monsterSpawn.allowMonsterTickle = false;
         monsterSpawn.idleAnimationOn = false;
         Monster monster = monsterSpawn.SpawnMonster (GameManager.Instance.GetMonsterObject(DataType.MonsterType.Blue));
-        monster.transform.parent.gameObject.AddComponent<BMaze_Monster> ();
-        monster.transform.parent.gameObject.AddComponent<BMaze_MonsterMovement> ();
+        monster.transform.parent.gameObject.AddComponent<BMazeMonster> ();
+        monster.transform.parent.gameObject.AddComponent<BMazeMonsterMovement> ();
         monster.transform.parent.localScale = Vector3.one*0.1f;
 
-        transform.position = new Vector3 (0.75f, 0.5f, 0f);
-        transform.localScale = transform.localScale * 1.5f;
+        //transform.position = new Vector3 (0.75f, 0.5f, 0f);
+        //transform.localScale = transform.localScale * 1.5f;
     }
 
     public void FixedUpdate () {

@@ -70,7 +70,7 @@ public class CreateMonster : MonoBehaviour {
     private Monster Spawn(GameObject monsterObject) {
         Monster monster = Instantiate (monsterObject, spawnPosition.parent).GetComponent<Monster> ();
         monster.transform.position = spawnPosition.position;
-        monster.allowMonsterTickle = allowMonsterTickle;
+        monster.AllowMonsterTickle = allowMonsterTickle;
         monster.IdleAnimationOn = idleAnimationOn;
         monster.transform.localScale = scale;
 

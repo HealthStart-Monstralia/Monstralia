@@ -188,7 +188,7 @@ public class EmotionsGenerator : MonoBehaviour {
         monster.transform.localScale = new Vector3 (0.8f, 0.8f, 0.8f);
         monster.gameObject.AddComponent<Animator> ();
         monster.GetComponent<Monster> ().IdleAnimationOn = false;
-        monster.GetComponent<Monster> ().allowMonsterTickle = false;
+        monster.GetComponent<Monster> ().AllowMonsterTickle = false;
     }
 
     public void ChangeMonsterEmotion (DataType.MonsterEmotions emo) {

@@ -17,16 +17,11 @@ public class SensesLevelManager : MonoBehaviour {
     [SerializeField] private Text commentText;
     [SerializeField] private string[] correctLines;
     [SerializeField] private string[] wrongLines;
-    [SerializeField] private string itemDirectory;
 
     private bool isCommentHiding = false;
     private Coroutine commentCoroutine;
     private DataType.Senses selectedSense;
     private GameObject selectedObject;
-
-    private void Awake () {
-        senseFactory.sensesPrefabs.AddRange (Resources.LoadAll<GameObject> (itemDirectory));
-    }
 
     public void SetupGame() {
         StopAllCoroutines ();
@@ -67,7 +62,11 @@ public class SensesLevelManager : MonoBehaviour {
         ResetComment (commentText);
 
         Destroy (selectedObject);
-        selectedObject = senseFactory.ManufactureRandomPrefab ();
+
+        // Tell factory to instantiate a random prefab and remove it from the list to prevent duplicates
+        selectedObject = senseFactory.ManufactureRandomAndRemove ();
+
+        // Select a random valid sense to ask the player
         selectedSense = SelectRandomSense (selectedObject.GetComponent<SensesItem>());
         senseText.text = string.Format ("What do I use to {0} the {1}?", selectedSense.ToString ().ToLower(), selectedObject.name);
     }

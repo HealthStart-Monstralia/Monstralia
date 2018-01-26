@@ -83,7 +83,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 5cc013b032285864ebeda2df9e332417, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 95659152413841176}
   emotionData: {fileID: 11400000, guid: 2bfc31fa1eb8f084199039ed1e538e48, type: 2}
+  allowMonsterTickle: 0
   monster: {fileID: 114827328389874058}
   monsterGiggle: {fileID: 8300000, guid: b24e99fa0112142c79cc477b3a50ad46, type: 3}
 --- !u!114 &114827328389874058

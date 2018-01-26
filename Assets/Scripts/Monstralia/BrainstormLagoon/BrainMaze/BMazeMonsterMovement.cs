@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using System.Collections;
 
-public class BMaze_MonsterMovement : MonoBehaviour {
+public class BMazeMonsterMovement : MonoBehaviour {
     /* CREATED BY: Colby Tang
 	 * GAME: Brain Maze
 	 */
@@ -42,7 +42,7 @@ public class BMaze_MonsterMovement : MonoBehaviour {
     */
 
 	public void OnMouseDown() {
-		if (BMaze_Manager.Instance.inputAllowed) {
+		if (BMazeManager.Instance.inputAllowed) {
 			cursorPos = Input.mousePosition;
 			cursorPos.z -= (Camera.main.transform.position.z + 10f);
 			pointerOffset = Camera.main.ScreenToWorldPoint (cursorPos) - transform.position;
@@ -50,7 +50,7 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 	}
 
 	public void OnMouseDrag() {
-		if (BMaze_Manager.Instance.inputAllowed) {
+		if (BMazeManager.Instance.inputAllowed) {
 			cursorPos = Input.mousePosition;
 			cursorPos.z -= (Camera.main.transform.position.z + 10f);
 			MoveTowards (Camera.main.ScreenToWorldPoint (cursorPos) - pointerOffset);
@@ -62,6 +62,7 @@ public class BMaze_MonsterMovement : MonoBehaviour {
 	}
 
 	public void FinishMove (Vector2 pos) {
+        print ("finishMove");
 		transform.position = Vector2.MoveTowards (transform.position, pos, 0.3f);
 		if (transform.position.x == pos.x && transform.position.y == pos.y)
 			finished = false;

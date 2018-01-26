@@ -14,6 +14,7 @@ public class MonsterAnimations : MonoBehaviour {
             }
         }
     }
+    public bool allowMonsterTickle;
 
     private bool _idleAnimationOn;
     [SerializeField] private Monster monster;
@@ -44,6 +45,14 @@ public class MonsterAnimations : MonoBehaviour {
 
         ChangeEmotions (monster.selectedEmotion);
         if (IdleAnimationOn) StartCoroutine (PlayIdleAnimation ());
+    }
+
+    private void OnMouseDown () {
+        if (allowMonsterTickle) {
+            if (!ParentPage.Instance) {
+                animator.Play ("Giggle", -1, 0f);
+            }
+        }
     }
 
     public void PlaySpawnAnimation () {
