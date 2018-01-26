@@ -157,7 +157,7 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
 			yield return new WaitForSeconds(0.25f);
 		}
 
-        if (difficultyLevel > 1) {
+        if (difficultyLevel >= 1) {
             StartCoroutine (RotateDishes ());
         }
         else {
@@ -175,12 +175,12 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
                 GameObject d = dishes[i];
                 Quaternion startRotation = d.transform.rotation;
 
-                d.transform.RotateAround (dishAnchor.transform.position, zAxis, rotationalSpeed * 0.5f);
+                d.transform.RotateAround (dishAnchor.transform.position, zAxis, rotationalSpeed * 0.75f);
                 d.transform.rotation = startRotation;
             }
 
-            waitDuration += 0.01f;
-            yield return new WaitForSeconds (0.001f);
+            waitDuration += 0.02f;
+            yield return new WaitForFixedUpdate ();
         }
 
         StartCountdown (GameStart);

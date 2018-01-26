@@ -4,28 +4,25 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class StickerManager : Singleton<StickerManager> {
-	private Vector3[] stickerPositions;
     private Dictionary<DataType.StickerType, GameManager.StickerStats> stickerDict;
     private Dictionary<DataType.StickerType, StickerSlot> stickerSlotDict;
+    private GameObject[] stickerPrefabs;
 
     public bool debug;
-	public GameObject[] stickerSpawns;
+    [Tooltip ("Filename starts with Prefabs/Stickers")]
+    public string filePath;
 	public StickerSlot[] stickerSlots;
-	public GameObject location;
 	public Canvas mainCanvas;
+
+    [SerializeField] private StickerContainer container;
 
 	new void Awake() {
         base.Awake ();
-
+        stickerPrefabs = Resources.LoadAll<GameObject> ("Prefabs/Stickers" + filePath);
         stickerDict = new Dictionary<DataType.StickerType, GameManager.StickerStats> ();
         stickerSlotDict = new Dictionary<DataType.StickerType, StickerSlot> ();
 
         AssignSlotsToDict ();
-
-        if (!GameManager.Instance) {
-            SwitchScene switchScene = gameObject.AddComponent<SwitchScene> ();
-            switchScene.LoadSceneNoScreen ("Start");
-        }
 
         if (SoundManager.Instance)
 			SoundManager.Instance.ChangeAndPlayMusic(SoundManager.Instance.gameBackgroundMusic);
@@ -38,9 +35,13 @@ public class StickerManager : Singleton<StickerManager> {
     }
 
 	public void CreateSticker(GameManager.StickerStats sticker, DataType.StickerType typeOfSticker) {
-        GameObject stickerObject = Instantiate (sticker.stickerObject, location.transform.position, Quaternion.identity, mainCanvas.transform);
-        if (sticker.isStickerPlaced)
+        if (sticker.isStickerPlaced) {
+            GameObject stickerObject = Instantiate (sticker.stickerObject, container.transform.position, Quaternion.identity, container.transform);
             stickerSlotDict[typeOfSticker].ReceiveSticker (stickerObject.GetComponent<StickerBehaviour> (), true);
+        }
+        else {
+            container.AddSticker (sticker.stickerObject);
+        }
     }
 
     public void DisableOtherStickerSlots(DataType.StickerType type) {
@@ -62,6 +63,7 @@ public class StickerManager : Singleton<StickerManager> {
 	void Start () {
 		if (debug) GameManager.Instance.DebugStickers ();
 		SpawnStickers ();
+        container.ChooseSticker ();
 	}
 
     public void SpawnStickers () {
@@ -71,4 +73,10 @@ public class StickerManager : Singleton<StickerManager> {
             if (stickerDict[sticker].isStickerUnlocked) CreateSticker (stickerDict[sticker], sticker);
         }
     }
+
+    public void OnDropSticker () {
+        container.RemoveSticker ();
+    }
+
+
 }

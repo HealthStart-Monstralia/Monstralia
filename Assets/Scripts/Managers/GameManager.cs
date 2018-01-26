@@ -263,13 +263,12 @@ public class GameManager : SingletonPersistent<GameManager> {
         return stickerStats;
     }
 
-    /// <summary>
-    /// Creates a countdown with a voiceover.
-    /// </summary>
-
     public void DebugStickers() {
         foreach (DataType.StickerType sticker in System.Enum.GetValues (typeof (DataType.StickerType))) {
-            ActivateSticker(sticker);
+            if (sticker != DataType.StickerType.None) {
+                print (sticker);
+                ActivateSticker (sticker);
+            }
         }
     }
 

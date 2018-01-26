@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class StickerBehaviour : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler {
@@ -10,21 +7,25 @@ public class StickerBehaviour : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 	private Vector2 pointerOffset;
 	private CanvasGroup canvasGroup;
 	private int sortLayer;
+    private float originalWidth, originalHeight;    // For rescaling the stickers
 
-	public DataType.StickerType typeOfSticker;
+    public DataType.StickerType typeOfSticker;
 
 	public void OnPointerDown (PointerEventData eventData) {
 		if (!isSticked) {
             canvasGroup.blocksRaycasts = false;
 			StickerManager.Instance.DisableOtherStickerSlots (typeOfSticker);
-		}
+            RestoreSize ();
+        }
 	}
 
 	public void OnPointerUp (PointerEventData eventData) {
 		if (!isSticked) {
             canvasGroup.blocksRaycasts = true;
 			StickerManager.Instance.EnableOtherStickerSlots (typeOfSticker);
-		}
+            transform.localPosition = Vector3.zero;
+            ShrinkSize (GetComponentInParent<StickerContainer>().shrinkSize);
+        }
 	}
 
 	public void OnBeginDrag (PointerEventData eventData) {
@@ -43,10 +44,23 @@ public class StickerBehaviour : MonoBehaviour, IPointerDownHandler, IPointerUpHa
 
 	void Awake() {
 		canvasGroup = GetComponent<CanvasGroup> ();
-	}
+        originalWidth = GetComponent<RectTransform> ().rect.width;
+        originalHeight = GetComponent<RectTransform> ().rect.height;
+    }
 
 	public void OnSticked() {
 		isSticked = true;
-	}
+        RestoreSize ();
+        transform.SetAsFirstSibling ();
+    }
 
+    public void RestoreSize () {
+        GetComponent<RectTransform> ().SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, originalWidth);
+        GetComponent<RectTransform> ().SetSizeWithCurrentAnchors (RectTransform.Axis.Vertical, originalHeight);
+    }
+
+    public void ShrinkSize (float size) {
+        GetComponent<RectTransform> ().SetSizeWithCurrentAnchors (RectTransform.Axis.Horizontal, size);
+        GetComponent<RectTransform> ().SetSizeWithCurrentAnchors (RectTransform.Axis.Vertical, size);
+    }
 }

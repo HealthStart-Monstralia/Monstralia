@@ -18,13 +18,14 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
 	}
 
 	public void OnDrop (PointerEventData eventData) {
-		if (eventData.pointerDrag.GetComponent<StickerBehaviour> ()) {
-			StickerBehaviour sticker = eventData.pointerDrag.GetComponent<StickerBehaviour> ();
+        StickerBehaviour sticker = eventData.pointerDrag.GetComponent<StickerBehaviour> ();
+        if (sticker) {
 			if (!isStickerFilled && sticker.typeOfSticker == typeOfSticker) {
 				SoundManager.Instance.PlayCorrectSFX ();
                 if (clipOfSticker)
                     SoundManager.Instance.AddToVOQueue (clipOfSticker);
 				ReceiveSticker (sticker, false);
+                StickerManager.Instance.OnDropSticker ();
 			}
 		}
 	}
@@ -36,7 +37,6 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
 	}
 
 	public void ReceiveSticker(StickerBehaviour sticker, bool isAlreadyPlaced) {
-		sticker.OnSticked ();
 		isStickerFilled = true;
 		sticker.gameObject.transform.position = transform.position;
 		sticker.transform.SetParent (transform);
@@ -48,6 +48,7 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
 		can.overrideSorting = true;
 		can.sortingOrder = -1;
         if (label) label.SetActive (true);
+        sticker.OnSticked ();
         Destroy (sticker);
 	}
 
