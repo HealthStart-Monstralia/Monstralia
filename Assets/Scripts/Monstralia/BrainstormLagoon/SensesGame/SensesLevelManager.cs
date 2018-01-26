@@ -13,23 +13,19 @@ public class SensesLevelManager : MonoBehaviour {
 
     [Header ("References")]
     [SerializeField] private SensesFactory senseFactory;
-    [SerializeField] private List<DataType.Senses> senseList = new List<DataType.Senses>();
     [SerializeField] private Text senseText;
     [SerializeField] private Text commentText;
     [SerializeField] private string[] correctLines;
     [SerializeField] private string[] wrongLines;
     [SerializeField] private string itemDirectory;
+
     private bool isCommentHiding = false;
     private Coroutine commentCoroutine;
     private DataType.Senses selectedSense;
     private GameObject selectedObject;
 
     private void Awake () {
-        foreach (DataType.Senses sense in System.Enum.GetValues (typeof (DataType.Senses))) {
-            senseList.Add (sense);
-        }
-        senseList.Remove (DataType.Senses.NONE);
-        senseFactory.sensesPrefabs = Resources.LoadAll<GameObject> (itemDirectory);
+        senseFactory.sensesPrefabs.AddRange (Resources.LoadAll<GameObject> (itemDirectory));
     }
 
     public void SetupGame() {
@@ -56,9 +52,9 @@ public class SensesLevelManager : MonoBehaviour {
         SensesGameManager.Instance.StartCountdown (StartGame);
     }
 
-    private DataType.Senses SelectRandomSense() {
-        DataType.Senses sense = senseList.GetRandomItem();
-        return sense;
+    private DataType.Senses SelectRandomSense(SensesItem item) {
+        DataType.Senses[] senseItemList = item.validSenses;
+        return senseItemList.GetRandomItem ();
     }
 
     void StartGame() {
@@ -68,16 +64,16 @@ public class SensesLevelManager : MonoBehaviour {
 
     public void NextQuestion() {
         monster.ChangeEmotions (DataType.MonsterEmotions.Happy);
-        selectedSense = SelectRandomSense ();
-        ResetComment ();
+        ResetComment (commentText);
 
         Destroy (selectedObject);
         selectedObject = senseFactory.ManufactureRandomPrefab ();
-        senseText.text = string.Format ("What do I use to {0} this {1}?", selectedSense.ToString ().ToLower(), selectedObject.name);
+        selectedSense = SelectRandomSense (selectedObject.GetComponent<SensesItem>());
+        senseText.text = string.Format ("What do I use to {0} the {1}?", selectedSense.ToString ().ToLower(), selectedObject.name);
     }
 
-    public void ResetComment() {
-        commentText.text = "";
+    public void ResetComment(Text textToChange) {
+        textToChange.text = "";
     }
 
     public void EndGame() {
@@ -88,18 +84,24 @@ public class SensesLevelManager : MonoBehaviour {
     public bool IsSenseCorrect (DataType.Senses sense) {
         if (selectedSense != DataType.Senses.NONE) {
             if (sense == selectedSense) {
-                ShowComment(correctLines.GetRandomItem ());
-                monster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
+                OnCorrect ();
                 return true;
-            } else {
-                ShowComment (wrongLines.GetRandomItem ());
-                monster.ChangeEmotions (DataType.MonsterEmotions.Sad);
-                return false;
             }
 
+            OnIncorrect ();
         }
         
-        else return false;
+        return false;
+    }
+
+    void OnCorrect() {
+        ShowComment (correctLines.GetRandomItem ());
+        monster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
+    }
+
+    void OnIncorrect () {
+        ShowComment (wrongLines.GetRandomItem ());
+        monster.ChangeEmotions (DataType.MonsterEmotions.Sad);
     }
 
     void ShowComment (string text) {

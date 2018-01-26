@@ -100,7 +100,7 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
         StartCoroutine (OnGuess (true));
         SoundManager.Instance.PlaySFXClip (correctSfx);
         score++;
-        AddTime (4f);
+        AddTime (5f);
         UpdateScoreGauge ();
         if (score >= currentLevelManager.scoreGoal) {
             currentLevelManager.EndGame ();

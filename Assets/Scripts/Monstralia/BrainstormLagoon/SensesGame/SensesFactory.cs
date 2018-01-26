@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SensesFactory : MonoBehaviour {
-    public GameObject[] sensesPrefabs;
+    public List<GameObject> sensesPrefabs = new List<GameObject> ();
 
     public GameObject SelectRandomPrefab() {
-        return sensesPrefabs.GetRandomItem();
+        return sensesPrefabs.RemoveRandom ();
     }
 
     public GameObject Manufacture (GameObject prefab) {
