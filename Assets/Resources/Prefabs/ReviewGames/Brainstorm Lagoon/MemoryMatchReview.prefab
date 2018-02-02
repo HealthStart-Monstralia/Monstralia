@@ -838,7 +838,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c8f4c2d7c22bd41b1368f61d66ffc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  typeToSpawn: 0
   spawnMonsterOnStart: 0
+  selectPlayerMonsterToSpawn: 0
   allowMonsterTickle: 0
   idleAnimationOn: 0
   addRigidbody: 0
@@ -906,7 +908,7 @@ MonoBehaviour:
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 768, y: 1024}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 1
+  m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
