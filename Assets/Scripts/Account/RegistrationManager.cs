@@ -33,12 +33,14 @@ public class RegistrationManager : MonoBehaviour {
     }
 
     private bool VerifyPassword () {
+        // Check if password is empty
         if (IsTextEmpty (passInput.text)) {
             DisplayError (passIsEmpty, passValidText);
             return false;
         }
 
-        if (IsTextMatching (passInput.text, repassInput.text)) {
+        // Check if confirmation matches
+        if (!IsTextMatching (passInput.text, repassInput.text)) {
             DisplayError (passDoesNotMatch, passValidText);
             return false;
         }
@@ -48,21 +50,25 @@ public class RegistrationManager : MonoBehaviour {
     }
 
     private bool VerifyEmail () {
+        // Check if text is empty
         if (IsTextEmpty (emailInput.text)) {
             DisplayError (emailIsEmpty, emailValidText);
             return false;
         }
 
-        if (IsTextMatching(emailInput.text, reemailInput.text)) {
+        // Check if confirmation matches
+        if (!IsTextMatching(emailInput.text, reemailInput.text)) {
             DisplayError (emailDoesNotMatch, emailValidText);
             return false;
         }
 
+        // Check if there is an @
         if (!emailInput.text.Contains ("@")) {
             DisplayError (emailNoAt, emailValidText);
             return false;
         }
-
+        
+        // Check if there is a period
         if (!emailInput.text.Contains (".")) {
             DisplayError (emailNoPeriod, emailValidText);
             return false;
