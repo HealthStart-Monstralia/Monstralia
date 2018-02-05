@@ -56,15 +56,6 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
     private List<GameObject> greenFoodsList = new List<GameObject> ();
     private List<GameObject> purpleFoodsList = new List<GameObject> ();
 
-	void Update() {
-		if (gameStarted) {
-			if (score >= GetLevelConfig().maxFoodItems) {
-                // Animation
-				EndGameTearDown();
-			}
-		}
-	}
-
     // Event
     public void OnOutOfTime () { EndGameTearDown (); }
 
@@ -88,13 +79,13 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
         monsterObject.spriteRenderer.sortingOrder = 0;
         monsterObject.ChangeEmotions (DataType.MonsterEmotions.Joyous);
 
-        if (GameManager.Instance.GetPendingTutorial(DataType.Minigame.Brainbow))
+        if (GameManager.Instance.GetPendingTutorial (DataType.Minigame.Brainbow)) {
+            tutorialManager.gameObject.SetActive (true);
             tutorialManager.StartTutorial ();
-        else
-	        StartGame ();
+        } else {
+            StartGame ();
+        }
     }
-
-
 
     IEnumerator StartSpawningFoods() {
         int numSlots = GetLevelConfig ().numOfFoodSlots;
@@ -114,6 +105,11 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
         StartCoroutine (StartSpawningFoods ());
         StartCoroutine (TurnOnRainbows ());
         ChooseFoodsFromManager ();
+        StartCoroutine (PreCountdownSetup ());
+    }
+
+    IEnumerator PreCountdownSetup () {
+        yield return new WaitForSeconds (2.0f);
         StartCountdown (PostCountdownSetup);
     }
 
@@ -137,6 +133,11 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
             // If any remain in food pool, create food to replace last food
             if (foods.Count > 0) {
                 SpawnFood (toReplace);
+            }
+
+            if (score >= GetLevelConfig ().maxFoodItems) {
+                // Animation
+                EndGameTearDown ();
             }
         }
 	}
@@ -236,12 +237,6 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
 	IEnumerator RunEndGameAnimation() {
         OnGameEnd ();
         monsterObject.ChangeEmotions (DataType.MonsterEmotions.Joyous);
-
-        foreach (BrainbowFoodItem item in activeFoods) {
-            item.StartCoroutine (item.GetEaten ());
-            item.transform.SetParent (transform.root);
-            yield return new WaitForSeconds (0.1f);
-        }
 
         yield return new WaitForSeconds (2f + 0.1f*activeFoods.Count);
         SoundManager.Instance.AddToVOQueue(voData.FindVO("yay"));

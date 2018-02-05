@@ -15,20 +15,22 @@ public class BrainbowFoodItem : MonoBehaviour {
     private void Awake () {
         rigBody = gameObject.GetComponent<Rigidbody2D> ();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
+
     }
 
     private void OnDestroy () {
-        /*
-        if (isBeingEaten)
-            SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.munchSound);
-        */
         if (BrainbowGameManager.Instance.activeFoods.Contains (this))
             BrainbowGameManager.Instance.activeFoods.Remove (this);
+    }
+
+    private void OnEnable () {
+        BrainbowGameManager.OnGameEnd += GetEaten;
     }
 
     private void OnDisable () {
         if (isBeingEaten)
             SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.munchSound);
+        BrainbowGameManager.OnGameEnd -= GetEaten;
     }
 
     private void OnMouseDown () {
@@ -90,12 +92,17 @@ public class BrainbowFoodItem : MonoBehaviour {
         BrainbowGameManager.Instance.activeFoods.Add (this);
     }
 
-    public IEnumerator GetEaten () {
+    public void GetEaten() {
+        StartCoroutine (MoveToMonster ());
+    }
+
+    IEnumerator MoveToMonster () {
         isBeingEaten = true;
         gameObject.GetComponent<Collider2D> ().enabled = true;
+        transform.SetParent (transform.root);
         yield return new WaitForSeconds (0.5f);
 
-        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 1f) {
+        for (float t = 0.0f; t < 0.8f; t += Time.deltaTime * 1f) {
             transform.position = Vector2.MoveTowards (transform.position, new Vector3 (0f, transform.position.y, 0f), t * 0.3f);
             Debug.DrawLine (transform.position, new Vector3 (0f, transform.position.y, 0f), Color.yellow);
             yield return new WaitForFixedUpdate ();

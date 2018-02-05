@@ -14,10 +14,15 @@ public class ExitSystem : Singleton<ExitSystem> {
     }
 
     public void OnExitYes () {
+        CloseNotification ();
         ExitGame ();
     }
 
     public void OnExitNo () {
+        CloseNotification ();
+    }
+
+    private void CloseNotification () {
         if (!isExiting) {
             isExiting = true;
             if (anim)

@@ -27,7 +27,6 @@ public class BrainbowWaterManager : MonoBehaviour {
     }
 
     void OnGameEnd() {
-        print ("Water Manager game end");
         spawnWater = false;
         foreach (GameObject bottle in waterBottleList) {
             Destroy (bottle);
@@ -35,7 +34,6 @@ public class BrainbowWaterManager : MonoBehaviour {
     }
 
     public void CreateWater () {
-        print ("Create Water");
         int selection = Random.Range (0, 4);
         GameObject water = Instantiate (
             waterPrefab,

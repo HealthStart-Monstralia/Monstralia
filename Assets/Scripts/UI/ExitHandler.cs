@@ -7,7 +7,7 @@ public class ExitHandler : MonoBehaviour {
     public GameObject exitPrefab;
 
     private void Update () {
-        if (Input.GetKeyUp(KeyCode.Escape)) {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
             if (!ExitSystem.Instance) {
                 Instantiate (exitPrefab);
             } else {

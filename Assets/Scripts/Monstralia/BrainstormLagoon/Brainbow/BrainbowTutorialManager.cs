@@ -34,7 +34,7 @@ public class BrainbowTutorialManager : MonoBehaviour {
         isRunningTutorial = true;
         brainbowManager.inputAllowed = false;
         instructionPopup.gameObject.SetActive (true);
-        yield return new WaitForSeconds (1.5f);
+        yield return new WaitForSeconds (1.0f);
         brainbowManager.monsterObject.ChangeEmotions (DataType.MonsterEmotions.Happy);
         StartCoroutine (TurnOnRainbows ());
         AudioClip tutorial1 = brainbowManager.voData.FindVO ("1_tutorial_start");
@@ -84,8 +84,8 @@ public class BrainbowTutorialManager : MonoBehaviour {
         brainbowManager.foodPanel.Deactivate ();
 
         yield return new WaitForSeconds (0.5f);
+        brainbowManager.monsterObject.ChangeEmotions (DataType.MonsterEmotions.Joyous);
 
-        EatFoods (brainbowManager.activeFoods);
         brainbowManager.activeFoods.Clear ();
         yield return new WaitForSeconds (letsPlay.length + 0.5f);
 
@@ -165,12 +165,4 @@ public class BrainbowTutorialManager : MonoBehaviour {
         tutorialBanana.GetComponent<Food> ().Spawn (brainbowManager.foodPanel.slots[0], brainbowManager.foodPanel.slots[0], brainbowManager.foodScale);
     }
 
-    void EatFoods(List<BrainbowFoodItem> listOfFoods) {
-        brainbowManager.monsterObject.ChangeEmotions (DataType.MonsterEmotions.Joyous);
-        foreach (BrainbowFoodItem item in listOfFoods) {
-            print (item);
-            item.StartCoroutine (item.GetEaten ());
-            item.transform.SetParent (transform.root);
-        }
-    }
 }

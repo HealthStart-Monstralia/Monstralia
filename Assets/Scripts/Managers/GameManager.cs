@@ -30,7 +30,6 @@ public class GameManager : SingletonPersistent<GameManager> {
 
     public GameObject loadingScreenPrefab;
     public GameObject endingScreenPrefab;
-    public GameObject exitPrefab;
     public GameObject countdownPrefab;
     public GameObject blueMonster, greenMonster, redMonster, yellowMonster;
 
@@ -38,8 +37,9 @@ public class GameManager : SingletonPersistent<GameManager> {
         base.Awake ();
         InitializeDictionaryEntries ();
 
-        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.WindowsEditor) {
-            gameObject.AddComponent<ExitHandler> ();
+        // If not on Android or Windows Unity Editor, remove exit handler
+        if (GetComponent<ExitHandler> () && Application.platform != RuntimePlatform.Android && Application.platform != RuntimePlatform.WindowsEditor) {
+            Destroy (GetComponent<ExitHandler> ());
         }
     }
 

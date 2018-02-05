@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 114098536541401310}
   - component: {fileID: 114512505591055792}
   - component: {fileID: 114295109203130798}
+  - component: {fileID: 114045528614889570}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Manager
@@ -46,7 +47,6 @@ MonoBehaviour:
   loadingScreenPrefab: {fileID: 117540, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
   endingScreenPrefab: {fileID: 1252322694986208, guid: 37bd93cc4902a65489a71fcd16534923,
     type: 2}
-  exitPrefab: {fileID: 1447888563622270, guid: fc3c27f83de26d24d951906706e327ce, type: 2}
   countdownPrefab: {fileID: 1610565465255964, guid: c40ee300e4ab6684f8ab1ed5fb529a6b,
     type: 2}
   blueMonster: {fileID: 1934710441688178, guid: 86acf8d9efd860e44a9a37e47bbbbe86,
@@ -88,6 +88,18 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 122832}
   m_IsPrefabParent: 1
+--- !u!114 &114045528614889570
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 122832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc88b97f0bc625e448c64af888e3b0b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exitPrefab: {fileID: 1447888563622270, guid: fc3c27f83de26d24d951906706e327ce, type: 2}
 --- !u!114 &114098536541401310
 MonoBehaviour:
   m_ObjectHideFlags: 1

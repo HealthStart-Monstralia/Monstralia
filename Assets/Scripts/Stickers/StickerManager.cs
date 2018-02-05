@@ -64,7 +64,7 @@ public class StickerManager : Singleton<StickerManager> {
 		if (debug) GameManager.Instance.DebugStickers ();
 		SpawnStickers ();
         container.ChooseSticker ();
-	}
+    }
 
     public void SpawnStickers () {
         stickerDict = GameManager.Instance.GetStickerDict ();

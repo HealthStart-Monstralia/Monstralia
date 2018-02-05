@@ -13,7 +13,7 @@ public class StickerContainer : MonoBehaviour {
     private float originalWidth, originalHeight;    // For rescaling the stickers
 
 
-    private void Awake () {
+    private void Start () {
         ActivateButtons (false);
     }
 
@@ -61,6 +61,9 @@ public class StickerContainer : MonoBehaviour {
             selectedSticker.SetActive (true);
             selectedSticker.GetComponent<StickerBehaviour>().ShrinkSize (shrinkSize);
         }
+        else {
+            DisableStickerPanel ();
+        }
     }
 
     public void RemoveSticker() {
@@ -68,6 +71,7 @@ public class StickerContainer : MonoBehaviour {
         if (index > 0)
             index--;
         ChooseSticker ();
+
         if (stickerList.Count < 2) {
             ActivateButtons (false);
         }
@@ -76,5 +80,9 @@ public class StickerContainer : MonoBehaviour {
     void ActivateButtons (bool activate) {
         buttonLeft.interactable = activate;
         buttonRight.interactable = activate;
+    }
+
+    void DisableStickerPanel () {
+        transform.parent.gameObject.GetComponent<Button> ().interactable = false;
     }
 }
