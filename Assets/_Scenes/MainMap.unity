@@ -769,6 +769,16 @@ Prefab:
       propertyPath: buttonsToDisable.Array.data[5]
       value: 
       objectReference: {fileID: 942510096}
+    - target: {fileID: 224057119682981850, guid: 026b9d737f4a242c197e125197976783,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -23.300049
+      objectReference: {fileID: 0}
+    - target: {fileID: 114067744547163070, guid: 026b9d737f4a242c197e125197976783,
+        type: 2}
+      propertyPath: buttonsToDisable.Array.data[6]
+      value: 
+      objectReference: {fileID: 659525541}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 026b9d737f4a242c197e125197976783, type: 2}
   m_IsPrefabParent: 0
@@ -777,6 +787,12 @@ GameObject:
   m_PrefabParentObject: {fileID: 1666506607902930, guid: 026b9d737f4a242c197e125197976783,
     type: 2}
   m_PrefabInternal: {fileID: 659525539}
+--- !u!114 &659525541 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114968853197127378, guid: 026b9d737f4a242c197e125197976783,
+    type: 2}
+  m_PrefabInternal: {fileID: 659525539}
+  m_Script: {fileID: 1392445389, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
 --- !u!1 &818165657
 GameObject:
   m_ObjectHideFlags: 0

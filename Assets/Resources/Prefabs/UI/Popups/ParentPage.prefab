@@ -95,6 +95,7 @@ GameObject:
   - component: {fileID: 222968345694772614}
   - component: {fileID: 114356178650799198}
   - component: {fileID: 114320898944836150}
+  - component: {fileID: 114211221767460976}
   m_Layer: 5
   m_Name: EmailButton
   m_TagString: Untagged
@@ -753,6 +754,7 @@ GameObject:
   - component: {fileID: 222037875561045078}
   - component: {fileID: 114186693086575050}
   - component: {fileID: 114542674689637256}
+  - component: {fileID: 114933149049591628}
   m_Layer: 5
   m_Name: WebsiteButton
   m_TagString: Untagged
@@ -2195,6 +2197,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114211221767460976
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1049665073659894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 363282faa845e8949a959c9c3e4aeb0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  URLToOpen: http://www.healthstartfoundation.org/contact-us.html
 --- !u!114 &114221627642715074
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4561,6 +4575,18 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114933149049591628
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1491503280908228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 363282faa845e8949a959c9c3e4aeb0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  URLToOpen: http://www.healthstartfoundation.org/
 --- !u!114 &114939576392054098
 MonoBehaviour:
   m_ObjectHideFlags: 1

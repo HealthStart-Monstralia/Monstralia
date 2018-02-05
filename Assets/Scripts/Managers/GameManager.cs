@@ -30,12 +30,17 @@ public class GameManager : SingletonPersistent<GameManager> {
 
     public GameObject loadingScreenPrefab;
     public GameObject endingScreenPrefab;
+    public GameObject exitPrefab;
     public GameObject countdownPrefab;
     public GameObject blueMonster, greenMonster, redMonster, yellowMonster;
 
     new void Awake() {
         base.Awake ();
         InitializeDictionaryEntries ();
+
+        if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.WindowsEditor) {
+            gameObject.AddComponent<ExitHandler> ();
+        }
     }
 
     void InitializeDictionaryEntries () {
