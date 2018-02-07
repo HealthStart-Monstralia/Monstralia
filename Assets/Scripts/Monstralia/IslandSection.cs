@@ -15,6 +15,7 @@ public class IslandSection : MonoBehaviour {
     private void Start () {
         CreateMonsterOnMap ();
         //PlayWelcomeVO ();
+        SoundManager.Instance.StopPlayingVoiceOver ();
         SoundManager.Instance.StopAmbientSound ();
         SoundManager.Instance.ChangeAmbientSound (ambientSound);
         SoundManager.Instance.ChangeAndPlayMusic (backgroundMusic);

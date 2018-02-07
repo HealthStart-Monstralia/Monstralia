@@ -92,16 +92,16 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
 		yield return new WaitForSeconds(0.5f);
 		subtitlePanel.SetActive (true);
 
-		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Welcome to Monster Feelings!", null);
+		SubtitlePanel.Instance.Display ("Welcome to Monster Feelings!", null);
 		SoundManager.Instance.StopPlayingVoiceOver();
         AudioClip tutorial1 = voData.FindVO ("1_tutorial_start");
 		SoundManager.Instance.PlayVoiceOverClip(tutorial1);
         
-        float secsToRemove = 6f;
+        float secsToRemove = 7f;
         yield return new WaitForSeconds(tutorial1.length - secsToRemove);
         generator.ChangeMonsterEmotion (DataType.MonsterEmotions.Afraid);
         generator.cardHand.gameObject.SetActive (true);
-        subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
+        SubtitlePanel.Instance.Hide ();
 
         float secsToRemoveAgain = 4f;
         yield return new WaitForSeconds (secsToRemove - secsToRemoveAgain);
@@ -112,14 +112,14 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
         tutorialHand.SetActive (true);
 		tutorialHand.GetComponent<Animator> ().Play ("EM_HandMoveMonster");
 		yield return new WaitForSeconds(1.75f);
-		subtitlePanel.GetComponent<SubtitlePanel> ().Display (generator.currentTargetEmotion.ToString(), null);
+		SubtitlePanel.Instance.Display (generator.currentTargetEmotion.ToString(), null);
 		SoundManager.Instance.PlaySFXClip (answerSounds [1]);
 		yield return new WaitForSeconds(2.0f);
-		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
+		SubtitlePanel.Instance.Hide ();
 		yield return new WaitForSeconds(1.0f);
 
         AudioClip nowyoutry = voData.FindVO ("nowyoutry");
-        subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Now you try!", nowyoutry);
+        SubtitlePanel.Instance.Display ("Now you try!", nowyoutry);
 		inputAllowed = true;
 	}
 
@@ -143,14 +143,14 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
         generator.RemoveCards ();
         AudioClip letsplay = voData.FindVO ("letsplay");
         SoundManager.Instance.StopPlayingVoiceOver ();
-        subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Let's play!", letsplay);
+        SubtitlePanel.Instance.Display ("Let's play!", letsplay);
 		yield return new WaitForSeconds(letsplay.length);
         if (generator.cardHand.gameObject.activeSelf)
             generator.cardHand.ExitAnimation ();
         tutorialCanvas.gameObject.SetActive (false);
 
 		yield return new WaitForSeconds(1.0f);
-		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
+		SubtitlePanel.Instance.Hide ();
 
 		PregameSetup ();
 	}
@@ -178,7 +178,7 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
         generator.RemoveCards ();
         AudioClip end = voData.FindVO ("end");
 
-        subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Great job! You matched " + score + " emotions!", end);
+        SubtitlePanel.Instance.Display ("Great job! You matched " + score + " emotions!", end);
         yield return new WaitForSeconds (3.0f);
         if (generator.cardHand.gameObject.activeSelf)
             generator.cardHand.ExitAnimation ();

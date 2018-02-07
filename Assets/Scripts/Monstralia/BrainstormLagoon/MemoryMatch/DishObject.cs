@@ -112,7 +112,7 @@ public class DishObject : MonoBehaviour {
     IEnumerator OnMouseDown () {
 		MemoryMatchGameManager manager = MemoryMatchGameManager.Instance;
 		if (manager.inputAllowed && !manager.isGuessing) {
-            manager.subtitlePanel.Display (myFood.name);
+            SubtitlePanel.Instance.Display (myFood.name);
             SoundManager.Instance.AddToVOQueue (myFood.clipOfName);
             OpenLid ();
             if (!manager.OnGuess (this, myFood.gameObject)) {
@@ -122,7 +122,7 @@ public class DishObject : MonoBehaviour {
             yield return new WaitForSeconds (2f);
 
             //The player can now guess again.
-            manager.subtitlePanel.Hide ();
+            SubtitlePanel.Instance.Hide ();
             manager.isGuessing = false;
 		     
 	    }

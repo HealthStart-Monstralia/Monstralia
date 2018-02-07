@@ -223,7 +223,7 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
 
 	void EndGameTearDown () {
         if (gameStarted) {
-            subtitlePanel.Hide ();
+            SubtitlePanel.Instance.Hide ();
             gameStarted = false;
             inputAllowed = false;
 
@@ -268,14 +268,6 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
     }
 
     public bool GetGameStarted() { return gameStarted; }
-
-	public void ShowSubtitles(string subtitle, AudioClip clip = null, bool queue = false) {
-		subtitlePanel.Display (subtitle, clip, queue);
-	}
-
-	public void HideSubtitles() {
-		subtitlePanel.Hide ();
-	}
 
     BrainbowLevelConfig GetLevelConfig() {
         switch (difficultyLevel) {

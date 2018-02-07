@@ -11,4 +11,8 @@ public class VersionNumber : MonoBehaviour {
         if (textField)
             textField.text = "v" + Application.version;
     }
+
+    public void OnClick() {
+        GameManager.Instance.ToggleFPSDisplay ();
+    }
 }

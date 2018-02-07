@@ -10,7 +10,6 @@ public class Singleton<T> : MonoBehaviour where T : Component {
             if (!instance) {
                 instance = (T)FindObjectOfType (typeof (T));
             }
-
             return instance;
         }
     }

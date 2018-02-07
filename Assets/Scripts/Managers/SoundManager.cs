@@ -27,7 +27,7 @@ public class SoundManager : SingletonPersistent<SoundManager> {
     [SerializeField] private AudioClip incorrectSfx;
     private bool isMuted = false;                   /*!< Flag for if the sound has been muted */
     private bool isPlayingClip = false;				/*!< Flag to prevent a clip from playing more than once at a time */
-    private List<AudioClip> clipQueue = new List<AudioClip> ();
+    private Queue<AudioClip> clipQueue = new Queue<AudioClip> ();
     private bool isQueuePlaying = false;
     private Coroutine queueCoroutine, voiceCoroutine;
     private bool isPlayingVoiceOver = false;        /*!< Way to check if a voice over is already playing */
@@ -79,19 +79,32 @@ public class SoundManager : SingletonPersistent<SoundManager> {
 	 */
     public void PlayVoiceOverClip(AudioClip clip) {
         if (isPlayingVoiceOver) {
-            if (voiceCoroutine != null)
-                StopCoroutine (voiceCoroutine);
             StopPlayingVoiceOver ();
         }
         voiceCoroutine = StartCoroutine (PlayVoiceOverClipCoroutine (clip));
 	}
 
     IEnumerator PlayVoiceOverClipCoroutine (AudioClip clip) {
+        isPlayingVoiceOver = true;
         voiceOverSource.clip = clip;
         voiceOverSource.Play ();
-        isPlayingVoiceOver = true;
         yield return new WaitForSeconds(clip.length);
         isPlayingVoiceOver = false;
+    }
+
+    /**
+     * \brief If a voice over is playing then stop it
+     */
+    public void StopPlayingVoiceOver () {
+        if (voiceOverSource.isPlaying) {
+            print ("Stopping VO");
+            voiceOverSource.Stop ();
+        }
+
+        if (isQueuePlaying) {
+            print ("Stopping Q");
+            clipQueue.Clear ();
+        }
     }
 
     /**
@@ -102,14 +115,6 @@ public class SoundManager : SingletonPersistent<SoundManager> {
         if (!musicScore.clip.Equals (newMusic) && newMusic != null) {
             PlayBackgroundMusic (newMusic);
         }
-	}
-
-    /**
-     * \brief If a voice over is playing then stop it
-     */
-    public void StopPlayingVoiceOver() {
-		if (voiceOverSource.isPlaying)
-			voiceOverSource.Stop();
 	}
 
 	/**
@@ -180,7 +185,6 @@ public class SoundManager : SingletonPersistent<SoundManager> {
 	 * \brief Play the background music
 	 */
     void PlayBackgroundMusic (AudioClip newBackgroundMusic) {
-        print ("Play Music");
         musicScore.clip = newBackgroundMusic;
 		musicScore.Play ();
 	}
@@ -248,7 +252,7 @@ public class SoundManager : SingletonPersistent<SoundManager> {
      * \brief Play the next voice over in the queue
      */
     public void AddToVOQueue(AudioClip clip) {
-        clipQueue.Add (clip);
+        clipQueue.Enqueue (clip);
         if (!isQueuePlaying) {
             queueCoroutine = StartCoroutine (PlayQueue ());
         }
@@ -257,6 +261,7 @@ public class SoundManager : SingletonPersistent<SoundManager> {
     public void StopVOQueue() {
         if (isQueuePlaying) {
             StopCoroutine (queueCoroutine);
+            clipQueue.Clear ();
         }
     }
 
@@ -264,17 +269,17 @@ public class SoundManager : SingletonPersistent<SoundManager> {
      * \brief Play the queue
      */
     IEnumerator PlayQueue () {
-        //print ("PlayQueue");
         isQueuePlaying = true;
         while (clipQueue.Count > 0) {
-            AudioClip clip = clipQueue[0];
-            //print ("clipQueue[0]: " + clipQueue[0]);
+            AudioClip clip = clipQueue.Dequeue();
             PlayVoiceOverClip (clip);
             yield return new WaitForSeconds (clip.length);
-            clipQueue.RemoveAt (0);
         }
         isQueuePlaying = false;
-        //print ("PlayQueue Stop");
+    }
+
+    public bool GetIsQueuePlaying () {
+        return isQueuePlaying;
     }
 
     public bool GetIsPlayingClip() {

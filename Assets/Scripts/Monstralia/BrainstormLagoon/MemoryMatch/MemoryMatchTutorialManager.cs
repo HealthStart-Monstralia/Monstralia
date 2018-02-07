@@ -106,7 +106,7 @@ public class MemoryMatchTutorialManager : MonoBehaviour {
         handAnim.gameObject.SetActive (false);
         MemoryMatchGameManager.Instance.inputAllowed = true;
         AudioClip tutorial5 = voData.FindVO ("5_tutorial_nowtry");
-        MemoryMatchGameManager.Instance.subtitlePanel.Display ("Now you try!", tutorial5);
+        SubtitlePanel.Instance.Display ("Now you try!", tutorial5);
 
 
         for (int i = 0; i < tutorialDishes.Length; ++i) {

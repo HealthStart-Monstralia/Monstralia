@@ -36,8 +36,8 @@ public class BrainbowFoodItem : MonoBehaviour {
     private void OnMouseDown () {
         if (BrainbowGameManager.Instance.inputAllowed) {
             offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0f));
-            BrainbowGameManager.Instance.ShowSubtitles (gameObject.name);
-            SoundManager.Instance.AddToVOQueue (gameObject.GetComponent<Food> ().clipOfName);
+            AudioClip clip = gameObject.GetComponent<Food> ().clipOfName;
+            SubtitlePanel.Instance.Display (gameObject.name, clip, true);
             spriteRenderer.sortingOrder = 6;
         }
     }
@@ -78,11 +78,6 @@ public class BrainbowFoodItem : MonoBehaviour {
     void MoveBack () {
         gameObject.transform.localPosition = Vector3.zero;
         SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.incorrectSound);
-    }
-
-    IEnumerator HideSubtitle () {
-        yield return new WaitForSeconds (0.5f);
-        BrainbowGameManager.Instance.HideSubtitles ();
     }
 
     public void InsertItemIntoStripe (BrainbowStripe stripe) {

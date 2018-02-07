@@ -15,6 +15,11 @@ public class RegistrationManager : MonoBehaviour {
     public string emailNoAt = "Email does not have an @";
     public string emailNoPeriod = "Email does not have a period.";
 
+    private void Awake () {
+        emailValidText.gameObject.SetActive (false);
+        passValidText.gameObject.SetActive (false);
+    }
+
     // Use with a button event
     public void OnSubmitVerifyInformation () {
         if (VerifyInformation()) {

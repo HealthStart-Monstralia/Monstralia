@@ -14,12 +14,9 @@ public class SensesLevelManager : MonoBehaviour {
     [Header ("References")]
     [SerializeField] private SensesFactory senseFactory;
     [SerializeField] private Text senseText;
-    [SerializeField] private Text commentText;
     [SerializeField] private string[] correctLines;
     [SerializeField] private string[] wrongLines;
 
-    private bool isCommentHiding = false;
-    private Coroutine commentCoroutine;
     private DataType.Senses selectedSense;
     private GameObject selectedObject;
 
@@ -59,8 +56,7 @@ public class SensesLevelManager : MonoBehaviour {
 
     public void NextQuestion() {
         monster.ChangeEmotions (DataType.MonsterEmotions.Happy);
-        ResetComment (commentText);
-
+        SubtitlePanel.Instance.Hide ();
         Destroy (selectedObject);
 
         // Tell factory to instantiate a random prefab and remove it from the list to prevent duplicates
@@ -69,10 +65,6 @@ public class SensesLevelManager : MonoBehaviour {
         // Select a random valid sense to ask the player
         selectedSense = SelectRandomSense (selectedObject.GetComponent<SensesItem>());
         senseText.text = string.Format ("What do I use to {0} the {1}?", selectedSense.ToString ().ToLower(), selectedObject.name);
-    }
-
-    public void ResetComment(Text textToChange) {
-        textToChange.text = "";
     }
 
     public void EndGame() {
@@ -94,26 +86,13 @@ public class SensesLevelManager : MonoBehaviour {
     }
 
     void OnCorrect() {
-        ShowComment (correctLines.GetRandomItem ());
+        SubtitlePanel.Instance.Display (correctLines.GetRandomItem ());
         monster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
     }
 
     void OnIncorrect () {
-        ShowComment (wrongLines.GetRandomItem ());
+        SubtitlePanel.Instance.Display (wrongLines.GetRandomItem ());
         monster.ChangeEmotions (DataType.MonsterEmotions.Sad);
     }
 
-    void ShowComment (string text) {
-        commentText.text = text;
-        if (isCommentHiding)
-            StopCoroutine (commentCoroutine);
-        commentCoroutine = StartCoroutine (HideComment());
-    }
-
-    IEnumerator HideComment() {
-        isCommentHiding = true;
-        yield return new WaitForSeconds (4f);
-        commentText.text = "";
-        isCommentHiding = false;
-    }
 }

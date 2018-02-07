@@ -69,7 +69,7 @@ public class BrainbowTutorialManager : MonoBehaviour {
             yield return new WaitForSeconds (0.5f);
             brainbowManager.ShowRainbowStripe (1, true);
             yield return new WaitForSeconds (0.5f);
-            brainbowManager.subtitlePanel.Display ("Now You Try!", brainbowManager.voData.FindVO ("4_tutorial_tryit"));
+            SubtitlePanel.Instance.Display ("Now You Try!", brainbowManager.voData.FindVO ("4_tutorial_tryit"));
             brainbowManager.inputAllowed = true;
             CreateBanana ();
         }
@@ -79,7 +79,7 @@ public class BrainbowTutorialManager : MonoBehaviour {
         StopCoroutine (tutorialCoroutine);
         brainbowManager.inputAllowed = false;
         AudioClip letsPlay = brainbowManager.voData.FindVO ("letsplay");
-        brainbowManager.subtitlePanel.Display ("Perfect! Let's play!");
+        SubtitlePanel.Instance.Display ("Perfect! Let's play!");
         SoundManager.Instance.PlayVoiceOverClip (letsPlay);
         brainbowManager.foodPanel.Deactivate ();
 
@@ -89,7 +89,7 @@ public class BrainbowTutorialManager : MonoBehaviour {
         brainbowManager.activeFoods.Clear ();
         yield return new WaitForSeconds (letsPlay.length + 0.5f);
 
-        brainbowManager.subtitlePanel.Hide ();
+        SubtitlePanel.Instance.Hide ();
         waterNotification.SetActive (true);
         AudioClip water = brainbowManager.voData.FindVO ("water");
         SoundManager.Instance.PlayVoiceOverClip (water);
@@ -108,7 +108,7 @@ public class BrainbowTutorialManager : MonoBehaviour {
         isRunningTutorial = false;
         brainbowManager.foodPanel.GetComponent<Outline> ().enabled = false;
         brainbowManager.foodPanel.Deactivate ();
-        brainbowManager.subtitlePanel.Hide ();
+        SubtitlePanel.Instance.Hide ();
         brainbowManager.monsterObject.ChangeEmotions (DataType.MonsterEmotions.Happy);
         yield return new WaitForSeconds (1.25f);
 

@@ -8,7 +8,7 @@ public class ReviewGameCanvas : MonoBehaviour {
         //Camera mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent <Camera>();
         Canvas myCanvas = GetComponent<Canvas>();
         myCanvas.sortingLayerName = "UI";
-        myCanvas.sortingOrder = 12;
+        myCanvas.sortingOrder = 5;
         myCanvas.worldCamera = Camera.main;
     }
 }

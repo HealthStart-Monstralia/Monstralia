@@ -59,6 +59,7 @@ public class ReviewManager : SingletonPersistent<ReviewManager> {
             // If the same type of game matches review, don't review
             if (minigame != selectedReview) {
                 SpawnReview (GameManager.Instance.GetMinigameData (selectedReview).reviewPrefab);
+                return;
             }
         }
 

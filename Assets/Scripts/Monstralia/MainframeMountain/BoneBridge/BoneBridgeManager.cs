@@ -134,7 +134,7 @@ public class BoneBridgeManager : AbstractGameManager<BoneBridgeManager> {
     IEnumerator Tutorial () {
         isTutorialRunning = true;
         yield return new WaitForSeconds (1.0f);
-        subtitlePanel.Display ("Welcome to Bone Bridge!");
+        SubtitlePanel.Instance.Display ("Welcome to Bone Bridge!");
         yield return new WaitForSeconds (3.0f);
 
         GameManager.Instance.CompleteTutorial (typeOfGame);
@@ -327,16 +327,16 @@ public class BoneBridgeManager : AbstractGameManager<BoneBridgeManager> {
             case DataType.Level.LevelOne:
                 trappedMonster = prize.GetComponent<CreateMonster> ().SpawnMonster (monsterPool[Random.Range(0,monsterPool.Count)]);
                 trappedMonster.ChangeEmotions (DataType.MonsterEmotions.Afraid);
-                subtitlePanel.Display ("Help the trapped monster!");
+                SubtitlePanel.Instance.Display ("Help the trapped monster!");
                 break;
             case DataType.Level.LevelTwo:
                 trappedMonster = prize.GetComponent<CreateMonster> ().SpawnMonster (monsterPool[Random.Range (0, monsterPool.Count)]);
                 trappedMonster.ChangeEmotions (DataType.MonsterEmotions.Afraid);
-                subtitlePanel.Display ("Help the trapped monster!");
+                SubtitlePanel.Instance.Display ("Help the trapped monster!");
                 break;
             case DataType.Level.LevelThree:
                 chestObject = Instantiate (chestPrefab, prize.transform.position, Quaternion.identity, prize.transform.root).GetComponent<BoneBridgeChest>();
-                subtitlePanel.Display ("Reach the treasure chest!");
+                SubtitlePanel.Instance.Display ("Reach the treasure chest!");
                 break;
             default:
                 break;

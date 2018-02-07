@@ -3,56 +3,73 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class SubtitlePanel : MonoBehaviour {
-
-	private Subtitle sub;
+public class SubtitlePanel : Singleton<SubtitlePanel> {
 	private bool isDisplaying = false;
-	private Queue<Tuple<string, AudioClip>> displayQueue = new Queue<Tuple<string, AudioClip>>();
 	private Coroutine waitCoroutine;
+    private Animator animator;
 
-	public Text textComp;
+    public GameObject subtitleObject;
+	public Text subtitleText;
 
-	public void Display(string subtitle, AudioClip clip = null, bool queue = false, float time = 3f) {
-		if (!gameObject.activeSelf)
-			gameObject.SetActive (true);
+    private new void Awake () {
+        base.Awake ();
+        animator = GetComponent<Animator> ();
+    }
 
-		if(sub == null) {
-			sub = new Subtitle();
-		}
+    private void Start () {
+        subtitleObject.SetActive (false);
+    }
 
-		if(!queue || !isDisplaying) {
-			if (waitCoroutine != null) {
-				StopCoroutine (waitCoroutine);
-			}
-			isDisplaying = true;
-			sub.Display(gameObject, textComp, subtitle, clip);
+    /// <summary>
+    /// Displays the given string in a subtitle, with optional voice over, voice over queueing, and wait duration.
+    /// </summary>
+    /// <param name="subtitle">Text to be displayed in the subtitle.</param>
+    /// <param name="clip">Voice over audioclip to be played alongside subtitle.</param>
+    /// <param name="queueVO">Add the voice over to a queue to be played.</param>
+    public void Display (string subtitle = "", AudioClip clip = null, bool queueVO = false, float duration = 3f) {
+        subtitleObject.SetActive (true);
+        if (!isDisplaying) {
+            waitCoroutine = StartCoroutine (DisplayCoroutine (subtitle, clip, queueVO, duration));
+        }
+        else {
+            StopCoroutine (waitCoroutine);
+            waitCoroutine = StartCoroutine (DisplayCoroutine (subtitle, clip, queueVO, duration));
+        }
+    }
 
-			if (time > 0f) {
-				waitCoroutine = StartCoroutine (WaitTillHide (time));
-			} 
-		}
+    IEnumerator DisplayCoroutine (string subtitle, AudioClip clip, bool queueVO, float duration) {
+        isDisplaying = true;
 
-		else {
-			Tuple<string, AudioClip> t = new Tuple<string, AudioClip>(subtitle, clip);
-			displayQueue.Enqueue(t);
-			t.ToString();
-		}
-	}
+        subtitleText.text = subtitle;
+        ShowSubtitle ();
 
-	public void Hide() {
-		isDisplaying = false;
-		if(displayQueue.Count > 0) {
-			Tuple<string, AudioClip> toDisplay = displayQueue.Dequeue();
-			Display(toDisplay.first, toDisplay.second);
-		}
-		else {
-			if(sub != null)
-			sub.Hide (gameObject);
-		}
-	}
+        if (clip) {
+            if (queueVO) {
+                SoundManager.Instance.AddToVOQueue (clip);
+            } else {
+                SoundManager.Instance.PlayVoiceOverClip (clip);
+            }
+        }
 
-	public IEnumerator WaitTillHide(float duration) {
-		yield return new WaitForSeconds (duration);
-		Hide ();
-	}
+        yield return new WaitForSeconds (duration);
+        HideSubtitle ();
+        yield return new WaitForSeconds (0.2f);
+        subtitleObject.SetActive (false);
+        isDisplaying = false;
+    }
+
+    public void Hide () {
+        if (isDisplaying) {
+            StopCoroutine (waitCoroutine);
+            HideSubtitle ();
+        }
+    }
+
+    void ShowSubtitle() {
+        animator.Play ("Subtitle_In", -1, 0f);
+    }
+
+    void HideSubtitle () {
+        animator.Play ("Subtitle_Out", -1, 0f);
+    }
 }

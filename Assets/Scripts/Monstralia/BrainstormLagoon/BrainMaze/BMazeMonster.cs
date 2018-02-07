@@ -5,11 +5,9 @@ using UnityEngine;
 public class BMazeMonster : MonoBehaviour {
 
 	private Animator animComp;
-	private DataType.MonsterType monster;
 
 	void Awake() {
 		animComp = GetComponentInChildren<Animator> ();
-        monster = GameManager.Instance.GetPlayerMonsterType ();
     }
 
 	public void PlaySpawn() {

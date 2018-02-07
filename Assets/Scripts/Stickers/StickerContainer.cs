@@ -7,7 +7,8 @@ public class StickerContainer : MonoBehaviour {
     [HideInInspector] public GameObject selectedSticker;
     public float shrinkSize = 200f;                // For rescaling the stickers
 
-    [SerializeField] private Button buttonLeft, buttonRight;
+    [SerializeField] private Button buttonLeft;
+    [SerializeField] private Button buttonRight;
     private List<GameObject> stickerList = new List<GameObject> ();
     private int index = 0;
     private float originalWidth, originalHeight;    // For rescaling the stickers

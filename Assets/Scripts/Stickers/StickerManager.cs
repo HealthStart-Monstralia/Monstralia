@@ -6,7 +6,6 @@ using System.Collections.Generic;
 public class StickerManager : Singleton<StickerManager> {
     private Dictionary<DataType.StickerType, GameManager.StickerStats> stickerDict;
     private Dictionary<DataType.StickerType, StickerSlot> stickerSlotDict;
-    private GameObject[] stickerPrefabs;
 
     public bool debug;
     [Tooltip ("Filename starts with Prefabs/Stickers")]
@@ -18,7 +17,6 @@ public class StickerManager : Singleton<StickerManager> {
 
 	new void Awake() {
         base.Awake ();
-        stickerPrefabs = Resources.LoadAll<GameObject> ("Prefabs/Stickers" + filePath);
         stickerDict = new Dictionary<DataType.StickerType, GameManager.StickerStats> ();
         stickerSlotDict = new Dictionary<DataType.StickerType, StickerSlot> ();
 

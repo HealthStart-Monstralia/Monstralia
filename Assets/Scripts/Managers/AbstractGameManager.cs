@@ -9,9 +9,7 @@ public abstract class AbstractGameManager<T> : MonoBehaviour where T : Component
         get {
             if (!instance) {
                 instance = (T)FindObjectOfType (typeof (T));
-                print ("Instance FOUND: " + instance + instance.GetInstanceID ());
             }
-
             return instance;
         }
     }

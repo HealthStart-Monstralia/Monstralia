@@ -97,7 +97,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 
         yield return new WaitForSeconds(0.25f);
         subtitlePanel.SetActive (true);
-		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Welcome to Brain Maze!", null);
+		SubtitlePanel.Instance.Display ("Welcome to Brain Maze!", null);
 
 		SoundManager.Instance.StopPlayingVoiceOver();
         AudioClip tutorial1 = voData.FindVO ("1_tutorial_start");
@@ -106,7 +106,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 
         SoundManager.Instance.PlayVoiceOverClip(tutorial1);
 		yield return new WaitForSeconds(tutorial1.length);
-		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
+		SubtitlePanel.Instance.Hide ();
 
 		CreateMonster ();
         inputAllowed = false;
@@ -137,11 +137,11 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
         tutorialPickup.SetActive (true);
         inputAllowed = true;
 
-        subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
+        SubtitlePanel.Instance.Hide ();
 		yield return new WaitForSeconds(2f);
-		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Get all the pickups!", null);
+		SubtitlePanel.Instance.Display ("Get all the pickups!", null);
 		yield return new WaitForSeconds(5f);
-		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
+		SubtitlePanel.Instance.Hide ();
 	}
 
 	public void TutorialFinished() {
@@ -154,11 +154,11 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 
 	IEnumerator TutorialTearDown() {
 		print ("TutorialTearDown");
-		subtitlePanel.GetComponent<SubtitlePanel> ().Display ("Let's play!", null);
+		SubtitlePanel.Instance.Display ("Let's play!", null);
 		yield return new WaitForSeconds(2.0f);
 		isTutorialRunning = false;
 		yield return new WaitForSeconds(1.0f);
-		subtitlePanel.GetComponent<SubtitlePanel> ().Hide ();
+		SubtitlePanel.Instance.Hide ();
 		selectedAsset.gameObject.SetActive (false);
         pickupList.Clear ();
         PregameSetup ();
@@ -286,7 +286,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 	}
 
 	public void ShowSubtitle(string text) {
-		subtitlePanel.GetComponent<SubtitlePanel> ().Display (text, null);
+		SubtitlePanel.Instance.Display (text, null);
 	}
 
     public List<GameObject> GetFactoryList () {

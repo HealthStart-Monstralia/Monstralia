@@ -28,6 +28,8 @@ public class GameManager : SingletonPersistent<GameManager> {
         public bool isStickerPlaced;
     }
 
+    public GameObject fpsCounter;
+    public GameObject notificationPrefab;
     public GameObject loadingScreenPrefab;
     public GameObject endingScreenPrefab;
     public GameObject countdownPrefab;
@@ -303,5 +305,25 @@ public class GameManager : SingletonPersistent<GameManager> {
 
     public int GetNumOfGamesCompleted() {
         return numOfGamesCompleted;
+    }
+
+    public void CreateNotification (string text) {
+        Instantiate (notificationPrefab).GetComponent<Notification> ().DisplayNotification (text);
+    }
+
+    public bool IsFPSDisplayActive () {
+        return fpsCounter.activeSelf;
+    }
+
+    public void ToggleFPSDisplay () {
+        fpsCounter.SetActive (!fpsCounter.activeSelf);
+    }
+
+    public void TurnOnFPSDisplay () {
+        fpsCounter.SetActive (true);
+    }
+
+    public void TurnOffFPSDisplay () {
+        fpsCounter.SetActive (false);
     }
 }

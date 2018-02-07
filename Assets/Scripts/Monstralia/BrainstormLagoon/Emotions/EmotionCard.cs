@@ -69,7 +69,7 @@ public class EmotionCard : MonoBehaviour {
     private void OnMouseDown () {
         if (EmotionsGameManager.Instance.inputAllowed && (EmotionsGameManager.Instance.isTutorialRunning || EmotionsGameManager.Instance.gameStarted)) {
             EmotionsGameManager.Instance.CheckEmotion (emotion);
-            EmotionsGameManager.Instance.subtitlePanel.GetComponent<SubtitlePanel> ().Display (emotion.ToString (), clipOfName);
+            SubtitlePanel.Instance.Display (emotion.ToString (), clipOfName);
         }
     }
 }

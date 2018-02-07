@@ -22,7 +22,6 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
     public GameObject dishAnchor;
 
 	public ScoreGauge scoreGauge;
-	public SubtitlePanel subtitlePanel;
 	[HideInInspector] public bool animIsPlaying = false;
 	[HideInInspector] public bool inputAllowed = false;
     [HideInInspector] public GameObject selectedFood;
@@ -57,7 +56,7 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         monsterAnimator.Play ("MM_Spawn", -1, 0f);
         playerMonster.spriteRenderer.sortingOrder = -2;
 
-        subtitlePanel.Hide ();
+        SubtitlePanel.Instance.Hide ();
 
         // Retrieve foods from Game Manager Food List
         foodList = GameManager.Instance.GetComponent<FoodList> ().goodFoods;
@@ -82,10 +81,10 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         yield return new WaitForSeconds (2.0f);
 
         AudioClip letsPlay = voData.FindVO ("letsplay");
-        subtitlePanel.Display ("Perfect!", letsPlay);
+        SubtitlePanel.Instance.Display ("Perfect!", letsPlay);
         yield return new WaitForSeconds (2.0f);
 
-        subtitlePanel.Hide ();
+        SubtitlePanel.Instance.Hide ();
         tutorialManager.gameObject.SetActive (false);
         GameManager.Instance.CompleteTutorial (DataType.Minigame.MemoryMatch);
         StartCoroutine (PrepareGame ());
@@ -102,7 +101,7 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         ActivateHUD (true);
         SpawnDishes ();
         CreateFoodInDishes ();
-        subtitlePanel.Display ("Remember the foods!");
+        SubtitlePanel.Instance.Display ("Remember the foods!");
         yield return new WaitForSeconds (4f);
 
         StartCoroutine (SpawnDishLids ());
