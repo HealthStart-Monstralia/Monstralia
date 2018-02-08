@@ -27,10 +27,6 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
 
     private int score;
     private int scoreGoal = 3;
-    private List<GameObject> primaryEmotions;
-    private List<GameObject> secondaryEmotions;
-    private List<GameObject> activeEmotions;
-    private GameObject currentEmotionToMatch;
     private int difficultyLevel;
     private Coroutine tutorialCoroutine, drawingCoroutine;
 
@@ -41,7 +37,6 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
         generator.cardHand.gameObject.SetActive (false);
         difficultyLevel = GameManager.Instance.GetLevel (DataType.Minigame.MonsterEmotions);
 
-        print ("loc: " + monsterLocation.position);
         if (!generator.monster)
             generator.CreateMonster ();
         generator.ChangeMonsterEmotion (DataType.MonsterEmotions.Happy);
@@ -222,7 +217,6 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
     }
 
     public void DrawCards(float waitPeriod) {
-        isDrawingCards = true;
         drawingCoroutine = StartCoroutine (generator.CreateNextEmotions (waitPeriod));
     }
 

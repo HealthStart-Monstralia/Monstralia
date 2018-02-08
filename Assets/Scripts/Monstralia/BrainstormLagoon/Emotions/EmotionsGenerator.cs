@@ -26,9 +26,7 @@ public class EmotionsGenerator : MonoBehaviour {
         typeOfMonster = GameManager.Instance.GetPlayerMonsterType ();
         difficultyLevel = GameManager.Instance.GetLevel (DataType.Minigame.MonsterEmotions);
         slots = difficultyLevel + 1;
-    }
 
-    private void Start () {
         // Initialize emotion lists according to monster type
         firstCard = true;
         switch (typeOfMonster) {
@@ -60,7 +58,7 @@ public class EmotionsGenerator : MonoBehaviour {
     }
 
     void PopulateList(List<EmotionData.EmotionStruct> list, EmotionData emotionData) {
-        // Add structs to list from emotionData
+        // Add structs to list of structs from emotionData
         // emotionData contains a struct with MonsterEmotions emotion, Sprite sprite, and AudioClip clipOfEmotion
         list.Add (emotionData.afraid);
         list.Add (emotionData.disgusted);
@@ -73,9 +71,12 @@ public class EmotionsGenerator : MonoBehaviour {
     }
 
     public IEnumerator CreateNextEmotions (float duration) {
+        EmotionsGameManager.Instance.isDrawingCards = true;
         activeEmotions.Clear ();
         poolEmotions.Clear ();
+        print ("primaryEmotions: " + primaryEmotions.Count);
         poolEmotions.AddRange (primaryEmotions);
+        print ("poolEmotions: " + poolEmotions.Count);
         yield return new WaitForSeconds (duration);
 
         RemoveCards ();
@@ -97,13 +98,13 @@ public class EmotionsGenerator : MonoBehaviour {
     }
 
     private void ChooseActiveEmotion () {
-        int random;                                             // Initialize random number
-
         // Prevent the same card being drawn more than once in a row
         if (!firstCard)
             poolEmotions.Remove (lastTargetEmotion);            // Remove last active card from deck
 
-        random = Random.Range (0, poolEmotions.Count);          // Randomly select number within range
+        int random = Random.Range (0, poolEmotions.Count);      // Randomly select number within range
+        print ("poolEmotions: " + poolEmotions.Count);
+
         currentTargetEmotion = poolEmotions[random].emotion;    // Select card chosen by random
         lastTargetEmotion = poolEmotions[random];               // Tag selected card to prevent being drawn more than once in a row
         activeEmotions.Add (poolEmotions[random]);              // Add to active emotions deck

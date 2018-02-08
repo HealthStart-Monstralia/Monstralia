@@ -6,8 +6,6 @@ public class EmotionsReviewMonsterManager : MonoBehaviour {
 
     public List<Sprite> monsterSprites;
 
-    bool haveAMonsterToChoose;
-
     void Awake () {
         Transform[] childList = new Transform[transform.childCount];
 

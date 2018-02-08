@@ -59,7 +59,8 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         SubtitlePanel.Instance.Hide ();
 
         // Retrieve foods from Game Manager Food List
-        foodList = GameManager.Instance.GetComponent<FoodList> ().goodFoods;
+        // Use AddRange to copy lists. Assigning lists does not copy over the list, only the reference.
+        foodList.AddRange (GameManager.Instance.GetComponent<FoodList> ().goodFoods);
 
 		if (GameManager.Instance.GetPendingTutorial(DataType.Minigame.MemoryMatch)) {
             isRunningTutorial = true;

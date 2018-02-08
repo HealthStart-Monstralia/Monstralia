@@ -194,13 +194,9 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
     }
 
 	void AddFoodsToList(List<GameObject> goList) {
-		int randomIndex;
-
         // Go through given list choose 5 different foods
         for (int i = 0; i < 5; i++) {
-            randomIndex = Random.Range (0, goList.Count);
-            foods.Add (goList[randomIndex]);
-            goList.RemoveAt (randomIndex);
+            foods.Add (goList.RemoveRandom());
 		}
 	}
 

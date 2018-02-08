@@ -81,7 +81,7 @@ public class SoundManager : SingletonPersistent<SoundManager> {
         if (isPlayingVoiceOver) {
             StopPlayingVoiceOver ();
         }
-        voiceCoroutine = StartCoroutine (PlayVoiceOverClipCoroutine (clip));
+        StartCoroutine (PlayVoiceOverClipCoroutine (clip));
 	}
 
     IEnumerator PlayVoiceOverClipCoroutine (AudioClip clip) {
@@ -99,6 +99,7 @@ public class SoundManager : SingletonPersistent<SoundManager> {
         if (voiceOverSource.isPlaying) {
             print ("Stopping VO");
             voiceOverSource.Stop ();
+            isPlayingVoiceOver = false;
         }
 
         if (isQueuePlaying) {

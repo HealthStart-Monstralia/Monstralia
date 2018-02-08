@@ -12,16 +12,17 @@ public class Countdown : MonoBehaviour {
     [SerializeField] private Text countdownText;
     private CountdownCallback CallbackFunction;
 
-    public void StartCountDown () {
-        StartCoroutine (RunCountdown ());
+    public void StartCountDown (float waitDuration = 0.5f) {
+        StartCoroutine (RunCountdown (waitDuration));
     }
 
-    public void StartCountDown(CountdownCallback Callback) {
+    public void StartCountDown(CountdownCallback Callback, float waitDuration = 0.5f) {
         CallbackFunction = Callback;
-        StartCoroutine (RunCountdown ());
+        StartCoroutine (RunCountdown (waitDuration));
     }
 
-	IEnumerator RunCountdown() {
+	IEnumerator RunCountdown(float waitDuration) {
+        yield return new WaitForSeconds (waitDuration);
 		SoundManager.Instance.StopPlayingVoiceOver();
         for (int i = 3; i >= 0; i--) {
             countdownAnimator.gameObject.SetActive (true);
