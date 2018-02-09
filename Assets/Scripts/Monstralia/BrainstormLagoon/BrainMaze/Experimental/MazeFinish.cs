@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MazeFinish : MonoBehaviour {
     private void OnTriggerEnter2D (Collider2D collision) {
-        if (collision.gameObject.GetComponent<Monster> ()) {
-            MazeManager.Instance.RestartGame ();
+        if (collision.transform.parent.GetComponent<Monster> ()) {
+            ExperimentalBrainMazeManager.Instance.RestartGame ();
         }
     }
 }

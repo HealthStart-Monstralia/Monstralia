@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class MazePickup : MonoBehaviour {
     private void OnTriggerEnter2D (Collider2D collision) {
-        if (collision.gameObject.GetComponent<Monster> ()) {
+        if (collision.transform.parent.GetComponent<Monster> ()) {
             Destroy (gameObject);
-            Maze.Instance.OnPickup (this);
+            ExperimentalBrainMazeManager.Instance.OnPickup (this);
         }
     }
 }

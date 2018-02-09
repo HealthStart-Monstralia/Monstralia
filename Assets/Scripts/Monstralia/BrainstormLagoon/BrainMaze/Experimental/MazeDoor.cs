@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MazeDoor : MonoBehaviour {
+public class MazeDoor : Door {
     public MazeCell cell;
     public MazeDirection direction;
 

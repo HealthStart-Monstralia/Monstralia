@@ -223,6 +223,11 @@ public class GameManager : SingletonPersistent<GameManager> {
         return monsterList;
     }
 
+    /// <summary>
+    /// Retrieves the current level of a game
+    /// </summary>
+    /// <param name="gameName">Type of game to retrieve current level for.</param>
+    /// <returns>Returns the current level of game, first level has a value of 1.</returns>
     public int GetLevel (DataType.Minigame gameName) {
         return gameStats[gameName].level;
     }

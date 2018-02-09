@@ -17,12 +17,12 @@ public class BMazePickup : MonoBehaviour {
 	public AudioClip pickupSfx;
 
     protected void OnTriggerEnter2D(Collider2D col) {
-		if (col.GetComponent<BMazeMonsterMovement> ()) {
+		if (col.transform.parent.GetComponent<BMazeMonsterMovement> ()) {
 			if (BMazeManager.Instance) {
                 SoundManager.Instance.AddToVOQueue (pickupSfx);
                 SoundManager.Instance.PlaySFXClip (SoundManager.Instance.correctSfx2);
 
-                BMazeManager.Instance.ShowSubtitle (pickup.ToString ());
+                SubtitlePanel.Instance.Display (pickup.ToString ());
                 BMazeManager.Instance.OnScore (this);
 			}
 			gameObject.SetActive (false);

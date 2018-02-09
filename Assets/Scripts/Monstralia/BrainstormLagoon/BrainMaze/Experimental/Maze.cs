@@ -4,45 +4,31 @@ using UnityEngine;
 
 /* Created with online tutorial at http://catlikecoding.com/unity/tutorials/maze/ */
 public class Maze : Singleton<Maze> {
-
-    public IntVector2 size;
-    public GameObject player;
-    public GameObject finish;
+    [Header ("Prefabs")]
+    public GameObject finishPrefab;
     public MazeCell cellPrefab;
-    public int numOfPickupsToSpawn;
-    public float generationStepDelay;
-
     public MazePassage passagePrefab;
     public MazeWall wallPrefab;
     public MazeDoor doorPrefab;
-    public MazePickup[] pickupPrefab;
 
-    private MazeCell firstCell, lastCell;
+    public delegate void Callback ();
+
     private MazePassage lastPassage;
-    private MazeDoor doorInstance;
     private MazeCell[,] cells;
-    private List<MazePickup> pickupList;
+    private List<MazeCell> cellList = new List<MazeCell> ();
 
-    private float time = 0f;
-    private float pickupProb = 0.1f;
-    private bool finished = false;
     private bool backtracking = false;
-    private int numOfPickups = 0;
+    private IntVector2 size;
     private int numOfCells = 0;
     private int totalNumOfCells = 0;
+    private MazeCell firstCell;
 
     new void Awake () {
         base.Awake ();
-
+        transform.position = Vector3.one * 0.5f;
+        size = BMazeManager.Instance.GetMazeSize();
         totalNumOfCells = size.x * size.y;
-        pickupList = new List<MazePickup> (pickupPrefab);
-    }
-
-    public void OnPickup(MazePickup pickup) {
-        numOfPickups--;
-        if (numOfPickups <= 0) {
-            Destroy (doorInstance.gameObject);
-        }
+        print ("totalNumOfCells: " + totalNumOfCells);
     }
 
     public IntVector2 RandomCoordinates {
@@ -59,37 +45,40 @@ public class Maze : Singleton<Maze> {
         return cells[coordinates.x, coordinates.y];
     }
 
-    public IEnumerator Generate () {
+    public IEnumerator Generate (Callback CallbackFunction, float generationStepDelay = 0.0f) {
         WaitForSeconds delay = new WaitForSeconds (generationStepDelay);
         cells = new MazeCell[size.x, size.y];
         List<MazeCell> activeCells = new List<MazeCell> ();
         DoFirstGenerationStep (activeCells);
         while (activeCells.Count > 0) {
             yield return delay;
-            //yield return null;
             DoNextGenerationStep (activeCells);
         }
 
-        doorInstance = CreateDoor (lastCell, lastPassage.direction);
-        //Instantiate (player, firstCell.transform.position, Quaternion.identity, transform.root);
-        Instantiate (finish, lastCell.transform.position, Quaternion.identity, transform.root);
+        // Prepare cellList for pickups
+        // Remove first cell in cellList
+        cellList.RemoveAt (0);
 
-        CreateMonster monsterSpawn = gameObject.AddComponent<CreateMonster> ();
-        monsterSpawn.spawnPosition = firstCell.transform;
-        monsterSpawn.allowMonsterTickle = false;
-        monsterSpawn.idleAnimationOn = false;
-        Monster monster = monsterSpawn.SpawnMonster (GameManager.Instance.GetMonsterObject(DataType.MonsterType.Blue));
-        monster.transform.parent.gameObject.AddComponent<BMazeMonster> ();
-        monster.transform.parent.gameObject.AddComponent<BMazeMonsterMovement> ();
-        monster.transform.parent.localScale = Vector3.one*0.1f;
+        // Retrieve last cell in cellList
+        MazeCell lastCell = cellList[cellList.Count - 1];
 
-        //transform.position = new Vector3 (0.75f, 0.5f, 0f);
-        //transform.localScale = transform.localScale * 1.5f;
-    }
+        // Remove last cell in cellList
+        cellList.RemoveAt (cellList.Count - 1);
 
-    public void FixedUpdate () {
-        if (!finished)
-            time += Time.deltaTime;
+        // Create door on last cell
+        BMazeManager.Instance.doorInstance = CreateDoor (lastCell, lastPassage.direction);
+
+        // Create finish line on last cell
+        BMazeManager.Instance.finishLine = CreateFinishline (lastCell, lastPassage.direction).GetComponent<BMazeFinishline>();
+
+        // Take all available cells and create pickups in them
+        StartCoroutine (GeneratePickups ());
+
+        // Clean up cellList
+        cellList.Clear ();
+
+        // Tell Manager that generation is done
+        CallbackFunction ();
     }
 
     private void DoFirstGenerationStep (List<MazeCell> activeCells) {
@@ -100,10 +89,12 @@ public class Maze : Singleton<Maze> {
     private void DoNextGenerationStep (List<MazeCell> activeCells) {
         int currentIndex = activeCells.Count - 1;
         MazeCell currentCell = activeCells[currentIndex];
+
         if (currentCell.IsFullyInitialized) {
             activeCells.RemoveAt (currentIndex);
             if (!backtracking && numOfCells < totalNumOfCells) {
-                CreatePickup (currentCell);
+                BMazeManager.Instance.CreatePickup (currentCell);
+                cellList.Remove (currentCell);
                 backtracking = true;
             }
             return;
@@ -129,13 +120,11 @@ public class Maze : Singleton<Maze> {
         MazeCell newCell = Instantiate (cellPrefab) as MazeCell;
         cells[coordinates.x, coordinates.y] = newCell;
         numOfCells++;
+        cellList.Add (newCell);
         newCell.coordinates = coordinates;
         newCell.name = "Maze Cell " + coordinates.x + ", " + coordinates.y;
         newCell.transform.parent = transform;
         newCell.transform.localPosition = new Vector3 (coordinates.x - size.x * 0.5f + 0f, coordinates.y - size.y * 0.5f + 0f, 0f);
-
-        ProbabilitySpawnPickup (newCell);
-        lastCell = newCell;
         return newCell;
     }
 
@@ -162,30 +151,26 @@ public class Maze : Singleton<Maze> {
         return door;
     }
 
-    private void ProbabilitySpawnPickup (MazeCell cell) {
-        if (numOfPickupsToSpawn > 0) {
-            if (Random.value < pickupProb) {
-                pickupProb = 0.0f;
-                CreatePickup (cell);
-            } else {
-                pickupProb += 0.1f;
-            }
-        }
+    private BMazeFinishline CreateFinishline (MazeCell cell, MazeDirection direction) {
+        BMazeFinishline door = Instantiate (finishPrefab).GetComponent<BMazeFinishline>();
+        door.Initialize (cell, direction);
+        return door;
     }
 
-    private GameObject CreatePickup(MazeCell cell) {
-        if (numOfPickupsToSpawn > 0 && !cell.hasPickup) {
-            int selection = Random.Range (0, pickupList.Count);
-            MazePickup pickup = Instantiate (pickupList[selection], cell.transform.position, Quaternion.identity, transform.root);
-            if (selection != 0)
-                pickupList.RemoveAt (selection);
-            numOfPickupsToSpawn--;
-            numOfPickups++;
-            cell.hasPickup = true;
-            return pickup.gameObject;
-        }
-        else {
-            return null;
-        }
+    IEnumerator GeneratePickups () {
+        while (BMazeManager.Instance.CreatePickup (cellList.RemoveRandom ()));
+        yield return null;
+    }
+
+    public MazeCell GetFirstCell() {
+        return firstCell;
+    }
+
+    public void ScaleMaze () {
+        // Scale maze to screen aspect ratio
+        // sizeFactor calculated by Aspect Ratio * Number of Horizontal tiles * 9
+        float sizeFactor = Camera.main.aspect * 9f / size.x;
+        transform.localScale = Vector3.one * (sizeFactor);
+        transform.position = new Vector2 (transform.position.x * transform.localScale.x, -0.5f);
     }
 }

@@ -51,24 +51,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb2d478e77b3c984ebde0be4643f807b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size:
-    x: 5
-    y: 5
-  player: {fileID: 1874061102094620, guid: fd30c3111d649d4498cba6c601eb1254, type: 2}
-  finish: {fileID: 1633111245420650, guid: 1036bea680d4caa49a23edfe36aa9084, type: 2}
+  playerPrefab: {fileID: 1874061102094620, guid: fd30c3111d649d4498cba6c601eb1254,
+    type: 2}
+  finishPrefab: {fileID: 1000011677758560, guid: 46c63dfaa2129784eb082783043c7726,
+    type: 2}
   cellPrefab: {fileID: 114991642337913904, guid: 2f45158b74528eb4bbd21fbb6b53357c,
     type: 2}
-  numOfPickupsToSpawn: 8
-  generationStepDelay: 0
   passagePrefab: {fileID: 114299560116083898, guid: add50233ec747464f9005126ce73ce69,
     type: 2}
   wallPrefab: {fileID: 114912667283155018, guid: 0691407888c85d742bc9d0e5fca79e76,
     type: 2}
   doorPrefab: {fileID: 114642533385264506, guid: 6fe1ca5e3a4cf1847b9276f8cae83ae8,
     type: 2}
-  pickupPrefab:
-  - {fileID: 114559342937607948, guid: 82e3e562e928e7f47acae45095ae5ec5, type: 2}
-  - {fileID: 114444147449490072, guid: 5745ee455d78394499de55e5e2b8f220, type: 2}
-  - {fileID: 114688046411434816, guid: ce1ecb3f3cdd44341ba0bab4e0773fca, type: 2}
-  - {fileID: 114362781149478796, guid: 261eab721ce8667469d210006e5c43fd, type: 2}
-  - {fileID: 114265934935425638, guid: 875694f2564521c49a4a86502a16a7e5, type: 2}

@@ -9,6 +9,7 @@ public class BMazeMonsterMovement : MonoBehaviour {
     public Vector2 gotoPos;
     public bool finished = false;
 
+
     private Vector3 pointerOffset;
 	private Vector3 cursorPos;
 	private Rigidbody2D rigBody;
@@ -22,27 +23,8 @@ public class BMazeMonsterMovement : MonoBehaviour {
         rigBody.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
     }
 
-	void FixedUpdate () {
-		if (finished)
-			FinishMove (gotoPos);
-	}
-
-    /*
-    public void OnMouseDown () {
-        cursorPos = Input.mousePosition;
-        cursorPos.z -= (Camera.main.transform.position.z + 10f);
-        pointerOffset = Camera.main.ScreenToWorldPoint (cursorPos) - transform.position;
-    }
-
-    public void OnMouseDrag () {
-        cursorPos = Input.mousePosition;
-        cursorPos.z -= (Camera.main.transform.position.z + 10f);
-        MoveTowards (Camera.main.ScreenToWorldPoint (cursorPos) - pointerOffset);
-    }
-    */
-
 	public void OnMouseDown() {
-		if (BMazeManager.Instance.inputAllowed) {
+		if (BMazeManager.Instance.GetInputAllowed()) {
 			cursorPos = Input.mousePosition;
 			cursorPos.z -= (Camera.main.transform.position.z + 10f);
 			pointerOffset = Camera.main.ScreenToWorldPoint (cursorPos) - transform.position;
@@ -50,7 +32,7 @@ public class BMazeMonsterMovement : MonoBehaviour {
 	}
 
 	public void OnMouseDrag() {
-		if (BMazeManager.Instance.inputAllowed) {
+		if (BMazeManager.Instance.GetInputAllowed ()) {
 			cursorPos = Input.mousePosition;
 			cursorPos.z -= (Camera.main.transform.position.z + 10f);
 			MoveTowards (Camera.main.ScreenToWorldPoint (cursorPos) - pointerOffset);
@@ -61,10 +43,12 @@ public class BMazeMonsterMovement : MonoBehaviour {
 		rigBody.MovePosition (Vector2.MoveTowards (rigBody.position, pos, 0.8f));
 	}
 
-	public void FinishMove (Vector2 pos) {
-        print ("finishMove");
-		transform.position = Vector2.MoveTowards (transform.position, pos, 0.3f);
-		if (transform.position.x == pos.x && transform.position.y == pos.y)
-			finished = false;
-	}
+    IEnumerator MoveToFinishLine (Vector2 pos) {
+        while (finished) {
+            transform.position = Vector2.MoveTowards (transform.position, pos, 0.3f);
+            if (transform.position.x == pos.x && transform.position.y == pos.y)
+                finished = false;
+            yield return null;
+        }
+    }
 }

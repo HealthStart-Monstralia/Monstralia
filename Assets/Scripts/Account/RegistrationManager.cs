@@ -79,6 +79,7 @@ public class RegistrationManager : MonoBehaviour {
             return false;
         }
 
+        // Email input is valid therefore, hide email error message and return true to VerifyInformation ().
         HideError (emailValidText);
         return true;
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class BMazeLevel : MonoBehaviour {
     [Range (0.05f, 1.0f)]
     public float monsterScale, factoryScale;
-    public BMazeDoor doorObject;
+    public Door doorObject;
     public BMazeFinishline finishLine;
 	public Transform startingLocation;
     public BMazePickup[] pickups;
@@ -47,14 +47,14 @@ public class BMazeLevel : MonoBehaviour {
         }
 
         for (int i = 0; i < listCount; i++) {
-            BMazeManager.Instance.SpawnPickup (prefabList.RemoveRandom(), pointList.RemoveRandom ());
+            BMazeManager.Instance.OrderPickupFromFactory (prefabList.RemoveRandom(), pointList.RemoveRandom ());
             numOfPickupsToSpawn--;
         }
 
         prefabList.AddRange (BMazeManager.Instance.GetFactoryList ());
 
         for (int i = 0; i < numOfPickupsToSpawn; i++) {
-            BMazeManager.Instance.SpawnPickup (prefabList.GetRandomItem (), pointList.RemoveRandom ());
+            BMazeManager.Instance.OrderPickupFromFactory (prefabList.GetRandomItem (), pointList.RemoveRandom ());
         }
     }
 

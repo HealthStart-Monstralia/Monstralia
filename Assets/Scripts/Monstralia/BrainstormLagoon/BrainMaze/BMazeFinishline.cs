@@ -2,10 +2,12 @@
 using System.Collections;
 
 public class BMazeFinishline : MonoBehaviour {
-	/* CREATED BY: Colby Tang
+    /* CREATED BY: Colby Tang
 	 * GAME: Brain Maze
 	 */
-	public GameObject finishSpot;
+    public MazeCell cell;
+    public MazeDirection direction;
+    public GameObject finishSpot;
 
     private void Awake () {
         GetComponent<Collider2D> ().enabled = false;
@@ -16,13 +18,21 @@ public class BMazeFinishline : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D (Collider2D col) {
-        BMazeMonsterMovement movement = col.GetComponent<BMazeMonsterMovement> ();
+        BMazeMonsterMovement movement = col.transform.parent.GetComponent<BMazeMonsterMovement> ();
         if (movement) {
             BMazeManager.Instance.PlayDance ();
-            col.GetComponent<BMazeMonsterMovement> ().finished = true;
-            col.GetComponent<BMazeMonsterMovement> ().gotoPos = finishSpot.transform.position;
+            movement.finished = true;
+            movement.gotoPos = finishSpot.transform.position;
             BMazeManager.Instance.OnFinish ();
         }
 
 	}
+
+    public void Initialize (MazeCell cell, MazeDirection direction) {
+        this.cell = cell;
+        this.direction = direction;
+        transform.parent = cell.transform;
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = direction.ToRotation ();
+    }
 }

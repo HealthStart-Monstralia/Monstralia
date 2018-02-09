@@ -9,7 +9,6 @@ public class ReviewSensesGame : Singleton<ReviewSensesGame> {
     public DataType.Senses selectedSense;
 
     private static ReviewSensesGame instance;
-    private bool isSenseRight = false;
     [SerializeField] private AudioClip wrongSfx;
     [SerializeField] private GameObject sensePanel;
 

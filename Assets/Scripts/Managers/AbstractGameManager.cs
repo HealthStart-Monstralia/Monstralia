@@ -73,7 +73,7 @@ public abstract class AbstractGameManager<T> : MonoBehaviour where T : Component
         return CreateEndScreen (typeOfGame, typeOfEnd);
     }
 
-    public void StartCountdown (Countdown.CountdownCallback callback) {
+    public void StartCountdown (Countdown.CountdownCallback callback, float waitDuration = 0.5f) {
         Instantiate (GameManager.Instance.countdownPrefab).GetComponent<Countdown>().StartCountDown (callback);
     }
 

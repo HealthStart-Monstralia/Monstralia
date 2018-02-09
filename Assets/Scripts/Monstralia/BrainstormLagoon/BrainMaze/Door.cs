@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BMazeDoor : MonoBehaviour {
-    [SerializeField] private AudioClip unlockClip;
-
+public class Door : MonoBehaviour {
 	public void OpenDoor() {
-        SoundManager.Instance.PlaySFXClip (unlockClip);
         Invoke ("Hide", 0.5f);
 	}
 
