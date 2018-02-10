@@ -18,14 +18,11 @@ public class BMazeFinishline : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D (Collider2D col) {
-        BMazeMonsterMovement movement = col.transform.parent.GetComponent<BMazeMonsterMovement> ();
-        if (movement) {
-            BMazeManager.Instance.PlayDance ();
-            movement.finished = true;
-            movement.gotoPos = finishSpot.transform.position;
-            BMazeManager.Instance.OnFinish ();
+        if (col.tag == "Monster") {
+            if (BMazeManager.Instance.OnFinish ()) {
+                GetComponent<Collider2D> ().enabled = false;
+            }
         }
-
 	}
 
     public void Initialize (MazeCell cell, MazeDirection direction) {

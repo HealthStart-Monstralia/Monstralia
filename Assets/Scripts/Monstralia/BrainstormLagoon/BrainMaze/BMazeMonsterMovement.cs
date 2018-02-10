@@ -40,14 +40,16 @@ public class BMazeMonsterMovement : MonoBehaviour {
 	}
 
     public void MoveTowards (Vector2 pos) {
-		rigBody.MovePosition (Vector2.MoveTowards (rigBody.position, pos, 0.8f));
+		rigBody.MovePosition (Vector2.MoveTowards (rigBody.position, pos, 0.5f));
 	}
 
-    IEnumerator MoveToFinishLine (Vector2 pos) {
-        while (finished) {
-            transform.position = Vector2.MoveTowards (transform.position, pos, 0.3f);
-            if (transform.position.x == pos.x && transform.position.y == pos.y)
-                finished = false;
+    public void MoveToFinishLine (Vector2 pos) {
+        StartCoroutine (MoveTo (pos));
+    }
+
+    IEnumerator MoveTo (Vector2 pos) {
+        while (transform.position.x != pos.x && transform.position.y != pos.y) {
+            transform.position = Vector2.MoveTowards (transform.position, pos, 0.01f);
             yield return null;
         }
     }

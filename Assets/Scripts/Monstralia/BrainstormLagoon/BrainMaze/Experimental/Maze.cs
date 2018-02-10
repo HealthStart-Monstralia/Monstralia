@@ -152,9 +152,9 @@ public class Maze : Singleton<Maze> {
     }
 
     private BMazeFinishline CreateFinishline (MazeCell cell, MazeDirection direction) {
-        BMazeFinishline door = Instantiate (finishPrefab).GetComponent<BMazeFinishline>();
-        door.Initialize (cell, direction);
-        return door;
+        BMazeFinishline finish = Instantiate (finishPrefab).GetComponent<BMazeFinishline>();
+        finish.Initialize (cell, direction);
+        return finish;
     }
 
     IEnumerator GeneratePickups () {

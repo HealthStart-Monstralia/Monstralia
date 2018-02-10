@@ -63,7 +63,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
             numOfPickupsToSpawn = numOfSpawnableTiles - 1;
         }
 
-
+        tutorial.SetActive (false);
         pickupPrefabList.AddRange (GetFactoryList ());
     }
 
@@ -86,6 +86,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
             scoreGoal = levelConfig.scoreGoal;
             ScoreGauge.Instance.gameObject.SetActive (true);
             TimerClock.Instance.gameObject.SetActive (true);
+            TimerClock.Instance.SetTimeLimit (levelConfig.timeLimit);
             StartCoroutine (GenerateMaze ());
         }
     }
@@ -130,7 +131,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 		SubtitlePanel.Instance.Hide ();
         monsterStart = tutorialStartingSpot;
         CreateMonster ();
-        playerMonster.transform.localScale = Vector3.one * 0.3f;
+        playerMonster.transform.localScale = Vector3.one * 0.25f;
         inputAllowed = false;
 
         SoundManager.Instance.PlayVoiceOverClip (tutorial2);
@@ -170,7 +171,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 
 	public void TutorialFinished() {
 		inputAllowed = false;
-		tutorialHand.SetActive (false);
+        tutorialHand.SetActive (false);
 		GameManager.Instance.CompleteTutorial(DataType.Minigame.BrainMaze);
 		StopCoroutine (tutorialCoroutine);
 		StartCoroutine(TutorialTearDown ());
@@ -195,6 +196,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
         if (score >= scoreGoal) {
             doorInstance.OpenDoor ();
             finishLine.UnlockFinishline ();
+            SoundManager.Instance.AddToVOQueue (voData.FindVO ("unlockeddoor"));
             SoundManager.Instance.PlaySFXClip (unlockedDoorSfx);
         }
     }
@@ -213,14 +215,17 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
         GameEnd ();
     }
 
-    public void OnFinish() {
-        if (!isTutorialRunning && gameStarted) {
-            AudioClip youdidit = voData.FindVO ("youdidit");
-            SoundManager.Instance.AddToVOQueue (youdidit);
-            GameEnd ();
-        } else {
+    public bool OnFinish() {
+        if (isTutorialRunning) {
+            MonsterVictoryDance ();
             TutorialFinished ();
+            return true;
+        } else if (gameStarted) {
+            MonsterVictoryDance ();
+            GameEnd ();
+            return true;
         }
+        return false;
     }
 
 	public void GameStart () {
@@ -232,8 +237,18 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
     public void GameEnd() {
         gameStarted = false;
         inputAllowed = false;
+
+        MonsterVictoryDance ();
+        AudioClip youdidit = voData.FindVO ("youdidit");
+        SoundManager.Instance.AddToVOQueue (youdidit);
         TimerClock.Instance.StopTimer ();
+
         StartCoroutine (EndGameWait (3f));
+    }
+
+    void MonsterVictoryDance() {
+        PlayDance ();
+        playerMonster.GetComponent<BMazeMonsterMovement> ().MoveToFinishLine (finishLine.transform.position);
     }
 
     public IEnumerator EndGameWait (float duration) {
