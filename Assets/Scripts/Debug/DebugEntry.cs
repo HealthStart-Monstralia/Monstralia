@@ -43,7 +43,7 @@ public class DebugEntry : MonoBehaviour {
         if (!GameManager.Instance.GetMinigameData (gameName).stickerPrefab) {
             DisableButton (stickerButton);
         }
-        else if (GameManager.Instance.GetStickerUnlock (gameName)) {
+        else if (GameManager.Instance.GetIsStickerUnlocked (gameName)) {
             DisableButton (stickerButton);
         }
     }

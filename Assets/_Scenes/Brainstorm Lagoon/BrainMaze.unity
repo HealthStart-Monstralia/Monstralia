@@ -1791,61 +1791,12 @@ Transform:
   m_Father: {fileID: 1075763815}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1248414991
+--- !u!114 &1248414991 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 114376317727064802, guid: 756bb4edc38c74542b76ba33549173ed,
     type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1428344398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
+  m_PrefabInternal: {fileID: 1473829861}
   m_Script: {fileID: 11500000, guid: b911668798bcede469625e39ffb233ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  typeOfGame: 1
-  randomizeMusic: 1
-  backgroundMusicArray:
-  - {fileID: 8300000, guid: 8e038355eb8874c4f840d00addb9c7be, type: 3}
-  - {fileID: 8300000, guid: 08d54f33f870ae247ba0d95dd54cfe60, type: 3}
-  - {fileID: 8300000, guid: b64dda38d7801594eae4be7b16551529, type: 3}
-  playerMonster: {fileID: 0}
-  monsterCreator: {fileID: 0}
-  voData: {fileID: 11400000, guid: 788bb78fac969cf40bb161f2b347f8e1, type: 2}
-  inputAllowed: 0
-  levelOne:
-    timeLimit: 30
-    scoreGoal: 5
-    mazeSize:
-      x: 3
-      y: 3
-  levelTwo:
-    timeLimit: 45
-    scoreGoal: 7
-    mazeSize:
-      x: 4
-      y: 4
-  levelThree:
-    timeLimit: 60
-    scoreGoal: 9
-    mazeSize:
-      x: 5
-      y: 5
-  backButton: {fileID: 1282871122}
-  tutorialHand: {fileID: 311970469}
-  generationStepDelay: 0
-  mazePrefab: {fileID: 114098031982066522, guid: 00eff1d1e2f94fd4d80165df45602ab7,
-    type: 2}
-  factory: {fileID: 357238431}
-  ambientSound: {fileID: 8300000, guid: 3265aca7dd7cb4256a906218743de845, type: 3}
-  unlockedDoorSfx: {fileID: 8300000, guid: 2e2c67c9e62fe4aa389ceffa809bace3, type: 3}
-  tutorial: {fileID: 136610712}
-  tutorialPickup: {fileID: 372522395}
-  tutorialStartingSpot: {fileID: 1844032058}
-  tutorialDoor: {fileID: 1173913358}
-  tutorialFinishline: {fileID: 1473330619}
-  doorInstance: {fileID: 0}
-  finishLine: {fileID: 0}
 --- !u!1 &1282871122
 GameObject:
   m_ObjectHideFlags: 0
@@ -2024,52 +1975,6 @@ RectTransform:
   m_PrefabParentObject: {fileID: 22466504, guid: 2efdf726b620a467184ef2e5a4ba4e0b,
     type: 2}
   m_PrefabInternal: {fileID: 1472610018}
---- !u!1 &1428344398
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 1322689063143702, guid: 756bb4edc38c74542b76ba33549173ed,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1428344400}
-  - component: {fileID: 1248414991}
-  - component: {fileID: 1428344399}
-  m_Layer: 0
-  m_Name: BrainMazeManager
-  m_TagString: Manager
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1428344399
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114592024327917108, guid: 756bb4edc38c74542b76ba33549173ed,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1428344398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70955650897f8422da0c5875e43541f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneToLoadName: 
-  loadingScreen: {fileID: 0}
---- !u!4 &1428344400
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 4271431878242314, guid: 756bb4edc38c74542b76ba33549173ed,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1428344398}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.24314018, y: -0.2918185, z: 5}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1457325487
 GameObject:
   m_ObjectHideFlags: 0
@@ -2221,6 +2126,88 @@ MonoBehaviour:
   cell: {fileID: 0}
   direction: 0
   finishSpot: {fileID: 1242864633}
+--- !u!1001 &1473829861
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4271431878242314, guid: 756bb4edc38c74542b76ba33549173ed, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.24314018
+      objectReference: {fileID: 0}
+    - target: {fileID: 4271431878242314, guid: 756bb4edc38c74542b76ba33549173ed, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -0.2918185
+      objectReference: {fileID: 0}
+    - target: {fileID: 4271431878242314, guid: 756bb4edc38c74542b76ba33549173ed, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4271431878242314, guid: 756bb4edc38c74542b76ba33549173ed, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4271431878242314, guid: 756bb4edc38c74542b76ba33549173ed, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4271431878242314, guid: 756bb4edc38c74542b76ba33549173ed, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4271431878242314, guid: 756bb4edc38c74542b76ba33549173ed, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4271431878242314, guid: 756bb4edc38c74542b76ba33549173ed, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114376317727064802, guid: 756bb4edc38c74542b76ba33549173ed,
+        type: 2}
+      propertyPath: backButton
+      value: 
+      objectReference: {fileID: 1282871122}
+    - target: {fileID: 114376317727064802, guid: 756bb4edc38c74542b76ba33549173ed,
+        type: 2}
+      propertyPath: tutorialHand
+      value: 
+      objectReference: {fileID: 311970469}
+    - target: {fileID: 114376317727064802, guid: 756bb4edc38c74542b76ba33549173ed,
+        type: 2}
+      propertyPath: factory
+      value: 
+      objectReference: {fileID: 357238431}
+    - target: {fileID: 114376317727064802, guid: 756bb4edc38c74542b76ba33549173ed,
+        type: 2}
+      propertyPath: tutorial
+      value: 
+      objectReference: {fileID: 136610712}
+    - target: {fileID: 114376317727064802, guid: 756bb4edc38c74542b76ba33549173ed,
+        type: 2}
+      propertyPath: tutorialPickup
+      value: 
+      objectReference: {fileID: 372522395}
+    - target: {fileID: 114376317727064802, guid: 756bb4edc38c74542b76ba33549173ed,
+        type: 2}
+      propertyPath: tutorialStartingSpot
+      value: 
+      objectReference: {fileID: 1844032058}
+    - target: {fileID: 114376317727064802, guid: 756bb4edc38c74542b76ba33549173ed,
+        type: 2}
+      propertyPath: tutorialDoor
+      value: 
+      objectReference: {fileID: 1173913358}
+    - target: {fileID: 114376317727064802, guid: 756bb4edc38c74542b76ba33549173ed,
+        type: 2}
+      propertyPath: tutorialFinishline
+      value: 
+      objectReference: {fileID: 1473330619}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 756bb4edc38c74542b76ba33549173ed, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1519483317
 GameObject:
   m_ObjectHideFlags: 0
@@ -2551,7 +2538,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 243.02934, y: 155.98132}
+  m_AnchoredPosition: {x: 182, y: 155.98132}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1884005553

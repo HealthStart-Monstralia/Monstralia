@@ -7,6 +7,10 @@ public class EmotionCard : MonoBehaviour {
     public bool isCardFlipped;
     public DataType.MonsterEmotions emotion;
     public AudioClip clipOfName, cardDraw, cardFlip, cardWoosh;
+    public Color colorOfCard;
+
+    public delegate void EmotionDelegate (DataType.MonsterEmotions emotion, AudioClip clip);
+    public static EmotionDelegate CheckEmotion; // Set by EmotionsGameManager
 
     private Animator animComp;
     private GameObject monster, cardFront;
@@ -20,8 +24,7 @@ public class EmotionCard : MonoBehaviour {
     }
 
     public void ChangeCardColor () {
-        Color emoColor = EmotionsGameManager.Instance.generator.GetEmotionColor (emotion);
-        cardFront.GetComponent<Image> ().color = emoColor;
+        cardFront.GetComponent<Image> ().color = colorOfCard;
     }
 
     public void CardFlip() {
@@ -44,11 +47,11 @@ public class EmotionCard : MonoBehaviour {
     }
 
     public IEnumerator MoveToAndFlip (GameObject obj) {
-        audioSrc.PlayOneShot (cardDraw);
+        SoundManager.Instance.PlaySFXClip (cardDraw);
         Vector2 pos = obj.transform.position;
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / 1.0f) {
             transform.position = Vector2.MoveTowards (transform.position, pos, 0.1f);
-            yield return new WaitForFixedUpdate ();
+            yield return null;
         }
         CardFlip ();
         transform.SetParent (obj.transform);
@@ -56,20 +59,17 @@ public class EmotionCard : MonoBehaviour {
 
     public IEnumerator MoveToAndRemove (GameObject obj) {
         CardUnflip ();
-        audioSrc.PlayOneShot (cardWoosh);
+        SoundManager.Instance.PlaySFXClip (cardWoosh);
         transform.SetParent (obj.transform);
         Vector2 pos = obj.transform.position;
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / 1.0f) {
             transform.position = Vector2.MoveTowards (transform.position, pos, 0.1f);
-            yield return new WaitForFixedUpdate ();
+            yield return null;
         }
         Destroy (gameObject);
     }
 
     private void OnMouseDown () {
-        if (EmotionsGameManager.Instance.inputAllowed && (EmotionsGameManager.Instance.isTutorialRunning || EmotionsGameManager.Instance.gameStarted)) {
-            EmotionsGameManager.Instance.CheckEmotion (emotion);
-            SubtitlePanel.Instance.Display (emotion.ToString (), clipOfName);
-        }
+        CheckEmotion (emotion, clipOfName);
     }
 }

@@ -71,8 +71,10 @@ public class ReviewSensesGame : Singleton<ReviewSensesGame> {
         if (isCorrect) {
             EndReview ();
         }
-        yield return new WaitForSeconds (2f);
-        ActivateSenseButtons (true);
+        else {
+            yield return new WaitForSeconds (2f);
+            ActivateSenseButtons (true);
+        }
     }
 
     void ActivateSenseButtons (bool activate) {

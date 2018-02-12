@@ -33,12 +33,14 @@ public class StickerManager : Singleton<StickerManager> {
     }
 
 	public void CreateSticker(GameManager.StickerStats sticker, DataType.StickerType typeOfSticker) {
-        if (sticker.isStickerPlaced) {
-            GameObject stickerObject = Instantiate (sticker.stickerObject, container.transform.position, Quaternion.identity, container.transform);
-            stickerSlotDict[typeOfSticker].ReceiveSticker (stickerObject.GetComponent<StickerBehaviour> (), true);
-        }
-        else {
-            container.AddSticker (sticker.stickerObject);
+        GameObject stickerPrefab = GameManager.Instance.GetStickerObject (typeOfSticker);
+        if (stickerPrefab) {
+            if (sticker.isStickerPlaced) {
+                GameObject stickerObject = Instantiate (stickerPrefab, container.transform.position, Quaternion.identity, container.transform);
+                stickerSlotDict[typeOfSticker].ReceiveSticker (stickerObject.GetComponent<StickerBehaviour> (), true);
+            } else {
+                container.AddSticker (stickerPrefab);
+            }
         }
     }
 

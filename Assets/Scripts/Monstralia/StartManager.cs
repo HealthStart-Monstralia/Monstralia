@@ -8,7 +8,9 @@ public class StartManager : Singleton<StartManager> {
     public bool playIntro = true;
     public Button[] buttonsToDisable;
     public Fader fader;
+    public GameObject monsterSelection;
 
+    [SerializeField] private CreateMonster monsterSpawn;
     private SwitchScene sceneLoader;
 
     new void Awake () {
@@ -19,8 +21,16 @@ public class StartManager : Singleton<StartManager> {
 
     void Start () {
         sceneLoader = GetComponent<SwitchScene> ();
+        GameManager.Instance.LoadGame ();
 
-        if (playIntro) {
+        monsterSpawn.gameObject.SetActive (false);
+        if (GameManager.Instance.GetIsMonsterSelected()) {
+            monsterSpawn.gameObject.SetActive (true);
+            CreateMonsterOnMap ();
+        }
+
+        if (playIntro && !GameManager.Instance.isIntroShown) {
+            GameManager.Instance.isIntroShown = true;
             DisableButtons ();
             StartCoroutine (PlayIntro ());
         }
@@ -45,5 +55,26 @@ public class StartManager : Singleton<StartManager> {
 
     public void SwitchScene() {
         sceneLoader.LoadScene ();
+    }
+
+    public void SelectMonster () {
+        GameManager.Instance.AllowSave ();
+        if (!GameManager.Instance.GetIsMonsterSelected()) {
+            monsterSelection.SetActive (true);
+        }
+        else {
+            SwitchScene ();
+        }
+    }
+
+    void CreateMonsterOnMap () {
+        Monster monster = monsterSpawn.SpawnPlayerMonster ();
+        monster.transform.SetParent (monsterSpawn.transform);
+        monster.spriteRenderer.sortingLayerName = "UI";
+        monster.spriteRenderer.sortingOrder = 0;
+        monster.transform.localScale = Vector3.one * 40f;
+        monster.AllowMonsterTickle = true;
+        monster.IdleAnimationOn = true;
+        monster.spawnAnimation = true;
     }
 }

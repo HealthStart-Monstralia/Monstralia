@@ -143,7 +143,7 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
         if (score >= currentLevelManager.scoreGoal) {
             SoundManager.Instance.PlaySFXClip (finishedSfx);
             yield return new WaitForSeconds (2f);
-            if (!GameManager.Instance.GetStickerUnlock(typeOfGame)) {
+            if (!GameManager.Instance.GetIsStickerUnlocked(typeOfGame)) {
                 GameOver (DataType.GameEnd.EarnedSticker);
             } else {
                 GameOver (DataType.GameEnd.CompletedLevel);

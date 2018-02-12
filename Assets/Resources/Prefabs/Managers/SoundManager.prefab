@@ -86,8 +86,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4344783910194952}
-  - {fileID: 4972080962323360}
   - {fileID: 4920888270892316}
+  - {fileID: 4972080962323360}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -115,7 +115,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4078996590943060}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4972080962323360
 Transform:
@@ -128,7 +128,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4078996590943060}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &82289586521453454
 AudioSource:
@@ -220,7 +220,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -381,7 +381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9955de18d9b4945efa8edee3f84809cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicScore: {fileID: 82289586521453454}
+  musicSource: {fileID: 82289586521453454}
   ambientSource: {fileID: 82844572494641172}
   sfxSource: {fileID: 82276265104761560, guid: c8f060c7d97114343b2aa584605606d2, type: 2}
   voiceOverSource: {fileID: 82354776354633768}

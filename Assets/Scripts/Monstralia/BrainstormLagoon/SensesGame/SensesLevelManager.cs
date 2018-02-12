@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class SensesLevelManager : MonoBehaviour {
     public float timeLimit = 15f;
     public int scoreGoal = 3;
-    public UnityStandardAssets.ImageEffects.BlurOptimized blur;
     public CreateMonster[] monsterCreators;
     public AudioClip transitionSfx;
     [HideInInspector] public Monster monster;
@@ -26,19 +25,12 @@ public class SensesLevelManager : MonoBehaviour {
     }
 
     IEnumerator PrepareToStart() {
-        // Lower blur
-        float t = 3.0f;
-        while (t > 0.0f) {
-            t -= Time.deltaTime * 2;
-            blur.blurSize = t;
-            yield return null;
-        }
+        yield return new WaitForSeconds (0.5f);
 
         SoundManager.Instance.PlaySFXClip (transitionSfx);
         SensesGameManager.Instance.fireworksSystem.ActivateFireworks ();
         yield return new WaitForSeconds(0.1f);
 
-        blur.enabled = false;
         monster = monsterCreators[0].SpawnPlayerMonster ();
         SensesGameManager.Instance.ActivateHUD (true);
         SensesGameManager.Instance.StartCountdown (StartGame);

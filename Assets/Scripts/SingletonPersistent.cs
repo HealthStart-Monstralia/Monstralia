@@ -11,13 +11,6 @@ public class SingletonPersistent<T> : MonoBehaviour where T : Component {
                 instance = (T)FindObjectOfType (typeof (T));
 
                 if (!instance) {
-                    /*
-                    GameObject obj = new GameObject {
-                        name = typeof (T).Name,
-                        hideFlags = HideFlags.DontSave
-                    };
-                    instance = obj.AddComponent<T> ();
-                    */
                     print ("Instance returned NULL");
                 }
             } 
@@ -26,7 +19,7 @@ public class SingletonPersistent<T> : MonoBehaviour where T : Component {
         }
     }
 
-    public virtual void Awake () {
+    public void Awake () {
         if (!instance) {
             instance = this as T;
         } else {

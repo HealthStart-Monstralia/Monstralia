@@ -1,33 +1,40 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.IO;
+using System;
 using System.Collections.Generic;
 
 public class GameManager : SingletonPersistent<GameManager> {
-    private Dictionary<DataType.Minigame, MinigameStats> gameStats;
-    private Dictionary<DataType.StickerType, StickerStats> stickerStats;
-    private Dictionary<DataType.Minigame, MinigameData> minigameDictionary;
-    private Dictionary<DataType.IslandSection, bool> visitedAreas;
-
-    private DataType.MonsterType playerMonsterType;
+    private Dictionary<DataType.Minigame, MinigameData> minigameDictionary = new Dictionary<DataType.Minigame, MinigameData> ();
+    private Dictionary<DataType.StickerType, GameObject> stickerDictionary = new Dictionary<DataType.StickerType, GameObject> ();
     private MinigameData[] minigameAssetData;   // Loaded from InitializeDictionaryEntries()
-    private DataType.Minigame lastGamePlayed;
     private DataType.IslandSection currentSection;
     private bool activateReview = false; // Alternate activating review when game is lvl 3
+    private bool isSaveAllowed = false;
+
+    // Can be loaded from a save file
+    private Dictionary<DataType.Minigame, MinigameStats> gameStats = new Dictionary<DataType.Minigame, MinigameStats>();
+    private Dictionary<DataType.StickerType, StickerStats> stickerStats = new Dictionary<DataType.StickerType, StickerStats>();
+    private Dictionary<DataType.IslandSection, bool> visitedAreas = new Dictionary<DataType.IslandSection, bool>();
+    private DataType.Minigame lastGamePlayed;
+    private DataType.MonsterType playerMonsterType;
+    private bool isMonsterSelected = false;
     private int numOfGamesCompleted = 0;
 
+    [Serializable]
     public struct MinigameStats {
         public int level;
         public bool isTutorialPending;
         public int stars;
     }
 
+    [Serializable]
     public struct StickerStats {
-        public GameObject stickerObject;
         public bool isStickerUnlocked;
         public bool isStickerPlaced;
     }
 
+    [HideInInspector] public bool isIntroShown = false;
     public GameObject fpsCounter;
     public GameObject notificationPrefab;
     public GameObject loadingScreenPrefab;
@@ -36,24 +43,21 @@ public class GameManager : SingletonPersistent<GameManager> {
     public GameObject blueMonster, greenMonster, redMonster, yellowMonster;
 
     new void Awake() {
-        base.Awake ();
-        InitializeDictionaryEntries ();
-
+        //base.Awake ();
         // If not on Android or Windows Unity Editor, remove exit handler
         if (GetComponent<ExitHandler> () && Application.platform != RuntimePlatform.Android && Application.platform != RuntimePlatform.WindowsEditor) {
             Destroy (GetComponent<ExitHandler> ());
         }
     }
 
+    private void Start () {
+        InitializeDictionaryEntries ();
+    }
+
     void InitializeDictionaryEntries () {
+        print ("Initializing dictionary entries");
         // Load all minigame asset data in the Minigames folder
         minigameAssetData = Resources.LoadAll<MinigameData> ("Data/Minigames");
-
-        // Initialize dictionaries
-        minigameDictionary = new Dictionary<DataType.Minigame, MinigameData> ();
-        gameStats = new Dictionary<DataType.Minigame, MinigameStats> ();
-        stickerStats = new Dictionary<DataType.StickerType, StickerStats> ();
-        visitedAreas = new Dictionary<DataType.IslandSection, bool> ();
 
         // Initialize visitedAreas dictionary with false boolean
         foreach (DataType.IslandSection island in System.Enum.GetValues (typeof (DataType.IslandSection))) {
@@ -72,15 +76,30 @@ public class GameManager : SingletonPersistent<GameManager> {
             newGame.isTutorialPending = true;
             gameStats.Add (entry.typeOfGame, newGame);
 
-            // Create and initialize stats for corresponding sticker and add it to stickerStats Dictionary
+            // Check if MinigameData entry has a sticker prefab
             if (entry.stickerPrefab) {
+                // Create a reference to the sticker object from type of sticker
+                stickerDictionary.Add (GetAssignedSticker (entry.typeOfGame), entry.stickerPrefab);
+
+                // Create and initialize stats for corresponding sticker and add it to stickerStats Dictionary
                 StickerStats newSticker;
-                newSticker.stickerObject = entry.stickerPrefab;
                 newSticker.isStickerPlaced = false;
                 newSticker.isStickerUnlocked = false;
                 stickerStats.Add (GetAssignedSticker (entry.typeOfGame), newSticker);
             }
         }
+    }
+
+    void InitializeFromLoad (GameSave save) {
+        print ("Initializing entries from save file");
+        gameStats = save.gameStats;
+        stickerStats = save.stickerStats;
+        visitedAreas = save.visitedAreas;
+        lastGamePlayed = save.lastGamePlayed;
+        isMonsterSelected = save.isMonsterSelected;
+        playerMonsterType = save.playerMonsterType;
+        numOfGamesCompleted = save.numOfGamesCompleted;
+        isIntroShown = save.isIntroShown;
     }
 
     // Called at the end of a minigame
@@ -110,6 +129,9 @@ public class GameManager : SingletonPersistent<GameManager> {
 
         }
         gameStats[gameName] = newStats; // Save changes to new struct
+
+        // Save changes to save data
+        SaveGame ();
     }
 
     public void CompleteTutorial(DataType.Minigame gameName) {
@@ -121,6 +143,9 @@ public class GameManager : SingletonPersistent<GameManager> {
 
         // Save changes to new struct
         gameStats[gameName] = newStats;
+
+        // Save changes to save data
+        SaveGame ();
     }
 
     /// <summary>
@@ -137,6 +162,9 @@ public class GameManager : SingletonPersistent<GameManager> {
 
         // Save changes to new struct
         stickerStats[typeOfSticker] = newSticker;
+
+        // Save changes to save data
+        SaveGame ();
     }
 
     /// <summary>
@@ -148,15 +176,7 @@ public class GameManager : SingletonPersistent<GameManager> {
         // Copy current struct to a new one
         DataType.StickerType gameSticker = GetAssignedSticker(game);
         if (gameSticker != DataType.StickerType.None) {
-            StickerStats newSticker = stickerStats[gameSticker];
-
-            // Modify desired variable
-            if (!newSticker.isStickerUnlocked) {
-                newSticker.isStickerUnlocked = true;
-
-                // Save changes to new struct
-                stickerStats[gameSticker] = newSticker;
-            }
+            ActivateSticker (gameSticker);
         }
     }
 
@@ -175,11 +195,18 @@ public class GameManager : SingletonPersistent<GameManager> {
 
             // Save changes to new struct
             stickerStats[sticker] = newSticker;
+
+            // Save changes to save data
+            SaveGame ();
         }
     }
 
     public void SetPlayerMonsterType (DataType.MonsterType monster) {
         playerMonsterType = monster;
+        isMonsterSelected = true;
+
+        // Save changes to save data
+        SaveGame ();
     }
 
     public DataType.MonsterType GetPlayerMonsterType () {
@@ -264,11 +291,19 @@ public class GameManager : SingletonPersistent<GameManager> {
     /// <param name="game">Type of game to check status of sticker.</param>
     /// <returns>Returns whether sticker is unlocked or not.</returns>
 
-    public bool GetStickerUnlock (DataType.Minigame game) {
+    public bool GetIsStickerUnlocked (DataType.Minigame game) {
         if (stickerStats.ContainsKey(GetAssignedSticker (game)))
             return stickerStats[GetAssignedSticker (game)].isStickerUnlocked;
         else
             return false;
+    }
+
+    public GameObject GetStickerObject (DataType.StickerType typeOfSticker) {
+        if (stickerDictionary.ContainsKey(typeOfSticker)) {
+            return stickerDictionary[typeOfSticker];
+        }
+
+        return null;
     }
 
     public Dictionary<DataType.StickerType, StickerStats> GetStickerDict () {
@@ -286,6 +321,9 @@ public class GameManager : SingletonPersistent<GameManager> {
 
     public void SetLastGamePlayed (DataType.Minigame game) {
         lastGamePlayed = game;
+
+        // Save changes to save data
+        SaveGame ();
     }
 
     public DataType.Minigame GetLastGamePlayed() {
@@ -304,12 +342,19 @@ public class GameManager : SingletonPersistent<GameManager> {
         return visitedAreas[island];
     }
 
-    public bool SetVisitedArea (DataType.IslandSection island, bool isVisited) {
-        return visitedAreas[island] = isVisited;
+    public void SetVisitedArea (DataType.IslandSection island, bool isVisited) {
+        visitedAreas[island] = isVisited;
+
+        // Save changes to save data
+        SaveGame ();
     }
 
     public int GetNumOfGamesCompleted() {
         return numOfGamesCompleted;
+    }
+
+    public bool GetIsMonsterSelected () {
+        return isMonsterSelected;
     }
 
     public void CreateNotification (string text) {
@@ -330,5 +375,40 @@ public class GameManager : SingletonPersistent<GameManager> {
 
     public void TurnOffFPSDisplay () {
         fpsCounter.SetActive (false);
+    }
+
+    // Only save game if Start Button is pressed in the Start scene
+    public void AllowSave () {
+        isSaveAllowed = true;
+    }
+
+    public void SaveGame () {
+        if (isSaveAllowed) {
+            GameSave save = new GameSave {
+                gameStats = gameStats,
+                stickerStats = stickerStats,
+                visitedAreas = visitedAreas,
+                lastGamePlayed = lastGamePlayed,
+                isMonsterSelected = isMonsterSelected,
+                playerMonsterType = playerMonsterType,
+                numOfGamesCompleted = numOfGamesCompleted,
+                isIntroShown = isIntroShown
+            };
+
+            SaveSystem.Save (save);
+        }
+    }
+
+    public void LoadGame () {
+        SaveSystem.Load ();
+        if (SaveSystem.savedGame != null) {
+            InitializeFromLoad (SaveSystem.savedGame);
+            CreateNotification ("Game Loaded!");
+        }
+    }
+
+    public void DeleteSave () {
+        SaveSystem.DeleteSave ();
+        CreateNotification ("Game Deleted!");
     }
 }

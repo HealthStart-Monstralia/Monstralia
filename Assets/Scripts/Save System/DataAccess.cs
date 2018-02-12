@@ -12,7 +12,7 @@ public class DataAccess {
     [DllImport ("__Internal")]
     private static extern void WindowAlert (string message);
 
-    public static void Save (GameDetails gameDetails) {
+    public static void Save (GameSave gameDetails) {
         string dataPath = string.Format ("{0}/GameDetails.dat", Application.persistentDataPath);
         BinaryFormatter binaryFormatter = new BinaryFormatter ();
         FileStream fileStream;
@@ -36,8 +36,8 @@ public class DataAccess {
         }
     }
 
-    public static GameDetails Load () {
-        GameDetails gameDetails = null;
+    public static GameSave Load () {
+        GameSave gameDetails = null;
         string dataPath = string.Format ("{0}/GameDetails.dat", Application.persistentDataPath);
 
         try {
@@ -45,7 +45,7 @@ public class DataAccess {
                 BinaryFormatter binaryFormatter = new BinaryFormatter ();
                 FileStream fileStream = File.Open (dataPath, FileMode.Open);
 
-                gameDetails = (GameDetails)binaryFormatter.Deserialize (fileStream);
+                gameDetails = (GameSave)binaryFormatter.Deserialize (fileStream);
                 fileStream.Close ();
             }
         } catch (Exception e) {

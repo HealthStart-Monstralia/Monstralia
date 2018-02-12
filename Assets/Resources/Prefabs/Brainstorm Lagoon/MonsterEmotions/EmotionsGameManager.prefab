@@ -59,18 +59,14 @@ MonoBehaviour:
   redEmotionsData: {fileID: 11400000, guid: 113dad1fbdcc90745874f4186c3b11d8, type: 2}
   yellowEmotionsData: {fileID: 11400000, guid: 6df536b44a86574489d9755e5d70290b, type: 2}
   afraidColor: {r: 0.9626775, g: 1, b: 0.32352942, a: 1}
-  disgustedColor: {r: 0.6838235, g: 0.26437476, b: 0.14078721, a: 1}
+  disgustedColor: {r: 0.5955882, g: 0.22687922, b: 0.11824178, a: 1}
   happyColor: {r: 0.093101196, g: 0.9044118, b: 0.32747984, a: 1}
-  joyousColor: {r: 0, g: 1, b: 0.95862055, a: 1}
+  joyousColor: {r: 0, g: 0.7931037, b: 1, a: 1}
   madColor: {r: 0.875, g: 0.16084558, b: 0.16084558, a: 1}
-  sadColor: {r: 0.21277657, g: 0.16927983, b: 0.74264705, a: 1}
-  thoughtfulColor: {r: 0.14705884, g: 0.25882345, b: 1, a: 1}
+  sadColor: {r: 0.31901842, g: 0.290279, b: 0.6691177, a: 1}
+  thoughtfulColor: {r: 0.809, g: 0.25882345, b: 1, a: 1}
   worriedColor: {r: 1, g: 0.5172413, b: 0, a: 1}
-  monster: {fileID: 0}
-  primaryEmotions: []
-  secondaryEmotions: []
-  activeEmotions: []
-  poolEmotions: []
+  isDrawingCards: 0
 --- !u!114 &114689988482316062
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -83,11 +79,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   typeOfGame: 3
-  typeOfMonster: 0
+  randomizeMusic: 1
   backgroundMusicArray:
   - {fileID: 8300000, guid: b64dda38d7801594eae4be7b16551529, type: 3}
   - {fileID: 8300000, guid: 08d54f33f870ae247ba0d95dd54cfe60, type: 3}
   - {fileID: 8300000, guid: 8e038355eb8874c4f840d00addb9c7be, type: 3}
+  playerMonster: {fileID: 0}
+  monsterCreator: {fileID: 0}
   generator: {fileID: 0}
   voData: {fileID: 11400000, guid: 4d08331b214fd2e498ff1e4f7f35fd51, type: 2}
   monsterLocation: {fileID: 0}
@@ -95,10 +93,8 @@ MonoBehaviour:
   gameStarted: 0
   isTutorialRunning: 0
   inputAllowed: 0
-  isDrawingCards: 0
-  timerText: {fileID: 0}
   scoreGauge: {fileID: 0}
-  timer: {fileID: 0}
+  timerClock: {fileID: 0}
   subtitlePanel: {fileID: 0}
   emotionSpawnLocs:
   - {fileID: 0}
@@ -112,3 +108,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fc15f6989c7d2844d8bdcff18fe03ce3, type: 3}
   tutorialHand: {fileID: 0}
   tutorialCanvas: {fileID: 0}
+  monster: {fileID: 0}

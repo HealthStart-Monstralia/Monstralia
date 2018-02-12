@@ -402,14 +402,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeLimit: 50
   scoreGoal: 6
-  blur: {fileID: 1206458078}
   monsterCreators:
   - {fileID: 274941976}
   transitionSfx: {fileID: 8300000, guid: 6b2b33b3819a26f44863e83f05a4011e, type: 3}
   monster: {fileID: 0}
   senseFactory: {fileID: 557897096}
   senseText: {fileID: 405424449}
-  commentText: {fileID: 0}
   correctLines:
   - Good job!
   - That's correct!
@@ -2783,7 +2781,6 @@ GameObject:
   - component: {fileID: 1206458077}
   - component: {fileID: 1206458080}
   - component: {fileID: 1206458079}
-  - component: {fileID: 1206458078}
   m_Layer: 0
   m_Name: Background Camera
   m_TagString: Untagged
@@ -2828,22 +2825,6 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &1206458078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1206458076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7fc6bde01469c7b4badee5362f191d96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  downsample: 0
-  blurSize: 3
-  blurIterations: 3
-  blurType: 0
-  blurShader: {fileID: 4800000, guid: f9d5fa183cd6b45eeb1491f74863cd91, type: 3}
 --- !u!81 &1206458079
 AudioListener:
   m_ObjectHideFlags: 0
@@ -4086,14 +4067,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeLimit: 50
   scoreGoal: 7
-  blur: {fileID: 1206458078}
   monsterCreators:
   - {fileID: 32538150}
   transitionSfx: {fileID: 8300000, guid: 6b2b33b3819a26f44863e83f05a4011e, type: 3}
   monster: {fileID: 0}
   senseFactory: {fileID: 592291536}
   senseText: {fileID: 1518055111}
-  commentText: {fileID: 0}
   correctLines:
   - Good job!
   - That's correct!
@@ -4279,14 +4258,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeLimit: 45
   scoreGoal: 4
-  blur: {fileID: 1206458078}
   monsterCreators:
   - {fileID: 1409335640}
   transitionSfx: {fileID: 8300000, guid: 6b2b33b3819a26f44863e83f05a4011e, type: 3}
   monster: {fileID: 0}
   senseFactory: {fileID: 1404075269}
   senseText: {fileID: 1958613813}
-  commentText: {fileID: 0}
   correctLines:
   - Good job!
   - That's correct!

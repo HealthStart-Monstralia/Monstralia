@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu (fileName = "MinigameData_.asset", menuName = "Data/Minigame Data")]
 public class MinigameData : ScriptableObject {

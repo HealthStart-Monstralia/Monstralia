@@ -13,7 +13,7 @@ public class SettingsPanel : MonoBehaviour {
     void Start () {
         //set the value of the volume slider
         if (volumeSlider) {
-            volumeSlider.value = SoundManager.Instance.musicScore.volume;
+            volumeSlider.value = SoundManager.Instance.musicSource.volume;
             sfxSlider.value = SoundManager.Instance.sfxSource.volume;
             voiceOverSlider.value = SoundManager.Instance.voiceOverSource.volume;
         }

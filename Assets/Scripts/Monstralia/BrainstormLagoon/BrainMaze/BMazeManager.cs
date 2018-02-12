@@ -255,7 +255,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
         yield return new WaitForSeconds (duration);
         if (!isTutorialRunning && !gameStarted) {
             if (score >= scoreGoal) {
-                if (!GameManager.Instance.GetStickerUnlock (typeOfGame)) {
+                if (!GameManager.Instance.GetIsStickerUnlocked (typeOfGame)) {
                     GameOver (DataType.GameEnd.EarnedSticker);
                 } else {
                     GameOver (DataType.GameEnd.CompletedLevel);

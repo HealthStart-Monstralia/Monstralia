@@ -26,8 +26,8 @@ public class EmotionsReviewMonster : MonoBehaviour {
     void AddButton() {
         Button mybutton = gameObject.AddComponent<Button>();
         mybutton.onClick.AddListener(Win);
-        print(mybutton);
     }
+
     void Win() {
         SoundManager.Instance.PlayCorrectSFX ();
         ReviewEmotionsGame.Instance.EndReview();
