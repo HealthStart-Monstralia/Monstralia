@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class EmotionsCardHand : MonoBehaviour {
     public GameObject[] cardLocations;
-    public GameObject cardObject;
 
-    [SerializeField] private Transform cardSpawn;
-    private List<GameObject> cards = new List<GameObject> ();
     private int slots;
     private Animator animComp;
 
@@ -18,34 +15,15 @@ public class EmotionsCardHand : MonoBehaviour {
         for (int i = 0; i < cardLocations.Length; i++) {
             cardLocations[i].SetActive (false);
         }
-
-        if (!cardSpawn) {
-            cardSpawn = transform;
-        }
     }
 
-    public EmotionCard SpawnCard (int iteration, DataType.MonsterEmotions changeToEmotion, Sprite img, Color emoColor, AudioClip audio = null) {
-        EmotionCard card = Instantiate (
-            cardObject,
-            cardSpawn.position, 
-            Quaternion.identity, 
-        transform.parent).GetComponent<EmotionCard> ();
+    public void PutCardInSlot (EmotionCard card, int slotNum) {
+        card.StartCoroutine (card.MoveToAndFlip (cardLocations[slotNum].transform));
+    }
 
-        cards.Add (card.gameObject);
-        card.colorOfCard = emoColor;
-        card.ChangeEmotion (changeToEmotion, img, audio);
-        card.StartCoroutine (card.MoveToAndFlip(cardLocations[iteration]));
+    public EmotionCard GetCardInSlot (int slotNum) {
+        EmotionCard card = GetComponentInChildren<EmotionCard> ();
         return card;
-    }
-
-    public void RemoveCards () {
-        if (cards.Count > 0) {
-            for (int i = 0; i < slots; i++) {
-                EmotionCard card = cards[0].GetComponent<EmotionCard> ();
-                cards.Remove (card.gameObject);
-                card.StartCoroutine (card.MoveToAndRemove (EmotionsGameManager.Instance.monsterLocation.gameObject));
-            }
-        }
     }
 
     public void SetSlots (int numOfSlots) {

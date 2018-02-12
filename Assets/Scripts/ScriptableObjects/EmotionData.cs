@@ -11,6 +11,7 @@ public class EmotionData : ScriptableObject {
         public Sprite sprite;
         public DataType.MonsterEmotions emotion;
         public AudioClip clipOfEmotion;
+        public Color emotionColor;
     }
 
     public EmotionStruct afraid, disgusted, happy, joyous, mad, sad, thoughtful, worried;

@@ -53,7 +53,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardHand: {fileID: 0}
-  currentTargetEmotion: 0
+  cardPrefab: {fileID: 1650590322694864, guid: 95af387b9c0b7af48a7b6c59baecedc7, type: 2}
+  currentTargetEmotionStruct:
+    sprite: {fileID: 0}
+    emotion: 0
+    clipOfEmotion: {fileID: 0}
+    emotionColor: {r: 0, g: 0, b: 0, a: 0}
   blueEmotionsData: {fileID: 11400000, guid: 2bfc31fa1eb8f084199039ed1e538e48, type: 2}
   greenEmotionsData: {fileID: 11400000, guid: 4699797d3f297d840800d30591b735a6, type: 2}
   redEmotionsData: {fileID: 11400000, guid: 113dad1fbdcc90745874f4186c3b11d8, type: 2}
@@ -66,7 +71,10 @@ MonoBehaviour:
   sadColor: {r: 0.31901842, g: 0.290279, b: 0.6691177, a: 1}
   thoughtfulColor: {r: 0.809, g: 0.25882345, b: 1, a: 1}
   worriedColor: {r: 1, g: 0.5172413, b: 0, a: 1}
+  allowOtherMonsterCards: 0
   isDrawingCards: 0
+  cardSpawn: {fileID: 0}
+  poolEmotions: []
 --- !u!114 &114689988482316062
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -86,16 +94,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8e038355eb8874c4f840d00addb9c7be, type: 3}
   playerMonster: {fileID: 0}
   monsterCreator: {fileID: 0}
-  generator: {fileID: 0}
   voData: {fileID: 11400000, guid: 4d08331b214fd2e498ff1e4f7f35fd51, type: 2}
   monsterLocation: {fileID: 0}
   timeLimit: 30
   gameStarted: 0
   isTutorialRunning: 0
   inputAllowed: 0
-  scoreGauge: {fileID: 0}
-  timerClock: {fileID: 0}
-  subtitlePanel: {fileID: 0}
   emotionSpawnLocs:
   - {fileID: 0}
   - {fileID: 0}
@@ -108,4 +112,3 @@ MonoBehaviour:
   - {fileID: 8300000, guid: fc15f6989c7d2844d8bdcff18fe03ce3, type: 3}
   tutorialHand: {fileID: 0}
   tutorialCanvas: {fileID: 0}
-  monster: {fileID: 0}

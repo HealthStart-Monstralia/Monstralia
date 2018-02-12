@@ -1130,7 +1130,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &803912239
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1438,6 +1438,11 @@ Prefab:
       propertyPath: timerClock
       value: 
       objectReference: {fileID: 720968055}
+    - target: {fileID: 114424997835268456, guid: ffb2175c8480fd84284362ac7cc5ac08,
+        type: 2}
+      propertyPath: cardSpawn
+      value: 
+      objectReference: {fileID: 1094575037}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ffb2175c8480fd84284362ac7cc5ac08, type: 2}
   m_IsPrefabParent: 0
@@ -2047,11 +2052,6 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 114363116818121018, guid: c8cdf35faef8f6e419170aa968382964,
-        type: 2}
-      propertyPath: cardSpawn
-      value: 
-      objectReference: {fileID: 1094575037}
     - target: {fileID: 224529302338640248, guid: c8cdf35faef8f6e419170aa968382964,
         type: 2}
       propertyPath: m_AnchorMin.y

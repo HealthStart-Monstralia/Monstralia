@@ -499,7 +499,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardHand: {fileID: 114640068678578470}
-  currentTargetEmotion: 0
+  cardPrefab: {fileID: 1650590322694864, guid: 95af387b9c0b7af48a7b6c59baecedc7, type: 2}
+  currentTargetEmotionStruct:
+    sprite: {fileID: 0}
+    emotion: 0
+    clipOfEmotion: {fileID: 0}
+    emotionColor: {r: 0, g: 0, b: 0, a: 0}
   blueEmotionsData: {fileID: 11400000, guid: 2bfc31fa1eb8f084199039ed1e538e48, type: 2}
   greenEmotionsData: {fileID: 11400000, guid: 4699797d3f297d840800d30591b735a6, type: 2}
   redEmotionsData: {fileID: 11400000, guid: 113dad1fbdcc90745874f4186c3b11d8, type: 2}
@@ -512,7 +517,10 @@ MonoBehaviour:
   sadColor: {r: 0.31901842, g: 0.290279, b: 0.6691177, a: 1}
   thoughtfulColor: {r: 0.809, g: 0.25882345, b: 1, a: 1}
   worriedColor: {r: 1, g: 0.5172413, b: 0, a: 1}
+  allowOtherMonsterCards: 0
   isDrawingCards: 0
+  cardSpawn: {fileID: 224601710596439166}
+  poolEmotions: []
 --- !u!114 &114320161510444250
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -642,8 +650,6 @@ MonoBehaviour:
   - {fileID: 1105741540787480}
   - {fileID: 1370335938766386}
   - {fileID: 1010427622013708}
-  cardObject: {fileID: 1650590322694864, guid: 95af387b9c0b7af48a7b6c59baecedc7, type: 2}
-  cardSpawn: {fileID: 224601710596439166}
 --- !u!114 &114640379542198178
 MonoBehaviour:
   m_ObjectHideFlags: 1

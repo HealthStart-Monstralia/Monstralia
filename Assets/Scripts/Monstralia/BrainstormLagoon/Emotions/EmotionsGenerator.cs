@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EmotionsGenerator : MonoBehaviour {
     public EmotionsCardHand cardHand;
+    public GameObject cardPrefab;
     public EmotionData.EmotionStruct currentTargetEmotionStruct;
     public EmotionData blueEmotionsData;
     public EmotionData greenEmotionsData;
@@ -17,16 +18,21 @@ public class EmotionsGenerator : MonoBehaviour {
     public delegate void CardDelegate (DataType.MonsterEmotions emotion);
     public CardDelegate CheckEmotion;
 
+    private List<GameObject> cardList = new List<GameObject> ();
+    [SerializeField] private Transform cardSpawn;
     private List<EmotionData.EmotionStruct> primaryEmotions = new List<EmotionData.EmotionStruct> ();
     private List<EmotionData.EmotionStruct> secondaryEmotions = new List<EmotionData.EmotionStruct> ();
     private List<EmotionData.EmotionStruct> activeEmotions = new List<EmotionData.EmotionStruct> ();
     [SerializeField] private List<EmotionData.EmotionStruct> poolEmotions = new List<EmotionData.EmotionStruct> ();
     private DataType.MonsterType typeOfMonster;
-    private int slots = 2;
+    private int numOfSlots = 2;
 
     private void Start () {
-        typeOfMonster = GameManager.Instance.GetPlayerMonsterType ();
+        if (!cardSpawn) {
+            cardSpawn = cardHand.transform;
+        }
 
+        typeOfMonster = GameManager.Instance.GetPlayerMonsterType ();
 
         // Initialize emotion lists according to monster type
         switch (typeOfMonster) {
@@ -55,6 +61,9 @@ public class EmotionsGenerator : MonoBehaviour {
                 PopulateList (secondaryEmotions, redEmotionsData);
                 break;
         }
+
+        poolEmotions.Clear ();
+        poolEmotions.AddRange (primaryEmotions);
     }
 
     void PopulateList(List<EmotionData.EmotionStruct> list, EmotionData emotionData) {
@@ -71,7 +80,7 @@ public class EmotionsGenerator : MonoBehaviour {
     }
 
     public void SetSlots (int numOfSlots) {
-        slots = numOfSlots;
+        this.numOfSlots = numOfSlots;
         cardHand.SetSlots (numOfSlots);
     }
 
@@ -82,7 +91,6 @@ public class EmotionsGenerator : MonoBehaviour {
         poolEmotions.AddRange (primaryEmotions);
         if (!currentTargetEmotionStruct.Equals(null)) {
             poolEmotions.Remove (currentTargetEmotionStruct);   // Prevent the same emotion being selected more than once in a row
-            print (string.Format ("currentTargetEmotionStruct.emotion: {0}", currentTargetEmotionStruct.emotion));
         }
         yield return new WaitForSeconds (duration);
 
@@ -92,11 +100,11 @@ public class EmotionsGenerator : MonoBehaviour {
         yield return new WaitForSecondsRealtime (0.4f);
 
         // Create and draw cards
-        for (int i = 0; i < slots; i++) {
+        for (int i = 0; i < numOfSlots; i++) {
             int random = Random.Range (0, activeEmotions.Count);
             EmotionData.EmotionStruct emoData = activeEmotions[random];
             activeEmotions.RemoveAt (random);
-            CreateCard (emoData, i);
+            CreateCard (emoData);
             yield return new WaitForSecondsRealtime (0.4f);
         }
         yield return new WaitForSecondsRealtime (0.5f);
@@ -107,7 +115,6 @@ public class EmotionsGenerator : MonoBehaviour {
 
     private void ChooseActiveEmotion () {
         EmotionData.EmotionStruct selectedEmoStruct = poolEmotions.RemoveRandom (); // Randomly select and remove an emotion from pool
-        print (string.Format ("selectedEmoStruct.emotion: {0}", selectedEmoStruct.emotion));
         poolEmotions.Add (currentTargetEmotionStruct);      // Put last emotion back into deck
         currentTargetEmotionStruct = selectedEmoStruct;     // Select emotion chosen by random
         activeEmotions.Add (selectedEmoStruct);             // Add to active emotions deck
@@ -117,10 +124,9 @@ public class EmotionsGenerator : MonoBehaviour {
         if (allowOtherMonsterCards)
             poolEmotions.AddRange (secondaryEmotions);
 
-        for (int i = 0; i < slots - 1; i++) {
+        for (int i = 0; i < numOfSlots - 1; i++) {
             EmotionData.EmotionStruct emoStruct = poolEmotions.RemoveRandom ();
             activeEmotions.Add (emoStruct);
-            print (string.Format ("emoStruct.emotion: {0}", emoStruct.emotion));
         }
     }
 
@@ -132,28 +138,43 @@ public class EmotionsGenerator : MonoBehaviour {
         activeEmotions.Add (poolEmotions[1]);
         poolEmotions.RemoveAt (0);
 
-        for (int i = 0; i < slots; i++) {
+        for (int i = 0; i < numOfSlots; i++) {
             EmotionData.EmotionStruct emoData = activeEmotions[0];
             activeEmotions.RemoveAt (0);
 
-            CreateCard (emoData, i);
+            CreateCard (emoData);
             yield return new WaitForSecondsRealtime (0.4f);
         }
     }
 
-    EmotionCard CreateCard (EmotionData.EmotionStruct emoData, int iteration) {
-        EmotionCard card = cardHand.SpawnCard (
-            iteration,
-            emoData.emotion,
-            emoData.sprite,
-            GetEmotionColor (emoData.emotion),
-            emoData.clipOfEmotion
-        );
+    public EmotionCard CreateCard (EmotionData.EmotionStruct emoData) {
+        EmotionCard card = Instantiate (
+            cardPrefab,
+            cardSpawn.position,
+            Quaternion.identity,
+        cardSpawn.parent).GetComponent<EmotionCard> ();
+
+        card.monsterSprite = emoData.sprite;
+        card.emotion = emoData.emotion;
+        card.clipOfName = emoData.clipOfEmotion;
+        card.colorOfCard = emoData.emotionColor;
+
+        cardList.Add (card.gameObject);
+        if (cardList.Count > 0)
+            cardHand.PutCardInSlot (card, cardList.Count - 1);
         return card;
     }
 
     public void RemoveCards () {
-        cardHand.RemoveCards ();
+        foreach (GameObject cardSlot in cardHand.cardLocations) {
+            for (int slot = 0; slot < numOfSlots; slot++) {
+                EmotionCard card = cardHand.GetCardInSlot (slot);
+                if (card) {
+                    cardList.Remove (card.gameObject);
+                    card.StartCoroutine (card.MoveToAndRemove (cardSpawn));
+                }
+            }
+        }
     }
 
     public Color GetEmotionColor (DataType.MonsterEmotions emo) {

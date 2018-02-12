@@ -80,7 +80,9 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
         ChangeMonsterEmotion (generator.GetSelectedEmotion ());
 	}
 
-	IEnumerator RunTutorial () { 
+    #region Tutorial
+
+    IEnumerator RunTutorial () { 
 		print ("RunTutorial");
 		isTutorialRunning = true;
 		tutorialCanvas.gameObject.SetActive (true);
@@ -157,7 +159,9 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
 		PregameSetup ();
 	}
 
-	private void PostCountdownSetup() {
+    #endregion
+
+    private void PostCountdownSetup() {
 		StartGame();
 	}
 
