@@ -4,33 +4,37 @@ using UnityEngine;
 
 public class EmotionsGenerator : MonoBehaviour {
     public EmotionsCardHand cardHand;
-    public DataType.MonsterEmotions currentTargetEmotion;
+    public GameObject cardPrefab;
+    public EmotionData.EmotionStruct currentTargetEmotionStruct;
     public EmotionData blueEmotionsData;
     public EmotionData greenEmotionsData;
     public EmotionData redEmotionsData;
     public EmotionData yellowEmotionsData;
     public Color afraidColor, disgustedColor, happyColor, joyousColor, madColor, sadColor, thoughtfulColor, worriedColor;
-    public GameObject monster;
+    [HideInInspector] public bool allowOtherMonsterCards = false;
+    [HideInInspector] public bool isDrawingCards;
 
-    [SerializeField] private List<EmotionData.EmotionStruct> primaryEmotions = new List<EmotionData.EmotionStruct> ();
-    [SerializeField] private List<EmotionData.EmotionStruct> secondaryEmotions = new List<EmotionData.EmotionStruct> ();
-    [SerializeField] private List<EmotionData.EmotionStruct> activeEmotions = new List<EmotionData.EmotionStruct> ();
+    public delegate void CallBack ();
+    public delegate void CardDelegate (DataType.MonsterEmotions emotion);
+    public CardDelegate CheckEmotion;
+
+    private List<GameObject> cardList = new List<GameObject> ();
+    [SerializeField] private Transform cardSpawn;
+    private List<EmotionData.EmotionStruct> primaryEmotions = new List<EmotionData.EmotionStruct> ();
+    private List<EmotionData.EmotionStruct> secondaryEmotions = new List<EmotionData.EmotionStruct> ();
+    private List<EmotionData.EmotionStruct> activeEmotions = new List<EmotionData.EmotionStruct> ();
     [SerializeField] private List<EmotionData.EmotionStruct> poolEmotions = new List<EmotionData.EmotionStruct> ();
-    private EmotionData.EmotionStruct lastTargetEmotion;
-    private bool firstCard;
     private DataType.MonsterType typeOfMonster;
-    private int difficultyLevel;
-    private int slots;
-
-    private void Awake () {
-        typeOfMonster = GameManager.GetInstance ().GetMonsterType ();
-        difficultyLevel = GameManager.GetInstance ().GetLevel (DataType.Minigame.MonsterEmotions);
-        slots = difficultyLevel + 1;
-    }
+    private int numOfSlots = 2;
 
     private void Start () {
+        if (!cardSpawn) {
+            cardSpawn = cardHand.transform;
+        }
+
+        typeOfMonster = GameManager.Instance.GetPlayerMonsterType ();
+
         // Initialize emotion lists according to monster type
-        firstCard = true;
         switch (typeOfMonster) {
             case DataType.MonsterType.Blue:
                 PopulateList (primaryEmotions, blueEmotionsData);
@@ -57,10 +61,13 @@ public class EmotionsGenerator : MonoBehaviour {
                 PopulateList (secondaryEmotions, redEmotionsData);
                 break;
         }
+
+        poolEmotions.Clear ();
+        poolEmotions.AddRange (primaryEmotions);
     }
 
     void PopulateList(List<EmotionData.EmotionStruct> list, EmotionData emotionData) {
-        // Add structs to list from emotionData
+        // Add structs to list of structs from emotionData
         // emotionData contains a struct with MonsterEmotions emotion, Sprite sprite, and AudioClip clipOfEmotion
         list.Add (emotionData.afraid);
         list.Add (emotionData.disgusted);
@@ -72,10 +79,19 @@ public class EmotionsGenerator : MonoBehaviour {
         list.Add (emotionData.worried);
     }
 
-    public IEnumerator CreateNextEmotions (float duration) {
+    public void SetSlots (int numOfSlots) {
+        this.numOfSlots = numOfSlots;
+        cardHand.SetSlots (numOfSlots);
+    }
+
+    public IEnumerator CreateNextEmotions (float duration, CallBack EmotionsManagerCallback) {
+        isDrawingCards = true;
         activeEmotions.Clear ();
         poolEmotions.Clear ();
         poolEmotions.AddRange (primaryEmotions);
+        if (!currentTargetEmotionStruct.Equals(null)) {
+            poolEmotions.Remove (currentTargetEmotionStruct);   // Prevent the same emotion being selected more than once in a row
+        }
         yield return new WaitForSeconds (duration);
 
         RemoveCards ();
@@ -84,78 +100,81 @@ public class EmotionsGenerator : MonoBehaviour {
         yield return new WaitForSecondsRealtime (0.4f);
 
         // Create and draw cards
-        for (int i = 0; i < slots; i++) {
+        for (int i = 0; i < numOfSlots; i++) {
             int random = Random.Range (0, activeEmotions.Count);
             EmotionData.EmotionStruct emoData = activeEmotions[random];
             activeEmotions.RemoveAt (random);
-            CreateCard (emoData, i);
+            CreateCard (emoData);
             yield return new WaitForSecondsRealtime (0.4f);
         }
         yield return new WaitForSecondsRealtime (0.5f);
-        EmotionsGameManager.GetInstance ().isDrawingCards = false;
-        EmotionsGameManager.GetInstance ().ContinueGame ();
+
+        isDrawingCards = false;
+        EmotionsManagerCallback ();
     }
 
     private void ChooseActiveEmotion () {
-        int random;                                             // Initialize random number
-
-        // Prevent the same card being drawn more than once in a row
-        if (!firstCard)
-            poolEmotions.Remove (lastTargetEmotion);            // Remove last active card from deck
-
-        random = Random.Range (0, poolEmotions.Count);          // Randomly select number within range
-        currentTargetEmotion = poolEmotions[random].emotion;    // Select card chosen by random
-        lastTargetEmotion = poolEmotions[random];               // Tag selected card to prevent being drawn more than once in a row
-        activeEmotions.Add (poolEmotions[random]);              // Add to active emotions deck
-        poolEmotions.RemoveAt (random);                         // Remove selected card from the pool
-
-        if (!firstCard)
-            poolEmotions.Add (lastTargetEmotion);               // Add last active card to deck
-        if (firstCard)
-            firstCard = false;                                  // Turn on duplicate card measures
+        EmotionData.EmotionStruct selectedEmoStruct = poolEmotions.RemoveRandom (); // Randomly select and remove an emotion from pool
+        poolEmotions.Add (currentTargetEmotionStruct);      // Put last emotion back into deck
+        currentTargetEmotionStruct = selectedEmoStruct;     // Select emotion chosen by random
+        activeEmotions.Add (selectedEmoStruct);             // Add to active emotions deck
     }
 
     private void ChooseEmotions () {
-        int random;
-
-        if (difficultyLevel >= 3)
+        if (allowOtherMonsterCards)
             poolEmotions.AddRange (secondaryEmotions);
 
-        for (int i = 0; i < slots - 1; i++) {
-            random = Random.Range (0, poolEmotions.Count);
-            activeEmotions.Add (poolEmotions[random]);
-            poolEmotions.RemoveAt (random);
+        for (int i = 0; i < numOfSlots - 1; i++) {
+            EmotionData.EmotionStruct emoStruct = poolEmotions.RemoveRandom ();
+            activeEmotions.Add (emoStruct);
         }
     }
 
     public IEnumerator CreateTutorialCards () {
         poolEmotions.AddRange (primaryEmotions);
 
-        currentTargetEmotion = poolEmotions[0].emotion;
+        currentTargetEmotionStruct = poolEmotions[0];
         activeEmotions.Add (poolEmotions[0]);
         activeEmotions.Add (poolEmotions[1]);
         poolEmotions.RemoveAt (0);
 
-        for (int i = 0; i < slots; i++) {
+        for (int i = 0; i < numOfSlots; i++) {
             EmotionData.EmotionStruct emoData = activeEmotions[0];
             activeEmotions.RemoveAt (0);
 
-            CreateCard (emoData, i);
+            CreateCard (emoData);
             yield return new WaitForSecondsRealtime (0.4f);
         }
     }
 
-    void CreateCard(EmotionData.EmotionStruct emoData, int iteration) {
-        cardHand.SpawnCard (
-            iteration,
-            emoData.emotion,
-            emoData.sprite,
-            emoData.clipOfEmotion
-        );
+    public EmotionCard CreateCard (EmotionData.EmotionStruct emoData) {
+        EmotionCard card = Instantiate (
+            cardPrefab,
+            cardSpawn.position,
+            Quaternion.identity,
+        cardSpawn.parent).GetComponent<EmotionCard> ();
+
+        card.monsterSprite = emoData.sprite;
+        card.emotion = emoData.emotion;
+        card.clipOfName = emoData.clipOfEmotion;
+        card.colorOfCard = emoData.emotionColor;
+
+        cardList.Add (card.gameObject);
+        if (cardList.Count > 0)
+            cardHand.PutCardInSlot (card, cardList.Count - 1);
+        return card;
     }
 
     public void RemoveCards () {
-        cardHand.RemoveCards ();
+        foreach (GameObject cardSlot in cardHand.cardLocations) {
+            for (int slot = 0; slot < numOfSlots; slot++) {
+                EmotionCard card = cardHand.GetCardInSlot (slot);
+                if (card) {
+                    cardList.Remove (card.gameObject);
+                    card.StartCoroutine (card.MoveToAndRemove (cardSpawn));
+                }
+            }
+        }
     }
 
     public Color GetEmotionColor (DataType.MonsterEmotions emo) {
@@ -181,17 +200,8 @@ public class EmotionsGenerator : MonoBehaviour {
         }
     }
 
-    public void CreateMonster() {
-        Vector2 pos = EmotionsGameManager.GetInstance ().monsterLocation.position;
-        monster = Instantiate(GameManager.GetInstance ().GetPlayerMonsterType (), pos, Quaternion.identity);
-        monster.transform.localScale = new Vector3 (0.8f, 0.8f, 0.8f);
-        monster.AddComponent<EmotionsMonster> ();
-        monster.GetComponentInChildren<Monster> ().idleAnimationOn = false;
-        monster.GetComponentInChildren<Monster> ().allowMonsterTickle = false;
-    }
-
-    public void ChangeMonsterEmotion (DataType.MonsterEmotions emo) {
-        monster.GetComponentInChildren<Monster> ().ChangeEmotions (emo);
+    public DataType.MonsterEmotions GetSelectedEmotion () {
+        return currentTargetEmotionStruct.emotion;
     }
 
 }

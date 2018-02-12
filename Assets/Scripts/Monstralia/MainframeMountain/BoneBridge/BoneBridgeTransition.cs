@@ -35,25 +35,25 @@ public class BoneBridgeTransition : MonoBehaviour {
 
     void StartGame() {
         print ("Starting game");
-        BoneBridgeManager.GetInstance ().GameStart ();
-        BoneBridgeManager.GetInstance ().CameraSwitch (focus);
+        BoneBridgeManager.Instance.GameStart ();
+        BoneBridgeManager.Instance.CameraSwitch (focus);
     }
 
     void SetupSection() {
-        SoundManager.GetInstance ().PlayCorrectSFX ();
-        BoneBridgeManager.GetInstance ().CameraSwitch (focus);
-        BoneBridgeManager.GetInstance ().ChangePhase (BoneBridgeManager.BridgePhase.Building);
-        BoneBridgeManager.GetInstance ().AddTime (10f);
+        SoundManager.Instance.PlayCorrectSFX ();
+        BoneBridgeManager.Instance.CameraSwitch (focus);
+        BoneBridgeManager.Instance.ChangePhase (BoneBridgeManager.BridgePhase.Building);
+        BoneBridgeManager.Instance.AddTime (10f);
     }
 
     void WinGame() {
-        BoneBridgeManager.GetInstance ().GameOver ();
+        BoneBridgeManager.Instance.GameEnd ();
         if (focus)
-            BoneBridgeManager.GetInstance ().CameraSwitch (focus);
+            BoneBridgeManager.Instance.CameraSwitch (focus);
     }
 
     void RestartBridge() {
-        BoneBridgeManager.GetInstance ().ChangePhase (BoneBridgeManager.BridgePhase.Falling);
-        BoneBridgeManager.GetInstance ().ResetMonster (startPos.transform.position, focus);
+        BoneBridgeManager.Instance.ChangePhase (BoneBridgeManager.BridgePhase.Falling);
+        BoneBridgeManager.Instance.ResetMonster (startPos.transform.position, focus);
     }
 }

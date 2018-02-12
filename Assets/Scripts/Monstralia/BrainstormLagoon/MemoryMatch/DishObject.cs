@@ -13,7 +13,6 @@ using UnityEngine.EventSystems;
 
 public class DishObject : MonoBehaviour {
 	private Food myFood;
-	private static bool isGuessing = false;
 	private bool matched = false;
 	private Animator dishAnim;
 	private SpriteRenderer lidSpriteComponent, dishSpriteComponent, foodSpriteComponent;
@@ -90,15 +89,17 @@ public class DishObject : MonoBehaviour {
 	}
 
 	public void Correct() {
-		SoundManager.GetInstance ().PlayCorrectSFX ();
 		if(!lid.activeSelf) {
 			lid.SetActive(true);
 		}
 		dishAnim.Play ("Dish_Correct");
-		MemoryMatchGameManager.GetInstance().AddToMatchedList(myFood);
 		matched = true;
         lid.SetActive(false);
 	}
+
+    public void Incorrect() {
+        CloseLid ();
+    }
 
     /**
      * \brief OnMouseDown is called when the player clicks (or taps) one of the dishes.
@@ -109,32 +110,23 @@ public class DishObject : MonoBehaviour {
      */
 
     IEnumerator OnMouseDown () {
-		MemoryMatchGameManager manager = MemoryMatchGameManager.GetInstance ();
-		if(manager.inputAllowed && !isGuessing && (manager.isGameStarted() || manager.isRunningTutorial())) {
-			isGuessing = true;
-            List<Food> matchedList = manager.ReturnMatchedList(); 
-            OpenLid();
-			manager.subtitlePanel.Display(myFood.name, myFood.clipOfName);
+		MemoryMatchGameManager manager = MemoryMatchGameManager.Instance;
+		if (manager.inputAllowed && !manager.isGuessing) {
+            SubtitlePanel.Instance.Display (myFood.name);
+            SoundManager.Instance.AddToVOQueue (myFood.clipOfName);
+            OpenLid ();
+            if (!manager.OnGuess (this, myFood.gameObject)) {
+                Invoke("CloseLid", 2f);
+            }
 
-			if(manager.GetFoodToMatch().name != myFood.name) {
-			     if (!matched && !manager.isRunningTutorial()) {
-				    	manager.SubtractTime (3.0f);
-				        }
-				 yield return new WaitForSeconds (2f);
-				 CloseLid ();
-			    }
-		         else {
-			    	Correct();
-				    yield return new WaitForSeconds(1.5f);
-				    manager.ChooseFoodToMatch();
-			    }
-    
-			    //The player can now guess again.
-			    manager.subtitlePanel.Hide ();
-			    isGuessing = false;
+            yield return new WaitForSeconds (2f);
+
+            //The player can now guess again.
+            SubtitlePanel.Instance.Hide ();
+            manager.isGuessing = false;
 		     
 	    }
-            }
+    }
 			
 
 	public bool IsMatched() {
@@ -143,6 +135,6 @@ public class DishObject : MonoBehaviour {
 
 	/* Used in Dish_Correct animation event */
 	public void PlayLidWoosh() {
-		SoundManager.GetInstance ().PlaySFXClip (lidSfx);
+		SoundManager.Instance.PlaySFXClip (lidSfx);
 	}
 }

@@ -64,6 +64,6 @@ public class BoneBridgeSnapToSocket : MonoBehaviour {
             snap.hingeAttached = hingeAttached;
         }
 
-        SoundManager.GetInstance ().PlaySFXClip (boneAttachSfx);
+        SoundManager.Instance.PlaySFXClip (boneAttachSfx);
     }
 }

@@ -7,25 +7,28 @@ public class EmotionCard : MonoBehaviour {
     public bool isCardFlipped;
     public DataType.MonsterEmotions emotion;
     public AudioClip clipOfName, cardDraw, cardFlip, cardWoosh;
+    public Color colorOfCard;
+    public Sprite monsterSprite;
+
+    public delegate void EmotionDelegate (DataType.MonsterEmotions emotion, AudioClip clip);
+    public static EmotionDelegate CheckEmotion; // Set by EmotionsGameManager
 
     private Animator animComp;
     private GameObject monster, cardFront;
-    private AudioSource audioSrc;
 
     private void Awake () {
         animComp = GetComponent<Animator> ();
-        audioSrc = GetComponent<AudioSource> ();
         cardFront = transform.GetChild (0).gameObject;
         monster = transform.GetChild (1).gameObject;
     }
 
-    public void ChangeCardColor () {
-        Color emoColor = EmotionsGameManager.GetInstance ().generator.GetEmotionColor (emotion);
-        cardFront.GetComponent<Image> ().color = emoColor;
+    public void ChangeCard () {
+        cardFront.GetComponent<Image> ().color = colorOfCard;
+        monster.GetComponent<Image> ().sprite = monsterSprite;
     }
 
     public void CardFlip() {
-        audioSrc.PlayOneShot (cardFlip);
+        SoundManager.Instance.PlaySFXClip (cardFlip);
         animComp.Play ("CardFlip", -1, 0f);
     }
 
@@ -37,39 +40,30 @@ public class EmotionCard : MonoBehaviour {
         animComp.Play ("CardUnflip", -1, 0f);
     }
 
-    public void ChangeEmotion(DataType.MonsterEmotions changeToEmotion, Sprite img, AudioClip audio) {
-        emotion = changeToEmotion;
-        monster.GetComponent<Image> ().sprite = img;
-        clipOfName = audio;
-    }
-
-    public IEnumerator MoveToAndFlip (GameObject obj) {
-        audioSrc.PlayOneShot (cardDraw);
-        Vector2 pos = obj.transform.position;
+    public IEnumerator MoveToAndFlip (Transform obj) {
+        SoundManager.Instance.PlaySFXClip (cardDraw);
+        Vector2 pos = obj.position;
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / 1.0f) {
             transform.position = Vector2.MoveTowards (transform.position, pos, 0.1f);
-            yield return new WaitForFixedUpdate ();
+            yield return null;
         }
         CardFlip ();
-        transform.SetParent (obj.transform);
+        transform.SetParent (obj);
     }
 
-    public IEnumerator MoveToAndRemove (GameObject obj) {
+    public IEnumerator MoveToAndRemove (Transform obj) {
         CardUnflip ();
-        audioSrc.PlayOneShot (cardWoosh);
-        transform.SetParent (obj.transform);
-        Vector2 pos = obj.transform.position;
+        SoundManager.Instance.PlaySFXClip (cardWoosh);
+        transform.SetParent (obj);
+        Vector2 pos = obj.position;
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / 1.0f) {
             transform.position = Vector2.MoveTowards (transform.position, pos, 0.1f);
-            yield return new WaitForFixedUpdate ();
+            yield return null;
         }
-        Destroy (gameObject);
+        Destroy (gameObject, 0.5f);
     }
 
     private void OnMouseDown () {
-        if (EmotionsGameManager.GetInstance ().inputAllowed && (EmotionsGameManager.GetInstance ().isTutorialRunning || EmotionsGameManager.GetInstance ().gameStarted)) {
-            EmotionsGameManager.GetInstance ().CheckEmotion (emotion);
-            EmotionsGameManager.GetInstance ().subtitlePanel.GetComponent<SubtitlePanel> ().Display (emotion.ToString (), clipOfName);
-        }
+        CheckEmotion (emotion, clipOfName);
     }
 }

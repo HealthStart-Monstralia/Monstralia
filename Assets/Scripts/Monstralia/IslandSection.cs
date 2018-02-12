@@ -5,33 +5,37 @@ using UnityEngine;
 public class IslandSection : MonoBehaviour {
     public DataType.IslandSection island;
     public GameObject monsterLocation;
-    [HideInInspector] public GameObject monster;
-    public AudioClip introAudio, welcomeBackClip, backgroundMusic;
-    public AudioClip[] voice;
+    [HideInInspector] public Monster monster;
+    public AudioClip introAudio, welcomeBackClip, ambientSound, backgroundMusic;
 
     private void Awake () {
-        GameManager.GetInstance ().SetIslandSection (island);
+        GameManager.Instance.SetIslandSection (island);
     }
 
     private void Start () {
         CreateMonsterOnMap ();
         //PlayWelcomeVO ();
-        SoundManager.GetInstance ().ChangeBackgroundMusic (backgroundMusic);
+        SoundManager.Instance.StopPlayingVoiceOver ();
+        SoundManager.Instance.StopAmbientSound ();
+        SoundManager.Instance.ChangeAmbientSound (ambientSound);
+        SoundManager.Instance.ChangeAndPlayMusic (backgroundMusic);
     }
 
     public void PlayWelcomeVO() {
-        if (!GameManager.GetInstance ().GetVisitedArea (island)) {
+        if (!GameManager.Instance.GetVisitedArea (island)) {
             if (introAudio != null)
-                SoundManager.GetInstance ().PlayVoiceOverClip (introAudio);
-            GameManager.GetInstance ().SetVisitedArea (island, true);
+                SoundManager.Instance.PlayVoiceOverClip (introAudio);
+            GameManager.Instance.SetVisitedArea (island, true);
         } else {
             if (welcomeBackClip != null)
-                SoundManager.GetInstance ().PlayVoiceOverClip (welcomeBackClip);
+                SoundManager.Instance.PlayVoiceOverClip (welcomeBackClip);
         }
     }
 
     void CreateMonsterOnMap() {
-        monster = GameManager.GetInstance ().GetPlayerMonsterType ();
-        Instantiate (monster, monsterLocation.transform);
+        GameObject monsterObject = GameManager.Instance.GetPlayerMonsterObject ();
+        monster = Instantiate (monsterObject, monsterLocation.transform).GetComponent<Monster>();
+        monster.AllowMonsterTickle = true;
+        monster.IdleAnimationOn = true;
     }
 }

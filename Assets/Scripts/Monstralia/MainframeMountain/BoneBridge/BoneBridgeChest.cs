@@ -21,12 +21,12 @@ public class BoneBridgeChest : MonoBehaviour {
         print ("Coroutine started");
         yield return new WaitForSeconds (1.5f);
         GetComponent<SpriteRenderer> ().sprite = chestOpened;
-        SoundManager.GetInstance ().PlaySFXClip (popSfx);
+        SoundManager.Instance.PlaySFXClip (popSfx);
         yield return new WaitForSeconds (0.25f);
-        GameObject randomFood = GameManager.GetInstance ().GetComponent<FoodList> ().GetRandomGoodFood ();
+        GameObject randomFood = GameManager.Instance.GetComponent<FoodList> ().GetRandomGoodFood ();
         GameObject foodObject = Instantiate (randomFood, transform.position + new Vector3 (0f, 0f, 5f), Quaternion.identity, transform);
 
-        SoundManager.GetInstance ().PlaySFXClip (rewardSfx);
+        SoundManager.Instance.PlaySFXClip (rewardSfx);
         foodObject.GetComponent<SpriteRenderer> ().sortingOrder = 3;
         foodObject.transform.localScale = Vector3.one * 0.2f;
         Rigidbody2D rigBody = foodObject.GetComponent<Rigidbody2D> ();

@@ -15,7 +15,7 @@ public class MonsterInMenu : MonoBehaviour {
 	private Animator animComp;
 
 	void Awake () {
-		typeOfMonster = GameManager.GetInstance().GetMonsterType ();
+		typeOfMonster = GameManager.Instance.GetPlayerMonsterType ();
 		animComp = GetComponent<Animator> ();
 
 	}
@@ -30,9 +30,9 @@ public class MonsterInMenu : MonoBehaviour {
     }
 
     void OnMouseDown() {
-		if (!ParentPage.GetInstance ()) {
+		if (!ParentPage.Instance) {
 			PlayTouch ();
-			SoundManager.GetInstance().PlaySFXClip(monsterSfx);
+			SoundManager.Instance.PlaySFXClip(monsterSfx);
 		}
 	}
 

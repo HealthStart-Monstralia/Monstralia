@@ -21,14 +21,14 @@ public class BoneBridgeMonster : MonoBehaviour {
 
     private void Awake () {
         transform.SetParent (transform.root.parent);
-        monster = GetComponentInChildren<Monster> ();
+        monster = GetComponent<Monster> ();
     }
 
     public void OnMouseDown () {
-        if (BoneBridgeManager.GetInstance ().inputAllowed) {
-            if (BoneBridgeManager.GetInstance ().bridgePhase != BoneBridgeManager.BridgePhase.Crossing) {
+        if (BoneBridgeManager.Instance.inputAllowed) {
+            if (BoneBridgeManager.Instance.bridgePhase != BoneBridgeManager.BridgePhase.Crossing) {
                 StopAllCoroutines ();
-                BoneBridgeManager.GetInstance ().ChangePhase (BoneBridgeManager.BridgePhase.Crossing);
+                BoneBridgeManager.Instance.ChangePhase (BoneBridgeManager.BridgePhase.Crossing);
             }
         }
     }
@@ -42,7 +42,7 @@ public class BoneBridgeMonster : MonoBehaviour {
                 StopAllCoroutines ();
                 break;
             case BoneBridgeManager.BridgePhase.Crossing:
-                BoneBridgeManager.GetInstance ().CameraSwitch (gameObject);
+                BoneBridgeManager.Instance.CameraSwitch (gameObject);
                 StartCoroutine (Move ());
                 break;
             case BoneBridgeManager.BridgePhase.Falling:

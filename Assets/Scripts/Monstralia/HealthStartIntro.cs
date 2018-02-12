@@ -15,6 +15,7 @@ public class HealthStartIntro : MonoBehaviour {
     }
 
     IEnumerator Intro() {
+        fader.FadeStayBlack ();
         yield return new WaitForSeconds (0.5f);
         fader.FadeIn ();
         yield return new WaitForSeconds (3f);

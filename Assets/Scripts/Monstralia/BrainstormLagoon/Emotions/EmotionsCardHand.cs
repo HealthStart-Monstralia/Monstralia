@@ -4,9 +4,7 @@ using UnityEngine;
 
 public class EmotionsCardHand : MonoBehaviour {
     public GameObject[] cardLocations;
-    public GameObject cardObject;
 
-    private List<GameObject> cards = new List<GameObject> ();
     private int slots;
     private Animator animComp;
 
@@ -17,33 +15,21 @@ public class EmotionsCardHand : MonoBehaviour {
         for (int i = 0; i < cardLocations.Length; i++) {
             cardLocations[i].SetActive (false);
         }
+    }
 
-        slots = GameManager.GetInstance ().GetLevel (DataType.Minigame.MonsterEmotions) + 1;
+    public void PutCardInSlot (EmotionCard card, int slotNum) {
+        card.StartCoroutine (card.MoveToAndFlip (cardLocations[slotNum].transform));
+    }
 
-        for (int i = 0; i < slots; i++) {
+    public EmotionCard GetCardInSlot (int slotNum) {
+        EmotionCard card = GetComponentInChildren<EmotionCard> ();
+        return card;
+    }
+
+    public void SetSlots (int numOfSlots) {
+        slots = numOfSlots;
+        for (int i = 0; i < numOfSlots; i++) {
             cardLocations[i].SetActive (true);
-        }
-    }
-
-    public void SpawnCard (int iteration, DataType.MonsterEmotions changeToEmotion, Sprite img, AudioClip audio) {
-        EmotionCard card = Instantiate (
-            cardObject, 
-            EmotionsGameManager.GetInstance().monsterLocation.position, 
-            Quaternion.identity, 
-            transform.parent).GetComponent<EmotionCard> ();
-
-        cards.Add (card.gameObject);
-        card.ChangeEmotion (changeToEmotion, img, audio);
-        card.StartCoroutine (card.MoveToAndFlip(cardLocations[iteration]));
-    }
-
-    public void RemoveCards () {
-        if (cards.Count > 0) {
-            for (int i = 0; i < slots; i++) {
-                EmotionCard card = cards[0].GetComponent<EmotionCard> ();
-                cards.Remove (card.gameObject);
-                card.StartCoroutine (card.MoveToAndRemove (EmotionsGameManager.GetInstance ().monsterLocation.gameObject));
-            }
         }
     }
 
