@@ -15,12 +15,6 @@ public class BrainbowFoodItem : MonoBehaviour {
     private void Awake () {
         rigBody = gameObject.GetComponent<Rigidbody2D> ();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
-
-    }
-
-    private void OnDestroy () {
-        if (BrainbowGameManager.Instance.activeFoods.Contains (this))
-            BrainbowGameManager.Instance.activeFoods.Remove (this);
     }
 
     private void OnEnable () {
@@ -28,8 +22,11 @@ public class BrainbowFoodItem : MonoBehaviour {
     }
 
     private void OnDisable () {
-        if (isBeingEaten)
+        if (isBeingEaten) {
             SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.munchSound);
+            if (BrainbowGameManager.Instance.activeFoods.Contains (this))
+                BrainbowGameManager.Instance.activeFoods.Remove (this);
+        }
         BrainbowGameManager.OnGameEnd -= GetEaten;
     }
 
@@ -100,8 +97,9 @@ public class BrainbowFoodItem : MonoBehaviour {
         for (float t = 0.0f; t < 0.8f; t += Time.deltaTime * 1f) {
             transform.position = Vector2.MoveTowards (transform.position, new Vector3 (0f, transform.position.y, 0f), t * 0.3f);
             Debug.DrawLine (transform.position, new Vector3 (0f, transform.position.y, 0f), Color.yellow);
-            yield return new WaitForFixedUpdate ();
+            yield return null;
         }
+
         rigBody.bodyType = RigidbodyType2D.Dynamic;
         rigBody.gravityScale = 2.0f;
         yield return new WaitForSeconds (2f);
@@ -110,6 +108,7 @@ public class BrainbowFoodItem : MonoBehaviour {
 
     private void OnTriggerEnter2D (Collider2D collision) {
         if (collision.tag == "Monster" && isPlaced) {
+            print (GetComponent<Food> ().foodName);
             gameObject.SetActive (false);
             if (isBeingEaten)
                 SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.munchSound);

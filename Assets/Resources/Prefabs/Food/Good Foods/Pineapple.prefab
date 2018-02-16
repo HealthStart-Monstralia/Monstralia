@@ -62,9 +62,9 @@ CircleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.052721206, y: -0.5099997}
+  m_Offset: {x: -0.05, y: -0.01}
   serializedVersion: 2
-  m_Radius: 2.3572803
+  m_Radius: 3
 --- !u!114 &114477471401188610
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9eb5cd12437a49318c09a8dae142e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: 1
+  typeOfColor: 1
   foodType: 0
   foodName: Pineapple
   clipOfName: {fileID: 8300000, guid: 92ec077f086facd4abf657518dd68e1a, type: 3}
@@ -139,6 +139,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -1.89}
   m_SizeDelta: {x: 4.66, y: 4.85}
   m_Pivot: {x: 0.5, y: 0.5}

@@ -279,9 +279,11 @@ public class SoundManager : SingletonPersistent<SoundManager> {
      * \brief Play the next voice over in the queue
      */
     public void AddToVOQueue (AudioClip clip) {
-        clipQueue.Enqueue (clip);
-        if (!isQueuePlaying) {
-            queueCoroutine = StartCoroutine (PlayQueue ());
+        if (clip != null) {
+            clipQueue.Enqueue (clip);
+            if (!isQueuePlaying) {
+                queueCoroutine = StartCoroutine (PlayQueue ());
+            }
         }
     }
 

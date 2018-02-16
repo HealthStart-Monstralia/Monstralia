@@ -100,6 +100,7 @@ public class GameManager : SingletonPersistent<GameManager> {
         playerMonsterType = save.playerMonsterType;
         numOfGamesCompleted = save.numOfGamesCompleted;
         isIntroShown = save.isIntroShown;
+        FoodList.SetFoodDictionary (save.foodEatenDictionary);
     }
 
     // Called at the end of a minigame
@@ -384,6 +385,8 @@ public class GameManager : SingletonPersistent<GameManager> {
 
     public void SaveGame () {
         if (isSaveAllowed) {
+            Dictionary<string, int> foodDictionary = FoodList.GetFoodDictionary ();
+
             GameSave save = new GameSave {
                 gameStats = gameStats,
                 stickerStats = stickerStats,
@@ -392,7 +395,8 @@ public class GameManager : SingletonPersistent<GameManager> {
                 isMonsterSelected = isMonsterSelected,
                 playerMonsterType = playerMonsterType,
                 numOfGamesCompleted = numOfGamesCompleted,
-                isIntroShown = isIntroShown
+                isIntroShown = isIntroShown,
+                foodEatenDictionary = foodDictionary
             };
 
             SaveSystem.Save (save);

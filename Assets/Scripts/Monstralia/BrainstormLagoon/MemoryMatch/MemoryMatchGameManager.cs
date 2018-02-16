@@ -60,7 +60,7 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
 
         // Retrieve foods from Game Manager Food List
         // Use AddRange to copy lists. Assigning lists does not copy over the list, only the reference.
-        foodList.AddRange (GameManager.Instance.GetComponent<FoodList> ().goodFoods);
+        foodList.AddRange (GameManager.Instance.GetComponent<FoodList> ().GetGoodFoodsList ());
 
 		if (GameManager.Instance.GetPendingTutorial(DataType.Minigame.MemoryMatch)) {
             isRunningTutorial = true;
@@ -202,7 +202,6 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
 
     public bool OnGuess (DishObject dish, GameObject food) {
         isGuessing = true;
-        print (string.Format ("food: {0} selectedFood: {1}", food, selectedFood));
         if (food == selectedFood) {
             if (Random.Range(0, 1f) < 0.3f) {
                 SoundManager.Instance.PlayVoiceOverClip (goodjobClips.GetRandomItem ());
@@ -271,12 +270,20 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
 
         for (int i = 0; i < numberOfDishes; ++i) {
 			if(dishes[i].GetComponent<DishObject>().IsMatched ()) {
-				Destroy(dishes[i].GetComponent<DishObject>().foodObject.gameObject);
-				SoundManager.Instance.PlaySFXClip(munchClip);
-				dishes[i].GetComponent<DishObject>().Shake(true);
+                GameObject food = dishes[i].GetComponent<DishObject> ().foodObject.gameObject;
+                dishes[i].GetComponent<DishObject>().Shake(true);
                 monsterAnimator.Play ("MM_Eat", -1, 0f);
-				yield return new WaitForSeconds (1.2f);
-			}
+
+                for (float t = 0.0f; t < 0.3f; t += Time.deltaTime) {
+                    food.transform.position = Vector2.MoveTowards (food.transform.position, playerMonster.transform.position + new Vector3 (0, 1f, 0), 0.1f);
+                    yield return null;
+                }
+
+                yield return new WaitForSeconds (0.2f);
+                SoundManager.Instance.PlaySFXClip (munchClip);
+                Destroy (food);
+                yield return new WaitForSeconds (0.5f);
+            }
 		}
         monsterAnimator.Play ("MM_Dance", -1, 0f);
         yield return new WaitForSeconds (1f);

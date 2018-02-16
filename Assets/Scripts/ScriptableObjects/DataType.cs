@@ -74,4 +74,16 @@ public static class DataType {
         Taste,
         NONE
     }
+
+    // Referenced by Food.cs
+    public enum Color {
+        Red,
+        Yellow,
+        Green,
+        Purple,
+        Blue,
+        White,
+        Orange,
+        Other
+    };
 }

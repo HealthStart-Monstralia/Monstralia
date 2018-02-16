@@ -7,6 +7,7 @@ public class GameSave {
     public Dictionary<DataType.Minigame, GameManager.MinigameStats> gameStats;
     public Dictionary<DataType.StickerType, GameManager.StickerStats> stickerStats;
     public Dictionary<DataType.IslandSection, bool> visitedAreas;
+    public Dictionary<string, int> foodEatenDictionary = new Dictionary<string, int> ();
     public DataType.Minigame lastGamePlayed;
     public DataType.MonsterType playerMonsterType;
     public bool isMonsterSelected;
