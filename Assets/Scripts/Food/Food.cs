@@ -14,6 +14,7 @@ public class Food : MonoBehaviour {
     public TypeOfFood foodType;     /*!< Food property variable to set manually in inspector */
     public string foodName;			/*!< Food's name to be used with subtitles */
 	public AudioClip clipOfName;	/*!< Audio clip of the food's name to be used with subtitles */
+    public AudioClip eatSound;
 
 	/**
 	 * \brief Spawn the food into the scene at the specified location
@@ -31,4 +32,10 @@ public class Food : MonoBehaviour {
         gameObject.transform.localScale = new Vector3(scale, scale, 1);
 		gameObject.GetComponent<SpriteRenderer>().sortingOrder = 3;
 	}
+
+    public void EatFood () {
+        FoodList.IncreaseFoodCount (foodName);
+        Destroy (gameObject);
+        SoundManager.Instance.PlaySFXClip (eatSound);
+    }
 }

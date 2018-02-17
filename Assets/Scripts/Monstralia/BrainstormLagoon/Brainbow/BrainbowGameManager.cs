@@ -162,7 +162,7 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
         Food foodComponent;
 
         // Remove any restricted foods
-        List<GameObject> brainbowFoods = GameManager.Instance.GetComponent<FoodList> ().GetGoodFoodsList();
+        List<GameObject> brainbowFoods = FoodList.GetGoodFoodsList();
         foreach (GameObject food in restrictedFoods) {
             brainbowFoods.Remove (food);
         }

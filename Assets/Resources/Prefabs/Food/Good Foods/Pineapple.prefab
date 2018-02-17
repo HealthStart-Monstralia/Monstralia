@@ -80,6 +80,7 @@ MonoBehaviour:
   foodType: 0
   foodName: Pineapple
   clipOfName: {fileID: 8300000, guid: 92ec077f086facd4abf657518dd68e1a, type: 3}
+  eatSound: {fileID: 8300000, guid: be67d8fae89d24304b9b1e19c15686e5, type: 3}
 --- !u!212 &212313911131850178
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -132,13 +133,13 @@ RectTransform:
   m_GameObject: {fileID: 1525943782821628}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.19999997, y: 0.19999997, z: 0.01305483}
+  m_LocalScale: {x: 0.19999997, y: 0.19999997, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -1.89}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 4.66, y: 4.85}
   m_Pivot: {x: 0.5, y: 0.5}

@@ -78,7 +78,7 @@ public class ReviewMemoryMatch : Singleton<ReviewMemoryMatch> {
 	}
 
 	void RetrieveFoodsFromManager() {
-		foods = GameManager.Instance.GetComponent<FoodList> ().GetGoodFoodsList ();
+		foods = FoodList.GetGoodFoodsList ();
 	}
 
 	void SelectFoods() {

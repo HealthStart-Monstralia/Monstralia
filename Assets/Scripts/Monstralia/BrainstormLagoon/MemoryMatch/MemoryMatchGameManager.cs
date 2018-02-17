@@ -60,7 +60,7 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
 
         // Retrieve foods from Game Manager Food List
         // Use AddRange to copy lists. Assigning lists does not copy over the list, only the reference.
-        foodList.AddRange (GameManager.Instance.GetComponent<FoodList> ().GetGoodFoodsList ());
+        foodList.AddRange (FoodList.GetGoodFoodsList ());
 
 		if (GameManager.Instance.GetPendingTutorial(DataType.Minigame.MemoryMatch)) {
             isRunningTutorial = true;
@@ -274,14 +274,12 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
                 dishes[i].GetComponent<DishObject>().Shake(true);
                 monsterAnimator.Play ("MM_Eat", -1, 0f);
 
-                for (float t = 0.0f; t < 0.3f; t += Time.deltaTime) {
-                    food.transform.position = Vector2.MoveTowards (food.transform.position, playerMonster.transform.position + new Vector3 (0, 1f, 0), 0.1f);
+                for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 2) {
+                    food.transform.position = Vector2.Lerp (food.transform.position, playerMonster.transform.position + new Vector3 (0, 1f, 0), t);
                     yield return null;
                 }
 
-                yield return new WaitForSeconds (0.2f);
-                SoundManager.Instance.PlaySFXClip (munchClip);
-                Destroy (food);
+                food.GetComponent<Food> ().EatFood ();
                 yield return new WaitForSeconds (0.5f);
             }
 		}
