@@ -30,13 +30,17 @@ public static class DataType {
         MonsterBasket,
         BoneBuilder,
         BalanceGame,
-        ListeningGame
+        ListeningGame,
+
+        // Pump Paradise
+        CatchTheToxins
     };
 
     public enum IslandSection {
         Monstralia,
         BrainstormLagoon,
-        MainframeMountain
+        MainframeMountain,
+        PumpParadise
     };
 
     public enum Level {
