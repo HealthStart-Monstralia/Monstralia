@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour {
+
+    [SerializeField] private bool isAnEnemySpawner;
     private float minimumSpawnDelay, maximumSpawnDelay;
     private bool startSpawning = false;
     private GameObject[] spawnArray;
@@ -20,14 +22,21 @@ public class Spawner : MonoBehaviour {
     }
 
     private void Start () {
-        leftBoundary = Camera.main.ViewportToWorldPoint (new Vector3 (0, 1, Camera.main.nearClipPlane));
-        rightBoundary = Camera.main.ViewportToWorldPoint (new Vector3 (1, 1, Camera.main.nearClipPlane));
+        leftBoundary = Camera.main.ViewportToWorldPoint (new Vector3 (0.1f, 1, Camera.main.nearClipPlane));
+        rightBoundary = Camera.main.ViewportToWorldPoint (new Vector3 (0.9f, 1, Camera.main.nearClipPlane));
     }
 
     public void SetSpawnSettings (CatchToxinsManager.LevelConfig config) {
         minimumSpawnDelay = config.minimumSpawnDelay;
         maximumSpawnDelay = config.maximumSpawnDelay;
-        spawnArray = config.spawnArray;
+
+        if (isAnEnemySpawner) {
+            spawnArray = config.enemyArray;
+        }
+        else {
+            spawnArray = config.friendlyArray;
+        }
+
     }
 
     void BeginSpawning () {
@@ -39,8 +48,8 @@ public class Spawner : MonoBehaviour {
         while (startSpawning) {
             yield return new WaitForSeconds (Random.Range (minimumSpawnDelay, maximumSpawnDelay));
             if (startSpawning) {
-                GameObject enemy = spawnArray.GetRandomItem();
-                Instantiate (enemy, new Vector2 (Random.Range (leftBoundary.x, rightBoundary.x), transform.position.y), Quaternion.identity);
+                GameObject obj = spawnArray.GetRandomItem();
+                Instantiate (obj, new Vector2 (Random.Range (leftBoundary.x, rightBoundary.x), transform.position.y), Quaternion.identity);
             }
         }
     }

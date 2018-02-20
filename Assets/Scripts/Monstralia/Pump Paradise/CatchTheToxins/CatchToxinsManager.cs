@@ -8,15 +8,19 @@ public class CatchToxinsManager : AbstractGameManager<CatchToxinsManager> {
         public float minimumSpawnDelay, maximumSpawnDelay;
         public int scoreGoal;
         public float timeLimit;
-        public GameObject[] spawnArray;
+        public GameObject[] enemyArray;
+        public GameObject[] friendlyArray;
     }
 
     [Header ("CatchToxins Fields")]
+    public bool playTutorial;
+    public bool playCountdown;
     public LevelConfig levelOne;
     public LevelConfig levelTwo;
     public LevelConfig levelThree;
     public AudioClip congratulationsSFX;
     public bool isInputAllowed = false;
+    public WhiteBloodCell whiteCell;
 
     public delegate void GameAction ();
     public static event GameAction OnGameStart, OnGameEnd;
@@ -24,19 +28,41 @@ public class CatchToxinsManager : AbstractGameManager<CatchToxinsManager> {
     private int score;
     private int scoreGoal;
     [SerializeField] private GameObject UICanvas;
-    [SerializeField] private Spawner spawner;
-    [SerializeField] private WhiteBloodCell whiteCell;
+    [SerializeField] private Spawner enemySpawner;
+    [SerializeField] private Spawner RBCSpawner;
+    [SerializeField] private CatchToxinsTutorialManager tutorialManager;
     private bool hasGameStarted = false;
 
     public override void PregameSetup () {
-        spawner.SetSpawnSettings (GetConfig ());
+        whiteCell.gameObject.SetActive (false);
+        enemySpawner.SetSpawnSettings (GetConfig ());
+        RBCSpawner.SetSpawnSettings (GetConfig ());
+        RedBloodCell.Score = OnScore;
         scoreGoal = GetConfig ().scoreGoal;
         UICanvas.SetActive (true);
         UpdateScoreGauge ();
         TimerClock.Instance.SetTimeLimit (GetConfig ().timeLimit);
         UICanvas.SetActive (false);
-        whiteCell.Score = OnScore;
-        StartGame ();
+
+        if (playTutorial && GameManager.Instance.GetPendingTutorial (typeOfGame)) {
+            monsterCreator = FindObjectOfType<CreateMonster> ();
+            playerMonster = monsterCreator.SpawnPlayerMonster ();
+            tutorialManager.StartTutorial ();
+        }
+
+        else {
+            PrepareToStart ();
+        }
+    }
+
+    public void PrepareToStart () {
+        whiteCell.gameObject.SetActive (true);
+        whiteCell.transform.position = new Vector3 (0, whiteCell.transform.position.y, 0f);
+
+        if (playCountdown)
+            StartCoroutine (DelayBeforeStart (2f));
+        else
+            StartGame ();
     }
 
     IEnumerator DelayBeforeStart (float delay) {
@@ -87,11 +113,21 @@ public class CatchToxinsManager : AbstractGameManager<CatchToxinsManager> {
     }
 
     public void OnScore () {
-        score++;
-        UpdateScoreGauge ();
-        SoundManager.Instance.PlayCorrectSFX ();
-        if (HasPlayerWon()) {
-            EndGame ();
+        if (hasGameStarted) {
+            score++;
+            UpdateScoreGauge ();
+            SoundManager.Instance.PlayCorrectSFX ();
+            if (HasPlayerWon ()) {
+                EndGame ();
+            }
+        }
+    }
+
+    public void OnWrongScore () {
+        if (hasGameStarted) {
+            score--;
+            UpdateScoreGauge ();
+            SoundManager.Instance.PlayIncorrectSFX ();
         }
     }
 
@@ -103,4 +139,5 @@ public class CatchToxinsManager : AbstractGameManager<CatchToxinsManager> {
         if (ScoreGauge.Instance.gameObject.activeSelf)
             ScoreGauge.Instance.SetProgressTransition ((float)score / scoreGoal);
     }
+
 }
