@@ -20,14 +20,30 @@ GameObject:
   m_Component:
   - component: {fileID: 4889108281825218}
   - component: {fileID: 114811522438960096}
-  - component: {fileID: 114750158671146668}
-  - component: {fileID: 212021317407251286}
   - component: {fileID: 50485149272632536}
   - component: {fileID: 58845682683732392}
-  - component: {fileID: 58830780647343666}
+  - component: {fileID: 95860196697403864}
   m_Layer: 0
   m_Name: RedBloodCell
   m_TagString: RBC
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!1 &1662942124744794
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4990805176026108}
+  - component: {fileID: 212550123135087208}
+  - component: {fileID: 58153975671530686}
+  - component: {fileID: 114569289394962604}
+  m_Layer: 0
+  m_Name: RBC Sprite
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38,11 +54,25 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1515816688274918}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.25, y: 14.48, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.25, y: 18.879997, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
-  m_Children: []
+  m_Children:
+  - {fileID: 4990805176026108}
   m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4990805176026108
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1662942124744794}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4889108281825218}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &50485149272632536
@@ -65,12 +95,12 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!58 &58830780647343666
+--- !u!58 &58153975671530686
 CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1515816688274918}
+  m_GameObject: {fileID: 1662942124744794}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -95,17 +125,36 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 2.41
---- !u!114 &114750158671146668
-MonoBehaviour:
+--- !u!95 &95860196697403864
+Animator:
+  serializedVersion: 3
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1515816688274918}
   m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b3cb97e8807059f4783d7d0312230247, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114569289394962604
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1662942124744794}
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e8f3f56278f9b3f47a7f50ea751dc391, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  collideSound: {fileID: 8300000, guid: 62a4c12dc78824e4e92754cb75f45821, type: 3}
+  deathSound: {fileID: 8300000, guid: 895a885c377fafb4dac11763128da1f1, type: 3}
 --- !u!114 &114811522438960096
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -118,12 +167,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 8
---- !u!212 &212021317407251286
+--- !u!212 &212550123135087208
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1515816688274918}
+  m_GameObject: {fileID: 1662942124744794}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0

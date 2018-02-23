@@ -134,15 +134,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4165610660464400, guid: bad1f8d723eec24429550fafa0fe736e, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4165610660464400, guid: bad1f8d723eec24429550fafa0fe736e, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4165610660464400, guid: bad1f8d723eec24429550fafa0fe736e, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4165610660464400, guid: bad1f8d723eec24429550fafa0fe736e, type: 2}
       propertyPath: m_LocalRotation.w
@@ -211,6 +211,7 @@ MonoBehaviour:
   tutorialRBC: {fileID: 1786142724}
   tutorialBug: {fileID: 12132586}
   faderAnimator: {fileID: 1677652625}
+  tutorialText: {fileID: 1697120455}
 --- !u!4 &84808055
 Transform:
   m_ObjectHideFlags: 0
@@ -462,8 +463,8 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &239173589
-Transform:
+--- !u!224 &239173589
+RectTransform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
@@ -477,6 +478,11 @@ Transform:
   m_Father: {fileID: 669116500}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -614}
+  m_SizeDelta: {x: -668, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &253500167
 GameObject:
   m_ObjectHideFlags: 0
@@ -487,6 +493,7 @@ GameObject:
   - component: {fileID: 253500168}
   - component: {fileID: 253500170}
   - component: {fileID: 253500169}
+  - component: {fileID: 253500171}
   m_Layer: 0
   m_Name: Background
   m_TagString: Target
@@ -545,6 +552,26 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 253500167}
+--- !u!223 &253500171
+Canvas:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 253500167}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: -6
+  m_TargetDisplay: 0
 --- !u!1 &376015936
 GameObject:
   m_ObjectHideFlags: 0
@@ -818,6 +845,11 @@ Prefab:
       propertyPath: m_AnchoredPosition.y
       value: 350
       objectReference: {fileID: 0}
+    - target: {fileID: 114401933989589558, guid: d3aec06222eed294fb84dcc737502422,
+        type: 2}
+      propertyPath: m_Text
+      value: These are my blood vessels. They keep my body healthy and active!
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d3aec06222eed294fb84dcc737502422, type: 2}
   m_IsPrefabParent: 0
@@ -940,11 +972,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 22466504, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: -252.1
+      value: -196
       objectReference: {fileID: 0}
     - target: {fileID: 22466504, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 564.5
+      value: 519.1
       objectReference: {fileID: 0}
     - target: {fileID: 22466504, guid: 2efdf726b620a467184ef2e5a4ba4e0b, type: 2}
       propertyPath: m_SizeDelta.x
@@ -1027,7 +1059,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0.019607844}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -1047,11 +1079,11 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
+  m_HDR: 0
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
+  m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!4 &638716147
@@ -1454,8 +1486,9 @@ RectTransform:
   m_Children:
   - {fileID: 1027831037}
   - {fileID: 906768754}
+  - {fileID: 1697120454}
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1584,10 +1617,10 @@ RectTransform:
   m_Father: {fileID: 853675916}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -309.3, y: 590.4}
-  m_SizeDelta: {x: 131.3, y: 32.9}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 74.70001, y: -23.599976}
+  m_SizeDelta: {x: 131.3, y: 32.900024}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1027831038
 MonoBehaviour:
@@ -1743,7 +1776,7 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1152529279}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -18.7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2250,12 +2283,12 @@ Prefab:
     - target: {fileID: 224627324135277518, guid: 33469cb2f71fc9044bc399edb1d5323d,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 219
+      value: 166
       objectReference: {fileID: 0}
     - target: {fileID: 224627324135277518, guid: 33469cb2f71fc9044bc399edb1d5323d,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 552.4
+      value: 507
       objectReference: {fileID: 0}
     - target: {fileID: 224627324135277518, guid: 33469cb2f71fc9044bc399edb1d5323d,
         type: 2}
@@ -2449,6 +2482,95 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!1 &1697120453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1697120454}
+  - component: {fileID: 1697120456}
+  - component: {fileID: 1697120455}
+  - component: {fileID: 1697120457}
+  m_Layer: 5
+  m_Name: Tutorial Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1697120454
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1697120453}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 853675916}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 98}
+  m_SizeDelta: {x: 655, y: 148.6}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1697120455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1697120453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: e938d1af920484ebe81fa507f889da9d, type: 3}
+    m_FontSize: 64
+    m_FontStyle: 0
+    m_BestFit: 1
+    m_MinSize: 3
+    m_MaxSize: 64
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Red blood cells are part of my body. Let them pass!
+--- !u!222 &1697120456
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1697120453}
+--- !u!114 &1697120457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1697120453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.222}
+  m_EffectDistance: {x: 5, y: -5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1736996941
 GameObject:
   m_ObjectHideFlags: 0
@@ -2601,15 +2723,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4889108281825218, guid: 5c2270be111a5354fbe855068eda84f0, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4889108281825218, guid: 5c2270be111a5354fbe855068eda84f0, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4889108281825218, guid: 5c2270be111a5354fbe855068eda84f0, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4889108281825218, guid: 5c2270be111a5354fbe855068eda84f0, type: 2}
       propertyPath: m_LocalRotation.w
@@ -2714,6 +2836,8 @@ MonoBehaviour:
     friendlyArray:
     - {fileID: 1515816688274918, guid: 5c2270be111a5354fbe855068eda84f0, type: 2}
   congratulationsSFX: {fileID: 8300000, guid: a996f0d29aa0b964fbb95eebdd31f686, type: 3}
+  youDidIt: {fileID: 8300000, guid: 34ffc2ed52ff15b47af54bbc4295ca7f, type: 3}
+  ambientSound: {fileID: 8300000, guid: 544b5fcda7808114a94ca1ffd413c778, type: 3}
   isInputAllowed: 0
   whiteCell: {fileID: 492260505}
   UICanvas: {fileID: 239173588}
@@ -2749,7 +2873,7 @@ Transform:
   - {fileID: 1786142723}
   - {fileID: 12132587}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1893949288
 GameObject:

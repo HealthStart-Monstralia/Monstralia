@@ -130,8 +130,11 @@ public class SoundManager : SingletonPersistent<SoundManager> {
      * @param newAmbientSound: the AudioClip of the new ambient sound.
      */
     public void ChangeAmbientSound (AudioClip newAmbientSound) {
-        if (newAmbientSound != null) {
+        if (newAmbientSound != null && newAmbientSound != ambientSource.clip) {
             PlayAmbientSound (newAmbientSound);
+        }
+        else if (newAmbientSound == null) {
+            StopAmbientSound ();
         }
     }
 

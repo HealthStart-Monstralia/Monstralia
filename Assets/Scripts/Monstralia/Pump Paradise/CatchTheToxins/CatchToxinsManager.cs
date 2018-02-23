@@ -19,6 +19,8 @@ public class CatchToxinsManager : AbstractGameManager<CatchToxinsManager> {
     public LevelConfig levelTwo;
     public LevelConfig levelThree;
     public AudioClip congratulationsSFX;
+    public AudioClip youDidIt;
+    public AudioClip ambientSound;
     public bool isInputAllowed = false;
     public WhiteBloodCell whiteCell;
 
@@ -48,6 +50,7 @@ public class CatchToxinsManager : AbstractGameManager<CatchToxinsManager> {
             monsterCreator = FindObjectOfType<CreateMonster> ();
             playerMonster = monsterCreator.SpawnPlayerMonster ();
             tutorialManager.StartTutorial ();
+            SoundManager.Instance.ChangeAmbientSound (ambientSound);
         }
 
         else {
@@ -85,6 +88,10 @@ public class CatchToxinsManager : AbstractGameManager<CatchToxinsManager> {
             hasGameStarted = false;
             isInputAllowed = false;
             OnGameEnd ();
+            if (HasPlayerWon ()) {
+                SoundManager.Instance.PlayVoiceOverClip (youDidIt);
+                SubtitlePanel.Instance.Display ("You did it!");
+            }
             Invoke ("CompleteLevel", 3f);
         }
 	}
@@ -97,6 +104,7 @@ public class CatchToxinsManager : AbstractGameManager<CatchToxinsManager> {
         if (HasPlayerWon()) {
             GameOver (DataType.GameEnd.CompletedLevel);
             SoundManager.Instance.PlaySFXClip (congratulationsSFX);
+
         }
         else {
             GameOver (DataType.GameEnd.FailedLevel);

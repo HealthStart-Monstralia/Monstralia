@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CatchToxinsTutorialManager : MonoBehaviour {
     public bool isTutorialRunning = false;
@@ -18,6 +19,7 @@ public class CatchToxinsTutorialManager : MonoBehaviour {
     [SerializeField] private GameObject tutorialRBC;
     [SerializeField] private GameObject tutorialBug;
     [SerializeField] private Animator faderAnimator;
+    [SerializeField] private Text tutorialText;
 
     private Coroutine tutorialCoroutine;
     private float cameraOriginalSize;
@@ -38,6 +40,7 @@ public class CatchToxinsTutorialManager : MonoBehaviour {
     public void StartTutorial () {
         tutorialAssets.SetActive (true);
         tutorialCanvas.SetActive (true);
+        tutorialText.gameObject.SetActive (false);
         tutorialCoroutine = StartCoroutine (Tutorial ());
     }
 
@@ -47,15 +50,19 @@ public class CatchToxinsTutorialManager : MonoBehaviour {
         yield return new WaitForSeconds (3f);
 
         magnifyingGlass.SetActive (true);
-        yield return new WaitForSeconds (2f);
-        SubtitlePanel.Instance.Display ("These are your monster's blood vessels!", null, false, 5f);
-        yield return new WaitForSeconds (5f);
+        yield return new WaitForSeconds (0.5f);
 
+        SubtitlePanel.Instance.Display ("These are my blood vessels.", null, false, 4f);
+        yield return new WaitForSeconds (4.5f);
+
+        SubtitlePanel.Instance.Display ("They keep my body healthy and active!", null, false, 4f);
+        yield return new WaitForSeconds (4.5f);
+
+        SubtitlePanel.Instance.Display ("Let's go inside my blood vessels!");
         magnifyingGlass.GetComponent<Animator> ().Play ("MagGlassTutorial2", -1, 0f);
         yield return new WaitForSeconds (1f);
 
         magnifyingGlass.SetActive (false);
-        SubtitlePanel.Instance.Display ("Let's go inside your monster!");
         CatchToxinsManager.Instance.playerMonster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
         yield return new WaitForSeconds (1f);
 
@@ -69,32 +76,40 @@ public class CatchToxinsTutorialManager : MonoBehaviour {
         faderAnimator.gameObject.SetActive (false);
         yield return new WaitForSeconds (2f);
 
+        tutorialText.gameObject.SetActive (true);
+        tutorialText.text = "Move the white blood cell by dragging it left or right";
         tutorialSecondaryAssets.SetActive (true);
         tutorialRBC.SetActive (false);
         tutorialBug.SetActive (false);
         yield return new WaitForSeconds (4f);
 
+        tutorialText.gameObject.SetActive (false);
         tutorialRBC.SetActive (true);
         yield return new WaitForSeconds (3f);
 
+        tutorialText.gameObject.SetActive (true);
+        tutorialText.text = "Red blood cells are part of my body. Let them pass!";
         tutorialRBC.GetComponent<CatchToxinMovement> ().CanMove = false;
         yield return new WaitForSeconds (2.5f);
 
         tutorialRBC.GetComponent<CatchToxinMovement> ().CanMove = true;
         yield return new WaitForSeconds (1f);
 
+        tutorialText.gameObject.SetActive (false);
         tutorialBug.SetActive (true);
         yield return new WaitForSeconds (3f);
 
+        tutorialText.gameObject.SetActive (true);
+        tutorialText.text = "These are toxins. Block them with your white blood cell!";
         tutorialBug.GetComponent<CatchToxinMovement> ().CanMove = false;
         yield return new WaitForSeconds (2.5f);
 
 
         tutorialBug.GetComponent<CatchToxinMovement> ().CanMove = true;
+        tutorialHand.GetComponent<Animator> ().Play ("HandTutorialMoveToBlockToxin", -1, 0f);
         yield return new WaitForSeconds (3f);
 
-        // Move Hand
-
+        tutorialText.gameObject.SetActive (false);
         yield return new WaitForSeconds (1f);
         isTutorialRunning = false;
         EndTutorial ();
@@ -153,6 +168,7 @@ public class CatchToxinsTutorialManager : MonoBehaviour {
 
     private void TurnOffIntro () {
         tutorialAssets.SetActive (false);
+        SoundManager.Instance.StopAmbientSound ();
         CatchToxinsManager.Instance.playerMonster.gameObject.SetActive (false);
         Camera.main.orthographicSize = cameraOriginalSize;
         Camera.main.transform.position = cameraOriginalPosition;
