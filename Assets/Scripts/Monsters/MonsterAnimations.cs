@@ -48,7 +48,7 @@ public class MonsterAnimations : MonoBehaviour {
     }
 
     private void OnMouseDown () {
-        if (allowMonsterTickle) {
+        if (allowMonsterTickle && !PopupPage.currentPopup) {
             if (!ParentPage.Instance) {
                 animator.Play ("Giggle", -1, 0f);
             }
@@ -57,6 +57,10 @@ public class MonsterAnimations : MonoBehaviour {
 
     public void PlaySpawnAnimation () {
         animator.Play ("MonsterSpawn", -1, 0f);
+    }
+
+    public void PlayDespawnAnimation () {
+        animator.Play ("MonsterDespawn", -1, 0f);
     }
 
     public void PlayGiggle () {

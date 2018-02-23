@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ParentsButton : MonoBehaviour {
-
 	public GameObject parentPagePrefab;
 	public Button[] buttonsToDisable;
 

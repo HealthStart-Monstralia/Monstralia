@@ -46,7 +46,8 @@ public class SwitchScene: MonoBehaviour {
 
     public void LoadIslandSection () {
         if (GameManager.Instance) {
-            switch (GameManager.Instance.GetIslandSection()) {
+            DataType.IslandSection island = GameManager.Instance.GetIslandSection ();
+            switch (island) {
                 case DataType.IslandSection.Monstralia:
                     LoadScene ("MainMap");
                     break;
@@ -55,6 +56,9 @@ public class SwitchScene: MonoBehaviour {
                     break;
                 case DataType.IslandSection.MainframeMountain:
                     LoadScene ("MainframeMountain");
+                    break;
+                default:
+                    LoadScene (island.ToString ());
                     break;
             }
             

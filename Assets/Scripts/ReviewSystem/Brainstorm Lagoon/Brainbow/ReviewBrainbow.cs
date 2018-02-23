@@ -82,11 +82,10 @@ public class ReviewBrainbow : Singleton<ReviewBrainbow> {
 
     // Sort foods into categories
     void SortBrainbowFoods () {
-        FoodList foodList = GameManager.Instance.GetComponent<FoodList> ();
         Food foodComponent;
 
         // Remove any restricted foods
-        List<GameObject> brainbowFoods = foodList.goodFoods;
+        List<GameObject> brainbowFoods = FoodList.GetGoodFoodsList ();
         foreach (GameObject food in restrictedFoods) {
             brainbowFoods.Remove (food);
         }
@@ -95,20 +94,20 @@ public class ReviewBrainbow : Singleton<ReviewBrainbow> {
         foreach (GameObject food in brainbowFoods) {
             foodComponent = food.GetComponent<Food> ();
             if (foodComponent.foodType == Food.TypeOfFood.Fruit || foodComponent.foodType == Food.TypeOfFood.Vegetable) {
-                switch (foodComponent.color) {
-                    case Colorable.Color.Red:
+                switch (foodComponent.typeOfColor) {
+                    case DataType.Color.Red:
                         redFoodsList.Add (food);
                         break;
 
-                    case Colorable.Color.Yellow:
+                    case DataType.Color.Yellow:
                         yellowFoodsList.Add (food);
                         break;
 
-                    case Colorable.Color.Green:
+                    case DataType.Color.Green:
                         greenFoodsList.Add (food);
                         break;
 
-                    case Colorable.Color.Purple:
+                    case DataType.Color.Purple:
                         purpleFoodsList.Add (food);
                         break;
                 }

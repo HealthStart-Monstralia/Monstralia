@@ -60,7 +60,7 @@ public class GameManager : SingletonPersistent<GameManager> {
         minigameAssetData = Resources.LoadAll<MinigameData> ("Data/Minigames");
 
         // Initialize visitedAreas dictionary with false boolean
-        foreach (DataType.IslandSection island in System.Enum.GetValues (typeof (DataType.IslandSection))) {
+        foreach (DataType.IslandSection island in Enum.GetValues (typeof (DataType.IslandSection))) {
             visitedAreas.Add (island, false);
         }
 
@@ -100,6 +100,7 @@ public class GameManager : SingletonPersistent<GameManager> {
         playerMonsterType = save.playerMonsterType;
         numOfGamesCompleted = save.numOfGamesCompleted;
         isIntroShown = save.isIntroShown;
+        FoodList.LoadFoodDictionary (save.foodEatenDictionary);
     }
 
     // Called at the end of a minigame
@@ -229,6 +230,21 @@ public class GameManager : SingletonPersistent<GameManager> {
                 return yellowMonster;
             default:
                 return blueMonster;
+        }
+    }
+
+    public string GetMonsterName (DataType.MonsterType typeOfMonster) {
+        switch (typeOfMonster) {
+            case DataType.MonsterType.Blue:
+                return "Dinopet";
+            case DataType.MonsterType.Green:
+                return "Catbear";
+            case DataType.MonsterType.Red:
+                return "Cyclopet";
+            case DataType.MonsterType.Yellow:
+                return "Rabbat";
+            default:
+                return "Monster";
         }
     }
 
@@ -384,6 +400,8 @@ public class GameManager : SingletonPersistent<GameManager> {
 
     public void SaveGame () {
         if (isSaveAllowed) {
+            Dictionary<string, int> foodDictionary = FoodList.SaveDictionary ();
+
             GameSave save = new GameSave {
                 gameStats = gameStats,
                 stickerStats = stickerStats,
@@ -392,7 +410,8 @@ public class GameManager : SingletonPersistent<GameManager> {
                 isMonsterSelected = isMonsterSelected,
                 playerMonsterType = playerMonsterType,
                 numOfGamesCompleted = numOfGamesCompleted,
-                isIntroShown = isIntroShown
+                isIntroShown = isIntroShown,
+                foodEatenDictionary = foodDictionary
             };
 
             SaveSystem.Save (save);

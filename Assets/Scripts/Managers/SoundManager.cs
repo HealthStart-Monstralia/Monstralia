@@ -130,8 +130,11 @@ public class SoundManager : SingletonPersistent<SoundManager> {
      * @param newAmbientSound: the AudioClip of the new ambient sound.
      */
     public void ChangeAmbientSound (AudioClip newAmbientSound) {
-        if (newAmbientSound != null) {
+        if (newAmbientSound != null && newAmbientSound != ambientSource.clip) {
             PlayAmbientSound (newAmbientSound);
+        }
+        else if (newAmbientSound == null) {
+            StopAmbientSound ();
         }
     }
 
@@ -279,9 +282,11 @@ public class SoundManager : SingletonPersistent<SoundManager> {
      * \brief Play the next voice over in the queue
      */
     public void AddToVOQueue (AudioClip clip) {
-        clipQueue.Enqueue (clip);
-        if (!isQueuePlaying) {
-            queueCoroutine = StartCoroutine (PlayQueue ());
+        if (clip != null) {
+            clipQueue.Enqueue (clip);
+            if (!isQueuePlaying) {
+                queueCoroutine = StartCoroutine (PlayQueue ());
+            }
         }
     }
 
