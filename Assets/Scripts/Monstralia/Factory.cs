@@ -9,7 +9,7 @@ public class Factory : MonoBehaviour {
     public Vector3 scale = new Vector3 (1f, 1f, 1f);
 
     private void Awake () {
-        pickupPrefabList.AddRange (Resources.LoadAll<GameObject> ("Prefabs/" + prefabPath));
+        pickupPrefabList.AddRange (Resources.LoadAll<GameObject> ("Prefabs/Monstralia/" + prefabPath));
     }
 
     public virtual GameObject SelectRandom () {
