@@ -37,6 +37,7 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
     [SerializeField] private ScoreGauge scoreGauge;
     [SerializeField] private TimerClock timerClock;
     [SerializeField] private GameObject sensePanel;
+    [SerializeField] private SensesTutorialManager tutorialManager;
 
     public bool IsInputAllowed {
         get {
@@ -61,6 +62,14 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
         difficultyLevel = (DataType.Level)GameManager.Instance.GetLevel (DataType.Minigame.MonsterSenses);
         currentLevelManager = GetLevelConfig ();
         currentLevelManager.gameObject.SetActive (true);
+
+        if (GameManager.Instance.GetPendingTutorial (typeOfGame)) {
+            tutorialManager.StartTutorial ();
+
+        }
+        else {
+            StartLevel ();
+        }
     }
 
     public void ActivateHUD(bool activate) {
@@ -100,7 +109,6 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
         StartCoroutine (OnGuess (true));
         SoundManager.Instance.PlaySFXClip (correctSfx);
         score++;
-        AddTime (5f);
         UpdateScoreGauge ();
         if (score >= currentLevelManager.scoreGoal) {
             currentLevelManager.EndGame ();

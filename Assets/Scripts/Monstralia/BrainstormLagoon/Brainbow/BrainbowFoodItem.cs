@@ -11,6 +11,7 @@ public class BrainbowFoodItem : MonoBehaviour {
     private bool isPlaced = false;
     private bool isBeingEaten = false;
     private SpriteRenderer spriteRenderer;
+    [SerializeField] float t;
 
     private void Awake () {
         rigBody = gameObject.GetComponent<Rigidbody2D> ();
@@ -23,9 +24,11 @@ public class BrainbowFoodItem : MonoBehaviour {
 
     private void OnDisable () {
         if (isBeingEaten) {
-            SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.munchSound);
-            if (BrainbowGameManager.Instance.activeFoods.Contains (this))
-                BrainbowGameManager.Instance.activeFoods.Remove (this);
+            //SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.munchSound);
+            if (BrainbowGameManager.Instance) {
+                if (BrainbowGameManager.Instance.activeFoods.Contains (this))
+                    BrainbowGameManager.Instance.activeFoods.Remove (this);
+            }
         }
         BrainbowGameManager.OnGameEnd -= GetEaten;
     }
@@ -92,23 +95,14 @@ public class BrainbowFoodItem : MonoBehaviour {
         isBeingEaten = true;
         gameObject.GetComponent<Collider2D> ().enabled = true;
         transform.SetParent (transform.root);
-        yield return new WaitForSeconds (0.5f);
+        yield return new WaitForSeconds (0.5f * (Random.Range (0.8f, 1.5f)) );
 
-        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 0.5f) {
-            //transform.position = Vector2.Lerp (transform.position, new Vector3 (0f, transform.position.y, 0f), t);
+        for (t = 0.0f; t < 0.1f; t += Time.deltaTime * 0.1f) {
             transform.position = Vector2.Lerp (transform.position, BrainbowGameManager.Instance.monsterObject.transform.position, t);
             yield return null;
         }
 
-        rigBody.bodyType = RigidbodyType2D.Dynamic;
-        rigBody.gravityScale = 2.0f;
-        yield return new WaitForSeconds (2f);
         GetComponent<Food> ().EatFood ();
     }
 
-    private void OnTriggerEnter2D (Collider2D collision) {
-        if (collision.tag == "Monster" && isPlaced) {
-            GetComponent<Food> ().EatFood ();
-        }
-    }
 }

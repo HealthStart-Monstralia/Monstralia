@@ -195,7 +195,7 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
 
         if (generator.cardHand.gameObject.activeSelf)
             generator.cardHand.ExitAnimation ();
-        yield return new WaitForSeconds (3.0f);
+        yield return new WaitForSeconds (2.0f);
 
         if (score >= scoreGoal) {
             if (difficultyLevel == 1) {
@@ -283,7 +283,7 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
         Vector2 pos = monsterLocation.position;
         monster = Instantiate (GameManager.Instance.GetPlayerMonsterObject (), pos, Quaternion.identity);
         monster.transform.position = pos;
-        monster.transform.localScale = new Vector3 (0.8f, 0.8f, 0.8f);
+        monster.transform.localScale = new Vector3 (0.6f, 0.6f, 0.6f);
         monster.gameObject.AddComponent<Animator> ();
         monster.GetComponent<Monster> ().IdleAnimationOn = false;
         monster.GetComponent<Monster> ().AllowMonsterTickle = false;

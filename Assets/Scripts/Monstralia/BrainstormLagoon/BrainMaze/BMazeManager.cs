@@ -131,7 +131,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 		SubtitlePanel.Instance.Hide ();
         monsterStart = tutorialStartingSpot;
         CreateMonster ();
-        playerMonster.transform.localScale = Vector3.one * 0.25f;
+        playerMonster.transform.localScale = Vector3.one * 0.2f;
         inputAllowed = false;
 
         SoundManager.Instance.PlayVoiceOverClip (tutorial2);
@@ -284,7 +284,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 
 	void CreateMonster() {
         CreatePlayerMonster (monsterStart);
-        playerMonster.transform.localScale = Vector3.one * 0.125f;
+        playerMonster.transform.localScale = Vector3.one * 0.1f;
         playerMonster.transform.SetParent (monsterStart.transform.root);
         playerMonster.transform.gameObject.AddComponent<BMazeMonsterMovement> ();
         monsterAnimator = playerMonster.GetComponentInChildren<Animator> ();
