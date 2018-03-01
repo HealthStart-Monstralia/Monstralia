@@ -4,16 +4,22 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ReviewBrainMazeCanvas : Singleton<ReviewBrainMazeCanvas> {
-	public ReviewBrainMazeMonster monster;
+	public Transform monsterSpawn;
+    public CreateMonster monsterCreator;
 	public bool isReviewRunning = false;
     public Text reviewText;
 
-	new void Awake() {
+    private Monster monster;
+    private Animator monsterAnimator;
+
+    new void Awake() {
 		GetComponent<Canvas> ().worldCamera = Camera.main;
 	}
 
 	void Start() {
         // Change monster sprite depending on player choice
+
+        /*
 		switch (GameManager.Instance.GetPlayerMonsterType ()) {
 		    case DataType.MonsterType.Blue:
 			    monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Blue];
@@ -28,24 +34,34 @@ public class ReviewBrainMazeCanvas : Singleton<ReviewBrainMazeCanvas> {
 		    monster.GetComponentInChildren<SpriteRenderer>().sprite = monster.spriteList [(int)DataType.MonsterType.Yellow];
 			    break;
 		}
+        */
+
 		PrepareReview ();
 	}
 
 	public void PrepareReview() {
-		monster.gameObject.SetActive (true);
-		StartCoroutine (BeginReview ());
+        monster = monsterCreator.SpawnPlayerMonster (monsterSpawn);
+        monster.transform.gameObject.AddComponent<BMazeMonsterMovement> ();
+        monsterAnimator = monster.GetComponentInChildren<Animator> ();
+        StartCoroutine (BeginReview ());
 	}
 
 	IEnumerator BeginReview() {
 		yield return new WaitForSecondsRealtime (1f);
 		isReviewRunning = true;
-		monster.allowMovement = true;
+		BMazeMonsterMovement.isMonsterMovementAllowed = true;
 	}
 
 	public void EndReview() {
         reviewText.text = "Great Job!";
 		isReviewRunning = false;
-		monster.allowMovement = false;
+        BMazeMonsterMovement.isMonsterMovementAllowed = false;
         ReviewManager.Instance.EndReview ();
+        monster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
+        Invoke ("FadeMonsterOut", 2f);
 	}
+
+    public void FadeMonsterOut () {
+        monsterAnimator.Play ("MonsterDespawn", -1, 0f);
+    }
 }

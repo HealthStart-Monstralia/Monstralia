@@ -61,6 +61,7 @@ public class ReviewEmotionsGame : Singleton<ReviewEmotionsGame> {
         inputAllowed = false;
         //Destroy (monster.gameObject, 1f);
         SubtitlePanel.Instance.Display ("Great job!");
+        ChangeMonsterEmotion (DataType.MonsterEmotions.Joyous);
         ReviewManager.Instance.EndReview ();
     }
 
