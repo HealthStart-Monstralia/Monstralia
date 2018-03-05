@@ -20,6 +20,7 @@ public class StartManager : Singleton<StartManager> {
     }
 
     void Start () {
+        SoundManager.Instance.PlayBackgroundMusic ();
         sceneLoader = GetComponent<SwitchScene> ();
         GameManager.Instance.LoadGame ();
 
