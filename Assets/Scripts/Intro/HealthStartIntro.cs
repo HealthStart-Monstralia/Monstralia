@@ -21,6 +21,32 @@ public class HealthStartIntro : MonoBehaviour {
         yield return new WaitForSeconds (3f);
         fader.FadeOut ();
         yield return new WaitForSeconds (1.5f);
-        sceneLoader.LoadScene ();
+        if (HasPlayerHasSeenIntro()) {
+            sceneLoader.LoadScene ("Start");
+        }
+        else {
+            sceneLoader.LoadScene ();
+        }
+    }
+
+    bool HasPlayerHasSeenIntro () {
+        if (!PlayerPrefs.HasKey ("MonstraliaIntro")) {
+            print ("Player has not seen intro");
+            SetPlayerWatchedIntro ();
+            return false;
+        } else {
+            print ("Player has seen intro");
+            return GetPlayerWatchedIntro ();
+        }
+    }
+
+    void SetPlayerWatchedIntro () {
+        PlayerPrefs.SetInt ("MonstraliaIntro", 1);
+        PlayerPrefs.Save ();
+    }
+
+    bool GetPlayerWatchedIntro () {
+        // Convert value into bool, 1 = true, not 1 = false
+        return PlayerPrefs.GetInt ("MonstraliaIntro") == 1 ? true : false;
     }
 }
