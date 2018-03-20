@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class SensesClickInput : MonoBehaviour {
 
+    private void Start () {
+        if (!GetComponent<Collider2D>()) {
+            gameObject.AddComponent<CircleCollider2D> ();
+        }
+    }
     private void OnMouseDown () {
-        print ("Click");
-        SensesGameManager.Instance.currentLevelManager.DoesObjectHaveSense (GetComponent<SensesItem> ());
+        SensesGameManager.Instance.OnItemSense (GetComponent<SensesItem> ());
     }
 }

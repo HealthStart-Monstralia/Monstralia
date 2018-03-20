@@ -1,17 +1,26 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SensesTutorialManager : MonoBehaviour {
     public bool isRunningTutorial = false;
     public Coroutine tutorialCoroutine;
-    public Canvas instructionPopup;
+    public GameObject instructionPopup;
+
+    [SerializeField] private SensesFactory senseFactory;
+    [SerializeField] private Text senseText;
+    [SerializeField] private string[] correctLines;
+    [SerializeField] private string[] wrongLines;
 
     private SensesGameManager sensesManager;
     private VoiceOversData voData;
+    private Monster monster;
+    private GameObject selectedObject;
+    private DataType.Senses selectedSense;
 
     private void Awake () {
-        instructionPopup.gameObject.SetActive (false);
+        instructionPopup.SetActive (false);
         voData = SensesGameManager.Instance.voData;
     }
 
@@ -23,9 +32,10 @@ public class SensesTutorialManager : MonoBehaviour {
     }
 
     IEnumerator RunTutorial () {
+        monster = SensesGameManager.Instance.playerMonster;
         isRunningTutorial = true;
         sensesManager.IsInputAllowed = false;
-        instructionPopup.gameObject.SetActive (true);
+        instructionPopup.SetActive (true);
         yield return new WaitForSeconds (1.0f);
 
         AudioClip tutorial1Clip = voData.FindVO ("1_tutorial_start");
@@ -84,7 +94,7 @@ public class SensesTutorialManager : MonoBehaviour {
             sensesManager.playerMonster.ChangeEmotions (DataType.MonsterEmotions.Happy);
         yield return new WaitForSeconds (1.25f);
 
-        instructionPopup.gameObject.SetActive (false);
+        instructionPopup.SetActive (false);
         SensesGameManager.Instance.StartLevel ();
     }
 
@@ -96,5 +106,48 @@ public class SensesTutorialManager : MonoBehaviour {
     public void SkipTutorial () {
         StopCoroutine (tutorialCoroutine);
         StartCoroutine (TutorialTearDown ());
+    }
+
+    public void NextQuestion () {
+        monster.ChangeEmotions (DataType.MonsterEmotions.Happy);
+        SubtitlePanel.Instance.Hide ();
+
+        if (selectedObject)
+            Destroy (selectedObject);
+
+        // Tell factory to instantiate a random prefab and remove it from the list to prevent duplicates
+        selectedObject = senseFactory.ManufactureRandomAndRemove ();
+
+        // Select a random valid sense to ask the player
+        selectedSense = SelectRandomSenseFromItem (selectedObject.GetComponent<SensesItem> ());
+        senseText.text = string.Format ("What do I use to {0} the {1}?", selectedSense.ToString ().ToLower (), selectedObject.name);
+    }
+
+    private DataType.Senses SelectRandomSenseFromItem (SensesItem item) {
+        DataType.Senses[] senseItemList = item.validSenses;
+        return senseItemList.GetRandomItem ();
+    }
+
+    void OnCorrect () {
+        SubtitlePanel.Instance.Display (correctLines.GetRandomItem ());
+        monster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
+    }
+
+    void OnIncorrect () {
+        SubtitlePanel.Instance.Display (wrongLines.GetRandomItem ());
+        monster.ChangeEmotions (DataType.MonsterEmotions.Sad);
+    }
+
+    public bool IsSenseCorrect (DataType.Senses sense) {
+        if (selectedSense != DataType.Senses.NONE) {
+            if (sense == selectedSense) {
+                OnCorrect ();
+                return true;
+            }
+
+            OnIncorrect ();
+        }
+
+        return false;
     }
 }

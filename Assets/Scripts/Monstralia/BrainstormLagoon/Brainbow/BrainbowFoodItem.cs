@@ -8,7 +8,6 @@ public class BrainbowFoodItem : MonoBehaviour {
     private Vector3 offset;
     private Rigidbody2D rigBody;
     private bool isMoved = false;
-    private bool isPlaced = false;
     private bool isBeingEaten = false;
     private SpriteRenderer spriteRenderer;
     [SerializeField] float t;
@@ -83,7 +82,6 @@ public class BrainbowFoodItem : MonoBehaviour {
     public void InsertItemIntoStripe (BrainbowStripe stripe) {
         stripe.MoveItemToSlot (gameObject);
         gameObject.GetComponent<Collider2D> ().enabled = false;
-        isPlaced = true;
         BrainbowGameManager.Instance.activeFoods.Add (this);
     }
 

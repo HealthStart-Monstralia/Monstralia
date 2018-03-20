@@ -84,8 +84,6 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
     public void ActivateHUD(bool activate) {
         scoreGauge.gameObject.SetActive (activate);
         timerClock.gameObject.SetActive (activate);
-        if (GetLevelConfig().typeOfLevel == SensesLevelManager.SensesLevelType.SensePanel)
-            sensePanel.SetActive (activate);
         if (activate) {
             UpdateScoreGauge ();
             SetTimeLimit (GetLevelConfig ().timeLimit);
@@ -132,6 +130,13 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
     public void OnWrongScore () {
         StartCoroutine (OnGuess (false));
         SoundManager.Instance.PlayIncorrectSFX ();
+    }
+
+    public void OnItemSense (SensesItem item) {
+        if (isInputAllowed) {
+            if (currentLevelManager.DoesObjectHaveSense (item)) OnScore ();
+            else OnWrongScore ();
+        }
     }
 
     public void OnSense (DataType.Senses sense) {

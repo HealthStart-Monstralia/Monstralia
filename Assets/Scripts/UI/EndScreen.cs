@@ -10,8 +10,10 @@ public class EndScreen : MonoBehaviour {
     public bool earnedSticker;
     public Text headerText, footerText;
     public GameObject stickerButton, backButton, nextLevelButton, imageLocation, brain;
+    [SerializeField] private Button[] buttonsToDisableOnFirstWin;
 
     private void Awake () {
+
         GetComponent<Canvas> ().worldCamera = Camera.main;
     }
 
@@ -24,8 +26,18 @@ public class EndScreen : MonoBehaviour {
             sticker.transform.localPosition = Vector3.zero;
             Destroy (sticker.GetComponent<StickerBehaviour> ());
         }
+
         headerText.text = "Congratulations you earned a new sticker!";
-        footerText.text = "Tap on the button below to use your new sticker!";
+
+        if (!GameManager.Instance.GetHasPlayerVisitedStickerbook ()) {
+            foreach (Button button in buttonsToDisableOnFirstWin) {
+                button.interactable = false;
+            }
+            footerText.text = "Let's go to the stickerbook to show how to use your new sticker!";
+
+        } else {
+            footerText.text = "Tap on the button below to use your new sticker!";
+        }
     }
 
     public void CompletedLevel () {

@@ -4,11 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class SensesLevelManager : MonoBehaviour {
-    public enum SensesLevelType {
-        SensePanel,
-        ObjectSelect
-    }
-
     public float timeLimit = 15f;
     public int scoreGoal = 3;
     public CreateMonster[] monsterCreators;
@@ -16,8 +11,6 @@ public class SensesLevelManager : MonoBehaviour {
     [HideInInspector] public Monster monster;
 
     [Header ("References")]
-    public SensesLevelType typeOfLevel;
-    [SerializeField] private SensesFactory senseFactory;
     [SerializeField] private SensesFactory[] senseFactories;
     [SerializeField] private Text senseText;
     [SerializeField] private string[] correctLines;
@@ -25,11 +18,12 @@ public class SensesLevelManager : MonoBehaviour {
 
     private DataType.Senses selectedSense;
     private List<DataType.Senses> senseList = new List<DataType.Senses>();
-    private GameObject selectedObject;
 
     private void Awake () {
         foreach (DataType.Senses sense in System.Enum.GetValues (typeof (DataType.Senses))) {
-            senseList.Add (sense);
+            if (sense != DataType.Senses.NONE) {
+                senseList.Add (sense);
+            }
         }
     }
 
@@ -40,17 +34,9 @@ public class SensesLevelManager : MonoBehaviour {
 
     IEnumerator PrepareToStart() {
         yield return new WaitForSeconds (0.5f);
-
-        if (typeOfLevel == SensesLevelType.SensePanel) {
-            SoundManager.Instance.PlaySFXClip (transitionSfx);
-            SensesGameManager.Instance.fireworksSystem.ActivateFireworks ();
-            yield return new WaitForSeconds (0.1f);
-        }
-        else {
-            CreateSenseItems ();
-            yield return new WaitForSeconds (0.1f);
-        }
-
+        SensesGameManager.Instance.fireworksSystem.ActivateFireworks ();
+        SoundManager.Instance.PlaySFXClip (transitionSfx);
+        yield return new WaitForSeconds (0.1f);
 
         monster = monsterCreators[0].SpawnPlayerMonster ();
         SensesGameManager.Instance.ActivateHUD (true);
@@ -64,13 +50,15 @@ public class SensesLevelManager : MonoBehaviour {
         }
     }
 
-    private DataType.Senses SelectRandomSenseFromItem(SensesItem item) {
-        DataType.Senses[] senseItemList = item.validSenses;
-        return senseItemList.GetRandomItem ();
+    private void DestroySenseItems () {
+        foreach (SensesFactory factory in senseFactories) {
+            factory.RemoveCurrentObject ();
+        }
     }
 
     private DataType.Senses SelectRandomSense () {
-        return senseList.GetRandomItem ();
+        DataType.Senses randomSense = senseFactories.GetRandomItem ().currentItem.GetComponent<SensesItem> ().ChooseRandomSense ();
+        return randomSense;
     }
 
     void StartGame() {
@@ -81,21 +69,10 @@ public class SensesLevelManager : MonoBehaviour {
     public void NextQuestion() {
         monster.ChangeEmotions (DataType.MonsterEmotions.Happy);
         SubtitlePanel.Instance.Hide ();
-
-        if (typeOfLevel == SensesLevelType.SensePanel) {
-            Destroy (selectedObject);
-
-            // Tell factory to instantiate a random prefab and remove it from the list to prevent duplicates
-            selectedObject = senseFactory.ManufactureRandomAndRemove ();
-
-            // Select a random valid sense to ask the player
-            selectedSense = SelectRandomSenseFromItem (selectedObject.GetComponent<SensesItem> ());
-            senseText.text = string.Format ("What do I use to {0} the {1}?", selectedSense.ToString ().ToLower (), selectedObject.name);
-        }
-        else {
-            selectedSense = SelectRandomSense ();
-            senseText.text = string.Format ("What can I {0}?", selectedSense.ToString ().ToLower ());
-        }
+        DestroySenseItems ();
+        CreateSenseItems ();
+        selectedSense = SelectRandomSense ();
+        senseText.text = string.Format ("What can I {0}?", selectedSense.ToString ().ToLower ());
     }
 
     public void EndGame() {
@@ -104,15 +81,17 @@ public class SensesLevelManager : MonoBehaviour {
     }
 
     public bool DoesObjectHaveSense (SensesItem item) {
-        if (selectedSense != DataType.Senses.NONE) {
-            foreach (DataType.Senses sense in item.validSenses) {
-                if (sense == selectedSense) {
-                    OnCorrect ();
-                    return true;
+        if (SensesGameManager.Instance.IsInputAllowed) {
+            if (selectedSense != DataType.Senses.NONE) {
+                foreach (DataType.Senses sense in item.validSenses) {
+                    if (sense == selectedSense) {
+                        OnCorrect ();
+                        return true;
+                    }
                 }
-            }
 
-            OnIncorrect ();
+                OnIncorrect ();
+            }
         }
 
         return false;

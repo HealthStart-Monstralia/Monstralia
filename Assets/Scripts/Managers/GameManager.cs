@@ -20,6 +20,7 @@ public class GameManager : SingletonPersistent<GameManager> {
     private DataType.MonsterType playerMonsterType;
     private bool isMonsterSelected = false;
     private int numOfGamesCompleted = 0;
+    private bool hasPlayerVisitedStickerbook = false;
 
     [Serializable]
     public struct MinigameStats {
@@ -101,6 +102,7 @@ public class GameManager : SingletonPersistent<GameManager> {
         numOfGamesCompleted = save.numOfGamesCompleted;
         isIntroShown = save.isIntroShown;
         FoodList.LoadFoodDictionary (save.foodEatenDictionary);
+        hasPlayerVisitedStickerbook = save.hasPlayerVisitedStickerbook;
     }
 
     // Called at the end of a minigame
@@ -369,6 +371,14 @@ public class GameManager : SingletonPersistent<GameManager> {
         return numOfGamesCompleted;
     }
 
+    public bool GetHasPlayerVisitedStickerbook () {
+        return hasPlayerVisitedStickerbook;
+    }
+
+    public void SetPlayerVisitedStickerbook () {
+        hasPlayerVisitedStickerbook = true;
+    }
+
     public bool GetIsMonsterSelected () {
         return isMonsterSelected;
     }
@@ -411,7 +421,8 @@ public class GameManager : SingletonPersistent<GameManager> {
                 playerMonsterType = playerMonsterType,
                 numOfGamesCompleted = numOfGamesCompleted,
                 isIntroShown = isIntroShown,
-                foodEatenDictionary = foodDictionary
+                foodEatenDictionary = foodDictionary,
+                hasPlayerVisitedStickerbook = hasPlayerVisitedStickerbook
             };
 
             SaveSystem.Save (save);
