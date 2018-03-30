@@ -20,6 +20,7 @@ public class StartManager : Singleton<StartManager> {
     }
 
     void Start () {
+        SoundManager.Instance.PlayBackgroundMusic ();
         sceneLoader = GetComponent<SwitchScene> ();
         GameManager.Instance.LoadGame ();
 
@@ -72,7 +73,7 @@ public class StartManager : Singleton<StartManager> {
         monster.transform.SetParent (monsterSpawn.transform);
         monster.spriteRenderer.sortingLayerName = "UI";
         monster.spriteRenderer.sortingOrder = 0;
-        monster.transform.localScale = Vector3.one * 40f;
+        monster.transform.localScale = Vector3.one * 30f;
         monster.AllowMonsterTickle = true;
         monster.IdleAnimationOn = true;
         monster.spawnAnimation = true;

@@ -54,6 +54,7 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         CreatePlayerMonster (monsterSpawnPos);
         monsterAnimator = playerMonster.monsterAnimator.animator;
         monsterAnimator.Play ("MM_Spawn", -1, 0f);
+        playerMonster.gameObject.transform.localScale = Vector3.one * 0.75f;
         playerMonster.spriteRenderer.sortingOrder = -2;
 
         SubtitlePanel.Instance.Hide ();

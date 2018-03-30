@@ -18,7 +18,7 @@ public class MonsterPage : PopupPage {
         monster.transform.SetParent (monsterCreator.transform);
         monster.spriteRenderer.sortingLayerName = "UI";
         monster.spriteRenderer.sortingOrder = 4;
-        monster.transform.localScale = Vector3.one * 40f;
+        monster.transform.localScale = Vector3.one * 30f;
         monster.AllowMonsterTickle = true;
         monster.IdleAnimationOn = true;
         monster.spawnAnimation = true;

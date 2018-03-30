@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class SensesGameManager : AbstractGameManager<SensesGameManager> {
     [Header ("Senses Game Manager Fields")]
 
-    public bool skipTutorial = false;
     public VoiceOversData voData;
     public SensesLevelManager levelOne, levelTwo, levelThree;
     public SensesFireworksSystem fireworksSystem;
@@ -27,9 +26,12 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
     public AudioClip[] rightChoiceVO;
     public AudioClip[] wrongChoiceVO;
 
-    private DataType.Level difficultyLevel;
+    [Header ("Level")]
+    public bool selectLevelFromEditor = false;
+    public bool skipTutorial = false;
+    [SerializeField] private DataType.Level difficultyLevel;
 
-    private SensesLevelManager currentLevelManager;
+    public SensesLevelManager currentLevelManager;
     private bool isInputAllowed;
 
     [Header ("References")]
@@ -37,6 +39,7 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
     [SerializeField] private ScoreGauge scoreGauge;
     [SerializeField] private TimerClock timerClock;
     [SerializeField] private GameObject sensePanel;
+    [SerializeField] private SensesTutorialManager tutorialManager;
 
     public bool IsInputAllowed {
         get {
@@ -51,6 +54,7 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
 
     new void Awake () {
         base.Awake ();
+        sensePanel.gameObject.SetActive (false);
         levelOne.gameObject.SetActive (false);
         levelTwo.gameObject.SetActive (false);
         levelThree.gameObject.SetActive (false);
@@ -58,15 +62,28 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
 
     public override void PregameSetup () {
         ActivateHUD (false);
-        difficultyLevel = (DataType.Level)GameManager.Instance.GetLevel (DataType.Minigame.MonsterSenses);
+        if (Application.platform != RuntimePlatform.WindowsEditor) {
+            difficultyLevel = (DataType.Level)GameManager.Instance.GetLevel (DataType.Minigame.MonsterSenses);
+        }
+
+        else if (!selectLevelFromEditor) {
+            difficultyLevel = (DataType.Level)GameManager.Instance.GetLevel (DataType.Minigame.MonsterSenses);
+        }
+
         currentLevelManager = GetLevelConfig ();
         currentLevelManager.gameObject.SetActive (true);
+
+        if (GameManager.Instance.GetPendingTutorial (typeOfGame) && (!skipTutorial && Application.platform == RuntimePlatform.WindowsEditor)) {
+            tutorialManager.StartTutorial ();
+        }
+        else {
+            StartLevel ();
+        }
     }
 
     public void ActivateHUD(bool activate) {
         scoreGauge.gameObject.SetActive (activate);
         timerClock.gameObject.SetActive (activate);
-        sensePanel.SetActive (activate);
         if (activate) {
             UpdateScoreGauge ();
             SetTimeLimit (GetLevelConfig ().timeLimit);
@@ -100,7 +117,6 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
         StartCoroutine (OnGuess (true));
         SoundManager.Instance.PlaySFXClip (correctSfx);
         score++;
-        AddTime (5f);
         UpdateScoreGauge ();
         if (score >= currentLevelManager.scoreGoal) {
             currentLevelManager.EndGame ();
@@ -114,6 +130,13 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
     public void OnWrongScore () {
         StartCoroutine (OnGuess (false));
         SoundManager.Instance.PlayIncorrectSFX ();
+    }
+
+    public void OnItemSense (SensesItem item) {
+        if (isInputAllowed) {
+            if (currentLevelManager.DoesObjectHaveSense (item)) OnScore ();
+            else OnWrongScore ();
+        }
     }
 
     public void OnSense (DataType.Senses sense) {
