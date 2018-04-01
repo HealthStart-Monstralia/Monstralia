@@ -95,9 +95,9 @@ public class SoundManager : SingletonPersistent<SoundManager> {
     public void ChangeAndPlayMusic(AudioClip newMusic) {
         if (!musicSource.clip.Equals (newMusic) && newMusic != null) {
             musicSource.clip = newMusic;
-
         }
-	}
+        PlayBackgroundMusic ();
+    }
 
     /**
      * \brief Return the background music AudioSource
