@@ -22,7 +22,11 @@ public class StartManager : Singleton<StartManager> {
     void Start () {
         SoundManager.Instance.PlayBackgroundMusic ();
         sceneLoader = GetComponent<SwitchScene> ();
+
+        // Remove when Release is ready for save system
+        #if TEST_BUILD
         GameManager.Instance.LoadGame ();
+        #endif
 
         monsterSpawn.gameObject.SetActive (false);
         if (GameManager.Instance.GetIsMonsterSelected()) {

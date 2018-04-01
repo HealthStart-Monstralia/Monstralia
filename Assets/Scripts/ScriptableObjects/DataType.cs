@@ -40,7 +40,9 @@ public static class DataType {
         Monstralia,
         BrainstormLagoon,
         MainframeMountain,
-        PumpParadise
+        PumpParadise,
+        Muscle,
+        Digestive
     };
 
     public enum Level {
