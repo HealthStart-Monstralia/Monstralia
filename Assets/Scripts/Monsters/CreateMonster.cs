@@ -11,9 +11,6 @@ public class CreateMonster : MonoBehaviour {
     public bool addRigidbody = false;
     public bool replaceBoxCollider = false;
     public bool playSpawnAnimation = true;
-    public bool modifyLayer = false;
-    public string layerName;
-    public int layerOrder;
 
     public Vector3 scale = new Vector3 (1f, 1f, 1f);
     public Transform spawnPosition;
@@ -76,11 +73,6 @@ public class CreateMonster : MonoBehaviour {
         monster.AllowMonsterTickle = allowMonsterTickle;
         monster.IdleAnimationOn = idleAnimationOn;
         monster.transform.localScale = scale;
-
-        if (modifyLayer) {
-            monster.spriteRenderer.sortingLayerName = layerName;
-            monster.spriteRenderer.sortingOrder = layerOrder;
-        }
 
         if (replaceBoxCollider) {
             monster.colliderComponent.enabled = false;

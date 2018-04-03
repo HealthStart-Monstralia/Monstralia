@@ -10,8 +10,8 @@ GameObject:
   - component: {fileID: 22414088}
   - component: {fileID: 21255388}
   - component: {fileID: 114840737761046040}
+  - component: {fileID: 5889948}
   - component: {fileID: 5015300}
-  - component: {fileID: 70146469097379018}
   m_Layer: 11
   m_Name: Yellow Bellpepper
   m_TagString: Good Food
@@ -39,6 +39,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!58 &5889948
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 171722}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0.01}
+  serializedVersion: 2
+  m_Radius: 1.8
 --- !u!212 &21255388
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -141,21 +156,6 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 171722}
   m_IsPrefabParent: 1
---- !u!70 &70146469097379018
-CapsuleCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 171722}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 4.56, y: 5.47}
-  m_Direction: 0
 --- !u!114 &114840737761046040
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -167,8 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9eb5cd12437a49318c09a8dae142e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeOfColor: 1
+  color: 1
   foodType: 0
   foodName: Yellow Bellpepper
   clipOfName: {fileID: 8300000, guid: 87a3d8a3512f63a4daeeb8eb2c9369b1, type: 3}
-  eatSound: {fileID: 8300000, guid: be67d8fae89d24304b9b1e19c15686e5, type: 3}

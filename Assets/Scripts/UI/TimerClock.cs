@@ -59,8 +59,7 @@ public class TimerClock : Singleton<TimerClock> {
                         StartCoroutine (TickTock ());
                     } else if (isTimeLow && timeRemaining >= timeLimit * 0.25f) {
                         isTimeLow = false;
-                        if (audioSrc)
-                            audioSrc.Stop ();
+                        audioSrc.Stop ();
                     }
                 }
                 else {

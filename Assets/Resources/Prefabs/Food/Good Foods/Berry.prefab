@@ -10,8 +10,8 @@ GameObject:
   - component: {fileID: 22443126}
   - component: {fileID: 21263082}
   - component: {fileID: 114069625636830296}
+  - component: {fileID: 5862814}
   - component: {fileID: 5065558}
-  - component: {fileID: 70304982944578506}
   m_Layer: 11
   m_Name: Berry
   m_TagString: Good Food
@@ -39,6 +39,21 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!58 &5862814
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 189480}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 2
 --- !u!212 &21263082
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -141,21 +156,6 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 189480}
   m_IsPrefabParent: 1
---- !u!70 &70304982944578506
-CapsuleCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 189480}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 5.1199994, y: 5.1199994}
-  m_Direction: 0
 --- !u!114 &114069625636830296
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -167,8 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9eb5cd12437a49318c09a8dae142e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeOfColor: 3
+  color: 3
   foodType: 0
   foodName: Berry
   clipOfName: {fileID: 8300000, guid: c7e0cc39685d4ca43a3995f8d131e359, type: 3}
-  eatSound: {fileID: 8300000, guid: be67d8fae89d24304b9b1e19c15686e5, type: 3}

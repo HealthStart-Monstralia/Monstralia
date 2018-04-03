@@ -10,8 +10,8 @@ GameObject:
   - component: {fileID: 22422814}
   - component: {fileID: 21247330}
   - component: {fileID: 114275688543846130}
+  - component: {fileID: 6079928}
   - component: {fileID: 5085118}
-  - component: {fileID: 60077763396569570}
   m_Layer: 11
   m_Name: Eggplant
   m_TagString: Good Food
@@ -39,6 +39,82 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!60 &6079928
+PolygonCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 118518}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 5.12, y: 5.12}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 1.6, y: -1.35}
+      - {x: 1.7, y: -1.2}
+      - {x: 1.73, y: -1.08}
+      - {x: 1.73, y: -0.75}
+      - {x: 1.7, y: -0.67}
+      - {x: 1.62, y: -0.51}
+      - {x: 1.52, y: -0.36}
+      - {x: 1.18, y: -0.04}
+      - {x: 1.06, y: 0.04}
+      - {x: 0.81, y: 0.2}
+      - {x: 0.36, y: 0.46}
+      - {x: 0.06, y: 0.67}
+      - {x: -0.24, y: 0.96}
+      - {x: -0.46, y: 1.15}
+      - {x: -0.55, y: 1.25}
+      - {x: -0.55, y: 1.3}
+      - {x: -0.66, y: 1.39}
+      - {x: -0.84, y: 1.47}
+      - {x: -0.98, y: 1.49}
+      - {x: -1.2, y: 1.49}
+      - {x: -1.3, y: 1.47}
+      - {x: -1.38, y: 1.55}
+      - {x: -1.37, y: 1.71}
+      - {x: -1.55, y: 1.71}
+      - {x: -1.55, y: 1.7}
+      - {x: -1.58, y: 1.63}
+      - {x: -1.57, y: 1.45}
+      - {x: -1.57, y: 1.41}
+      - {x: -1.53, y: 1.36}
+      - {x: -1.59, y: 1.32}
+      - {x: -1.69, y: 1.21}
+      - {x: -1.73, y: 1.13}
+      - {x: -1.73, y: 0.87}
+      - {x: -1.66, y: 0.67}
+      - {x: -1.71, y: 0.63}
+      - {x: -1.66, y: 0.55}
+      - {x: -1.55, y: 0.48}
+      - {x: -1.51, y: 0.39}
+      - {x: -1.38, y: 0.11}
+      - {x: -1.23, y: -0.16}
+      - {x: -1.03, y: -0.43}
+      - {x: -0.84, y: -0.66}
+      - {x: -0.55, y: -0.96}
+      - {x: -0.42, y: -1.08}
+      - {x: -0.06, y: -1.38}
+      - {x: 0.14, y: -1.5}
+      - {x: 0.38, y: -1.63}
+      - {x: 0.6, y: -1.71}
+      - {x: 1.08, y: -1.71}
+      - {x: 1.18, y: -1.68}
+      - {x: 1.38, y: -1.57}
+      - {x: 1.56, y: -1.4}
 --- !u!212 &21247330
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -145,114 +221,6 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 118518}
   m_IsPrefabParent: 1
---- !u!60 &60077763396569570
-PolygonCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 118518}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 5.12, y: 5.12}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: 2.02, y: -2.31}
-      - {x: 2.11, y: -2.24}
-      - {x: 2.28, y: -2.06}
-      - {x: 2.33, y: -2.01}
-      - {x: 2.44, y: -1.86}
-      - {x: 2.54, y: -1.63}
-      - {x: 2.56, y: -1.54}
-      - {x: 2.56, y: -1.23}
-      - {x: 2.53, y: -1.11}
-      - {x: 2.5, y: -0.97999996}
-      - {x: 2.3899999, y: -0.78}
-      - {x: 2.24, y: -0.57}
-      - {x: 1.93, y: -0.25}
-      - {x: 1.75, y: -0.099999994}
-      - {x: 1.5699999, y: 0.03}
-      - {x: 1.4, y: 0.14999999}
-      - {x: 1.24, y: 0.25}
-      - {x: 1, y: 0.39}
-      - {x: 0.63, y: 0.59999996}
-      - {x: 0.35, y: 0.78}
-      - {x: 0.28, y: 0.82}
-      - {x: 0.01, y: 1.04}
-      - {x: -0.17999999, y: 1.22}
-      - {x: -0.38, y: 1.41}
-      - {x: -0.62, y: 1.63}
-      - {x: -0.75, y: 1.74}
-      - {x: -0.84, y: 1.81}
-      - {x: -0.81, y: 1.8399999}
-      - {x: -0.79999995, y: 1.9}
-      - {x: -0.9, y: 1.9699999}
-      - {x: -1.02, y: 2.04}
-      - {x: -1.2099999, y: 2.1299999}
-      - {x: -1.4399999, y: 2.19}
-      - {x: -1.68, y: 2.2}
-      - {x: -1.76, y: 2.18}
-      - {x: -1.9499999, y: 2.1699998}
-      - {x: -2.05, y: 2.32}
-      - {x: -2.05, y: 2.4199998}
-      - {x: -2.04, y: 2.5}
-      - {x: -2.07, y: 2.53}
-      - {x: -2.24, y: 2.53}
-      - {x: -2.28, y: 2.5}
-      - {x: -2.31, y: 2.3899999}
-      - {x: -2.31, y: 2.21}
-      - {x: -2.29, y: 2.07}
-      - {x: -2.23, y: 1.99}
-      - {x: -2.3, y: 1.9499999}
-      - {x: -2.4299998, y: 1.8199999}
-      - {x: -2.46, y: 1.78}
-      - {x: -2.53, y: 1.67}
-      - {x: -2.56, y: 1.5699999}
-      - {x: -2.56, y: 1.39}
-      - {x: -2.54, y: 1.3199999}
-      - {x: -2.48, y: 1.16}
-      - {x: -2.46, y: 0.97999996}
-      - {x: -2.49, y: 0.84999996}
-      - {x: -2.44, y: 0.82}
-      - {x: -2.31, y: 0.82}
-      - {x: -2.26, y: 0.68}
-      - {x: -2.1699998, y: 0.48}
-      - {x: -2.06, y: 0.24}
-      - {x: -1.99, y: 0.11}
-      - {x: -1.8, y: -0.21}
-      - {x: -1.5799999, y: -0.53}
-      - {x: -1.52, y: -0.61}
-      - {x: -1.3199999, y: -0.84999996}
-      - {x: -1.18, y: -1.01}
-      - {x: -1.04, y: -1.16}
-      - {x: -0.82, y: -1.38}
-      - {x: -0.58, y: -1.61}
-      - {x: -0.38, y: -1.78}
-      - {x: -0.17999999, y: -1.93}
-      - {x: -0.08, y: -2.01}
-      - {x: 0.11, y: -2.1399999}
-      - {x: 0.26, y: -2.23}
-      - {x: 0.52, y: -2.36}
-      - {x: 0.69, y: -2.4299998}
-      - {x: 0.84, y: -2.48}
-      - {x: 0.95, y: -2.51}
-      - {x: 1.13, y: -2.54}
-      - {x: 1.43, y: -2.54}
-      - {x: 1.5899999, y: -2.51}
-      - {x: 1.74, y: -2.46}
-      - {x: 1.88, y: -2.3999999}
 --- !u!114 &114275688543846130
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -264,8 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9eb5cd12437a49318c09a8dae142e19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typeOfColor: 3
+  color: 3
   foodType: 0
   foodName: Eggplant
   clipOfName: {fileID: 8300000, guid: 59740dafbd52bd84faf6fd36fd025775, type: 3}
-  eatSound: {fileID: 8300000, guid: be67d8fae89d24304b9b1e19c15686e5, type: 3}

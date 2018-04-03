@@ -62,8 +62,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 10.24, y: 10.24}
-    newSize: {x: 10.24, y: 10.24}
+    oldSize: {x: 5.12, y: 5.12}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -101,7 +101,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 95574144567490018}
   emotionData: {fileID: 11400000, guid: 6df536b44a86574489d9755e5d70290b, type: 2}
-  allowMonsterTickle: 0
   monster: {fileID: 114506571504342720}
   monsterGiggle: {fileID: 8300000, guid: b24e99fa0112142c79cc477b3a50ad46, type: 3}
 --- !u!114 &114506571504342720
@@ -117,6 +116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   typeOfMonster: 3
   selectedEmotion: 0
+  allowMonsterTickle: 0
   spawnAnimation: 1
   spriteRenderer: {fileID: 212321950606231192}
   colliderComponent: {fileID: 61563414066448030}
@@ -155,12 +155,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 6
-  m_Sprite: {fileID: 21300000, guid: ec7ed5466da91e24393ea7c434a48c5c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 19614bc9ba7434589b7f16a6b92afe4f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 10.24, y: 10.24}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

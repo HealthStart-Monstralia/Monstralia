@@ -41,13 +41,15 @@ public class BrainbowTutorialManager : MonoBehaviour {
         SoundManager.Instance.PlayVoiceOverClip (tutorial1);
         yield return new WaitForSeconds (tutorial1.length);
 
+        brainbowManager.foodPanel.gameObject.SetActive (true);
+        brainbowManager.foodPanel.TurnOnNumOfSlots (1);
+        CreateBanana ();
+
         AudioClip tutorial2 = brainbowManager.voData.FindVO ("2_tutorial_goodfood");
         SoundManager.Instance.PlayVoiceOverClip (tutorial2);
         yield return new WaitForSeconds (tutorial2.length - 0.5f);
 
-        brainbowManager.foodPanel.gameObject.SetActive (true);
-        brainbowManager.foodPanel.TurnOnNumOfSlots (1);
-        CreateBanana ();
+        brainbowManager.foodPanel.GetComponent<Outline> ().enabled = true;
         yield return new WaitForSeconds (1f);
 
         AudioClip tutorial3 = brainbowManager.voData.FindVO ("3_tutorial_likethis");
