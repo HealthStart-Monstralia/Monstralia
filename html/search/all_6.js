@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['gamelevels',['gameLevels',['../class_game_manager.html#af2dca66c9ee37f5900ff55c7f4b2e15d',1,'GameManager']]],
+  ['gamemanager',['GameManager',['../class_game_manager.html',1,'']]],
+  ['gamemanager_2ecs',['GameManager.cs',['../_game_manager_8cs.html',1,'']]],
+  ['gameover',['GameOver',['../class_abstract_game_manager.html#a4d24761fce9526afd6c68bb5af01229c',1,'AbstractGameManager.GameOver()'],['../class_brainbow_game_manager.html#a3bcd0003e3760e7b4b17c37bff0994b0',1,'BrainbowGameManager.GameOver()'],['../class_emotions_game_manager.html#a30b801501790c251cd358539b38742c1',1,'EmotionsGameManager.GameOver()'],['../class_memory_match_game_manager.html#a381054263cc74dfe47d1f397fa762901',1,'MemoryMatchGameManager.GameOver()'],['../class_brainbow_food.html#ab2338914114d4bf48810551b1e401b26',1,'BrainbowFood.gameOver()']]],
+  ['gameovercanvas',['gameOverCanvas',['../class_emotions_game_manager.html#ae36eb5683f9682ba034ef056f8fbb818',1,'EmotionsGameManager.gameOverCanvas()'],['../class_memory_match_game_manager.html#a26c9adca4c4f0ae4bcdddb50c0289791',1,'MemoryMatchGameManager.gameOverCanvas()'],['../class_brainbow_game_manager.html#a5e80b81424284777328d8e986460facd',1,'BrainbowGameManager.gameoverCanvas()']]],
+  ['gamestars',['gameStars',['../class_game_manager.html#ad879820e3cb435c5f511b204462cf634',1,'GameManager']]],
+  ['gamestarted',['gameStarted',['../class_brainbow_game_manager.html#a10520099b6a7180ee16ae834b5762daa',1,'BrainbowGameManager.gameStarted()'],['../class_memory_match_game_manager.html#adc54cbc4d7660bf816e063d9b027d15d',1,'MemoryMatchGameManager.gameStarted()'],['../class_brainbow_game_manager.html#a2114adc1197fd24092ef80a64caef012',1,'BrainbowGameManager.GameStarted()']]],
+  ['gamestartup',['gameStartup',['../class_memory_match_game_manager.html#a5aac3f37a7cb20132827b24a7593909b',1,'MemoryMatchGameManager']]],
+  ['getcolor',['getColor',['../class_monster.html#ae2e75409b5f9873fc78fa47b8fb7afb2',1,'Monster']]],
+  ['getenergylevel',['getEnergyLevel',['../class_monster.html#a9a6dfa8b16ef52c5412fd72b051be7d1',1,'Monster']]],
+  ['getfoodtomatch',['GetFoodToMatch',['../class_memory_match_game_manager.html#aea6de19cf1dfe067607593e2778af450',1,'MemoryMatchGameManager']]],
+  ['getinstance',['GetInstance',['../class_countdown_manager.html#a0bcccdefc00af2c6d883d89bd97fbf4a',1,'CountdownManager.GetInstance()'],['../class_brainbow_game_manager.html#a1c0d8a2fa536ff8fdfdc0f5a859ad2b1',1,'BrainbowGameManager.GetInstance()'],['../class_memory_match_game_manager.html#af0e08c629b3d9a0407bb788f3d0386d9',1,'MemoryMatchGameManager.GetInstance()'],['../class_game_manager.html#ae2b9be1f5a5cf18820ec8edfacb3a71b',1,'GameManager.GetInstance()']]],
+  ['getlevel',['GetLevel',['../class_game_manager.html#a23bf1dbb980c367d7cdf63a33ecb1e74',1,'GameManager']]],
+  ['getmonster',['getMonster',['../class_game_manager.html#ae6dd37b99ce1b20a8a400e2a69db0613',1,'GameManager']]],
+  ['getnumstars',['GetNumStars',['../class_game_manager.html#a972173004d68d5eaf64044c7328941f8',1,'GameManager']]],
+  ['getorigin',['GetOrigin',['../class_brainbow_food.html#aa64f21ffbac87604eac83aa5160025e4',1,'BrainbowFood']]],
+  ['getstickers',['GetStickers',['../class_game_manager.html#a182b3732c9df4625e746c1c8157521d1',1,'GameManager']]],
+  ['goodfood',['goodFood',['../class_m_m_review.html#a76e1fdca41025a2f668987ba04360275',1,'MMReview']]],
+  ['green',['Green',['../class_colorable.html#ab60c02aca6867d0029ab78101eafbb55ad382816a3cbeed082c9e216e7392eed1',1,'Colorable']]],
+  ['gridcountx',['gridCountX',['../class_b_maze___snap_point_generator.html#a678172f88398f8610975805ea6e27237',1,'BMaze_SnapPointGenerator']]],
+  ['gridcounty',['gridCountY',['../class_b_maze___snap_point_generator.html#ac5773a8b9f5cc1c23d3a8fb02ec09c5d',1,'BMaze_SnapPointGenerator']]],
+  ['gridsize',['gridSize',['../class_b_maze___snap_point_generator.html#aae7ee124f901deb1d9788d1665ac1d79',1,'BMaze_SnapPointGenerator']]]
+];
