@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BrainbowStripe : MonoBehaviour {
-    public DataType.Color stripeColor;
+    public Colorable.Color stripeColor;
     public Transform[] foodSlots;
     [HideInInspector] public BrainbowFoodItem detectedFood;
 

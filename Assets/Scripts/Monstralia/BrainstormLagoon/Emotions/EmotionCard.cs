@@ -43,8 +43,8 @@ public class EmotionCard : MonoBehaviour {
     public IEnumerator MoveToAndFlip (Transform obj) {
         SoundManager.Instance.PlaySFXClip (cardDraw);
         Vector2 pos = obj.position;
-        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 2f) {
-            transform.position = Vector2.Lerp (transform.position, pos, t);
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / 1.0f) {
+            transform.position = Vector2.MoveTowards (transform.position, pos, 0.1f);
             yield return null;
         }
         CardFlip ();
@@ -56,8 +56,8 @@ public class EmotionCard : MonoBehaviour {
         SoundManager.Instance.PlaySFXClip (cardWoosh);
         transform.SetParent (obj);
         Vector2 pos = obj.position;
-        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 0.5f) {
-            transform.position = Vector2.Lerp (transform.position, pos, t);
+        for (float t = 0.0f; t < 1.0f; t += Time.deltaTime / 1.0f) {
+            transform.position = Vector2.MoveTowards (transform.position, pos, 0.1f);
             yield return null;
         }
         Destroy (gameObject, 0.5f);

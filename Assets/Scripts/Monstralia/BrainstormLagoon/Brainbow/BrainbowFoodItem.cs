@@ -8,13 +8,19 @@ public class BrainbowFoodItem : MonoBehaviour {
     private Vector3 offset;
     private Rigidbody2D rigBody;
     private bool isMoved = false;
+    private bool isPlaced = false;
     private bool isBeingEaten = false;
     private SpriteRenderer spriteRenderer;
-    [SerializeField] float t;
 
     private void Awake () {
         rigBody = gameObject.GetComponent<Rigidbody2D> ();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
+
+    }
+
+    private void OnDestroy () {
+        if (BrainbowGameManager.Instance.activeFoods.Contains (this))
+            BrainbowGameManager.Instance.activeFoods.Remove (this);
     }
 
     private void OnEnable () {
@@ -22,13 +28,8 @@ public class BrainbowFoodItem : MonoBehaviour {
     }
 
     private void OnDisable () {
-        if (isBeingEaten) {
-            //SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.munchSound);
-            if (BrainbowGameManager.Instance) {
-                if (BrainbowGameManager.Instance.activeFoods.Contains (this))
-                    BrainbowGameManager.Instance.activeFoods.Remove (this);
-            }
-        }
+        if (isBeingEaten)
+            SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.munchSound);
         BrainbowGameManager.OnGameEnd -= GetEaten;
     }
 
@@ -82,6 +83,7 @@ public class BrainbowFoodItem : MonoBehaviour {
     public void InsertItemIntoStripe (BrainbowStripe stripe) {
         stripe.MoveItemToSlot (gameObject);
         gameObject.GetComponent<Collider2D> ().enabled = false;
+        isPlaced = true;
         BrainbowGameManager.Instance.activeFoods.Add (this);
     }
 
@@ -93,14 +95,24 @@ public class BrainbowFoodItem : MonoBehaviour {
         isBeingEaten = true;
         gameObject.GetComponent<Collider2D> ().enabled = true;
         transform.SetParent (transform.root);
-        yield return new WaitForSeconds (0.5f * (Random.Range (0.8f, 1.5f)) );
+        yield return new WaitForSeconds (0.5f);
 
-        for (t = 0.0f; t < 0.1f; t += Time.deltaTime * 0.1f) {
-            transform.position = Vector2.Lerp (transform.position, BrainbowGameManager.Instance.monsterObject.transform.position, t);
-            yield return null;
+        for (float t = 0.0f; t < 0.8f; t += Time.deltaTime * 1f) {
+            transform.position = Vector2.MoveTowards (transform.position, new Vector3 (0f, transform.position.y, 0f), t * 0.3f);
+            Debug.DrawLine (transform.position, new Vector3 (0f, transform.position.y, 0f), Color.yellow);
+            yield return new WaitForFixedUpdate ();
         }
-
-        GetComponent<Food> ().EatFood ();
+        rigBody.bodyType = RigidbodyType2D.Dynamic;
+        rigBody.gravityScale = 2.0f;
+        yield return new WaitForSeconds (2f);
+        gameObject.SetActive (false);
     }
 
+    private void OnTriggerEnter2D (Collider2D collision) {
+        if (collision.tag == "Monster" && isPlaced) {
+            gameObject.SetActive (false);
+            if (isBeingEaten)
+                SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.munchSound);
+        }
+    }
 }

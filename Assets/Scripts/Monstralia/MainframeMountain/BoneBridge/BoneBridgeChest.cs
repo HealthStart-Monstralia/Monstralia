@@ -23,7 +23,7 @@ public class BoneBridgeChest : MonoBehaviour {
         GetComponent<SpriteRenderer> ().sprite = chestOpened;
         SoundManager.Instance.PlaySFXClip (popSfx);
         yield return new WaitForSeconds (0.25f);
-        GameObject randomFood = FoodList.GetRandomGoodFood ();
+        GameObject randomFood = GameManager.Instance.GetComponent<FoodList> ().GetRandomGoodFood ();
         GameObject foodObject = Instantiate (randomFood, transform.position + new Vector3 (0f, 0f, 5f), Quaternion.identity, transform);
 
         SoundManager.Instance.PlaySFXClip (rewardSfx);

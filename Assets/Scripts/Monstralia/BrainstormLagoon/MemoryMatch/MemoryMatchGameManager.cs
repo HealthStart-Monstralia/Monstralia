@@ -54,14 +54,13 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         CreatePlayerMonster (monsterSpawnPos);
         monsterAnimator = playerMonster.monsterAnimator.animator;
         monsterAnimator.Play ("MM_Spawn", -1, 0f);
-        playerMonster.gameObject.transform.localScale = Vector3.one * 0.75f;
         playerMonster.spriteRenderer.sortingOrder = -2;
 
         SubtitlePanel.Instance.Hide ();
 
         // Retrieve foods from Game Manager Food List
         // Use AddRange to copy lists. Assigning lists does not copy over the list, only the reference.
-        foodList.AddRange (FoodList.GetGoodFoodsList ());
+        foodList.AddRange (GameManager.Instance.GetComponent<FoodList> ().goodFoods);
 
 		if (GameManager.Instance.GetPendingTutorial(DataType.Minigame.MemoryMatch)) {
             isRunningTutorial = true;
@@ -203,6 +202,7 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
 
     public bool OnGuess (DishObject dish, GameObject food) {
         isGuessing = true;
+        print (string.Format ("food: {0} selectedFood: {1}", food, selectedFood));
         if (food == selectedFood) {
             if (Random.Range(0, 1f) < 0.3f) {
                 SoundManager.Instance.PlayVoiceOverClip (goodjobClips.GetRandomItem ());
@@ -271,18 +271,12 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
 
         for (int i = 0; i < numberOfDishes; ++i) {
 			if(dishes[i].GetComponent<DishObject>().IsMatched ()) {
-                GameObject food = dishes[i].GetComponent<DishObject> ().foodObject.gameObject;
-                dishes[i].GetComponent<DishObject>().Shake(true);
+				Destroy(dishes[i].GetComponent<DishObject>().foodObject.gameObject);
+				SoundManager.Instance.PlaySFXClip(munchClip);
+				dishes[i].GetComponent<DishObject>().Shake(true);
                 monsterAnimator.Play ("MM_Eat", -1, 0f);
-
-                for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 2) {
-                    food.transform.position = Vector2.Lerp (food.transform.position, playerMonster.transform.position + new Vector3 (0, 1f, 0), t);
-                    yield return null;
-                }
-
-                food.GetComponent<Food> ().EatFood ();
-                yield return new WaitForSeconds (0.5f);
-            }
+				yield return new WaitForSeconds (1.2f);
+			}
 		}
         monsterAnimator.Play ("MM_Dance", -1, 0f);
         yield return new WaitForSeconds (1f);

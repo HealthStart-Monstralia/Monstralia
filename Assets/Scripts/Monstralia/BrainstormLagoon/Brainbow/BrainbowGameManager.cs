@@ -102,9 +102,9 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
 		timer.SetTimeLimit (GetLevelConfig().timeLimit);
         foodPanel.gameObject.SetActive (true);
         activeFoods.Clear ();
-        ChooseFoodsFromManager ();
         StartCoroutine (StartSpawningFoods ());
         StartCoroutine (TurnOnRainbows ());
+        ChooseFoodsFromManager ();
         StartCoroutine (PreCountdownSetup ());
     }
 
@@ -148,7 +148,7 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
 
         // Pick five random foods from each category and store them in a food pool for SpawnFood
         AddFoodsToList (redFoodsList);
-        AddFoodsToList (yellowFoodsList);
+		AddFoodsToList (yellowFoodsList);
         if (difficultyLevel > 1) {
             AddFoodsToList (greenFoodsList);
             if (difficultyLevel > 2) {
@@ -159,10 +159,11 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
 
     // Sort foods into categories
     void SortBrainbowFoods () {
+        FoodList foodList = GameManager.Instance.GetComponent<FoodList> ();
         Food foodComponent;
 
         // Remove any restricted foods
-        List<GameObject> brainbowFoods = FoodList.GetGoodFoodsList();
+        List<GameObject> brainbowFoods = foodList.goodFoods;
         foreach (GameObject food in restrictedFoods) {
             brainbowFoods.Remove (food);
         }
@@ -171,20 +172,20 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
         foreach (GameObject food in brainbowFoods) {
             foodComponent = food.GetComponent<Food> ();
             if (foodComponent.foodType == Food.TypeOfFood.Fruit || foodComponent.foodType == Food.TypeOfFood.Vegetable) {
-                switch (foodComponent.typeOfColor) {
-                    case DataType.Color.Red:
+                switch (foodComponent.color) {
+                    case Colorable.Color.Red:
                         redFoodsList.Add (food);
                         break;
 
-                    case DataType.Color.Yellow:
+                    case Colorable.Color.Yellow:
                         yellowFoodsList.Add (food);
                         break;
 
-                    case DataType.Color.Green:
+                    case Colorable.Color.Green:
                         greenFoodsList.Add (food);
                         break;
 
-                    case DataType.Color.Purple:
+                    case Colorable.Color.Purple:
                         purpleFoodsList.Add (food);
                         break;
                 }

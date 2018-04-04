@@ -8,7 +8,7 @@ public class ReviewBrainbowStripeCollider : MonoBehaviour {
     private void OnTriggerEnter2D (Collider2D collision) {
         stripe.detectedFood = collision.GetComponent<ReviewBrainbowFood> ();
         if (stripe.detectedFood) {
-            DataType.Color foodColor = collision.GetComponent<Food> ().typeOfColor;
+            Colorable.Color foodColor = collision.GetComponent<Food> ().color;
             if (foodColor == stripe.stripeColor) {
                 stripe.detectedFood.stripeToAttach = stripe;
             }

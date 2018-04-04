@@ -38,7 +38,4 @@ public class Monster : MonoBehaviour {
         monsterAnimator.ChangeEmotions (emotionToChangeTo);
     }
 
-    public void PlayDespawnAnimation () {
-        monsterAnimator.PlayDespawnAnimation ();
-    }
 }

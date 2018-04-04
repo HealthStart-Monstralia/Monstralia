@@ -20,7 +20,6 @@ public class GameManager : SingletonPersistent<GameManager> {
     private DataType.MonsterType playerMonsterType;
     private bool isMonsterSelected = false;
     private int numOfGamesCompleted = 0;
-    private bool hasPlayerVisitedStickerbook = false;
 
     [Serializable]
     public struct MinigameStats {
@@ -61,7 +60,7 @@ public class GameManager : SingletonPersistent<GameManager> {
         minigameAssetData = Resources.LoadAll<MinigameData> ("Data/Minigames");
 
         // Initialize visitedAreas dictionary with false boolean
-        foreach (DataType.IslandSection island in Enum.GetValues (typeof (DataType.IslandSection))) {
+        foreach (DataType.IslandSection island in System.Enum.GetValues (typeof (DataType.IslandSection))) {
             visitedAreas.Add (island, false);
         }
 
@@ -101,8 +100,6 @@ public class GameManager : SingletonPersistent<GameManager> {
         playerMonsterType = save.playerMonsterType;
         numOfGamesCompleted = save.numOfGamesCompleted;
         isIntroShown = save.isIntroShown;
-        FoodList.LoadFoodDictionary (save.foodEatenDictionary);
-        hasPlayerVisitedStickerbook = save.hasPlayerVisitedStickerbook;
     }
 
     // Called at the end of a minigame
@@ -235,21 +232,6 @@ public class GameManager : SingletonPersistent<GameManager> {
         }
     }
 
-    public string GetMonsterName (DataType.MonsterType typeOfMonster) {
-        switch (typeOfMonster) {
-            case DataType.MonsterType.Blue:
-                return "Dinopet";
-            case DataType.MonsterType.Green:
-                return "Catbear";
-            case DataType.MonsterType.Red:
-                return "Cyclopet";
-            case DataType.MonsterType.Yellow:
-                return "Rabbat";
-            default:
-                return "Monster";
-        }
-    }
-
     public GameObject[] GetMonstersInArray () {
         GameObject[] monsterGroup = new GameObject[Constants.NUM_OF_MONSTERS];
         for (int i = 0; i < Constants.NUM_OF_MONSTERS; i++) {
@@ -371,14 +353,6 @@ public class GameManager : SingletonPersistent<GameManager> {
         return numOfGamesCompleted;
     }
 
-    public bool GetHasPlayerVisitedStickerbook () {
-        return hasPlayerVisitedStickerbook;
-    }
-
-    public void SetPlayerVisitedStickerbook () {
-        hasPlayerVisitedStickerbook = true;
-    }
-
     public bool GetIsMonsterSelected () {
         return isMonsterSelected;
     }
@@ -410,8 +384,6 @@ public class GameManager : SingletonPersistent<GameManager> {
 
     public void SaveGame () {
         if (isSaveAllowed) {
-            Dictionary<string, int> foodDictionary = FoodList.SaveDictionary ();
-
             GameSave save = new GameSave {
                 gameStats = gameStats,
                 stickerStats = stickerStats,
@@ -420,9 +392,7 @@ public class GameManager : SingletonPersistent<GameManager> {
                 isMonsterSelected = isMonsterSelected,
                 playerMonsterType = playerMonsterType,
                 numOfGamesCompleted = numOfGamesCompleted,
-                isIntroShown = isIntroShown,
-                foodEatenDictionary = foodDictionary,
-                hasPlayerVisitedStickerbook = hasPlayerVisitedStickerbook
+                isIntroShown = isIntroShown
             };
 
             SaveSystem.Save (save);

@@ -5,14 +5,11 @@ using UnityEngine;
 public class Factory : MonoBehaviour {
     [Tooltip ("Starts with Prefabs/")]
     public string prefabPath;
-    public bool usePrefabPath = true;
-
     public List<GameObject> pickupPrefabList = new List<GameObject> ();
     public Vector3 scale = new Vector3 (1f, 1f, 1f);
 
     private void Awake () {
-        if (usePrefabPath)
-            pickupPrefabList.AddRange (Resources.LoadAll<GameObject> ("Prefabs/Monstralia/" + prefabPath));
+        pickupPrefabList.AddRange (Resources.LoadAll<GameObject> ("Prefabs/" + prefabPath));
     }
 
     public virtual GameObject SelectRandom () {
