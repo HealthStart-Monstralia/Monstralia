@@ -12,6 +12,7 @@ public class StickerManager : Singleton<StickerManager> {
     public string filePath;
 	public StickerSlot[] stickerSlots;
 	public Canvas mainCanvas;
+    public AudioClip welcomeClip;
 
     [SerializeField] private StickerContainer container;
 
@@ -23,6 +24,7 @@ public class StickerManager : Singleton<StickerManager> {
         AssignSlotsToDict ();
         if (!GameManager.Instance.GetHasPlayerVisitedStickerbook()) {
             GameManager.Instance.SetPlayerVisitedStickerbook ();
+            SoundManager.Instance.PlayVoiceOverClip (welcomeClip);
         }
 
         if (SoundManager.Instance)
@@ -80,6 +82,5 @@ public class StickerManager : Singleton<StickerManager> {
     public void OnDropSticker () {
         container.RemoveSticker ();
     }
-
 
 }

@@ -233,10 +233,12 @@ public class SoundManager : SingletonPersistent<SoundManager> {
 	 * @param clip: the sound effect AudioClip to be played.
 	 */
     public void PlayVoiceOverClip (AudioClip clip) {
-        if (isPlayingVoiceOver) {
-            StopPlayingVoiceOver ();
+        if (clip != null) {
+            if (isPlayingVoiceOver) {
+                StopPlayingVoiceOver ();
+            }
+            StartCoroutine (PlayVoiceOverClipCoroutine (clip));
         }
-        StartCoroutine (PlayVoiceOverClipCoroutine (clip));
     }
 
     IEnumerator PlayVoiceOverClipCoroutine (AudioClip clip) {

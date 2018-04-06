@@ -249,10 +249,11 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
             } else {
                 GameOver (DataType.GameEnd.CompletedLevel);
             }
-        } 
+        }
         
         // Player did not reach goal, show game over
         else {
+            SoundManager.Instance.PlayVoiceOverClip (voData.FindVO ("dnf"));
             GameOver (DataType.GameEnd.FailedLevel);
         }
     }

@@ -103,7 +103,7 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         ActivateHUD (true);
         SpawnDishes ();
         CreateFoodInDishes ();
-        SubtitlePanel.Instance.Display ("Remember the foods!");
+        SubtitlePanel.Instance.Display ("Remember the foods!", voData.FindVO("memory_remember"));
         yield return new WaitForSeconds (4f);
 
         StartCoroutine (SpawnDishLids ());

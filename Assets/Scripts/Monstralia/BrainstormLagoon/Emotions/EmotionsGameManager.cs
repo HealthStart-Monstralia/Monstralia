@@ -69,6 +69,9 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
             TimerClock.Instance.gameObject.SetActive (true);
             generator.cardHand.gameObject.SetActive (true);
             generator.cardHand.SpawnIn ();
+            AudioClip tutorial1 = voData.FindVO ("emotions_start");
+            SoundManager.Instance.PlayVoiceOverClip (tutorial1);
+
             StartCoroutine (DuringCountdown ());
             StartCountdown (PostCountdownSetup);
         }
@@ -187,7 +190,18 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
 
         ChangeMonsterEmotion (DataType.MonsterEmotions.Happy);
         generator.RemoveCards ();
-        AudioClip end = voData.FindVO ("end");
+
+        AudioClip end = voData.FindVO ("emotions_end");
+
+        if (!GameManager.Instance.GetIsStickerUnlocked(typeOfGame)) {
+            end = voData.FindVO ("emotions_end3");
+        }
+        else {
+            if (Random.Range (0f, 1f) <= 0.5f) {
+                end = voData.FindVO ("emotions_end2");
+            }
+        }
+
         yield return new WaitForSeconds (0.5f);
 
         SubtitlePanel.Instance.Display ("Great job! You matched " + score + " emotions!", end);
@@ -195,11 +209,12 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
 
         if (generator.cardHand.gameObject.activeSelf)
             generator.cardHand.ExitAnimation ();
-        yield return new WaitForSeconds (2.0f);
+        yield return new WaitForSeconds (end.length - 1.0f);
 
         if (score >= scoreGoal) {
             if (difficultyLevel == 1) {
                 GameOver (DataType.GameEnd.EarnedSticker);
+                SoundManager.Instance.AddToVOQueue (voData.FindVO ("emotion_sticker"));
             } else {
                 GameOver (DataType.GameEnd.CompletedLevel);
             }

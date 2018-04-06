@@ -10,24 +10,24 @@ public class IslandSection : MonoBehaviour {
 
     private void Start () {
         CreateMonsterOnMap ();
-        //PlayWelcomeVO ();
-        GameManager.Instance.SetIslandSection (island);
-        GameManager.Instance.SetVisitedArea (island, true);
         SoundManager.Instance.StopPlayingVoiceOver ();
+        GameManager.Instance.SetIslandSection (island);
+
+        if (!GameManager.Instance.GetVisitedArea (island)) {
+            PlayFirstVisitWelcome ();
+        }
+        else {
+            SoundManager.Instance.PlayVoiceOverClip (welcomeBackClip);
+        }
+
         SoundManager.Instance.StopAmbientSound ();
         SoundManager.Instance.ChangeAmbientSound (ambientSound);
         SoundManager.Instance.ChangeAndPlayMusic (backgroundMusic);
     }
 
-    public void PlayWelcomeVO() {
-        if (!GameManager.Instance.GetVisitedArea (island)) {
-            if (introAudio != null)
-                SoundManager.Instance.PlayVoiceOverClip (introAudio);
-            GameManager.Instance.SetVisitedArea (island, true);
-        } else {
-            if (welcomeBackClip != null)
-                SoundManager.Instance.PlayVoiceOverClip (welcomeBackClip);
-        }
+    public void PlayFirstVisitWelcome () {
+        GameManager.Instance.SetVisitedArea (island, true);
+        SoundManager.Instance.PlayVoiceOverClip (introAudio);
     }
 
     void CreateMonsterOnMap() {

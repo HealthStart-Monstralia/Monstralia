@@ -10,6 +10,7 @@ public class EndScreen : MonoBehaviour {
     public bool earnedSticker;
     public Text headerText, footerText;
     public GameObject stickerButton, backButton, nextLevelButton, imageLocation, brain;
+    public AudioClip unlockSticker;
     [SerializeField] private Button[] buttonsToDisableOnFirstWin;
 
     private void Awake () {
@@ -21,6 +22,7 @@ public class EndScreen : MonoBehaviour {
         stickerButton.SetActive (true);
         brain.SetActive (false);
         SoundManager.Instance.PlayCorrectSFX ();
+        SoundManager.Instance.PlayVoiceOverClip (unlockSticker);
         if (GameManager.Instance.GetMinigameData (typeOfGame).stickerPrefab) {
             GameObject sticker = Instantiate (GameManager.Instance.GetMinigameData (typeOfGame).stickerPrefab, imageLocation.transform);
             sticker.transform.localPosition = Vector3.zero;
