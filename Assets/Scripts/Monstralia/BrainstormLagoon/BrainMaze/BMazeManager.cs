@@ -9,8 +9,18 @@ using System.Collections.Generic;
 public class BMazeManager : AbstractGameManager<BMazeManager> {
     [Header ("Brain Maze Fields")]
     public VoiceOversData voData;
-    [HideInInspector] public bool inputAllowed = false;
-    
+    public bool InputAllowed {
+        get {
+            return inputAllowed;
+        }
+
+        set {
+            inputAllowed = value;
+            BMazeMonsterMovement.isMonsterMovementAllowed = value;
+        }
+    }
+    private bool inputAllowed = false;
+
     [System.Serializable]
     public struct BrainMazeLevelConfig {
         public float timeLimit;
@@ -131,8 +141,8 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 		SubtitlePanel.Instance.Hide ();
         monsterStart = tutorialStartingSpot;
         CreateMonster ();
-        playerMonster.transform.localScale = Vector3.one * 0.25f;
-        inputAllowed = false;
+        playerMonster.transform.localScale = Vector3.one * 0.2f;
+        InputAllowed = false;
 
         SoundManager.Instance.PlayVoiceOverClip (tutorial2);
         yield return new WaitForSeconds (tutorial2.length);
@@ -159,7 +169,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
         ResetScore ();
         playerMonster.transform.position = monsterStart.position;
         tutorialPickup.SetActive (true);
-        inputAllowed = true;
+        InputAllowed = true;
         SubtitlePanel.Instance.Hide ();
 		yield return new WaitForSeconds(2f);
 
@@ -170,7 +180,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 	}
 
 	public void TutorialFinished() {
-		inputAllowed = false;
+		InputAllowed = false;
         tutorialHand.SetActive (false);
 		GameManager.Instance.CompleteTutorial(DataType.Minigame.BrainMaze);
 		StopCoroutine (tutorialCoroutine);
@@ -230,13 +240,13 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 
 	public void GameStart () {
 		gameStarted = true;
-        inputAllowed = true;
+        InputAllowed = true;
         TimerClock.Instance.StartTimer ();
 	}
 
     public void GameEnd() {
         gameStarted = false;
-        inputAllowed = false;
+        InputAllowed = false;
 
         MonsterVictoryDance ();
         AudioClip youdidit = voData.FindVO ("youdidit");
@@ -284,7 +294,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 
 	void CreateMonster() {
         CreatePlayerMonster (monsterStart);
-        playerMonster.transform.localScale = Vector3.one * 0.125f;
+        playerMonster.transform.localScale = Vector3.one * 0.1f;
         playerMonster.transform.SetParent (monsterStart.transform.root);
         playerMonster.transform.gameObject.AddComponent<BMazeMonsterMovement> ();
         monsterAnimator = playerMonster.GetComponentInChildren<Animator> ();
@@ -363,6 +373,6 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
     }
 
     public bool GetInputAllowed () {
-        return inputAllowed;
+        return InputAllowed;
     }
 }

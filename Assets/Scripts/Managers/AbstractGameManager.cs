@@ -73,8 +73,13 @@ public abstract class AbstractGameManager<T> : MonoBehaviour where T : Component
         return CreateEndScreen (typeOfGame, typeOfEnd);
     }
 
+    /// <summary>
+    /// Creates a countdown canvas and begins to countdown after specified wait duration. After countdown finishes, the callback function is called.
+    /// </summary>
+    /// <param name="callback">The function to call immediately after finishing countdown.</param>
+    /// <param name="waitDuration">A pause in secs before starting the countdown.</param>
     public void StartCountdown (Countdown.CountdownCallback callback, float waitDuration = 0.5f) {
-        Instantiate (GameManager.Instance.countdownPrefab).GetComponent<Countdown>().StartCountDown (callback);
+        Instantiate (GameManager.Instance.countdownPrefab).GetComponent<Countdown>().StartCountDown (callback, waitDuration);
     }
 
     public void SetTimeLimit (float timeLimit) {

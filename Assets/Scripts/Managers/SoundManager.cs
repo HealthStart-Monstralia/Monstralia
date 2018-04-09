@@ -73,18 +73,19 @@ public class SoundManager : SingletonPersistent<SoundManager> {
     #region BackgroundMusic
 
     /**
-     * \brief Play the background music
+     * \brief Stop the background music
      */
-    void PlayBackgroundMusic (AudioClip newBackgroundMusic) {
-        musicSource.clip = newBackgroundMusic;
-        musicSource.Play ();
+    public void StopBackgroundMusic () {
+        musicSource.Stop ();
     }
 
     /**
      * \brief Play the background music
      */
-    public void StopBackgroundMusic () {
-        musicSource.Stop ();
+    public void PlayBackgroundMusic () {
+        if (!musicSource.isPlaying) {
+            musicSource.Play ();
+        }
     }
 
     /**
@@ -93,9 +94,17 @@ public class SoundManager : SingletonPersistent<SoundManager> {
 	 */
     public void ChangeAndPlayMusic(AudioClip newMusic) {
         if (!musicSource.clip.Equals (newMusic) && newMusic != null) {
-            PlayBackgroundMusic (newMusic);
+            musicSource.clip = newMusic;
         }
-	}
+        PlayBackgroundMusic ();
+    }
+
+    /**
+     * \brief Return the background music AudioSource
+     */
+    public AudioSource GetMusicSource () {
+        return musicSource;
+    }
 
 	/**
 	 * \brief Change the background music volume.
@@ -130,8 +139,11 @@ public class SoundManager : SingletonPersistent<SoundManager> {
      * @param newAmbientSound: the AudioClip of the new ambient sound.
      */
     public void ChangeAmbientSound (AudioClip newAmbientSound) {
-        if (newAmbientSound != null) {
+        if (newAmbientSound != null && newAmbientSound != ambientSource.clip) {
             PlayAmbientSound (newAmbientSound);
+        }
+        else if (newAmbientSound == null) {
+            StopAmbientSound ();
         }
     }
 
@@ -142,6 +154,13 @@ public class SoundManager : SingletonPersistent<SoundManager> {
     public void ChangeAmbientVolume (float newVolume) {
         ambientSource.volume = newVolume;
         SaveAudioVolumeInPrefs (ambientSource, prefAmbientVolume);
+    }
+
+    /**
+     * \brief Return the ambient sound AudioSource
+     */
+    public AudioSource GetAmbientSource () {
+        return ambientSource;
     }
 
     #endregion
@@ -214,10 +233,12 @@ public class SoundManager : SingletonPersistent<SoundManager> {
 	 * @param clip: the sound effect AudioClip to be played.
 	 */
     public void PlayVoiceOverClip (AudioClip clip) {
-        if (isPlayingVoiceOver) {
-            StopPlayingVoiceOver ();
+        if (clip != null) {
+            if (isPlayingVoiceOver) {
+                StopPlayingVoiceOver ();
+            }
+            StartCoroutine (PlayVoiceOverClipCoroutine (clip));
         }
-        StartCoroutine (PlayVoiceOverClipCoroutine (clip));
     }
 
     IEnumerator PlayVoiceOverClipCoroutine (AudioClip clip) {
@@ -279,9 +300,11 @@ public class SoundManager : SingletonPersistent<SoundManager> {
      * \brief Play the next voice over in the queue
      */
     public void AddToVOQueue (AudioClip clip) {
-        clipQueue.Enqueue (clip);
-        if (!isQueuePlaying) {
-            queueCoroutine = StartCoroutine (PlayQueue ());
+        if (clip != null) {
+            clipQueue.Enqueue (clip);
+            if (!isQueuePlaying) {
+                queueCoroutine = StartCoroutine (PlayQueue ());
+            }
         }
     }
 
@@ -307,6 +330,10 @@ public class SoundManager : SingletonPersistent<SoundManager> {
 
     public bool GetIsQueuePlaying () {
         return isQueuePlaying;
+    }
+
+    public AudioSource GetVoiceOverSource () {
+        return voiceOverSource;
     }
 
     #endregion
