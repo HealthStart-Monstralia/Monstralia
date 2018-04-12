@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e615b91cfc81e4408470e7d72a0b9b1, type: 3}
+  m_Name: EmotionsData_Red
+  m_EditorClassIdentifier: 
+  typeOfMonster: 2
+  afraid:
+    sprite: {fileID: 21300000, guid: fcbe7b63a716748558995bbd8e714e46, type: 3}
+    emotion: 1
+    clipOfEmotion: {fileID: 8300000, guid: eb950239a2d9563408d299c966fd4621, type: 3}
+    emotionColor: {r: 0.9626775, g: 1, b: 0.32352942, a: 1}
+  disgusted:
+    sprite: {fileID: 21300000, guid: 885c12779df83488b861d1b012464a71, type: 3}
+    emotion: 2
+    clipOfEmotion: {fileID: 8300000, guid: 95f016540b3bd734d8de2443557f2c67, type: 3}
+    emotionColor: {r: 0.58823526, g: 0.31619135, b: 0.069204144, a: 1}
+  happy:
+    sprite: {fileID: 21300000, guid: fbc99a45284204f30b08212cb707cd17, type: 3}
+    emotion: 0
+    clipOfEmotion: {fileID: 8300000, guid: 29246048d4981eb498ce254c98307a64, type: 3}
+    emotionColor: {r: 0.093101196, g: 0.9044118, b: 0.32747984, a: 1}
+  joyous:
+    sprite: {fileID: 21300000, guid: 6512cea89d7b640c38cb90fc49178ef4, type: 3}
+    emotion: 3
+    clipOfEmotion: {fileID: 8300000, guid: 5c9013dc910514540b34f77adee58910, type: 3}
+    emotionColor: {r: 0, g: 0.7931037, b: 1, a: 1}
+  mad:
+    sprite: {fileID: 21300000, guid: ee81c83afcb9549c39177b47dd7850fd, type: 3}
+    emotion: 4
+    clipOfEmotion: {fileID: 8300000, guid: 41d66f19688d51f46bc5c319922e18fc, type: 3}
+    emotionColor: {r: 0.875, g: 0.16084558, b: 0.16084558, a: 1}
+  sad:
+    sprite: {fileID: 21300000, guid: e3ff95845d6734f7f994c43c51500d06, type: 3}
+    emotion: 5
+    clipOfEmotion: {fileID: 8300000, guid: 4578b30f71906a046a70bb2114951797, type: 3}
+    emotionColor: {r: 0.31901842, g: 0.290279, b: 0.6691177, a: 1}
+  thoughtful:
+    sprite: {fileID: 21300000, guid: fd9754775330749468745e15a106639d, type: 3}
+    emotion: 6
+    clipOfEmotion: {fileID: 8300000, guid: c182a02586c70e946975fca788f4a09d, type: 3}
+    emotionColor: {r: 0.809, g: 0.25882345, b: 1, a: 1}
+  worried:
+    sprite: {fileID: 21300000, guid: 47545055085cc47409fb30713d633926, type: 3}
+    emotion: 7
+    clipOfEmotion: {fileID: 8300000, guid: f1f27eb9844e70f4da5e3d4eff4064a3, type: 3}
+    emotionColor: {r: 1, g: 0.5172413, b: 0, a: 1}
