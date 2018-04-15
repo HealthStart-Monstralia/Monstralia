@@ -8,6 +8,10 @@ public class BMazeFinishline : MonoBehaviour {
     public MazeCell cell;
     public MazeDirection direction;
     public GameObject finishSpot;
+    public bool isActivated = false;
+
+    public delegate void FinishDelegate ();
+    public event FinishDelegate OnFinish;
 
     private void Awake () {
         GetComponent<Collider2D> ().enabled = false;
@@ -18,10 +22,9 @@ public class BMazeFinishline : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D (Collider2D col) {
-        if (col.tag == "Monster") {
-            if (BMazeManager.Instance.OnFinish ()) {
-                GetComponent<Collider2D> ().enabled = false;
-            }
+        if (col.tag == "Monster" && isActivated) {
+            OnFinish ();
+            GetComponent<Collider2D> ().enabled = false;
         }
 	}
 

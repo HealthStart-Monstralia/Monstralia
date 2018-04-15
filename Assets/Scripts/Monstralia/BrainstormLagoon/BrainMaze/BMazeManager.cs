@@ -77,6 +77,10 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
         pickupPrefabList.AddRange (GetFactoryList ());
     }
 
+    private void OnDisable () {
+        finishLine.OnFinish -= OnFinish;
+    }
+
     public override void PregameSetup () {
         if (SoundManager.Instance) {
             SoundManager.Instance.ChangeAmbientSound (ambientSound);
@@ -113,6 +117,10 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 
     void PostGeneration () {
         TimerClock.Instance.SetTimeLimit (levelConfig.timeLimit);
+
+        finishLine.OnFinish += OnFinish;
+        finishLine.isActivated = true;
+
         monsterStart = mazeInstance.GetFirstCell ().transform;
         mazeInstance.ScaleMaze ();
         StartCountdown (GameStart, 2f);
@@ -225,17 +233,14 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
         GameEnd ();
     }
 
-    public bool OnFinish() {
+    public void OnFinish() {
         if (isTutorialRunning) {
             MonsterVictoryDance ();
             TutorialFinished ();
-            return true;
         } else if (gameStarted) {
             MonsterVictoryDance ();
             GameEnd ();
-            return true;
         }
-        return false;
     }
 
 	public void GameStart () {
