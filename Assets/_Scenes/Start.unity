@@ -253,7 +253,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &63489878
 RectTransform:
   m_ObjectHideFlags: 0
@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 81175476}
   - component: {fileID: 81175475}
   m_Layer: 10
-  m_Name: RePasswordInput
+  m_Name: LastNameInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -308,7 +308,7 @@ RectTransform:
   - {fileID: 1259149737}
   - {fileID: 1087911838}
   m_Father: {fileID: 816332464}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -327,7 +327,7 @@ MonoBehaviour:
   m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.159}
   m_EffectDistance: {x: 1, y: -5}
   m_UseGraphicAlpha: 1
 --- !u!114 &81175476
@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 0
+    m_Mode: 2
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -369,19 +369,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 81175477}
   m_TextComponent: {fileID: 1087911839}
   m_Placeholder: {fileID: 1259149738}
-  m_ContentType: 7
-  m_InputType: 2
+  m_ContentType: 5
+  m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 6
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
-  m_CharacterLimit: 0
+  m_CharacterValidation: 4
+  m_CharacterLimit: 128
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 772662975}
-        m_MethodName: OnEditVerifyPassword
+        m_MethodName: OnEditVerifyLastName
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -867,6 +867,100 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 18.36, y: 24.48}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &139570611
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1183717725524368, guid: 9e44c9b07cb2a5145bff6100c100f9bb,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 139570612}
+  - component: {fileID: 139570615}
+  - component: {fileID: 139570614}
+  - component: {fileID: 139570613}
+  m_Layer: 10
+  m_Name: LastNameValidText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &139570612
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 224828599573034572, guid: 9e44c9b07cb2a5145bff6100c100f9bb,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 139570611}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.000448, y: 1.000448, z: 1.000448}
+  m_Children: []
+  m_Father: {fileID: 816332464}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 90.9, y: -14}
+  m_SizeDelta: {x: 343.7, y: 52.8}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &139570613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114211216205779156, guid: 9e44c9b07cb2a5145bff6100c100f9bb,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 139570611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
+--- !u!114 &139570614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114351530712507004, guid: 9e44c9b07cb2a5145bff6100c100f9bb,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 139570611}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 24
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 1
+    m_MaxSize: 40
+    m_Alignment: 5
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Last Name is empty.
+--- !u!222 &139570615
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 222798261463002824, guid: 9e44c9b07cb2a5145bff6100c100f9bb,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 139570611}
 --- !u!1 &166547499
 GameObject:
   m_ObjectHideFlags: 0
@@ -945,7 +1039,7 @@ GameObject:
   - component: {fileID: 190388903}
   - component: {fileID: 190388902}
   m_Layer: 10
-  m_Name: PasswordInput
+  m_Name: FirstNameInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -984,7 +1078,7 @@ MonoBehaviour:
   m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.159}
   m_EffectDistance: {x: 1, y: -5}
   m_UseGraphicAlpha: 1
 --- !u!114 &190388903
@@ -1000,7 +1094,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 0
+    m_Mode: 2
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -1026,19 +1120,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 190388904}
   m_TextComponent: {fileID: 702494781}
   m_Placeholder: {fileID: 683316804}
-  m_ContentType: 7
-  m_InputType: 2
+  m_ContentType: 5
+  m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 6
   m_LineType: 0
   m_HideMobileInput: 0
-  m_CharacterValidation: 0
-  m_CharacterLimit: 0
+  m_CharacterValidation: 4
+  m_CharacterLimit: 128
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 772662975}
-        m_MethodName: OnEditVerifyPassword
+        m_MethodName: OnEditVerifyFirstName
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1859,6 +1953,7 @@ GameObject:
   - component: {fileID: 366459885}
   - component: {fileID: 366459887}
   - component: {fileID: 366459886}
+  - component: {fileID: 366459888}
   m_Layer: 10
   m_Name: Re-Email Label
   m_TagString: Untagged
@@ -1906,7 +2001,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 69ccce4664db8448eaf167d11876b0f9, type: 3}
+    m_Font: {fileID: 12800000, guid: b4861838bd57a4f699b9ef8a37963653, type: 3}
     m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
@@ -1928,6 +2023,20 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 366459884}
+--- !u!114 &366459888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 366459884}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.084}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &374538516
 GameObject:
   m_ObjectHideFlags: 0
@@ -2135,7 +2244,7 @@ MonoBehaviour:
   m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.159}
   m_EffectDistance: {x: 1, y: -5}
   m_UseGraphicAlpha: 1
 --- !u!114 &379162950
@@ -2151,7 +2260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 0
+    m_Mode: 2
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -2655,12 +2764,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 772662974}
-  m_RootOrder: 6
+  m_Father: {fileID: 592880806}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 102, y: 154}
+  m_AnchoredPosition: {x: 102, y: 80.855}
   m_SizeDelta: {x: 321.5, y: 57.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &501899233
@@ -2972,6 +3081,7 @@ RectTransform:
   - {fileID: 1920185020}
   - {fileID: 366459885}
   - {fileID: 379162948}
+  - {fileID: 501899232}
   m_Father: {fileID: 772662974}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3348,7 +3458,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'example123
+  m_Text: 'John
 
 '
 --- !u!222 &683316805
@@ -3704,6 +3814,7 @@ GameObject:
   - component: {fileID: 747254329}
   - component: {fileID: 747254331}
   - component: {fileID: 747254330}
+  - component: {fileID: 747254332}
   m_Layer: 10
   m_Name: Email Label
   m_TagString: Untagged
@@ -3751,7 +3862,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 69ccce4664db8448eaf167d11876b0f9, type: 3}
+    m_Font: {fileID: 12800000, guid: b4861838bd57a4f699b9ef8a37963653, type: 3}
     m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
@@ -3773,6 +3884,20 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 747254328}
+--- !u!114 &747254332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 747254328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.084}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &761047339
 GameObject:
   m_ObjectHideFlags: 0
@@ -4047,8 +4172,6 @@ RectTransform:
   - {fileID: 63489878}
   - {fileID: 1285593204}
   - {fileID: 1747133265}
-  - {fileID: 501899232}
-  - {fileID: 1771853895}
   m_Father: {fileID: 944790804}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4069,18 +4192,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emailValidText: {fileID: 501899234}
-  passValidText: {fileID: 1771853897}
   emailInput: {fileID: 1920185022}
   reemailInput: {fileID: 379162950}
-  passInput: {fileID: 190388903}
-  repassInput: {fileID: 81175476}
-  checkmark: {fileID: 128627335}
   emailDoesNotMatch: Emails do not match.
-  passDoesNotMatch: Passwords do not match.
   emailIsEmpty: Email is empty.
-  passIsEmpty: Password is empty.
   emailNoAt: Email does not contain an @
   emailNoPeriod: Email does not have a period.
+  firstNameValidText: {fileID: 1771853897}
+  lastNameValidText: {fileID: 139570614}
+  firstNameInput: {fileID: 190388903}
+  lastNameInput: {fileID: 81175476}
+  firstNameIsEmpty: First Name is empty.
+  lastNameIsEmpty: Last Name is empty.
 --- !u!224 &772662976
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4350,7 +4473,7 @@ GameObject:
   m_Component:
   - component: {fileID: 816332464}
   m_Layer: 10
-  m_Name: Password
+  m_Name: Name
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4368,14 +4491,16 @@ RectTransform:
   m_Children:
   - {fileID: 1195050773}
   - {fileID: 190388901}
+  - {fileID: 1771853895}
   - {fileID: 921934650}
   - {fileID: 81175474}
+  - {fileID: 139570612}
   m_Father: {fileID: 772662974}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -152.8}
+  m_AnchoredPosition: {x: 0, y: -174.3711}
   m_SizeDelta: {x: 725.1, y: 224.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &834026148
@@ -4973,8 +5098,9 @@ GameObject:
   - component: {fileID: 921934650}
   - component: {fileID: 921934652}
   - component: {fileID: 921934651}
+  - component: {fileID: 921934653}
   m_Layer: 10
-  m_Name: Re-Password Label
+  m_Name: Last Name Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4992,7 +5118,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 816332464}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5020,7 +5146,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 69ccce4664db8448eaf167d11876b0f9, type: 3}
+    m_Font: {fileID: 12800000, guid: b4861838bd57a4f699b9ef8a37963653, type: 3}
     m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
@@ -5032,7 +5158,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Re-enter Password
+  m_Text: Last Name
 --- !u!222 &921934652
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5040,6 +5166,20 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 921934649}
+--- !u!114 &921934653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 921934649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.084}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &944790803
 GameObject:
   m_ObjectHideFlags: 0
@@ -5814,8 +5954,9 @@ GameObject:
   - component: {fileID: 1195050773}
   - component: {fileID: 1195050775}
   - component: {fileID: 1195050774}
+  - component: {fileID: 1195050776}
   m_Layer: 10
-  m_Name: Password Label
+  m_Name: First Name Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5861,7 +6002,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 69ccce4664db8448eaf167d11876b0f9, type: 3}
+    m_Font: {fileID: 12800000, guid: b4861838bd57a4f699b9ef8a37963653, type: 3}
     m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
@@ -5873,7 +6014,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Password
+  m_Text: First Name
 --- !u!222 &1195050775
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5881,6 +6022,20 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1195050772}
+--- !u!114 &1195050776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1195050772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.084}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1259149736
 GameObject:
   m_ObjectHideFlags: 0
@@ -5951,7 +6106,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'example123
+  m_Text: 'Doe
 
 '
 --- !u!222 &1259149739
@@ -6092,7 +6247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -6291,7 +6446,7 @@ MonoBehaviour:
   m_Script: {fileID: -619905303, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 1920185019}
   m_sendNavigationEvents: 1
   m_DragThreshold: 5
 --- !u!4 &1300213244
@@ -7112,7 +7267,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -7429,12 +7584,12 @@ GameObject:
   - component: {fileID: 1771853897}
   - component: {fileID: 1771853896}
   m_Layer: 10
-  m_Name: PassValidText
+  m_Name: FirstNameValidText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1771853895
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7446,12 +7601,12 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 772662974}
-  m_RootOrder: 7
+  m_Father: {fileID: 816332464}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 90.9, y: -67.1}
+  m_AnchoredPosition: {x: 90.9, y: 90.37109}
   m_SizeDelta: {x: 343.7, y: 52.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1771853896
@@ -7502,7 +7657,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Passwords do not match.
+  m_Text: First Name is empty.
 --- !u!222 &1771853898
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7996,7 +8151,7 @@ MonoBehaviour:
   m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.159}
   m_EffectDistance: {x: 1, y: -5}
   m_UseGraphicAlpha: 1
 --- !u!114 &1920185022
@@ -8012,7 +8167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 0
+    m_Mode: 2
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
