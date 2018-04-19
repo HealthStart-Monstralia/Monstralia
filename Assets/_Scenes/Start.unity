@@ -902,7 +902,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 90.9, y: -14}
+  m_AnchoredPosition: {x: 140, y: -14}
   m_SizeDelta: {x: 343.7, y: 52.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &139570613
@@ -1973,7 +1973,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 592880806}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2205,7 +2205,7 @@ GameObject:
   - component: {fileID: 379162950}
   - component: {fileID: 379162949}
   m_Layer: 10
-  m_Name: ReEmailInput
+  m_Name: Re-EmailInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2225,7 +2225,7 @@ RectTransform:
   - {fileID: 1793917659}
   - {fileID: 983821142}
   m_Father: {fileID: 592880806}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2298,7 +2298,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 772662975}
-        m_MethodName: OnEditVerifyEmail
+        m_MethodName: OnEditVerifyReEmail
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2752,7 +2752,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &501899232
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2765,11 +2765,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 592880806}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 102, y: 80.855}
+  m_AnchoredPosition: {x: 150, y: 80.855}
   m_SizeDelta: {x: 321.5, y: 57.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &501899233
@@ -2820,7 +2820,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Emails do not match.
+  m_Text: Email is empty.
 --- !u!222 &501899235
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3079,9 +3079,10 @@ RectTransform:
   m_Children:
   - {fileID: 747254329}
   - {fileID: 1920185020}
+  - {fileID: 501899232}
   - {fileID: 366459885}
   - {fileID: 379162948}
-  - {fileID: 501899232}
+  - {fileID: 1210185880}
   m_Father: {fileID: 772662974}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4193,11 +4194,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   emailValidText: {fileID: 501899234}
   emailInput: {fileID: 1920185022}
-  reemailInput: {fileID: 379162950}
-  emailDoesNotMatch: Emails do not match.
   emailIsEmpty: Email is empty.
   emailNoAt: Email does not contain an @
   emailNoPeriod: Email does not have a period.
+  reEmailValidText: {fileID: 1210185882}
+  reemailInput: {fileID: 379162950}
+  emailDoesNotMatch: Emails do not match.
   firstNameValidText: {fileID: 1771853897}
   lastNameValidText: {fileID: 139570614}
   firstNameInput: {fileID: 190388903}
@@ -4815,7 +4817,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 894828741}
   m_OnClick:
     m_PersistentCalls:
@@ -6036,6 +6038,100 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.084}
   m_EffectDistance: {x: 2, y: -2}
   m_UseGraphicAlpha: 1
+--- !u!1 &1210185879
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 1305632628363398, guid: 9e44c9b07cb2a5145bff6100c100f9bb,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1210185880}
+  - component: {fileID: 1210185883}
+  - component: {fileID: 1210185882}
+  - component: {fileID: 1210185881}
+  m_Layer: 10
+  m_Name: Re-EmailValidText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1210185880
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 224782292550072382, guid: 9e44c9b07cb2a5145bff6100c100f9bb,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1210185879}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.000448, y: 1.000448, z: 1.000448}
+  m_Children: []
+  m_Father: {fileID: 592880806}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 150, y: -21}
+  m_SizeDelta: {x: 321.5, y: 57.9}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1210185881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114430363308955832, guid: 9e44c9b07cb2a5145bff6100c100f9bb,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1210185879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1573420865, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
+--- !u!114 &1210185882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 114848649017575788, guid: 9e44c9b07cb2a5145bff6100c100f9bb,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1210185879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 24
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 1
+    m_MaxSize: 40
+    m_Alignment: 5
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Emails do not match.
+--- !u!222 &1210185883
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 222217485031530994, guid: 9e44c9b07cb2a5145bff6100c100f9bb,
+    type: 2}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1210185879}
 --- !u!1 &1259149736
 GameObject:
   m_ObjectHideFlags: 0
@@ -7606,7 +7702,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 90.9, y: 90.37109}
+  m_AnchoredPosition: {x: 140, y: 90.37109}
   m_SizeDelta: {x: 343.7, y: 52.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1771853896

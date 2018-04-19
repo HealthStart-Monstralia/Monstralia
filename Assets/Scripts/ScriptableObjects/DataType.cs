@@ -16,6 +16,12 @@ public static class DataType {
         RainbowBrain = 4
     };
 
+    public enum GamePersistentEvents {
+        Stickerbook = 0,
+        ParentPage = 1,
+        FirstStickerEarned = 2
+    }
+
     // Enum name should match scene name so MinigameButton can load the game.
     public enum Minigame {
         // Brainstorm Lagoon

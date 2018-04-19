@@ -22,8 +22,8 @@ public class StickerManager : Singleton<StickerManager> {
         stickerSlotDict = new Dictionary<DataType.StickerType, StickerSlot> ();
 
         AssignSlotsToDict ();
-        if (!GameManager.Instance.GetHasPlayerVisitedStickerbook()) {
-            GameManager.Instance.SetPlayerVisitedStickerbook ();
+        if (!GameManager.Instance.GetHasPlayerDone (DataType.GamePersistentEvents.Stickerbook)) {
+            GameManager.Instance.SetPlayerDone (DataType.GamePersistentEvents.Stickerbook);
             SoundManager.Instance.PlayVoiceOverClip (welcomeClip);
         }
 

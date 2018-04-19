@@ -12,6 +12,6 @@ public class GameSave {
     public DataType.MonsterType playerMonsterType;
     public bool isMonsterSelected;
     public bool isIntroShown;
-    public bool hasPlayerVisitedStickerbook;
+    public Dictionary<DataType.GamePersistentEvents, bool> persistentEvents;
     public int numOfGamesCompleted;
 }

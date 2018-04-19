@@ -16,11 +16,11 @@ public class GameManager : SingletonPersistent<GameManager> {
     private Dictionary<DataType.Minigame, MinigameStats> gameStats = new Dictionary<DataType.Minigame, MinigameStats>();
     private Dictionary<DataType.StickerType, StickerStats> stickerStats = new Dictionary<DataType.StickerType, StickerStats>();
     private Dictionary<DataType.IslandSection, bool> visitedAreas = new Dictionary<DataType.IslandSection, bool>();
+    private Dictionary<DataType.GamePersistentEvents, bool> persistentEvents = new Dictionary<DataType.GamePersistentEvents, bool> ();
     private DataType.Minigame lastGamePlayed;
     private DataType.MonsterType playerMonsterType;
     private bool isMonsterSelected = false;
     private int numOfGamesCompleted = 0;
-    private bool hasPlayerVisitedStickerbook = false;
 
     [Serializable]
     public struct MinigameStats {
@@ -91,6 +91,8 @@ public class GameManager : SingletonPersistent<GameManager> {
         }
     }
 
+    #region SaveSystem
+
     void InitializeFromLoad (GameSave save) {
         print ("Initializing entries from save file");
         gameStats = save.gameStats;
@@ -102,8 +104,49 @@ public class GameManager : SingletonPersistent<GameManager> {
         numOfGamesCompleted = save.numOfGamesCompleted;
         isIntroShown = save.isIntroShown;
         FoodList.LoadFoodDictionary (save.foodEatenDictionary);
-        hasPlayerVisitedStickerbook = save.hasPlayerVisitedStickerbook;
+        persistentEvents = save.persistentEvents;
     }
+
+    // Only save game if Start Button is pressed in the Start scene
+    public void AllowSave () {
+        isSaveAllowed = true;
+    }
+
+    public void SaveGame () {
+        if (isSaveAllowed) {
+            Dictionary<string, int> foodDictionary = FoodList.SaveDictionary ();
+
+            GameSave save = new GameSave {
+                gameStats = gameStats,
+                stickerStats = stickerStats,
+                visitedAreas = visitedAreas,
+                lastGamePlayed = lastGamePlayed,
+                isMonsterSelected = isMonsterSelected,
+                playerMonsterType = playerMonsterType,
+                numOfGamesCompleted = numOfGamesCompleted,
+                isIntroShown = isIntroShown,
+                foodEatenDictionary = foodDictionary,
+                persistentEvents = persistentEvents
+            };
+
+            SaveSystem.Save (save);
+        }
+    }
+
+    public void LoadGame () {
+        SaveSystem.Load ();
+        if (SaveSystem.savedGame != null) {
+            InitializeFromLoad (SaveSystem.savedGame);
+            CreateNotification ("Game Loaded!");
+        }
+    }
+
+    public void DeleteSave () {
+        SaveSystem.DeleteSave ();
+        CreateNotification ("Game Deleted!");
+    }
+
+    #endregion
 
     // Called at the end of a minigame
     public void LevelUp (DataType.Minigame gameName) {
@@ -371,12 +414,26 @@ public class GameManager : SingletonPersistent<GameManager> {
         return numOfGamesCompleted;
     }
 
-    public bool GetHasPlayerVisitedStickerbook () {
-        return hasPlayerVisitedStickerbook;
+    public bool GetHasPlayerDone (DataType.GamePersistentEvents persistentEvent) {
+        if (persistentEvents.ContainsKey(persistentEvent)) {
+            return persistentEvents[persistentEvent];
+        }
+        else {
+            SetPlayerDone (persistentEvent, false);
+        }
+
+        return false;
     }
 
-    public void SetPlayerVisitedStickerbook () {
-        hasPlayerVisitedStickerbook = true;
+    public void SetPlayerDone (DataType.GamePersistentEvents persistentEvent, bool hasVisited = true) {
+        if (!persistentEvents.ContainsKey (persistentEvent)) {
+            print ("CREATING NEW PERSISTENTEVENT: " + persistentEvent + " set to " + hasVisited);
+            persistentEvents.Add (persistentEvent, hasVisited);
+        }
+        else {
+            print ("CURRENTLY EXISTING PERSISTENTEVENT: " + persistentEvent + " set to " + hasVisited);
+            persistentEvents[persistentEvent] = hasVisited;
+        }
     }
 
     public bool GetIsMonsterSelected () {
@@ -401,44 +458,5 @@ public class GameManager : SingletonPersistent<GameManager> {
 
     public void TurnOffFPSDisplay () {
         fpsCounter.SetActive (false);
-    }
-
-    // Only save game if Start Button is pressed in the Start scene
-    public void AllowSave () {
-        isSaveAllowed = true;
-    }
-
-    public void SaveGame () {
-        if (isSaveAllowed) {
-            Dictionary<string, int> foodDictionary = FoodList.SaveDictionary ();
-
-            GameSave save = new GameSave {
-                gameStats = gameStats,
-                stickerStats = stickerStats,
-                visitedAreas = visitedAreas,
-                lastGamePlayed = lastGamePlayed,
-                isMonsterSelected = isMonsterSelected,
-                playerMonsterType = playerMonsterType,
-                numOfGamesCompleted = numOfGamesCompleted,
-                isIntroShown = isIntroShown,
-                foodEatenDictionary = foodDictionary,
-                hasPlayerVisitedStickerbook = hasPlayerVisitedStickerbook
-            };
-
-            SaveSystem.Save (save);
-        }
-    }
-
-    public void LoadGame () {
-        SaveSystem.Load ();
-        if (SaveSystem.savedGame != null) {
-            InitializeFromLoad (SaveSystem.savedGame);
-            CreateNotification ("Game Loaded!");
-        }
-    }
-
-    public void DeleteSave () {
-        SaveSystem.DeleteSave ();
-        CreateNotification ("Game Deleted!");
     }
 }

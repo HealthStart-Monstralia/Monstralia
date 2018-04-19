@@ -7,11 +7,13 @@ public class RegistrationManager : MonoBehaviour {
     [Header ("Email Components")]
     public Text emailValidText;
     public InputField emailInput;
-    public InputField reemailInput;
-    public string emailDoesNotMatch = "Emails do not match.";
     public string emailIsEmpty = "Email is empty.";
     public string emailNoAt = "Email does not have an @";
     public string emailNoPeriod = "Email does not have a period.";
+
+    public Text reEmailValidText;
+    public InputField reemailInput;
+    public string emailDoesNotMatch = "Emails do not match.";
 
     [Header ("Name Components")]
     public Text firstNameValidText;
@@ -31,7 +33,9 @@ public class RegistrationManager : MonoBehaviour {
 
     private void Awake () {
         emailValidText.gameObject.SetActive (false);
+        reEmailValidText.gameObject.SetActive (false);
         firstNameValidText.gameObject.SetActive (false);
+        lastNameValidText.gameObject.SetActive (false);
     }
 
     // Use with a button event
@@ -43,15 +47,15 @@ public class RegistrationManager : MonoBehaviour {
 
     // Use with On End Edit event in input fields
     public void OnEditVerifyEmail () { VerifyEmail (); }
+    public void OnEditVerifyReEmail () { VerifyReEmail (); }
     public void OnEditVerifyFirstName () { VerifyFirstName (); }
     public void OnEditVerifyLastName () { VerifyLastName (); }
 
     // Verify that all information is valid before sending to server.
     private bool VerifyInformation () {
-        bool isEmailValid = VerifyEmail ();
-        bool isFirstNameValid = VerifyFirstName ();
-        bool isLastNameValid = VerifyLastName ();
-        return isEmailValid && isFirstNameValid;
+        bool isEmailValid = VerifyEmail () && VerifyReEmail ();
+        bool areNamesValid = VerifyFirstName () && VerifyLastName ();
+        return isEmailValid && areNamesValid;
     }
 
     // Check if first name field is empty
@@ -85,12 +89,6 @@ public class RegistrationManager : MonoBehaviour {
             return false;
         }
 
-        // Check if confirmation matches
-        if (!IsTextMatching(emailInput.text, reemailInput.text)) {
-            DisplayError (emailDoesNotMatch, emailValidText);
-            return false;
-        }
-
         // Check if there is an @
         if (!emailInput.text.Contains ("@")) {
             DisplayError (emailNoAt, emailValidText);
@@ -105,11 +103,23 @@ public class RegistrationManager : MonoBehaviour {
 
         // Email input is valid therefore, hide email error message and return true to VerifyInformation ().
         HideError (emailValidText);
-        
+
         //grabs the information that was put into the fields and assigned to a string to send to the PHP 'CreateUser' function down below
         phpUserEmail = emailInput.text;
         phpUserFirstName = firstNameInput.text;
 		phpUserLastName = lastNameInput.text;
+        return true;
+    }
+
+    private bool VerifyReEmail () {
+        // Check if confirmation matches
+        if (!IsTextMatching (emailInput.text, reemailInput.text)) {
+            DisplayError (emailDoesNotMatch, reEmailValidText);
+            return false;
+        }
+
+        // Email input is valid therefore, hide email error message and return true to VerifyInformation ().
+        HideError (reEmailValidText);
         return true;
     }
 
