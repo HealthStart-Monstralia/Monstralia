@@ -8,13 +8,17 @@ public class BMazeMonsterMovement : MonoBehaviour {
 	 */
     public Vector2 gotoPos;
     public bool finished = false;
-
+    public static bool isMonsterMovementAllowed = false;
 
     private Vector3 pointerOffset;
 	private Vector3 cursorPos;
 	private Rigidbody2D rigBody;
 
-	void Start () {
+    private void OnDestroy () {
+        isMonsterMovementAllowed = false;
+    }
+
+    void Start () {
         rigBody = GetComponent<Rigidbody2D> ();
         if (!rigBody)
             rigBody = gameObject.AddComponent<Rigidbody2D> ();
@@ -24,7 +28,7 @@ public class BMazeMonsterMovement : MonoBehaviour {
     }
 
 	public void OnMouseDown() {
-		if (BMazeManager.Instance.GetInputAllowed()) {
+		if (isMonsterMovementAllowed) {
 			cursorPos = Input.mousePosition;
 			cursorPos.z -= (Camera.main.transform.position.z + 10f);
 			pointerOffset = Camera.main.ScreenToWorldPoint (cursorPos) - transform.position;
@@ -32,7 +36,7 @@ public class BMazeMonsterMovement : MonoBehaviour {
 	}
 
 	public void OnMouseDrag() {
-		if (BMazeManager.Instance.GetInputAllowed ()) {
+		if (isMonsterMovementAllowed) {
 			cursorPos = Input.mousePosition;
 			cursorPos.z -= (Camera.main.transform.position.z + 10f);
 			MoveTowards (Camera.main.ScreenToWorldPoint (cursorPos) - pointerOffset);

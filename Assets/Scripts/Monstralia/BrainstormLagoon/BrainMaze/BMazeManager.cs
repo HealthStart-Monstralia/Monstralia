@@ -11,7 +11,17 @@ public class BMazeManager : AbstractGameManager<BMazeManager>
     [Header("Brain Maze Fields")]
     public MilestoneManager milestoneManager;
     public VoiceOversData voData;
-    [HideInInspector] public bool inputAllowed = false;
+    public bool InputAllowed {
+        get {
+            return inputAllowed;
+        }
+
+        set {
+            inputAllowed = value;
+            BMazeMonsterMovement.isMonsterMovementAllowed = value;
+        }
+    }
+    private bool inputAllowed = false;
 
     [System.Serializable]
     public struct BrainMazeLevelConfig
@@ -145,9 +155,9 @@ public class BMazeManager : AbstractGameManager<BMazeManager>
 
         SubtitlePanel.Instance.Hide();
         monsterStart = tutorialStartingSpot;
-        CreateMonster();
-        playerMonster.transform.localScale = Vector3.one * 0.25f;
-        inputAllowed = false;
+        CreateMonster ();
+        playerMonster.transform.localScale = Vector3.one * 0.2f;
+        InputAllowed = false;
 
         SoundManager.Instance.PlayVoiceOverClip(tutorial2);
         yield return new WaitForSeconds(tutorial2.length);
@@ -173,10 +183,10 @@ public class BMazeManager : AbstractGameManager<BMazeManager>
 
         ResetScore();
         playerMonster.transform.position = monsterStart.position;
-        tutorialPickup.SetActive(true);
-        inputAllowed = true;
-        SubtitlePanel.Instance.Hide();
-        yield return new WaitForSeconds(2f);
+        tutorialPickup.SetActive (true);
+        InputAllowed = true;
+        SubtitlePanel.Instance.Hide ();
+		yield return new WaitForSeconds(2f);
 
         SubtitlePanel.Instance.Display("Get all the pickups!", null);
         yield return new WaitForSeconds(5f);
@@ -184,14 +194,13 @@ public class BMazeManager : AbstractGameManager<BMazeManager>
         SubtitlePanel.Instance.Hide();
     }
 
-    public void TutorialFinished()
-    {
-        inputAllowed = false;
-        tutorialHand.SetActive(false);
-        GameManager.Instance.CompleteTutorial(DataType.Minigame.BrainMaze);
-        StopCoroutine(tutorialCoroutine);
-        StartCoroutine(TutorialTearDown());
-    }
+	public void TutorialFinished() {
+		InputAllowed = false;
+        tutorialHand.SetActive (false);
+		GameManager.Instance.CompleteTutorial(DataType.Minigame.BrainMaze);
+		StopCoroutine (tutorialCoroutine);
+		StartCoroutine(TutorialTearDown ());
+	}
 
     IEnumerator TutorialTearDown()
     {
@@ -254,17 +263,16 @@ public class BMazeManager : AbstractGameManager<BMazeManager>
         return false;
     }
 
-    public void GameStart()
-    {
-        gameStarted = true;
-        inputAllowed = true;
-        TimerClock.Instance.StartTimer();
-    }
+	public void GameStart () {
+		gameStarted = true;
+        InputAllowed = true;
+        TimerClock.Instance.StartTimer ();
+	}
 
     public void GameEnd()
     {
         gameStarted = false;
-        inputAllowed = false;
+        InputAllowed = false;
 
         MonsterVictoryDance();
         AudioClip youdidit = voData.FindVO("youdidit");
@@ -335,14 +343,29 @@ public class BMazeManager : AbstractGameManager<BMazeManager>
         button.SetActive(false);
     }
 
-    void CreateMonster()
-    {
-        CreatePlayerMonster(monsterStart);
-        playerMonster.transform.localScale = Vector3.one * 0.125f;
-        playerMonster.transform.SetParent(monsterStart.transform.root);
-        playerMonster.transform.gameObject.AddComponent<BMazeMonsterMovement>();
-        monsterAnimator = playerMonster.GetComponentInChildren<Animator>();
-        PlaySpawn();
+	public void ChangeScene () {
+		GetComponent<SwitchScene> ().LoadScene ();
+	}
+
+	public void SkipLevel (GameObject button) {
+		if (isTutorialRunning) {
+			TutorialFinished ();
+		} else {
+			gameStarted = false;
+			if (GameManager.Instance)
+				GameManager.Instance.LevelUp (DataType.Minigame.BrainMaze);
+			Instance.ChangeScene ();
+		}
+		button.SetActive (false);
+	}
+
+	void CreateMonster() {
+        CreatePlayerMonster (monsterStart);
+        playerMonster.transform.localScale = Vector3.one * 0.1f;
+        playerMonster.transform.SetParent (monsterStart.transform.root);
+        playerMonster.transform.gameObject.AddComponent<BMazeMonsterMovement> ();
+        monsterAnimator = playerMonster.GetComponentInChildren<Animator> ();
+        PlaySpawn ();
     }
 
     public void RemoveMonster()
@@ -432,9 +455,8 @@ public class BMazeManager : AbstractGameManager<BMazeManager>
     {
         return levelConfig.mazeSize;
     }
-
-    public bool GetInputAllowed()
-    {
-        return inputAllowed;
+    
+    public bool GetInputAllowed () {
+        return InputAllowed;
     }
 }

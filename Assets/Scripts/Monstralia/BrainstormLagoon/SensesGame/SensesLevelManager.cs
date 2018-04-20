@@ -11,13 +11,21 @@ public class SensesLevelManager : MonoBehaviour {
     [HideInInspector] public Monster monster;
 
     [Header ("References")]
-    [SerializeField] private SensesFactory senseFactory;
+    [SerializeField] private SensesFactory[] senseFactories;
     [SerializeField] private Text senseText;
     [SerializeField] private string[] correctLines;
     [SerializeField] private string[] wrongLines;
 
     private DataType.Senses selectedSense;
-    private GameObject selectedObject;
+    private List<DataType.Senses> senseList = new List<DataType.Senses>();
+
+    private void Awake () {
+        foreach (DataType.Senses sense in System.Enum.GetValues (typeof (DataType.Senses))) {
+            if (sense != DataType.Senses.NONE) {
+                senseList.Add (sense);
+            }
+        }
+    }
 
     public void SetupGame() {
         StopAllCoroutines ();
@@ -26,19 +34,31 @@ public class SensesLevelManager : MonoBehaviour {
 
     IEnumerator PrepareToStart() {
         yield return new WaitForSeconds (0.5f);
-
-        SoundManager.Instance.PlaySFXClip (transitionSfx);
         SensesGameManager.Instance.fireworksSystem.ActivateFireworks ();
-        yield return new WaitForSeconds(0.1f);
+        SoundManager.Instance.PlaySFXClip (transitionSfx);
+        yield return new WaitForSeconds (0.1f);
 
         monster = monsterCreators[0].SpawnPlayerMonster ();
         SensesGameManager.Instance.ActivateHUD (true);
         SensesGameManager.Instance.StartCountdown (StartGame);
     }
 
-    private DataType.Senses SelectRandomSense(SensesItem item) {
-        DataType.Senses[] senseItemList = item.validSenses;
-        return senseItemList.GetRandomItem ();
+    private void CreateSenseItems () {
+        foreach (SensesFactory factory in senseFactories) {
+            GameObject product = factory.ManufactureRandom ();
+            product.AddComponent<SensesClickInput> ();
+        }
+    }
+
+    private void DestroySenseItems () {
+        foreach (SensesFactory factory in senseFactories) {
+            factory.RemoveCurrentObject ();
+        }
+    }
+
+    private DataType.Senses SelectRandomSense () {
+        DataType.Senses randomSense = senseFactories.GetRandomItem ().currentItem.GetComponent<SensesItem> ().ChooseRandomSense ();
+        return randomSense;
     }
 
     void StartGame() {
@@ -49,19 +69,32 @@ public class SensesLevelManager : MonoBehaviour {
     public void NextQuestion() {
         monster.ChangeEmotions (DataType.MonsterEmotions.Happy);
         SubtitlePanel.Instance.Hide ();
-        Destroy (selectedObject);
-
-        // Tell factory to instantiate a random prefab and remove it from the list to prevent duplicates
-        selectedObject = senseFactory.ManufactureRandomAndRemove ();
-
-        // Select a random valid sense to ask the player
-        selectedSense = SelectRandomSense (selectedObject.GetComponent<SensesItem>());
-        senseText.text = string.Format ("What do I use to {0} the {1}?", selectedSense.ToString ().ToLower(), selectedObject.name);
+        DestroySenseItems ();
+        CreateSenseItems ();
+        selectedSense = SelectRandomSense ();
+        senseText.text = string.Format ("What can I {0}?", selectedSense.ToString ().ToLower ());
     }
 
     public void EndGame() {
         SensesGameManager.Instance.OnGameEnd ();
         monster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
+    }
+
+    public bool DoesObjectHaveSense (SensesItem item) {
+        if (SensesGameManager.Instance.IsInputAllowed) {
+            if (selectedSense != DataType.Senses.NONE) {
+                foreach (DataType.Senses sense in item.validSenses) {
+                    if (sense == selectedSense) {
+                        OnCorrect ();
+                        return true;
+                    }
+                }
+
+                OnIncorrect ();
+            }
+        }
+
+        return false;
     }
 
     public bool IsSenseCorrect (DataType.Senses sense) {

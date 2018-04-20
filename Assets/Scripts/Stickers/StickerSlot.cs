@@ -45,7 +45,8 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
         if (!isAlreadyPlaced)
 		    GameManager.Instance.OnStickerPlaced(sticker.typeOfSticker);
 		Canvas can = gameObject.AddComponent<Canvas> ();
-		can.overrideSorting = true;
+        gameObject.AddComponent<GraphicRaycaster> ();
+        can.overrideSorting = true;
 		can.sortingOrder = -1;
         if (label) label.SetActive (true);
         sticker.OnSticked ();
@@ -55,4 +56,9 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
 	public bool GetIsStickerFilled () {
 		return isStickerFilled;
 	}
+
+    public void PlayStickerVoiceOver () {
+        print ("Play Voice Over");
+        SoundManager.Instance.PlayVoiceOverClip (clipOfSticker);
+    }
 }

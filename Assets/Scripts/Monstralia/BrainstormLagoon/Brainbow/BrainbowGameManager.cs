@@ -106,17 +106,16 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager>
         }
     }
 
-    public void StartGame()
-    {
-        scoreGauge.gameObject.SetActive(true);
-        timer.gameObject.SetActive(true);
-        timer.SetTimeLimit(GetLevelConfig().timeLimit);
-        foodPanel.gameObject.SetActive(true);
-        activeFoods.Clear();
-        StartCoroutine(StartSpawningFoods());
-        StartCoroutine(TurnOnRainbows());
-        ChooseFoodsFromManager();
-        StartCoroutine(PreCountdownSetup());
+	public void StartGame() {
+		scoreGauge.gameObject.SetActive(true);
+		timer.gameObject.SetActive(true);
+		timer.SetTimeLimit (GetLevelConfig().timeLimit);
+        foodPanel.gameObject.SetActive (true);
+        activeFoods.Clear ();
+        ChooseFoodsFromManager ();
+        StartCoroutine (StartSpawningFoods ());
+        StartCoroutine (TurnOnRainbows ());
+        StartCoroutine (PreCountdownSetup ());
     }
 
     IEnumerator PreCountdownSetup()
@@ -166,53 +165,45 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager>
         SortBrainbowFoods();
 
         // Pick five random foods from each category and store them in a food pool for SpawnFood
-        AddFoodsToList(redFoodsList);
-        AddFoodsToList(yellowFoodsList);
-        if (difficultyLevel > 1)
-        {
-            AddFoodsToList(greenFoodsList);
-            if (difficultyLevel > 2)
-            {
-                AddFoodsToList(purpleFoodsList);
+        AddFoodsToList (redFoodsList);
+        AddFoodsToList (yellowFoodsList);
+        if (difficultyLevel > 1) {
+            AddFoodsToList (greenFoodsList);
+            if (difficultyLevel > 2) {
+                AddFoodsToList (purpleFoodsList);
             }
         }
     }
 
     // Sort foods into categories
-    void SortBrainbowFoods()
-    {
-        FoodList foodList = GameManager.Instance.GetComponent<FoodList>();
+    void SortBrainbowFoods () {
         Food foodComponent;
 
         // Remove any restricted foods
-        List<GameObject> brainbowFoods = foodList.goodFoods;
-        foreach (GameObject food in restrictedFoods)
-        {
-            brainbowFoods.Remove(food);
+        List<GameObject> brainbowFoods = FoodList.GetGoodFoodsList();
+        foreach (GameObject food in restrictedFoods) {
+            brainbowFoods.Remove (food);
         }
 
         // Sort food into corresponding color categories
-        foreach (GameObject food in brainbowFoods)
-        {
-            foodComponent = food.GetComponent<Food>();
-            if (foodComponent.foodType == Food.TypeOfFood.Fruit || foodComponent.foodType == Food.TypeOfFood.Vegetable)
-            {
-                switch (foodComponent.color)
-                {
-                    case Colorable.Color.Red:
-                        redFoodsList.Add(food);
+        foreach (GameObject food in brainbowFoods) {
+            foodComponent = food.GetComponent<Food> ();
+            if (foodComponent.foodType == Food.TypeOfFood.Fruit || foodComponent.foodType == Food.TypeOfFood.Vegetable) {
+                switch (foodComponent.typeOfColor) {
+                    case DataType.Color.Red:
+                        redFoodsList.Add (food);
                         break;
 
-                    case Colorable.Color.Yellow:
-                        yellowFoodsList.Add(food);
+                    case DataType.Color.Yellow:
+                        yellowFoodsList.Add (food);
                         break;
 
-                    case Colorable.Color.Green:
-                        greenFoodsList.Add(food);
+                    case DataType.Color.Green:
+                        greenFoodsList.Add (food);
                         break;
 
-                    case Colorable.Color.Purple:
-                        purpleFoodsList.Add(food);
+                    case DataType.Color.Purple:
+                        purpleFoodsList.Add (food);
                         break;
                 }
             }
@@ -293,11 +284,11 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager>
                 GameOver(DataType.GameEnd.CompletedLevel);
             }
         }
-
+        
         // Player did not reach goal, show game over
-        else
-        {
-            GameOver(DataType.GameEnd.FailedLevel);
+        else {
+            SoundManager.Instance.PlayVoiceOverClip (voData.FindVO ("dnf"));
+            GameOver (DataType.GameEnd.FailedLevel);
         }
     }
 

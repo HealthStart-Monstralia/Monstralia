@@ -57,14 +57,15 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
 
         CreatePlayerMonster(monsterSpawnPos);
         monsterAnimator = playerMonster.monsterAnimator.animator;
-        monsterAnimator.Play("MM_Spawn", -1, 0f);
+        monsterAnimator.Play ("MM_Spawn", -1, 0f);
+        playerMonster.gameObject.transform.localScale = Vector3.one * 0.75f;
         playerMonster.spriteRenderer.sortingOrder = -2;
 
         SubtitlePanel.Instance.Hide();
 
         // Retrieve foods from Game Manager Food List
         // Use AddRange to copy lists. Assigning lists does not copy over the list, only the reference.
-        foodList.AddRange(GameManager.Instance.GetComponent<FoodList>().goodFoods);
+        foodList.AddRange (FoodList.GetGoodFoodsList ());
 
         if (GameManager.Instance.GetPendingTutorial(DataType.Minigame.MemoryMatch))
         {
@@ -108,11 +109,11 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         SetTimeLimit(currentLevel.timeLimit);
         numberOfDishes = currentLevel.numDishes;
 
-        ActivateHUD(true);
-        SpawnDishes();
-        CreateFoodInDishes();
-        SubtitlePanel.Instance.Display("Remember the foods!");
-        yield return new WaitForSeconds(4f);
+        ActivateHUD (true);
+        SpawnDishes ();
+        CreateFoodInDishes ();
+        SubtitlePanel.Instance.Display ("Remember the foods!", voData.FindVO("memory_remember"));
+        yield return new WaitForSeconds (4f);
 
         StartCoroutine(SpawnDishLids());
     }
@@ -228,12 +229,9 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
     public bool OnGuess(DishObject dish, GameObject food)
     {
         isGuessing = true;
-        print(string.Format("food: {0} selectedFood: {1}", food, selectedFood));
-        if (food == selectedFood)
-        {
-            if (Random.Range(0, 1f) < 0.3f)
-            {
-                SoundManager.Instance.PlayVoiceOverClip(goodjobClips.GetRandomItem());
+        if (food == selectedFood) {
+            if (Random.Range(0, 1f) < 0.3f) {
+                SoundManager.Instance.PlayVoiceOverClip (goodjobClips.GetRandomItem ());
             }
 
             dish.Correct();
@@ -305,27 +303,30 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         StopTimer();
         gameStarted = false;
         inputAllowed = false;
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds (1.0f);
 
-        for (int i = 0; i < numberOfDishes; ++i)
-        {
-            if (dishes[i].GetComponent<DishObject>().IsMatched())
-            {
-                Destroy(dishes[i].GetComponent<DishObject>().foodObject.gameObject);
-                SoundManager.Instance.PlaySFXClip(munchClip);
+        for (int i = 0; i < numberOfDishes; ++i) {
+			if(dishes[i].GetComponent<DishObject>().IsMatched ()) {
+                GameObject food = dishes[i].GetComponent<DishObject> ().foodObject.gameObject;
                 dishes[i].GetComponent<DishObject>().Shake(true);
-                monsterAnimator.Play("MM_Eat", -1, 0f);
-                yield return new WaitForSeconds(1.2f);
-            }
-        }
-        monsterAnimator.Play("MM_Dance", -1, 0f);
-        yield return new WaitForSeconds(1f);
-        GameEnd();
-    }
+                monsterAnimator.Play ("MM_Eat", -1, 0f);
 
-    public void OnOutOfTime()
-    {
-        StartCoroutine(RunEndGameAnimation());
+                for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 2) {
+                    food.transform.position = Vector2.Lerp (food.transform.position, playerMonster.transform.position + new Vector3 (0, 1f, 0), t);
+                    yield return null;
+                }
+
+                food.GetComponent<Food> ().EatFood ();
+                yield return new WaitForSeconds (0.5f);
+            }
+		}
+        monsterAnimator.Play ("MM_Dance", -1, 0f);
+        yield return new WaitForSeconds (1f);
+        GameEnd ();
+	}
+
+    public void OnOutOfTime() {
+        StartCoroutine (RunEndGameAnimation ());
     }
 
     public void GameEnd()

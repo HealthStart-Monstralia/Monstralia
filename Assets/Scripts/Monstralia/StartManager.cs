@@ -20,8 +20,13 @@ public class StartManager : Singleton<StartManager> {
     }
 
     void Start () {
+        SoundManager.Instance.PlayBackgroundMusic ();
         sceneLoader = GetComponent<SwitchScene> ();
+
+        // Remove when Release is ready for save system
+        #if TEST_BUILD
         GameManager.Instance.LoadGame ();
+        #endif
 
         monsterSpawn.gameObject.SetActive (false);
         if (GameManager.Instance.GetIsMonsterSelected()) {
@@ -72,7 +77,7 @@ public class StartManager : Singleton<StartManager> {
         monster.transform.SetParent (monsterSpawn.transform);
         monster.spriteRenderer.sortingLayerName = "UI";
         monster.spriteRenderer.sortingOrder = 0;
-        monster.transform.localScale = Vector3.one * 40f;
+        monster.transform.localScale = Vector3.one * 30f;
         monster.AllowMonsterTickle = true;
         monster.IdleAnimationOn = true;
         monster.spawnAnimation = true;

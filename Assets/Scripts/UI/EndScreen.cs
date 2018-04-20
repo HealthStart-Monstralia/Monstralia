@@ -10,8 +10,11 @@ public class EndScreen : MonoBehaviour {
     public bool earnedSticker;
     public Text headerText, footerText;
     public GameObject stickerButton, backButton, nextLevelButton, imageLocation, brain;
+    public AudioClip unlockSticker;
+    [SerializeField] private Button[] buttonsToDisableOnFirstWin;
 
     private void Awake () {
+
         GetComponent<Canvas> ().worldCamera = Camera.main;
     }
 
@@ -19,13 +22,24 @@ public class EndScreen : MonoBehaviour {
         stickerButton.SetActive (true);
         brain.SetActive (false);
         SoundManager.Instance.PlayCorrectSFX ();
+        SoundManager.Instance.PlayVoiceOverClip (unlockSticker);
         if (GameManager.Instance.GetMinigameData (typeOfGame).stickerPrefab) {
             GameObject sticker = Instantiate (GameManager.Instance.GetMinigameData (typeOfGame).stickerPrefab, imageLocation.transform);
             sticker.transform.localPosition = Vector3.zero;
             Destroy (sticker.GetComponent<StickerBehaviour> ());
         }
+
         headerText.text = "Congratulations you earned a new sticker!";
-        footerText.text = "Tap on the button below to use your new sticker!";
+
+        if (!GameManager.Instance.GetHasPlayerVisitedStickerbook ()) {
+            foreach (Button button in buttonsToDisableOnFirstWin) {
+                button.interactable = false;
+            }
+            footerText.text = "Let's go to the stickerbook to show how to use your new sticker!";
+
+        } else {
+            footerText.text = "Tap on the button below to use your new sticker!";
+        }
     }
 
     public void CompletedLevel () {

@@ -34,7 +34,10 @@ public static class DataType
         MonsterBasket,
         BoneBuilder,
         BalanceGame,
-        ListeningGame
+        ListeningGame,
+
+        // Pump Paradise
+        CatchTheToxins
     };
 
     public enum Milestone
@@ -56,7 +59,10 @@ public static class DataType
     {
         Monstralia,
         BrainstormLagoon,
-        MainframeMountain
+        MainframeMountain,
+        PumpParadise,
+        Muscle,
+        Digestive
     };
 
     public enum Level
@@ -98,4 +104,16 @@ public static class DataType
         Taste,
         NONE
     }
+
+    // Referenced by Food.cs
+    public enum Color {
+        Red,
+        Yellow,
+        Green,
+        Purple,
+        Blue,
+        White,
+        Orange,
+        Other
+    };
 }
