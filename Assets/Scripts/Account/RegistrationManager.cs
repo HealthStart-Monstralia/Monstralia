@@ -4,33 +4,38 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class RegistrationManager : MonoBehaviour {
-    public Text emailValidText, passValidText;
-    public InputField emailInput, reemailInput, passInput, repassInput;
-    public Toggle checkmark;
-	//
-    public string emailDoesNotMatch = "Emails do not match.";
-    public string passDoesNotMatch = "Names do not match.";
+    [Header ("Email Components")]
+    public Text emailValidText;
+    public InputField emailInput;
     public string emailIsEmpty = "Email is empty.";
-    public string passIsEmpty = "Name is empty.";
     public string emailNoAt = "Email does not have an @";
     public string emailNoPeriod = "Email does not have a period.";
 
+    public Text reEmailValidText;
+    public InputField reemailInput;
+    public string emailDoesNotMatch = "Emails do not match.";
+
+    [Header ("Name Components")]
+    public Text firstNameValidText;
+    public Text lastNameValidText;
+    public InputField firstNameInput;
+    public InputField lastNameInput;
+    public string firstNameIsEmpty = "First Name is empty.";
+    public string lastNameIsEmpty = "Last Name is empty.";
 
     //custom URL for database
-    string CreateUserURL = "https://monstraliatestdb.000webhostapp.com/PHPdefault.php";
+    private string CreateUserURL = "https://monstraliatestdb.000webhostapp.com/PHPdefault.php";
 
 	//strings to convert what the user puts into the fields (.txt)
     private string phpUserEmail;
-    private string phpUserPass;
 	private string phpUserFirstName;
 	private string phpUserLastName;
-    
 
     private void Awake () {
         emailValidText.gameObject.SetActive (false);
-        passValidText.gameObject.SetActive (false);
-
-        
+        reEmailValidText.gameObject.SetActive (false);
+        firstNameValidText.gameObject.SetActive (false);
+        lastNameValidText.gameObject.SetActive (false);
     }
 
     // Use with a button event
@@ -41,29 +46,39 @@ public class RegistrationManager : MonoBehaviour {
     }
 
     // Use with On End Edit event in input fields
-    public void OnEditVerifyEmail () { VerifyEmail (); }
-    public void OnEditVerifyPassword () { VerifyPassword (); }
+    public void OnEditVerifyEmail () { VerifyEmail (); VerifyReEmail (); }
+    public void OnEditVerifyReEmail () { VerifyReEmail (); }
+    public void OnEditVerifyFirstName () { VerifyFirstName (); }
+    public void OnEditVerifyLastName () { VerifyLastName (); }
 
+    // Verify that all information is valid before sending to server.
     private bool VerifyInformation () {
-        bool isEmailValid = VerifyEmail ();
-        bool isPasswordValid = VerifyPassword ();
-        return isEmailValid && isPasswordValid;
+        bool isEmailValid = VerifyEmail () && VerifyReEmail ();
+        bool areNamesValid = VerifyFirstName () && VerifyLastName ();
+        return isEmailValid && areNamesValid;
     }
 
-    private bool VerifyPassword () {
-        // Check if password is empty
-        if (IsTextEmpty (passInput.text)) {
-            DisplayError (passIsEmpty, passValidText);
+    // Check if first name field is empty
+    private bool VerifyFirstName () {
+        return VerifyName (firstNameInput.text, firstNameIsEmpty, firstNameValidText);
+    }
+
+    // Check if last name field is empty
+    private bool VerifyLastName () {
+        return VerifyName (lastNameInput.text, lastNameIsEmpty, lastNameValidText);
+    }
+
+    private bool VerifyName (string textToCheck, string messageToDisplay, Text validTextObject) {
+        // Check if name field is empty
+        if (IsTextEmpty (textToCheck)) {
+            DisplayError (messageToDisplay, validTextObject);
+
+            // If empty return false
             return false;
         }
 
-//        // Check if confirmation matches
-//        if (!IsTextMatching (passInput.text, repassInput.text)) {
-//            DisplayError (passDoesNotMatch, passValidText);
-//            return false;
-//        }
-
-        HideError (passValidText);
+        // If not empty, then hide it and return true
+        HideError (validTextObject);
         return true;
     }
 
@@ -71,12 +86,6 @@ public class RegistrationManager : MonoBehaviour {
         // Check if text is empty
         if (IsTextEmpty (emailInput.text)) {
             DisplayError (emailIsEmpty, emailValidText);
-            return false;
-        }
-
-        // Check if confirmation matches
-        if (!IsTextMatching(emailInput.text, reemailInput.text)) {
-            DisplayError (emailDoesNotMatch, emailValidText);
             return false;
         }
 
@@ -94,14 +103,25 @@ public class RegistrationManager : MonoBehaviour {
 
         // Email input is valid therefore, hide email error message and return true to VerifyInformation ().
         HideError (emailValidText);
-        
+
         //grabs the information that was put into the fields and assigned to a string to send to the PHP 'CreateUser' function down below
         phpUserEmail = emailInput.text;
-        phpUserFirstName = passInput.text;
-		phpUserLastName = repassInput.text;
+        phpUserFirstName = firstNameInput.text;
+		phpUserLastName = lastNameInput.text;
         return true;
     }
 
+    private bool VerifyReEmail () {
+        // Check if confirmation matches
+        if (!IsTextMatching (emailInput.text, reemailInput.text)) {
+            DisplayError (emailDoesNotMatch, reEmailValidText);
+            return false;
+        }
+
+        // Email input is valid therefore, hide email error message and return true to VerifyInformation ().
+        HideError (reEmailValidText);
+        return true;
+    }
 
     private void SubmitInformation () {
         /* Send information to web server
@@ -111,14 +131,13 @@ public class RegistrationManager : MonoBehaviour {
          */
 
         //Our function being called in order to send the information to our PHP script (written down below)
-		CreateUser(phpUserEmail, phpUserFirstName, phpUserLastName);
-        
-        
-        // Verify if operation was successful
-        // Encode password for security
+        WWW www = CreateUser (phpUserEmail, phpUserFirstName, phpUserLastName);
 
-        // Upon completion show success page
-        IntroManager.Instance.ShowPage (IntroManager.Instance.signedUpPage);
+        // Upon completion show success page if no error has occured
+        if (string.IsNullOrEmpty (www.error))
+            IntroManager.Instance.ShowPage (IntroManager.Instance.signedUpPage);
+        else
+            Debug.LogError ("WWW returned an error: " + www.error);
 
         // If not successful show not successful page, (NOT IMPLEMENTED YET)
     }
@@ -142,14 +161,9 @@ public class RegistrationManager : MonoBehaviour {
         messageTextObject.gameObject.SetActive (false);
     }
 
-
-
-
-
-
     //-------------------------------------------------------------------------------------------------
     //creates a WWW form to communicate with the PHP script using strings (name, email, survey questions)
-	public void CreateUser(string email, string FirstName, string LastName)
+	public WWW CreateUser(string email, string FirstName, string LastName)
     {
         //creating new form to talk to PHP
         WWWForm form = new WWWForm();
@@ -161,8 +175,8 @@ public class RegistrationManager : MonoBehaviour {
 
         //This submits our form to the PHP script
         WWW _www = new WWW(CreateUserURL, form);
+        return _www;
     }
-
 
 //final bracket
 }

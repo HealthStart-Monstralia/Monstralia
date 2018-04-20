@@ -11,12 +11,27 @@ public class ParentPage : Singleton<ParentPage> {
 	public int selectedPosition = 470;
 	public int unselectedPosition = 450;
 
-	new void Awake() {
+    [SerializeField] private AudioClip introductionVO;
+    [SerializeField] private AudioClip introductionVO2;
+
+    new void Awake() {
         base.Awake ();
 		SetCurrentPage (0);
 	}
 
-	public void EnableButtons() {
+    private void OnEnable () {
+        if (!GameManager.Instance.GetHasPlayerDone (DataType.GamePersistentEvents.ParentPage)) {
+            GameManager.Instance.SetPlayerDone (DataType.GamePersistentEvents.ParentPage);
+            IntroducePlayerToPage ();
+        }
+    }
+
+    void IntroducePlayerToPage () {
+        SoundManager.Instance.AddToVOQueue (introductionVO);
+        SoundManager.Instance.AddToVOQueue (introductionVO2);
+    }
+
+    public void EnableButtons() {
 		for (int i = 0; i < buttonsToEnable.Length; i++) {
             if (buttonsToEnable[i] != null)
                 buttonsToEnable [i].interactable = true;

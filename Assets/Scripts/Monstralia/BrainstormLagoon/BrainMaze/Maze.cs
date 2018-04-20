@@ -69,7 +69,7 @@ public class Maze : Singleton<Maze> {
         BMazeManager.Instance.doorInstance = CreateDoor (lastCell, lastPassage.direction);
 
         // Create finish line on last cell
-        BMazeManager.Instance.finishLine = CreateFinishline (lastCell, lastPassage.direction).GetComponent<BMazeFinishline>();
+        BMazeManager.Instance.finishLine = CreateFinishline (lastCell, lastPassage.direction);
 
         // Take all available cells and create pickups in them
         StartCoroutine (GeneratePickups ());

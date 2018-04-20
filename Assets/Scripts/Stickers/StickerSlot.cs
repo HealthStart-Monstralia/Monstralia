@@ -36,7 +36,13 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
 		}
 	}
 
-	public void ReceiveSticker(StickerBehaviour sticker, bool isAlreadyPlaced) {
+    public void EnableDrop (bool enable) {
+        if (!isStickerFilled) {
+            GetComponent<Image> ().raycastTarget = enable;
+        }
+    }
+
+    public void ReceiveSticker(StickerBehaviour sticker, bool isAlreadyPlaced) {
 		isStickerFilled = true;
 		sticker.gameObject.transform.position = transform.position;
 		sticker.transform.SetParent (transform);

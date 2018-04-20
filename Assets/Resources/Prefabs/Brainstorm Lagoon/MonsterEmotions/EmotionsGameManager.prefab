@@ -1,0 +1,114 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 1529411412462498}
+  m_IsPrefabParent: 1
+--- !u!1 &1529411412462498
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4053338372674872}
+  - component: {fileID: 114689988482316062}
+  - component: {fileID: 114424997835268456}
+  m_Layer: 0
+  m_Name: EmotionsGameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4053338372674872
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1529411412462498}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 90}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114424997835268456
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1529411412462498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 353c34d3180e8164baf9dc5b0c149cd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardHand: {fileID: 0}
+  cardPrefab: {fileID: 1650590322694864, guid: 95af387b9c0b7af48a7b6c59baecedc7, type: 2}
+  currentTargetEmotionStruct:
+    sprite: {fileID: 0}
+    emotion: 0
+    clipOfEmotion: {fileID: 0}
+    emotionColor: {r: 0, g: 0, b: 0, a: 0}
+  blueEmotionsData: {fileID: 11400000, guid: 2bfc31fa1eb8f084199039ed1e538e48, type: 2}
+  greenEmotionsData: {fileID: 11400000, guid: 4699797d3f297d840800d30591b735a6, type: 2}
+  redEmotionsData: {fileID: 11400000, guid: 113dad1fbdcc90745874f4186c3b11d8, type: 2}
+  yellowEmotionsData: {fileID: 11400000, guid: 6df536b44a86574489d9755e5d70290b, type: 2}
+  afraidColor: {r: 0.9626775, g: 1, b: 0.32352942, a: 1}
+  disgustedColor: {r: 0.5955882, g: 0.22687922, b: 0.11824178, a: 1}
+  happyColor: {r: 0.093101196, g: 0.9044118, b: 0.32747984, a: 1}
+  joyousColor: {r: 0, g: 0.7931037, b: 1, a: 1}
+  madColor: {r: 0.875, g: 0.16084558, b: 0.16084558, a: 1}
+  sadColor: {r: 0.31901842, g: 0.290279, b: 0.6691177, a: 1}
+  thoughtfulColor: {r: 0.809, g: 0.25882345, b: 1, a: 1}
+  worriedColor: {r: 1, g: 0.5172413, b: 0, a: 1}
+  allowOtherMonsterCards: 0
+  isDrawingCards: 0
+  cardSpawn: {fileID: 0}
+  poolEmotions: []
+--- !u!114 &114689988482316062
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1529411412462498}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fed608cc45014f15800e37ede4de535, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeOfGame: 3
+  randomizeMusic: 1
+  backgroundMusicArray:
+  - {fileID: 8300000, guid: b64dda38d7801594eae4be7b16551529, type: 3}
+  - {fileID: 8300000, guid: 08d54f33f870ae247ba0d95dd54cfe60, type: 3}
+  - {fileID: 8300000, guid: 8e038355eb8874c4f840d00addb9c7be, type: 3}
+  playerMonster: {fileID: 0}
+  monsterCreator: {fileID: 0}
+  voData: {fileID: 11400000, guid: 4d08331b214fd2e498ff1e4f7f35fd51, type: 2}
+  monsterLocation: {fileID: 0}
+  timeLimit: 30
+  gameStarted: 0
+  isTutorialRunning: 0
+  inputAllowed: 0
+  emotionSpawnLocs:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  backButton: {fileID: 0}
+  waitDuration: 2.5
+  answerSounds:
+  - {fileID: 0}
+  - {fileID: 8300000, guid: fc15f6989c7d2844d8bdcff18fe03ce3, type: 3}
+  tutorialHand: {fileID: 0}
+  tutorialCanvas: {fileID: 0}

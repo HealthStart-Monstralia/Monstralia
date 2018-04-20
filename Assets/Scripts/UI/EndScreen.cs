@@ -14,7 +14,6 @@ public class EndScreen : MonoBehaviour {
     [SerializeField] private Button[] buttonsToDisableOnFirstWin;
 
     private void Awake () {
-
         GetComponent<Canvas> ().worldCamera = Camera.main;
     }
 
@@ -23,6 +22,7 @@ public class EndScreen : MonoBehaviour {
         brain.SetActive (false);
         SoundManager.Instance.PlayCorrectSFX ();
         SoundManager.Instance.PlayVoiceOverClip (unlockSticker);
+
         if (GameManager.Instance.GetMinigameData (typeOfGame).stickerPrefab) {
             GameObject sticker = Instantiate (GameManager.Instance.GetMinigameData (typeOfGame).stickerPrefab, imageLocation.transform);
             sticker.transform.localPosition = Vector3.zero;
@@ -31,7 +31,8 @@ public class EndScreen : MonoBehaviour {
 
         headerText.text = "Congratulations you earned a new sticker!";
 
-        if (!GameManager.Instance.GetHasPlayerVisitedStickerbook ()) {
+        if (!GameManager.Instance.GetHasPlayerDone (DataType.GamePersistentEvents.FirstStickerEarned)) {
+            GameManager.Instance.SetPlayerDone (DataType.GamePersistentEvents.FirstStickerEarned);
             foreach (Button button in buttonsToDisableOnFirstWin) {
                 button.interactable = false;
             }

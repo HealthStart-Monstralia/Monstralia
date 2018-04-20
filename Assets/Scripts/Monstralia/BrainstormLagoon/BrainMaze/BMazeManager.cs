@@ -84,12 +84,14 @@ public class BMazeManager : AbstractGameManager<BMazeManager>
         pickupPrefabList.AddRange(GetFactoryList());
     }
 
-    public override void PregameSetup()
-    {
-        if (SoundManager.Instance)
-        {
-            SoundManager.Instance.ChangeAmbientSound(ambientSound);
-            SoundManager.Instance.StopPlayingVoiceOver();
+    private void OnDisable () {
+        finishLine.OnFinish -= OnFinish;
+    }
+
+    public override void PregameSetup () {
+        if (SoundManager.Instance) {
+            SoundManager.Instance.ChangeAmbientSound (ambientSound);
+            SoundManager.Instance.StopPlayingVoiceOver ();
         }
 
         backButton.SetActive(true);
@@ -123,14 +125,17 @@ public class BMazeManager : AbstractGameManager<BMazeManager>
         mazeInstance = Instantiate(mazePrefab, transform.position, Quaternion.identity) as Maze;
         StartCoroutine(mazeInstance.Generate(PostGeneration, generationStepDelay));
     }
+    
+    void PostGeneration () {
+        TimerClock.Instance.SetTimeLimit (levelConfig.timeLimit);
 
-    void PostGeneration()
-    {
-        TimerClock.Instance.SetTimeLimit(levelConfig.timeLimit);
-        monsterStart = mazeInstance.GetFirstCell().transform;
-        mazeInstance.ScaleMaze();
-        StartCountdown(GameStart, 2f);
-        Invoke("CreateMonster", 1f);
+        finishLine.OnFinish += OnFinish;
+        finishLine.isActivated = true;
+
+        monsterStart = mazeInstance.GetFirstCell ().transform;
+        mazeInstance.ScaleMaze ();
+        StartCountdown (GameStart, 2f);
+        Invoke ("CreateMonster", 1f);
     }
 
     IEnumerator RunTutorial()
@@ -246,21 +251,14 @@ public class BMazeManager : AbstractGameManager<BMazeManager>
         GameEnd();
     }
 
-    public bool OnFinish()
-    {
-        if (isTutorialRunning)
-        {
-            MonsterVictoryDance();
-            TutorialFinished();
-            return true;
+    public void OnFinish() {
+        if (isTutorialRunning) {
+            MonsterVictoryDance ();
+            TutorialFinished ();
+        } else if (gameStarted) {
+            MonsterVictoryDance ();
+            GameEnd ();
         }
-        else if (gameStarted)
-        {
-            MonsterVictoryDance();
-            GameEnd();
-            return true;
-        }
-        return false;
     }
 
 	public void GameStart () {

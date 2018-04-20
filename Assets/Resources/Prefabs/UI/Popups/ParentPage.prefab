@@ -72,8 +72,8 @@ GameObject:
   m_Component:
   - component: {fileID: 224262472807359354}
   - component: {fileID: 222616751300018936}
-  - component: {fileID: 114612679768330144}
   - component: {fileID: 114964869584307310}
+  - component: {fileID: 114612679768330144}
   - component: {fileID: 223519398893005060}
   m_Layer: 5
   m_Name: ParentPage
@@ -5530,6 +5530,35 @@ MonoBehaviour:
   - {fileID: 223637842464051902}
   selectedPosition: 470
   unselectedPosition: 450
+  introductionVO: {fileID: 8300000, guid: 3c18573aaa5bd764a9fbb1b5f7b7fd5a, type: 3}
+  introductionVO2: {fileID: 8300000, guid: 46b4896f96e20204c9637bca3096e9ca, type: 3}
+--- !u!114 &114965254399403522
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1699411105042454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 21300000, guid: 28556479114aee44bb67bf237ed90243, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
 --- !u!114 &114965825650821886
 MonoBehaviour:
   m_ObjectHideFlags: 1
