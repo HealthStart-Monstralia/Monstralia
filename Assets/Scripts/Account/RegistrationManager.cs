@@ -46,7 +46,7 @@ public class RegistrationManager : MonoBehaviour {
     }
 
     // Use with On End Edit event in input fields
-    public void OnEditVerifyEmail () { VerifyEmail (); }
+    public void OnEditVerifyEmail () { VerifyEmail (); VerifyReEmail (); }
     public void OnEditVerifyReEmail () { VerifyReEmail (); }
     public void OnEditVerifyFirstName () { VerifyFirstName (); }
     public void OnEditVerifyLastName () { VerifyLastName (); }
