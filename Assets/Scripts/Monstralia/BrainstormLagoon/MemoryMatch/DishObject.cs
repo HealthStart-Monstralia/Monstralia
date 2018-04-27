@@ -116,10 +116,10 @@ public class DishObject : MonoBehaviour {
             SoundManager.Instance.AddToVOQueue (myFood.clipOfName);
             OpenLid ();
             if (!manager.OnGuess (this, myFood.gameObject)) {
-                Invoke("CloseLid", 2f);
+                Invoke("CloseLid", 1f);
             }
 
-            yield return new WaitForSeconds (2f);
+            yield return new WaitForSeconds (1f);
 
             //The player can now guess again.
             SubtitlePanel.Instance.Hide ();

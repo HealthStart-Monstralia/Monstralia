@@ -36,7 +36,10 @@ public class BrainbowFoodItem : MonoBehaviour {
         if (BrainbowGameManager.Instance.inputAllowed) {
             offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0f));
             AudioClip clip = gameObject.GetComponent<Food> ().clipOfName;
-            SubtitlePanel.Instance.Display (gameObject.name, clip, true);
+            SubtitlePanel.Instance.Display (gameObject.name, null, true);
+            if (!SoundManager.Instance.DoesQueueContainClip (clip)) {
+                SoundManager.Instance.AddToVOQueue (clip);
+            }
             spriteRenderer.sortingOrder = 6;
         }
     }

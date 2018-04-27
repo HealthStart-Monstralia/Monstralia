@@ -21,7 +21,8 @@ public class IslandSection : MonoBehaviour {
         }
 
         SoundManager.Instance.StopAmbientSound ();
-        SoundManager.Instance.ChangeAmbientSound (ambientSound);
+        if (ambientSound)
+            SoundManager.Instance.ChangeAndPlayAmbientSound (ambientSound);
         SoundManager.Instance.ChangeAndPlayMusic (backgroundMusic);
     }
 

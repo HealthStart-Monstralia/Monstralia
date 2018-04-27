@@ -300,9 +300,13 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         EndScreen screen;
 		if (score >= numberOfDishes) {
 			if (difficultyLevel == 1) {
+                MilestoneManager.Instance.UnlockMilestone (DataType.Milestone.MemoryMatch1);
                 screen = GameOver (DataType.GameEnd.EarnedSticker);
                 screen.EditHeader ("Great job! You matched " + score + " healthy foods and earned a new sticker!");
             } else {
+                if (difficultyLevel == 3)
+                    MilestoneManager.Instance.UnlockMilestone (DataType.Milestone.MemoryMatch3);
+
                 screen = GameOver (DataType.GameEnd.CompletedLevel);
                 screen.EditHeader ("Nice job! You matched " + score + " healthy foods!");
             }

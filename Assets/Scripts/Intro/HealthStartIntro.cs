@@ -7,7 +7,6 @@ public class HealthStartIntro : MonoBehaviour {
     public Fader fader;
     public GameObject loadScreen;
     private SwitchScene sceneLoader;
-    [SerializeField] private LoadingScreen loader;
 
     private void Start () {
         sceneLoader = GetComponent<SwitchScene> ();
@@ -19,15 +18,14 @@ public class HealthStartIntro : MonoBehaviour {
         fader.FadeStayBlack ();
         yield return new WaitForSeconds (0.5f);
         fader.FadeIn ();
-        loader.LoadAsyncLevel (1);
         yield return new WaitForSeconds (3f);
-
+        StartCoroutine (StartFadeOut ());
     }
 
     IEnumerator StartFadeOut () {
         fader.FadeOut ();
         yield return new WaitForSeconds (1.5f);
-        if (HasPlayerHasSeenIntro () || SceneManager.GetSceneByName ("MonstraliaIntro").IsValid ()) {
+        if (HasPlayerHasSeenIntro () || !SceneManager.GetSceneByName ("MonstraliaIntro").IsValid ()) {
             sceneLoader.LoadScene ("Start");
         } else {
             sceneLoader.LoadScene ();

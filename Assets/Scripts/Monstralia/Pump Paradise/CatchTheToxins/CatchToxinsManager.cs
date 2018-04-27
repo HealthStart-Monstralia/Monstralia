@@ -50,7 +50,7 @@ public class CatchToxinsManager : AbstractGameManager<CatchToxinsManager> {
             monsterCreator = FindObjectOfType<CreateMonster> ();
             playerMonster = monsterCreator.SpawnPlayerMonster ();
             tutorialManager.StartTutorial ();
-            SoundManager.Instance.ChangeAmbientSound (ambientSound);
+            SoundManager.Instance.ChangeAndPlayAmbientSound (ambientSound);
         }
 
         else {

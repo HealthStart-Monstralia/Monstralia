@@ -26,6 +26,11 @@ public class ParentPage : Singleton<ParentPage> {
         }
     }
 
+    private void OnDisable () {
+        SoundManager.Instance.StopVOQueue ();
+        SoundManager.Instance.StopPlayingVoiceOver ();
+    }
+
     void IntroducePlayerToPage () {
         SoundManager.Instance.AddToVOQueue (introductionVO);
         SoundManager.Instance.AddToVOQueue (introductionVO2);

@@ -212,6 +212,12 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
         yield return new WaitForSeconds (end.length - 1.0f);
 
         if (score >= scoreGoal) {
+            if (GameManager.Instance.GetLevel (typeOfGame) == 1) {
+                MilestoneManager.Instance.UnlockMilestone (DataType.Milestone.MonsterEmotions1);
+            } else if (GameManager.Instance.GetLevel (typeOfGame) == 3) {
+                MilestoneManager.Instance.UnlockMilestone (DataType.Milestone.MonsterEmotions3);
+            }
+
             if (difficultyLevel == 1) {
                 GameOver (DataType.GameEnd.EarnedSticker);
                 SoundManager.Instance.AddToVOQueue (voData.FindVO ("emotion_sticker"));

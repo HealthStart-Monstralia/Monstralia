@@ -21,6 +21,7 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
     [SerializeField] private AudioClip introChime;
     [SerializeField] private AudioClip correctSfx;
     [SerializeField] private AudioClip finishedSfx;
+    [SerializeField] private AudioClip ambientSound;
 
     [Header ("Voiceovers")]
     public AudioClip[] rightChoiceVO;
@@ -58,6 +59,8 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
         levelOne.gameObject.SetActive (false);
         levelTwo.gameObject.SetActive (false);
         levelThree.gameObject.SetActive (false);
+        SoundManager.Instance.StopPlayingVoiceOver ();
+        SoundManager.Instance.ChangeAndPlayAmbientSound (ambientSound);
     }
 
     public override void PregameSetup () {
@@ -163,9 +166,16 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
 
     IEnumerator GameOverSequence () {
         yield return new WaitForSeconds (1f);
+
         if (score >= currentLevelManager.scoreGoal) {
             SoundManager.Instance.PlaySFXClip (finishedSfx);
             yield return new WaitForSeconds (2f);
+
+            if (GameManager.Instance.GetLevel (typeOfGame) == 1)
+                MilestoneManager.Instance.UnlockMilestone (DataType.Milestone.MonsterSenses1);
+            else if (GameManager.Instance.GetLevel (typeOfGame) == 3)
+                MilestoneManager.Instance.UnlockMilestone (DataType.Milestone.MonsterSenses3);
+
             if (!GameManager.Instance.GetIsStickerUnlocked(typeOfGame)) {
                 GameOver (DataType.GameEnd.EarnedSticker);
             } else {
@@ -173,6 +183,7 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
             }
         } else {
             yield return new WaitForSeconds (3f);
+
             GameOver (DataType.GameEnd.FailedLevel);
         }
     }
