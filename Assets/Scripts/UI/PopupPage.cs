@@ -11,13 +11,18 @@ public class PopupPage : MonoBehaviour {
         currentPopup = gameObject;
     }
 
+    private void OnDisable () {
+        //currentPopup = null;
+    }
+
     private void OnDestroy () {
         currentPopup = null;
     }
 
     public void OnButtonClose () {
         Animator anim = GetComponent<Animator> ();
-        Close ();
+        if (Close != null)
+            Close ();
         if (anim) {
             anim.Play ("PopupFadeOut", -1, 0f);
         }

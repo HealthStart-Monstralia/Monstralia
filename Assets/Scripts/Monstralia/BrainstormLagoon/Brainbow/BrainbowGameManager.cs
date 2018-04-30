@@ -62,11 +62,9 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager>
     // Event
     public void OnOutOfTime() { EndGameTearDown(); }
 
-    public override void PregameSetup()
-    {
-        milestoneManager = MilestoneManager.Instance;
-        SoundManager.Instance.ChangeAmbientSound(ambientSound);
-        foodPanel.DeactivateGameObject();
+    public override void PregameSetup () {
+        SoundManager.Instance.ChangeAndPlayAmbientSound (ambientSound);
+        foodPanel.DeactivateGameObject ();
 
         if (skipTutorial) GameManager.Instance.CompleteTutorial(DataType.Minigame.Brainbow);
         difficultyLevel = GameManager.Instance.GetLevel(DataType.Minigame.Brainbow);
@@ -264,8 +262,12 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager>
         yield return new WaitForSeconds(3f);
 
         // Player reached goal
-        if (score >= scoreGoal)
-        {
+        if (score >= scoreGoal) {
+            if (GameManager.Instance.GetLevel (typeOfGame) == 1) {
+                MilestoneManager.Instance.UnlockMilestone (DataType.Milestone.Brainbow1);
+            } else if (GameManager.Instance.GetLevel (typeOfGame) == 3) {
+                MilestoneManager.Instance.UnlockMilestone (DataType.Milestone.Brainbow3);
+            }
 
             // If level one, give player a sticker and complete the level, 
             // otherwise complete the level normally.

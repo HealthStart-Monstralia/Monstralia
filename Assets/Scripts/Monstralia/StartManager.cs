@@ -19,6 +19,16 @@ public class StartManager : Singleton<StartManager> {
         fader.FadeIn ();
     }
 
+    private void OnEnable () {
+        IntroManager.StartIntro += DisableButtons;
+        IntroManager.EndIntro += EnableButtons;
+    }
+
+    private void OnDisable () {
+        IntroManager.StartIntro -= DisableButtons;
+        IntroManager.EndIntro -= EnableButtons;
+    }
+
     void Start () {
         SoundManager.Instance.PlayBackgroundMusic ();
         sceneLoader = GetComponent<SwitchScene> ();
@@ -29,15 +39,14 @@ public class StartManager : Singleton<StartManager> {
         #endif
 
         monsterSpawn.gameObject.SetActive (false);
-        if (GameManager.Instance.GetIsMonsterSelected()) {
-            monsterSpawn.gameObject.SetActive (true);
-            CreateMonsterOnMap ();
-        }
 
         if (playIntro && !GameManager.Instance.isIntroShown) {
             GameManager.Instance.isIntroShown = true;
             DisableButtons ();
             StartCoroutine (PlayIntro ());
+        } else if (GameManager.Instance.GetIsMonsterSelected ()) {
+            monsterSpawn.gameObject.SetActive (true);
+            CreateMonsterOnMap ();
         }
     }
 

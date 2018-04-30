@@ -25,6 +25,20 @@ public static class DataType
         FirstStickerEarned = 2
     }
 
+    public enum Milestone {
+        //1 time and 3 time completion of each Brainstorm Lagoon Game
+        Brainbow1,
+        Brainbow3,
+        MemoryMatch1,
+        MemoryMatch3,
+        BrainMaze1,
+        BrainMaze3,
+        MonsterEmotions1,
+        MonsterEmotions3,
+        MonsterSenses1,
+        MonsterSenses3
+    }
+
     // Enum name should match scene name so MinigameButton can load the game.
     public enum Minigame
     {

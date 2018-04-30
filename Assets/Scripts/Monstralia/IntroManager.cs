@@ -10,6 +10,11 @@ public class IntroManager : Singleton<IntroManager> {
 	public GameObject signedUpPage;
     public GameObject didntSignUpPage;
 
+    public delegate void OnStartAction ();
+    public delegate void OnEndAction ();
+    public static event OnStartAction StartIntro;
+    public static event OnEndAction EndIntro;
+
     private GameObject[] pages = new GameObject[7];
 
 	new void Awake() {
@@ -34,11 +39,15 @@ public class IntroManager : Singleton<IntroManager> {
     }
 
     private void OnEnable () {
-        StartManager.Instance.DisableButtons ();
+        if (StartIntro != null) {
+            StartIntro ();
+        }
     }
 
     private void OnDisable () {
-        StartManager.Instance.EnableButtons();
+        if (EndIntro != null) {
+            EndIntro ();
+        }
     }
 
     public void ShowPage(GameObject selectedPage) {
@@ -59,10 +68,6 @@ public class IntroManager : Singleton<IntroManager> {
     // Disable using animation from PopupFade
     public void DisableFromAnim() {
         gameObject.SetActive (false);
-    }
-
-    public void SignedUp() {
-        ShowPage (signedUpPage);
     }
 
 }
