@@ -18,6 +18,11 @@ public class FoodList : MonoBehaviour {
     private static Dictionary<string, int> foodEatenCountDictionary = new Dictionary<string, int> ();
 
     private void Start () {
+        goodFoods = new List<GameObject> ();
+        badFoods = new List<GameObject> ();
+        foodStatsDictionary = new Dictionary<string, FoodStats> ();
+        foodEatenCountDictionary = new Dictionary<string, int> ();
+
         goodFoods.AddRange (Resources.LoadAll<GameObject> ("Prefabs/" + goodFoodsPath));
         badFoods.AddRange (Resources.LoadAll<GameObject> ("Prefabs/" + badFoodsPath));
 

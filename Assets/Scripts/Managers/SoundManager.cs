@@ -27,7 +27,6 @@ public class SoundManager : SingletonPersistent<SoundManager> {
     [SerializeField] private AudioClip incorrectSfx;
 
     private bool isMuted = false;                   /*!< Flag for if the sound has been muted */
-    private bool isPlayingClip = false;             /*!< Flag to prevent a clip from playing more than once at a time */
     private bool isPlayingVoiceOver = false;        /*!< Way to check if a voice over is already playing */
     private bool isQueuePlaying = false;
     private Queue<AudioClip> clipQueue = new Queue<AudioClip> ();
@@ -61,14 +60,8 @@ public class SoundManager : SingletonPersistent<SoundManager> {
 	 * \brief Mute the game music.
 	 */
     public void Mute() {
-		if(!isMuted) {
-			AudioListener.pause = true;
-            isMuted = true;
-		}
-		else {
-			AudioListener.pause = false;
-            isMuted = false;
-		}
+        isMuted = !isMuted;
+        AudioListener.pause = isMuted;
 	}
 
     #region BackgroundMusic
@@ -191,12 +184,10 @@ public class SoundManager : SingletonPersistent<SoundManager> {
     }
 
     IEnumerator UseSFXSource (AudioSource source) {
-        isPlayingClip = true;
         source.Play ();
         yield return new WaitForSeconds (source.clip.length);
 
         sourceCount--;
-        isPlayingClip = false;
         Destroy (source.gameObject);
     }
 

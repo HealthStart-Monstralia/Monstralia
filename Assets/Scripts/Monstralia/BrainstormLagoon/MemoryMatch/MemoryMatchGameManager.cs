@@ -170,18 +170,18 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         Vector3 zAxis = Vector3.forward; //<0, 0, 1>;
         float waitDuration = 0f;
 
-        while (waitDuration < 5f) {
+        while (waitDuration < 4f) {
             print (waitDuration);
             for (int i = 0; i < numberOfDishes; ++i) {
                 GameObject d = dishes[i];
                 Quaternion startRotation = d.transform.rotation;
 
-                d.transform.RotateAround (dishAnchor.transform.position, zAxis, rotationalSpeed * 0.75f);
+                d.transform.RotateAround (dishAnchor.transform.position, zAxis, rotationalSpeed * 1f);
                 d.transform.rotation = startRotation;
             }
 
             waitDuration += 0.02f;
-            yield return new WaitForFixedUpdate ();
+            yield return new WaitForSecondsRealtime (0.01f);
         }
 
         StartCountdown (GameStart);
@@ -275,13 +275,13 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
                 dishes[i].GetComponent<DishObject>().Shake(true);
                 monsterAnimator.Play ("MM_Eat", -1, 0f);
 
-                for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 2) {
+                for (float t = 0.0f; t < 0.6f; t += Time.deltaTime * 2) {
                     food.transform.position = Vector2.Lerp (food.transform.position, playerMonster.transform.position + new Vector3 (0, 1f, 0), t);
                     yield return null;
                 }
 
                 food.GetComponent<Food> ().EatFood ();
-                yield return new WaitForSeconds (0.5f);
+                yield return new WaitForSeconds (0.3f);
             }
 		}
         monsterAnimator.Play ("MM_Dance", -1, 0f);
