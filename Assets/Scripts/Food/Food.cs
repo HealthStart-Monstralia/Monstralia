@@ -35,7 +35,8 @@ public class Food : MonoBehaviour {
 
     public void EatFood () {
         FoodList.IncreaseFoodCount (foodName);
-        Destroy (gameObject);
+        LeanTween.scale (gameObject, Vector3.zero, 0.3f);
+        Destroy (gameObject, 0.5f);
         SoundManager.Instance.PlaySFXClip (eatSound);
     }
 }

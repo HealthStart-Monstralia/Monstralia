@@ -31,7 +31,7 @@ public class DishObject : MonoBehaviour {
 		initialSortingLayer = dishSpriteComponent.sortingOrder;
 	}
 
-	void LateUpdate() {
+    void LateUpdate() {
         int layerNum = Mathf.Clamp((initialSortingLayer + 13) + ((-(int)transform.position.y) * 10), 1, 100);
 
         lidSpriteComponent.sortingOrder = layerNum + 2;
@@ -110,24 +110,18 @@ public class DishObject : MonoBehaviour {
      */
 
     IEnumerator OnMouseDown () {
-		MemoryMatchGameManager manager = MemoryMatchGameManager.Instance;
-		if (manager.inputAllowed && !manager.isGuessing) {
-            SubtitlePanel.Instance.Display (myFood.name);
-            SoundManager.Instance.AddToVOQueue (myFood.clipOfName);
-            OpenLid ();
-            if (!manager.OnGuess (this, myFood.gameObject)) {
-                Invoke("CloseLid", 1f);
+		if (!MemoryMatchGameManager.Instance.isGuessing && MemoryMatchGameManager.Instance.inputAllowed) {
+            SubtitlePanel.Instance.Display (myFood.name, null, false, 1.5f);
+
+            if (!matched) {
+                MemoryMatchGameManager.Instance.OnGuess (this, myFood);
+            } else {
+                if (!SoundManager.Instance.DoesQueueContainClip (myFood.clipOfName))
+                    SoundManager.Instance.AddToVOQueue (myFood.clipOfName);
             }
-
             yield return new WaitForSeconds (1f);
-
-            //The player can now guess again.
-            SubtitlePanel.Instance.Hide ();
-            manager.isGuessing = false;
-		     
 	    }
-    }
-			
+    }			
 
 	public bool IsMatched() {
 		return matched;

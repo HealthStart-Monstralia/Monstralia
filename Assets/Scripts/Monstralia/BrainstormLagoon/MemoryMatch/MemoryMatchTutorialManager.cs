@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MemoryMatchTutorialManager : MonoBehaviour {
-    private Canvas tutorialCanvas;
-    private Coroutine tutorialCoroutine;
+    [SerializeField] private Animator tutorialHandAnim;
     [SerializeField] private DishObject[] tutorialDishes;
     [SerializeField] private GameObject tutorialBanana;
     [SerializeField] private GameObject tutorialMatchBanana;
+    private Canvas tutorialCanvas;
+    private Coroutine tutorialCoroutine;
     private VoiceOversData voData;          // Pull from MemoryMatchGameManager
 
     private void Awake () {
@@ -39,26 +40,17 @@ public class MemoryMatchTutorialManager : MonoBehaviour {
         tutorialDishes[1].SetFood (tutFood2);
         tutorialDishes[2].SetFood (tutFood3);
 
-        /*
-		tutFood1.transform.localPosition = new Vector3 (0, 1.25f, 0);
-		tutFood2.transform.localPosition = new Vector3 (0, 1.25f, 0);
-		tutFood3.transform.localPosition = new Vector3 (0, 1.25f, 0);
-        */
-
         tutFood1.transform.localScale = new Vector3 (0.65f, 0.65f, 1f);
         tutFood2.transform.localScale = new Vector3 (0.65f, 0.65f, 1f);
         tutFood3.transform.localScale = new Vector3 (0.65f, 0.65f, 1f);
-
         yield return new WaitForSeconds (1f);
 
         AudioClip tutorial1 = voData.FindVO ("1_tutorial_welcome");
         AudioClip tutorial2 = voData.FindVO ("2_tutorial_platters");
         SoundManager.Instance.PlayVoiceOverClip (tutorial1);
-
         yield return new WaitForSeconds (tutorial1.length);
 
         SoundManager.Instance.PlayVoiceOverClip (tutorial2);
-
         yield return new WaitForSeconds (tutorial2.length);
 
         tutDish1.SpawnLids (true);
@@ -78,11 +70,13 @@ public class MemoryMatchTutorialManager : MonoBehaviour {
         AudioClip tutorial4 = voData.FindVO ("4_tutorial_letmeshow");
         SoundManager.Instance.PlayVoiceOverClip (tutorial3);
 
-        yield return new WaitForSeconds (tutorial3.length - 1.5f);
+        yield return new WaitForSeconds (tutorial3.length - 1.0f);
 
         tutorialMatchBanana.gameObject.SetActive (true);
-
-        yield return new WaitForSeconds (1.5f);
+        Vector3 originalScale = tutorialMatchBanana.transform.localScale;
+        tutorialMatchBanana.transform.localScale = Vector3.zero;
+        LeanTween.scale (tutorialMatchBanana, originalScale, 0.3f).setEaseOutBack ();
+        yield return new WaitForSeconds (1.0f);
 
         // Dish close.
         foreach (DishObject dish in tutorialDishes) {
@@ -90,24 +84,24 @@ public class MemoryMatchTutorialManager : MonoBehaviour {
         }
 
         SoundManager.Instance.PlayVoiceOverClip (tutorial4);
-        yield return new WaitForSeconds (tutorial4.length - 1f);
+        yield return new WaitForSeconds (tutorial4.length);
 
-        Animator handAnim = tutorialCanvas.gameObject.transform.Find ("TutorialAnimation").gameObject.transform.Find ("Hand").gameObject.GetComponent<Animator> ();
-        handAnim.Play ("mmhand_5_12");
-        yield return new WaitForSeconds (4f);
+        tutorialHandAnim.Play ("mmhand_5_12");
+        yield return new WaitForSeconds (1.5f);
 
         // Hand taps on the left dish cover
         SoundManager.Instance.PlayCorrectSFX ();
         tutorialDishes[0].OpenLid ();
 
-        yield return new WaitForSeconds (2f);
-        tutorialDishes[0].CloseLid ();
+        yield return new WaitForSeconds (3f);
 
-        handAnim.gameObject.SetActive (false);
+        tutorialDishes[0].CloseLid ();
+        yield return new WaitForSeconds (0.5f);
+
+        tutorialHandAnim.gameObject.SetActive (false);
         MemoryMatchGameManager.Instance.inputAllowed = true;
         AudioClip tutorial5 = voData.FindVO ("5_tutorial_nowtry");
         SubtitlePanel.Instance.Display ("Now you try!", tutorial5);
-
 
         for (int i = 0; i < tutorialDishes.Length; ++i) {
             tutorialDishes[i].GetComponent<Collider2D> ().enabled = true;
@@ -115,13 +109,11 @@ public class MemoryMatchTutorialManager : MonoBehaviour {
     }
 
     public void SkipTutorialButton (GameObject button) {
-        SkipTutorial ();
-        Destroy (button);
-    }
-
-    public void SkipTutorial () {
         StopCoroutine (tutorialCoroutine);
-        FinishTutorial ();
+        tutorialHandAnim.gameObject.SetActive (false);
+        StartCoroutine (MemoryMatchGameManager.Instance.TurnOffTutorial ());
+        MemoryMatchGameManager.Instance.inputAllowed = false;
+        Destroy (button);
     }
 
     void FinishTutorial() {

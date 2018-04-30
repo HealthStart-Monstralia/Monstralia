@@ -8,6 +8,12 @@ public class SensesTutorialManager : MonoBehaviour {
     public Coroutine tutorialCoroutine;
     public GameObject instructionPopup;
 
+    [SerializeField] private GameObject see;
+    [SerializeField] private GameObject hear;
+    [SerializeField] private GameObject touch;
+    [SerializeField] private GameObject smell;
+    [SerializeField] private GameObject taste;
+
     [SerializeField] private SensesFactory senseFactory;
     [SerializeField] private Text senseText;
     [SerializeField] private string[] correctLines;
@@ -32,6 +38,12 @@ public class SensesTutorialManager : MonoBehaviour {
     }
 
     IEnumerator RunTutorial () {
+        see.transform.localScale = Vector3.zero;
+        hear.transform.localScale = Vector3.zero;
+        touch.transform.localScale = Vector3.zero;
+        smell.transform.localScale = Vector3.zero;
+        taste.transform.localScale = Vector3.zero;
+
         monster = SensesGameManager.Instance.playerMonster;
         isRunningTutorial = true;
         sensesManager.IsInputAllowed = false;
@@ -44,21 +56,28 @@ public class SensesTutorialManager : MonoBehaviour {
 
         AudioClip tutorial2Clip = voData.FindVO ("2_use_senses");
         SoundManager.Instance.PlayVoiceOverClip (tutorial2Clip);
-        yield return new WaitForSeconds (tutorial2Clip.length);
+        yield return new WaitForSeconds (tutorial2Clip.length - 1f);
+
+        LeanTween.scale (touch, Vector3.one, 0.25f).setEaseOutBack();
+        yield return new WaitForSeconds (1f);
 
         AudioClip tutorial3Clip = voData.FindVO ("3_taste");
         SoundManager.Instance.PlayVoiceOverClip (tutorial3Clip);
+        LeanTween.scale (taste, Vector3.one, 0.25f).setEaseOutBack ();
         yield return new WaitForSeconds (tutorial3Clip.length);
 
         AudioClip tutorial4Clip = voData.FindVO ("4_hear");
         SoundManager.Instance.PlayVoiceOverClip (tutorial4Clip);
+        LeanTween.scale (hear, Vector3.one, 0.25f).setEaseOutBack ();
         yield return new WaitForSeconds (tutorial4Clip.length);
 
         AudioClip tutorial5Clip = voData.FindVO ("5_see");
         SoundManager.Instance.PlayVoiceOverClip (tutorial5Clip);
+        LeanTween.scale (see, Vector3.one, 0.25f).setEaseOutBack ();
         yield return new WaitForSeconds (tutorial5Clip.length);
 
         AudioClip tutorial6Clip = voData.FindVO ("6_smell");
+        LeanTween.scale (smell, Vector3.one, 0.25f).setEaseOutBack ();
         SoundManager.Instance.PlayVoiceOverClip (tutorial6Clip);
         yield return new WaitForSeconds (tutorial6Clip.length);
 

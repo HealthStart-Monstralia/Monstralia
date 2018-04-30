@@ -5,8 +5,9 @@ using UnityEngine.UI;
 
 public class SubtitlePanel : Singleton<SubtitlePanel> {
 	private bool isDisplaying = false;
-	private Coroutine waitCoroutine;
+    private Coroutine currentCoroutine;
     private Animator animator;
+    private float subtitleDuration;
 
     public GameObject subtitleObject;
 	public Text subtitleText;
@@ -27,23 +28,9 @@ public class SubtitlePanel : Singleton<SubtitlePanel> {
     /// <param name="clip">Voice over audioclip to be played alongside subtitle.</param>
     /// <param name="queueVO">Add the voice over to a queue to be played.</param>
     public void Display (string subtitle = "", AudioClip clip = null, bool queueVO = false, float duration = 3f) {
-        if (subtitle != subtitleText.text || !isDisplaying) {
-            subtitleObject.SetActive (true);
-            if (!isDisplaying) {
-                waitCoroutine = StartCoroutine (DisplayCoroutine (subtitle, clip, queueVO, duration));
-            } else {
-                StopCoroutine (waitCoroutine);
-                waitCoroutine = StartCoroutine (DisplayCoroutine (subtitle, clip, queueVO, duration));
-            }
-        }
-    }
-
-    IEnumerator DisplayCoroutine (string subtitle, AudioClip clip, bool queueVO, float duration) {
-        isDisplaying = true;
-
+        subtitleDuration = duration;
+        subtitleObject.SetActive (true);
         subtitleText.text = subtitle;
-        ShowSubtitle ();
-
         if (clip) {
             if (queueVO) {
                 SoundManager.Instance.AddToVOQueue (clip);
@@ -51,26 +38,39 @@ public class SubtitlePanel : Singleton<SubtitlePanel> {
                 SoundManager.Instance.PlayVoiceOverClip (clip);
             }
         }
-
-        yield return new WaitForSeconds (duration);
-        HideSubtitle ();
-        yield return new WaitForSeconds (0.2f);
-        subtitleObject.SetActive (false);
-        isDisplaying = false;
+        if (!isDisplaying) {
+            currentCoroutine = StartCoroutine (FadeInSubtitle ());
+            isDisplaying = true;
+        } else {
+            StopCoroutine (currentCoroutine);
+            currentCoroutine = StartCoroutine (ShowSubtitle (subtitleDuration));
+        }
     }
 
     public void Hide () {
         if (isDisplaying) {
-            StopCoroutine (waitCoroutine);
-            HideSubtitle ();
+            print ("StopCoroutine");
+            StopCoroutine (currentCoroutine);
+            StartCoroutine (FadeOutSubtitle ());
         }
     }
 
-    void ShowSubtitle() {
+    IEnumerator FadeInSubtitle() {
         animator.Play ("Subtitle_In", -1, 0f);
+        yield return new WaitForSeconds (0.25f);
+        currentCoroutine = StartCoroutine (ShowSubtitle (subtitleDuration));
     }
 
-    void HideSubtitle () {
+    IEnumerator ShowSubtitle (float duration) {
+        animator.Play ("Subtitle_Still", -1, 0f);
+        yield return new WaitForSeconds (duration);
+        currentCoroutine = StartCoroutine (FadeOutSubtitle ());
+    }
+
+    IEnumerator FadeOutSubtitle () {
         animator.Play ("Subtitle_Out", -1, 0f);
+        yield return new WaitForSeconds (0.2f);
+        subtitleObject.SetActive (false);
+        isDisplaying = false;
     }
 }

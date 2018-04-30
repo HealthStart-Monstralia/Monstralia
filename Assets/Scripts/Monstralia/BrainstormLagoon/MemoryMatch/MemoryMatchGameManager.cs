@@ -22,15 +22,13 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
     public GameObject dishAnchor;
 
 	public ScoreGauge scoreGauge;
-	[HideInInspector] public bool animIsPlaying = false;
-	[HideInInspector] public bool inputAllowed = false;
+	 public bool inputAllowed = false;
     [HideInInspector] public GameObject selectedFood;
     public float rotationalSpeed;
 
 	public AudioClip[] wrongMatchClips;
 	public AudioClip munchClip;
-    [HideInInspector] public bool isGuessing = false;
-
+     public bool isGuessing = false;
 
     private bool gameStarted;
     private int score;
@@ -77,17 +75,23 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
     }
 
     IEnumerator TutorialTearDown () {
-        isRunningTutorial = false;
+        yield return new WaitForSeconds (1.0f);
+
+        SubtitlePanel.Instance.Display ("Good job!", goodjobClips[1]);
+        yield return new WaitForSeconds (1.0f);
+
+        StartCoroutine (TurnOffTutorial ());
+    }
+
+    public IEnumerator TurnOffTutorial () {
         score = 0;
-
-        yield return new WaitForSeconds (2.0f);
-
         AudioClip letsPlay = voData.FindVO ("letsplay");
-        SubtitlePanel.Instance.Display ("Perfect!", letsPlay);
+        SubtitlePanel.Instance.Display ("Let's play Memory Match!", letsPlay);
         yield return new WaitForSeconds (2.0f);
 
-        SubtitlePanel.Instance.Hide ();
         tutorialManager.gameObject.SetActive (false);
+        isRunningTutorial = false;
+        isGuessing = false;
         GameManager.Instance.CompleteTutorial (DataType.Minigame.MemoryMatch);
         StartCoroutine (PrepareGame ());
     }
@@ -103,7 +107,7 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         ActivateHUD (true);
         SpawnDishes ();
         CreateFoodInDishes ();
-        SubtitlePanel.Instance.Display ("Remember the foods!", voData.FindVO("memory_remember"));
+        SubtitlePanel.Instance.Display ("Remember where the foods are!", voData.FindVO("memory_remember"));
         yield return new WaitForSeconds (4f);
 
         StartCoroutine (SpawnDishLids ());
@@ -170,18 +174,17 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         Vector3 zAxis = Vector3.forward; //<0, 0, 1>;
         float waitDuration = 0f;
 
-        while (waitDuration < 5f) {
-            print (waitDuration);
+        while (waitDuration < 4f) {
             for (int i = 0; i < numberOfDishes; ++i) {
                 GameObject d = dishes[i];
                 Quaternion startRotation = d.transform.rotation;
 
-                d.transform.RotateAround (dishAnchor.transform.position, zAxis, rotationalSpeed * 0.75f);
+                d.transform.RotateAround (dishAnchor.transform.position, zAxis, rotationalSpeed * 1.25f);
                 d.transform.rotation = startRotation;
             }
 
             waitDuration += 0.02f;
-            yield return new WaitForFixedUpdate ();
+            yield return new WaitForSeconds (0.01f);
         }
 
         StartCountdown (GameStart);
@@ -201,23 +204,47 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
 		}
 	}
 
-    public bool OnGuess (DishObject dish, GameObject food) {
+    public void OnGuess (DishObject dish, Food food) {
         isGuessing = true;
-        if (food == selectedFood) {
-            if (Random.Range(0, 1f) < 0.3f) {
-                SoundManager.Instance.PlayVoiceOverClip (goodjobClips.GetRandomItem ());
+        dish.OpenLid ();
+        
+        SoundManager.Instance.AddToVOQueue (food.clipOfName);
+        if (IsAnswerCorrect(food.gameObject)) {
+            if (!isRunningTutorial) {
+                StartCoroutine (AnswerWait (1.5f, dish, true));
+
+                if (Random.Range (0, 1f) < 0.3f) {
+                    SoundManager.Instance.AddToVOQueue (goodjobClips.GetRandomItem ());
+                }
             }
 
             dish.Correct ();
             SoundManager.Instance.PlayCorrectSFX ();
-            OnScore (food);
-            return true;
+            OnScore ();
         }
+        else {
+            StartCoroutine (AnswerWait (2.0f, dish, false));
+        }
+    }
 
+    private bool IsAnswerCorrect (GameObject food) {
+        if (food == selectedFood)
+            return true;
         return false;
     }
 
-	public void ChooseFoodToMatch() {
+    IEnumerator AnswerWait (float duration, DishObject dish, bool isCorrect) {
+        yield return new WaitForSeconds (duration);
+        isGuessing = false;
+        if (!HasScoreBeenReached ()) {
+            if (isCorrect)
+                ChooseFoodToMatch ();
+            else
+                dish.CloseLid ();
+        }
+    }
+
+    public void ChooseFoodToMatch() {
 		if (currentFoodToMatch)
 			Destroy (currentFoodToMatch);
 
@@ -246,15 +273,16 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
 		return newFood;
 	}
 
-    public void OnScore(GameObject food) {
+    bool HasScoreBeenReached () {
+        return score >= numberOfDishes;
+    }
+
+    public void OnScore() {
         if (!isRunningTutorial) {
             ++score;
             UpdateScoreGauge ();
-            if (score >= numberOfDishes) {
+            if (HasScoreBeenReached()) {
                 StartCoroutine (RunEndGameAnimation ());
-            }
-            else {
-                Invoke ("ChooseFoodToMatch", 2f);
             }
         }
         else {
@@ -263,7 +291,6 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
     }
 
 	IEnumerator RunEndGameAnimation () {
-		animIsPlaying = true;
 		StopTimer();
         gameStarted = false;
         inputAllowed = false;

@@ -78,6 +78,13 @@ public static class DataType {
         Yellow = 3
     };
 
+    public enum MonsterName {
+        Dinobaby = 0,
+        Catbear = 1,
+        Cyclopet = 2,
+        Rabbat = 3
+    };
+
     // Emotions referenced by Monster.cs, EmotionsGenerator.cs, EmotionsCardHand.cs
     public enum MonsterEmotions {
         Happy = 0,
@@ -95,7 +102,7 @@ public static class DataType {
     public enum Senses {
         See,
         Hear,
-        Feel,
+        Touch,
         Smell,
         Taste,
         NONE

@@ -60,6 +60,7 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
     public void OnOutOfTime () { EndGameTearDown (); }
 
     public override void PregameSetup () {
+        LeanTween.init (1600);
         SoundManager.Instance.ChangeAndPlayAmbientSound (ambientSound);
         foodPanel.DeactivateGameObject ();
 
@@ -78,6 +79,7 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
         monsterObject.transform.localScale = Vector3.one * 0.4f;
         monsterObject.spriteRenderer.sortingOrder = 0;
         monsterObject.ChangeEmotions (DataType.MonsterEmotions.Joyous);
+        monsterObject.colliderComponent.enabled = false;
 
         if (GameManager.Instance.GetPendingTutorial (DataType.Minigame.Brainbow)) {
             tutorialManager.gameObject.SetActive (true);
@@ -211,9 +213,11 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
         newFood.name = foods[randomIndex].GetComponent<Food> ().foodName;
 		newFood.AddComponent<BrainbowFoodItem> ();
 		newFood.GetComponent<Food>().Spawn(spawnPos, spawnPos, foodScale);
+        newFood.transform.localScale = Vector3.zero;
+        LeanTween.scale (newFood, Vector3.one * foodScale, 0.4f).setEaseOutBack ();
 
         // Remove created food item from food pool
-		foods.RemoveAt(randomIndex);
+        foods.RemoveAt(randomIndex);
     }
 
 	void EndGameTearDown () {
@@ -231,16 +235,19 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
 
 	IEnumerator RunEndGameAnimation() {
         OnGameEnd ();
-        monsterObject.ChangeEmotions (DataType.MonsterEmotions.Joyous);
-
-        yield return new WaitForSeconds (2f + 0.1f*activeFoods.Count);
-        SoundManager.Instance.AddToVOQueue(voData.FindVO("yay"));
-        monsterObject.ChangeEmotions (DataType.MonsterEmotions.Thoughtful);
-        StartCoroutine (TurnOffRainbows ());
-        yield return new WaitForSeconds (3f);
         
         // Player reached goal
-        if (score >= scoreGoal) {
+        if (DidPlayerWin ()) {
+
+            monsterObject.ChangeEmotions (DataType.MonsterEmotions.Joyous);
+            yield return new WaitForSeconds (2f + 0.1f * activeFoods.Count);
+
+            SoundManager.Instance.AddToVOQueue (voData.FindVO ("yay"));
+            monsterObject.ChangeEmotions (DataType.MonsterEmotions.Happy);
+            yield return new WaitForSeconds (3f);
+
+            StartCoroutine (TurnOffRainbows ());
+
             if (GameManager.Instance.GetLevel (typeOfGame) == 1) {
                 MilestoneManager.Instance.UnlockMilestone (DataType.Milestone.Brainbow1);
             } else if (GameManager.Instance.GetLevel (typeOfGame) == 3) {
@@ -258,7 +265,11 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
         
         // Player did not reach goal, show game over
         else {
+            monsterObject.ChangeEmotions (DataType.MonsterEmotions.Sad);
+            StartCoroutine (TurnOffRainbows ());
             SoundManager.Instance.PlayVoiceOverClip (voData.FindVO ("dnf"));
+            yield return new WaitForSeconds (3f);
+
             GameOver (DataType.GameEnd.FailedLevel);
         }
     }
@@ -329,5 +340,9 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
         yield return new WaitForSeconds (0.25f);
         ShowRainbowStripe (0, false);
         yield return new WaitForSeconds (0.25f);
+    }
+
+    public bool DidPlayerWin () {
+        return score >= scoreGoal;
     }
 }

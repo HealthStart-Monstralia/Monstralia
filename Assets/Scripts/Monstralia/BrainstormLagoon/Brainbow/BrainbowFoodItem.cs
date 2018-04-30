@@ -89,7 +89,8 @@ public class BrainbowFoodItem : MonoBehaviour {
     }
 
     public void GetEaten() {
-        StartCoroutine (MoveToMonster ());
+        if (BrainbowGameManager.Instance.DidPlayerWin ())
+            StartCoroutine (MoveToMonster ());
     }
 
     IEnumerator MoveToMonster () {
@@ -100,6 +101,7 @@ public class BrainbowFoodItem : MonoBehaviour {
 
         for (t = 0.0f; t < 0.1f; t += Time.deltaTime * 0.1f) {
             transform.position = Vector2.Lerp (transform.position, BrainbowGameManager.Instance.monsterObject.transform.position, t);
+            LeanTween.scale (gameObject, Vector3.zero, 2f);
             yield return null;
         }
 
