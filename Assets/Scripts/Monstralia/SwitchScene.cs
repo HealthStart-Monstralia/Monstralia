@@ -7,6 +7,8 @@ public class SwitchScene: MonoBehaviour {
     public GameObject loadingScreen;
 
     public void LoadScene() {
+        if (SoundManager.Instance)
+            SoundManager.Instance.StopAmbientSound ();
 
         if (loadingScreen) {
             Instantiate (loadingScreen, transform.root);

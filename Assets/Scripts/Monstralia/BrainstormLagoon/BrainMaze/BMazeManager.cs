@@ -90,7 +90,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager>
 
     public override void PregameSetup () {
         if (SoundManager.Instance) {
-            SoundManager.Instance.ChangeAmbientSound (ambientSound);
+            SoundManager.Instance.ChangeAndPlayAmbientSound (ambientSound);
             SoundManager.Instance.StopPlayingVoiceOver ();
         }
 
@@ -286,31 +286,23 @@ public class BMazeManager : AbstractGameManager<BMazeManager>
         playerMonster.GetComponent<BMazeMonsterMovement>().MoveToFinishLine(finishLine.transform.position);
     }
 
-    public IEnumerator EndGameWait(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        if (!isTutorialRunning && !gameStarted)
-        {
-            if (score >= scoreGoal)
-            {
-                if (GameManager.Instance.GetLevel(DataType.Minigame.BrainMaze).Equals(levelOne))
-                {
+    public IEnumerator EndGameWait (float duration) {
+        yield return new WaitForSeconds (duration);
+        EndGame ();
+    }
 
-                    milestoneManager.UnlockMilestone(DataType.Milestone.BrainMaze1);
-
+    void EndGame() {
+        if (!isTutorialRunning && !gameStarted) {
+            if (score >= scoreGoal) {
+                if (GameManager.Instance.GetLevel (typeOfGame) == 1) {
+                    MilestoneManager.Instance.UnlockMilestone (DataType.Milestone.BrainMaze1);
+                } else if (GameManager.Instance.GetLevel (typeOfGame) == 3) {
+                    MilestoneManager.Instance.UnlockMilestone (DataType.Milestone.BrainMaze3);
                 }
-                if (GameManager.Instance.GetLevel(DataType.Minigame.BrainMaze).Equals(levelThree))
-                {
-                    milestoneManager.UnlockMilestone(DataType.Milestone.BrainMaze3);
-                }
-
-                if (!GameManager.Instance.GetIsStickerUnlocked(typeOfGame))
-                {
-                    GameOver(DataType.GameEnd.EarnedSticker);
-                }
-                else
-                {
-                    GameOver(DataType.GameEnd.CompletedLevel);
+                if (!GameManager.Instance.GetIsStickerUnlocked (typeOfGame)) {
+                    GameOver (DataType.GameEnd.EarnedSticker);
+                } else {
+                    GameOver (DataType.GameEnd.CompletedLevel);
                 }
             }
             else

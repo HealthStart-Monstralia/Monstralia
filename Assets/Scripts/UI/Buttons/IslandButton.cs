@@ -20,6 +20,7 @@ public class IslandButton : MonoBehaviour {
 #else
                 isUnlocked = false;
 #endif
+            buttonOfIsland.interactable = isUnlocked;
         }
 
     }

@@ -1,10 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class StickerBehaviour : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler {
+public class StickerBehaviour : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IDragHandler {
 
 	private bool isSticked = false;
-	private Vector2 pointerOffset;
 	private CanvasGroup canvasGroup;
 	private int sortLayer;
     private float originalWidth, originalHeight;    // For rescaling the stickers
@@ -16,6 +15,10 @@ public class StickerBehaviour : MonoBehaviour, IPointerDownHandler, IPointerUpHa
             canvasGroup.blocksRaycasts = false;
 			StickerManager.Instance.DisableOtherStickerSlots (typeOfSticker);
             RestoreSize ();
+            transform.position = new Vector3 (
+                eventData.position.x,
+                eventData.position.y,
+                0f);
         }
 	}
 
@@ -28,17 +31,12 @@ public class StickerBehaviour : MonoBehaviour, IPointerDownHandler, IPointerUpHa
         }
 	}
 
-	public void OnBeginDrag (PointerEventData eventData) {
-		if (!isSticked)
-			pointerOffset = new Vector3 (eventData.position.x, eventData.position.y, 0) - transform.position;
-	}
-
 	public void OnDrag (PointerEventData eventData) {
 		if (!isSticked) {
 			transform.position = new Vector3 (
 				eventData.position.x, 
 				eventData.position.y, 
-				0f) - new Vector3 (pointerOffset.x, pointerOffset.y, 0f);
+				0f);
 		}
 	}
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class OpenPopupButton : MonoBehaviour {
+public class PopupButton : MonoBehaviour {
     public GameObject currentPopup;
     public GameObject pagePrefab;
     public Button[] buttonsToControl;   // Any buttons in this list will be automatically disabled or enabled depending on if a popup exists
