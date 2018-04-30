@@ -3,35 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager>
-{
+public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager> {
     [System.Serializable]
-    public struct MemoryMatchLevel
-    {
+    public struct MemoryMatchLevel {
         public float timeLimit;
         public int numDishes;
     }
-    [Header("Memory Match Game Manager fields")]
-    public MilestoneManager milestoneManager;
+    [Header ("Memory Match Game Manager fields")]
     public VoiceOversData voData;
     public MemoryMatchLevel levelOne, levelTwo, levelThree;
     [HideInInspector] public MemoryMatchLevel currentLevel;
 
     public Transform monsterSpawnPos;
-    public Transform foodToMatchSpawnPos;
-    public float foodScale;
-    public float foodToMatchScale;
-    public GameObject dishPrefab;
+	public Transform foodToMatchSpawnPos;
+	public float foodScale;
+	public float foodToMatchScale;
+	public GameObject dishPrefab;
     public GameObject dishAnchor;
 
-    public ScoreGauge scoreGauge;
-    [HideInInspector] public bool animIsPlaying = false;
-    [HideInInspector] public bool inputAllowed = false;
+	public ScoreGauge scoreGauge;
+	[HideInInspector] public bool animIsPlaying = false;
+	[HideInInspector] public bool inputAllowed = false;
     [HideInInspector] public GameObject selectedFood;
     public float rotationalSpeed;
 
-    public AudioClip[] wrongMatchClips;
-    public AudioClip munchClip;
+	public AudioClip[] wrongMatchClips;
+	public AudioClip munchClip;
     [HideInInspector] public bool isGuessing = false;
 
 
@@ -42,71 +39,65 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
     private int numberOfDishes;
     private GameObject currentFoodToMatch;
     private int difficultyLevel;
-    private List<GameObject> dishes = new List<GameObject>();
-    private List<GameObject> foodList = new List<GameObject>();
-    private List<GameObject> activeFoodList = new List<GameObject>();
+    private List<GameObject> dishes = new List<GameObject> ();
+    private List<GameObject> foodList = new List<GameObject> ();
+    private List<GameObject> activeFoodList = new List<GameObject> ();
     private bool isRunningTutorial = false;
     private float stopRotateTime;
     private Animator monsterAnimator;
 
-    public override void PregameSetup()
-    {
-        difficultyLevel = GameManager.Instance.GetLevel(DataType.Minigame.MemoryMatch);
-        currentLevel = GetLevelConfig(difficultyLevel);
+	public override void PregameSetup () {
+        difficultyLevel = GameManager.Instance.GetLevel (DataType.Minigame.MemoryMatch);
+        currentLevel = GetLevelConfig (difficultyLevel);
         inputAllowed = false;
 
-        CreatePlayerMonster(monsterSpawnPos);
+        CreatePlayerMonster (monsterSpawnPos);
         monsterAnimator = playerMonster.monsterAnimator.animator;
         monsterAnimator.Play ("MM_Spawn", -1, 0f);
         playerMonster.gameObject.transform.localScale = Vector3.one * 0.75f;
         playerMonster.spriteRenderer.sortingOrder = -2;
 
-        SubtitlePanel.Instance.Hide();
+        SubtitlePanel.Instance.Hide ();
 
         // Retrieve foods from Game Manager Food List
         // Use AddRange to copy lists. Assigning lists does not copy over the list, only the reference.
         foodList.AddRange (FoodList.GetGoodFoodsList ());
 
-        if (GameManager.Instance.GetPendingTutorial(DataType.Minigame.MemoryMatch))
-        {
+		if (GameManager.Instance.GetPendingTutorial(DataType.Minigame.MemoryMatch)) {
             isRunningTutorial = true;
-            tutorialManager.StartTutorial(ref selectedFood);
+            tutorialManager.StartTutorial (ref selectedFood);
         }
-        else
-        {
-            StartCoroutine(PrepareGame());
+		else {
+            StartCoroutine (PrepareGame ());
         }
+	}
+
+    public void OnTutorialFinish () {
+        StartCoroutine (TutorialTearDown ());
     }
 
-    public void OnTutorialFinish()
-    {
-        StartCoroutine(TutorialTearDown());
-    }
-
-    IEnumerator TutorialTearDown()
-    {
+    IEnumerator TutorialTearDown () {
         isRunningTutorial = false;
         score = 0;
 
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds (2.0f);
 
-        AudioClip letsPlay = voData.FindVO("letsplay");
-        SubtitlePanel.Instance.Display("Perfect!", letsPlay);
-        yield return new WaitForSeconds(2.0f);
+        AudioClip letsPlay = voData.FindVO ("letsplay");
+        SubtitlePanel.Instance.Display ("Perfect!", letsPlay);
+        yield return new WaitForSeconds (2.0f);
 
-        SubtitlePanel.Instance.Hide();
-        tutorialManager.gameObject.SetActive(false);
-        GameManager.Instance.CompleteTutorial(DataType.Minigame.MemoryMatch);
-        StartCoroutine(PrepareGame());
+        SubtitlePanel.Instance.Hide ();
+        tutorialManager.gameObject.SetActive (false);
+        GameManager.Instance.CompleteTutorial (DataType.Minigame.MemoryMatch);
+        StartCoroutine (PrepareGame ());
     }
 
-    IEnumerator PrepareGame()
-    {
-        yield return new WaitForSeconds(0.1f);
+    IEnumerator PrepareGame() {
+        yield return new WaitForSeconds (0.1f);
         playerMonster.transform.position = monsterSpawnPos.position;
 
         score = 0;
-        SetTimeLimit(currentLevel.timeLimit);
+        SetTimeLimit (currentLevel.timeLimit);
         numberOfDishes = currentLevel.numDishes;
 
         ActivateHUD (true);
@@ -115,190 +106,165 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         SubtitlePanel.Instance.Display ("Remember the foods!", voData.FindVO("memory_remember"));
         yield return new WaitForSeconds (4f);
 
-        StartCoroutine(SpawnDishLids());
+        StartCoroutine (SpawnDishLids ());
     }
 
-    public void ActivateHUD(bool activate)
-    {
-        scoreGauge.gameObject.SetActive(activate);
-        TimerClock.Instance.gameObject.SetActive(activate);
+    public void ActivateHUD (bool activate) {
+        scoreGauge.gameObject.SetActive (activate);
+        TimerClock.Instance.gameObject.SetActive (activate);
         if (activate)
-            UpdateScoreGauge();
+            UpdateScoreGauge ();
     }
 
-    void SpawnDishes()
-    {
-        //Mathf.Cos/Sin use radians, so the dishes are positioned 2pi/numDishes apart
-        float dishPositionAngleDelta = (2 * Mathf.PI) / numberOfDishes;
+    void SpawnDishes() {
+		//Mathf.Cos/Sin use radians, so the dishes are positioned 2pi/numDishes apart
+		float dishPositionAngleDelta = (2*Mathf.PI)/numberOfDishes;
         bool reduceSize = false;
         if (numberOfDishes > 4)
             reduceSize = true;
 
-        for (int i = 0; i < numberOfDishes; ++i)
-        {
-            GameObject newDish = Instantiate(dishPrefab, dishAnchor.transform);
-            float offset = 2f;
-            float dishX = offset * Mathf.Cos(dishPositionAngleDelta * i + Mathf.PI / 2);
-            float dishY = offset * Mathf.Sin(dishPositionAngleDelta * i + Mathf.PI / 2);
+		for (int i = 0; i < numberOfDishes; ++i) {
+			GameObject newDish = Instantiate(dishPrefab, dishAnchor.transform);
+			float offset = 2f;
+            float dishX = offset * Mathf.Cos (dishPositionAngleDelta * i + Mathf.PI / 2);
+            float dishY = offset * Mathf.Sin (dishPositionAngleDelta * i + Mathf.PI / 2);
             newDish.transform.localPosition = new Vector3(
                 dishX,
                 dishY,
-                0);
+				0);
 
-            dishes.Add(newDish);
+			dishes.Add(newDish);
 
             // Reduce size of dish depending on number of dishes
-            if (reduceSize)
-            {
+            if (reduceSize) {
                 newDish.transform.localScale = newDish.transform.localScale * 0.9f;
             }
+		}
+	}
+
+    void CreateFoodInDishes () {
+        for (int i = 0; i < numberOfDishes; ++i) {
+            GameObject newChosenFood = foodList.RemoveRandom ();
+            DishObject dishComponent = dishes[i].GetComponent<DishObject> ();
+            GameObject newFoodObject = SpawnFood (newChosenFood, dishComponent.lid.transform, dishComponent.dish.transform, foodScale, true);
+            dishComponent.SetFood (newFoodObject);
+            activeFoodList.Add (newFoodObject);
         }
     }
 
-    void CreateFoodInDishes()
-    {
-        for (int i = 0; i < numberOfDishes; ++i)
-        {
-            GameObject newChosenFood = foodList.RemoveRandom();
-            DishObject dishComponent = dishes[i].GetComponent<DishObject>();
-            GameObject newFoodObject = SpawnFood(newChosenFood, dishComponent.lid.transform, dishComponent.dish.transform, foodScale, true);
-            dishComponent.SetFood(newFoodObject);
-            activeFoodList.Add(newFoodObject);
-        }
-    }
+    IEnumerator SpawnDishLids() {
+		for (int i = 0; i < numberOfDishes; ++i) {
+			dishes [i].GetComponent<DishObject> ().SpawnLids (true);
+			yield return new WaitForSeconds(0.25f);
+		}
 
-    IEnumerator SpawnDishLids()
-    {
-        for (int i = 0; i < numberOfDishes; ++i)
-        {
-            dishes[i].GetComponent<DishObject>().SpawnLids(true);
-            yield return new WaitForSeconds(0.25f);
+        if (difficultyLevel >= 1) {
+            StartCoroutine (RotateDishes ());
         }
+        else {
+            StartCountdown (GameStart);
+        }
+	}
 
-        if (difficultyLevel >= 1)
-        {
-            StartCoroutine(RotateDishes());
-        }
-        else
-        {
-            StartCountdown(GameStart);
-        }
-    }
-
-    IEnumerator RotateDishes()
-    {
+    IEnumerator RotateDishes () {
         Vector3 zAxis = Vector3.forward; //<0, 0, 1>;
         float waitDuration = 0f;
 
-        while (waitDuration < 4f) {
+        while (waitDuration < 5f) {
             print (waitDuration);
             for (int i = 0; i < numberOfDishes; ++i) {
                 GameObject d = dishes[i];
                 Quaternion startRotation = d.transform.rotation;
 
-                d.transform.RotateAround (dishAnchor.transform.position, zAxis, rotationalSpeed * 1f);
+                d.transform.RotateAround (dishAnchor.transform.position, zAxis, rotationalSpeed * 0.75f);
                 d.transform.rotation = startRotation;
             }
 
             waitDuration += 0.02f;
-            yield return new WaitForSecondsRealtime (0.01f);
+            yield return new WaitForFixedUpdate ();
         }
 
-        StartCountdown(GameStart);
+        StartCountdown (GameStart);
     }
 
-    void GameStart()
-    {
-        ChooseFoodToMatch();
+    void GameStart() {
+        ChooseFoodToMatch ();
         gameStarted = true;
         inputAllowed = true;
-        StartTimer();
+        StartTimer ();
     }
 
-    void ResetDishes()
-    {
-        for (int i = 0; i < difficultyLevel * 3; ++i)
-        {
-            GameObject dish = dishes[i];
-            dish.GetComponent<DishObject>().Reset();
-        }
-    }
+	void ResetDishes() {
+		for(int i = 0; i < difficultyLevel*3; ++i) {
+			GameObject dish = dishes[i];
+			dish.GetComponent<DishObject>().Reset ();
+		}
+	}
 
-    public bool OnGuess(DishObject dish, GameObject food)
-    {
+    public bool OnGuess (DishObject dish, GameObject food) {
         isGuessing = true;
         if (food == selectedFood) {
             if (Random.Range(0, 1f) < 0.3f) {
                 SoundManager.Instance.PlayVoiceOverClip (goodjobClips.GetRandomItem ());
             }
 
-            dish.Correct();
-            SoundManager.Instance.PlayCorrectSFX();
-            OnScore(food);
+            dish.Correct ();
+            SoundManager.Instance.PlayCorrectSFX ();
+            OnScore (food);
             return true;
         }
 
         return false;
     }
 
-    public void ChooseFoodToMatch()
-    {
-        if (currentFoodToMatch)
-            Destroy(currentFoodToMatch);
+	public void ChooseFoodToMatch() {
+		if (currentFoodToMatch)
+			Destroy (currentFoodToMatch);
 
-        selectedFood = activeFoodList.RemoveRandom();
+        selectedFood = activeFoodList.RemoveRandom ();
 
-        if (activeFoodList.Count >= 0)
-        {
-            currentFoodToMatch = SpawnFood(selectedFood, foodToMatchSpawnPos, foodToMatchSpawnPos, foodToMatchScale, false);
-            currentFoodToMatch.GetComponent<SpriteRenderer>().sortingLayerName = "UI";
-            currentFoodToMatch.GetComponent<SpriteRenderer>().sortingOrder = 5;
-        }
-    }
+        if (activeFoodList.Count >= 0) {
+            currentFoodToMatch = SpawnFood (selectedFood, foodToMatchSpawnPos, foodToMatchSpawnPos, foodToMatchScale, false);
+            currentFoodToMatch.GetComponent<SpriteRenderer> ().sortingLayerName = "UI";
+			currentFoodToMatch.GetComponent<SpriteRenderer> ().sortingOrder = 5;
+		}
+	}
 
-    GameObject SpawnFood(GameObject foodObject, Transform spawnPos, Transform parent, float scale, bool needAnchor)
-    {
-        GameObject newFood = Instantiate(foodObject);
-        newFood.name = foodObject.GetComponent<Food>().foodName;
-        newFood.GetComponent<Food>().Spawn(spawnPos, parent, scale);
+	GameObject SpawnFood(GameObject foodObject, Transform spawnPos, Transform parent, float scale, bool needAnchor) {
+		GameObject newFood = Instantiate(foodObject);
+		newFood.name = foodObject.GetComponent<Food>().foodName;
+		newFood.GetComponent<Food>().Spawn(spawnPos, parent, scale);
 
-        if (needAnchor)
-        {
-            newFood.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 1f);
-            newFood.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 1f);
+        if (needAnchor) {
+            newFood.GetComponent<RectTransform> ().anchorMin = new Vector2 (0.5f, 1f);
+            newFood.GetComponent<RectTransform> ().anchorMax = new Vector2 (0.5f, 1f);
         }
 
-        newFood.GetComponent<Collider2D>().enabled = false;
+		newFood.GetComponent<Collider2D> ().enabled = false;
 
-        newFood.transform.localPosition = new Vector3(0f, 1.1f, 0f);
-        return newFood;
-    }
+        newFood.transform.localPosition = new Vector3 (0f, 1.1f, 0f);
+		return newFood;
+	}
 
-    public void OnScore(GameObject food)
-    {
-        if (!isRunningTutorial)
-        {
+    public void OnScore(GameObject food) {
+        if (!isRunningTutorial) {
             ++score;
-            UpdateScoreGauge();
-            if (score >= numberOfDishes)
-            {
-                StartCoroutine(RunEndGameAnimation());
+            UpdateScoreGauge ();
+            if (score >= numberOfDishes) {
+                StartCoroutine (RunEndGameAnimation ());
             }
-            else
-            {
-                Invoke("ChooseFoodToMatch", 2f);
+            else {
+                Invoke ("ChooseFoodToMatch", 2f);
             }
         }
-        else
-        {
-            StartCoroutine(TutorialTearDown());
+        else {
+            StartCoroutine (TutorialTearDown ());
         }
     }
 
-    IEnumerator RunEndGameAnimation()
-    {
-        animIsPlaying = true;
-        StopTimer();
+	IEnumerator RunEndGameAnimation () {
+		animIsPlaying = true;
+		StopTimer();
         gameStarted = false;
         inputAllowed = false;
         yield return new WaitForSeconds (1.0f);
@@ -309,13 +275,13 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
                 dishes[i].GetComponent<DishObject>().Shake(true);
                 monsterAnimator.Play ("MM_Eat", -1, 0f);
 
-                for (float t = 0.0f; t < 0.6f; t += Time.deltaTime * 2) {
+                for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 2) {
                     food.transform.position = Vector2.Lerp (food.transform.position, playerMonster.transform.position + new Vector3 (0, 1f, 0), t);
                     yield return null;
                 }
 
                 food.GetComponent<Food> ().EatFood ();
-                yield return new WaitForSeconds (0.3f);
+                yield return new WaitForSeconds (0.5f);
             }
 		}
         monsterAnimator.Play ("MM_Dance", -1, 0f);
@@ -327,11 +293,10 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         StartCoroutine (RunEndGameAnimation ());
     }
 
-    public void GameEnd()
-    {
-        ActivateHUD(false);
-        if (currentFoodToMatch.gameObject)
-            currentFoodToMatch.gameObject.SetActive(false);
+	public void GameEnd() {
+        ActivateHUD (false);
+		if (currentFoodToMatch.gameObject)
+			currentFoodToMatch.gameObject.SetActive (false);
         EndScreen screen;
 		if (score >= numberOfDishes) {
 			if (difficultyLevel == 1) {
@@ -345,34 +310,27 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
                 screen = GameOver (DataType.GameEnd.CompletedLevel);
                 screen.EditHeader ("Nice job! You matched " + score + " healthy foods!");
             }
-        }
-        else
-        {
-            screen = GameOver(DataType.GameEnd.FailedLevel);
-            screen.EditHeader("Time ran out! You matched " + score + " healthy foods! Let's try again!");
+        } else {
+            screen = GameOver (DataType.GameEnd.FailedLevel);
+            screen.EditHeader ("Time ran out! You matched " + score + " healthy foods! Let's try again!");
         }
     }
 
-    public bool IsGameStarted()
-    {
-        return gameStarted;
-    }
+	public bool IsGameStarted() {
+		return gameStarted;
+	}
 
-    public bool IsRunningTutorial()
-    {
-        return isRunningTutorial;
-    }
+	public bool IsRunningTutorial() {
+		return isRunningTutorial;
+	}
 
-    void UpdateScoreGauge()
-    {
+	void UpdateScoreGauge() {
         if (scoreGauge.gameObject.activeSelf)
-            scoreGauge.SetProgressTransition((float)score / numberOfDishes);
+            scoreGauge.SetProgressTransition ((float)score / numberOfDishes);
     }
 
-    MemoryMatchLevel GetLevelConfig(int level)
-    {
-        switch (level)
-        {
+    MemoryMatchLevel GetLevelConfig (int level) {
+        switch (level) {
             case 1:
                 return levelOne;
             case 2:
