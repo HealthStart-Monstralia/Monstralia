@@ -27,12 +27,12 @@ public class SoundManager : SingletonPersistent<SoundManager> {
     [SerializeField] private AudioClip incorrectSfx;
 
     private bool isMuted = false;                   /*!< Flag for if the sound has been muted */
-    private bool isPlayingClip = false;             /*!< Flag to prevent a clip from playing more than once at a time */
     private bool isPlayingVoiceOver = false;        /*!< Way to check if a voice over is already playing */
     private bool isQueuePlaying = false;
     private Queue<AudioClip> clipQueue = new Queue<AudioClip> ();
     private Coroutine queueCoroutine, voiceCoroutine;
     private int sourceCount;                        /*!< Keep track of how many sfx sources there are */
+    private AudioSource sfxHelperSource;
 
     // PlayerPref variables
     private string prefMusicVolume = "musicVolume";
@@ -60,31 +60,26 @@ public class SoundManager : SingletonPersistent<SoundManager> {
 	 * \brief Mute the game music.
 	 */
     public void Mute() {
-		if(!isMuted) {
-			AudioListener.pause = true;
-            isMuted = true;
-		}
-		else {
-			AudioListener.pause = false;
-            isMuted = false;
-		}
+        isMuted = !isMuted;
+        AudioListener.pause = isMuted;
 	}
 
     #region BackgroundMusic
 
     /**
-     * \brief Play the background music
+     * \brief Stop the background music
      */
-    void PlayBackgroundMusic (AudioClip newBackgroundMusic) {
-        musicSource.clip = newBackgroundMusic;
-        musicSource.Play ();
+    public void StopBackgroundMusic () {
+        musicSource.Stop ();
     }
 
     /**
      * \brief Play the background music
      */
-    public void StopBackgroundMusic () {
-        musicSource.Stop ();
+    public void PlayBackgroundMusic () {
+        if (!musicSource.isPlaying) {
+            musicSource.Play ();
+        }
     }
 
     /**
@@ -93,9 +88,17 @@ public class SoundManager : SingletonPersistent<SoundManager> {
 	 */
     public void ChangeAndPlayMusic(AudioClip newMusic) {
         if (!musicSource.clip.Equals (newMusic) && newMusic != null) {
-            PlayBackgroundMusic (newMusic);
+            musicSource.clip = newMusic;
         }
-	}
+        PlayBackgroundMusic ();
+    }
+
+    /**
+     * \brief Return the background music AudioSource
+     */
+    public AudioSource GetMusicSource () {
+        return musicSource;
+    }
 
 	/**
 	 * \brief Change the background music volume.
@@ -113,9 +116,16 @@ public class SoundManager : SingletonPersistent<SoundManager> {
     /**
      * \brief Play the ambient sound
      */
-    public void PlayAmbientSound (AudioClip newAmbientSound) {
-        ambientSource.clip = newAmbientSound;
+    public void PlayAmbientSound () {
         ambientSource.Play ();
+    }
+
+    /**
+     * \brief Play the ambient sound
+     */
+    public void ChangeAndPlayAmbientSound (AudioClip newAmbientSound) {
+        ChangeAmbientSound (newAmbientSound);
+        PlayAmbientSound ();
     }
 
     /**
@@ -131,7 +141,7 @@ public class SoundManager : SingletonPersistent<SoundManager> {
      */
     public void ChangeAmbientSound (AudioClip newAmbientSound) {
         if (newAmbientSound != null) {
-            PlayAmbientSound (newAmbientSound);
+            ambientSource.clip = newAmbientSound;
         }
     }
 
@@ -142,6 +152,13 @@ public class SoundManager : SingletonPersistent<SoundManager> {
     public void ChangeAmbientVolume (float newVolume) {
         ambientSource.volume = newVolume;
         SaveAudioVolumeInPrefs (ambientSource, prefAmbientVolume);
+    }
+
+    /**
+     * \brief Return the ambient sound AudioSource
+     */
+    public AudioSource GetAmbientSource () {
+        return ambientSource;
     }
 
     #endregion
@@ -167,17 +184,11 @@ public class SoundManager : SingletonPersistent<SoundManager> {
     }
 
     IEnumerator UseSFXSource (AudioSource source) {
-        isPlayingClip = true;
         source.Play ();
         yield return new WaitForSeconds (source.clip.length);
 
         sourceCount--;
-        isPlayingClip = false;
         Destroy (source.gameObject);
-    }
-
-    public bool GetIsPlayingClip () {
-        return isPlayingClip;
     }
 
     /**
@@ -189,21 +200,21 @@ public class SoundManager : SingletonPersistent<SoundManager> {
         SaveAudioVolumeInPrefs (sfxSource, prefSfxVolume);
     }
 
-    /**
-    * \brief Change the volume of the sound effect source and play a helper.
-    * @param newVolume: the float value of the new volume.
-    * @param testClip: the AudioClip to test with
-    */
-    public IEnumerator ChangeSFXVolumeHelper (float newVolume, AudioClip testClip) {
-        ChangeSFXVolume (newVolume);
-        
-        // Test SFX volume clip
-        if (!isPlayingClip) {
-            isPlayingClip = true;
-            PlaySFXClip (testClip);
+    public void PlayVolumeHelper (AudioClip testClip) {
+        if (!IsVolumeHelperPlaying ()) {
+            sfxHelperSource = PlaySFXClip (testClip);
         }
-        yield return new WaitForSeconds (testClip.length);
-        isPlayingClip = false;
+    }
+
+    public void MatchHelperVolume () {
+        if (sfxHelperSource)
+            sfxHelperSource.volume = sfxSource.volume;
+    }
+
+    public bool IsVolumeHelperPlaying () {
+        if (sfxHelperSource)
+            return sfxHelperSource.isPlaying;
+        return false;
     }
 
     #endregion
@@ -214,10 +225,12 @@ public class SoundManager : SingletonPersistent<SoundManager> {
 	 * @param clip: the sound effect AudioClip to be played.
 	 */
     public void PlayVoiceOverClip (AudioClip clip) {
-        if (isPlayingVoiceOver) {
-            StopPlayingVoiceOver ();
+        if (clip != null) {
+            if (isPlayingVoiceOver) {
+                StopPlayingVoiceOver ();
+            }
+            StartCoroutine (PlayVoiceOverClipCoroutine (clip));
         }
-        StartCoroutine (PlayVoiceOverClipCoroutine (clip));
     }
 
     IEnumerator PlayVoiceOverClipCoroutine (AudioClip clip) {
@@ -253,23 +266,14 @@ public class SoundManager : SingletonPersistent<SoundManager> {
      * @param newVolume: the float value of the new volume.
      */
     public void ChangeVoiceOverVolume (float newVolume) {
-        if (!isPlayingVoiceOver) {
-            StartCoroutine (ChangeVoiceOverVolumeHelper (newVolume));
-        }
+        voiceOverSource.volume = newVolume;
+        SaveAudioVolumeInPrefs (voiceOverSource, prefVoiceOverVolume);
     }
 
-    /**
-     * \brief Change the volume of the voice over helper.
-     * @param newVolume: the float value of the new volume.
-     */
-    private IEnumerator ChangeVoiceOverVolumeHelper (float newVolume) {
-        voiceOverSource.volume = newVolume;
+    public void PlayVoiceOverVolumeHelper (AudioClip testClip) {
         if (!isPlayingVoiceOver) {
-            isPlayingVoiceOver = true;
-            PlayVoiceOverClip (voiceTestClip);
+            PlayVoiceOverClip (testClip);
         }
-        yield return new WaitForSeconds (voiceTestClip.length);
-        isPlayingVoiceOver = false;
     }
 
     #endregion
@@ -279,9 +283,11 @@ public class SoundManager : SingletonPersistent<SoundManager> {
      * \brief Play the next voice over in the queue
      */
     public void AddToVOQueue (AudioClip clip) {
-        clipQueue.Enqueue (clip);
-        if (!isQueuePlaying) {
-            queueCoroutine = StartCoroutine (PlayQueue ());
+        if (clip != null) {
+            clipQueue.Enqueue (clip);
+            if (!isQueuePlaying) {
+                queueCoroutine = StartCoroutine (PlayQueue ());
+            }
         }
     }
 
@@ -307,6 +313,14 @@ public class SoundManager : SingletonPersistent<SoundManager> {
 
     public bool GetIsQueuePlaying () {
         return isQueuePlaying;
+    }
+
+    public AudioSource GetVoiceOverSource () {
+        return voiceOverSource;
+    }
+
+    public bool DoesQueueContainClip (AudioClip clip) {
+        return (clipQueue.Contains (clip) || (voiceOverSource.isPlaying && voiceOverSource.clip == clip));
     }
 
     #endregion

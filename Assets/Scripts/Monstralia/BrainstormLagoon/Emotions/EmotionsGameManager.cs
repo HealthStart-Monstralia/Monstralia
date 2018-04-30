@@ -3,22 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
+public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager>
+{
+    public MilestoneManager milestoneManager;
     public VoiceOversData voData;
     public Transform monsterLocation;
-	public float timeLimit = 30;
-	public bool gameStarted = false;
+    public float timeLimit = 30;
+    public bool gameStarted = false;
     public bool isTutorialRunning = false;
     public bool inputAllowed = false;
 
 	public Transform[] emotionSpawnLocs;
 	public GameObject backButton;
-	public float waitDuration = 2.5f;
+	public float waitDuration = 2.0f;
 
-	public AudioClip[] answerSounds;
-
-	public GameObject tutorialHand;
-	public Canvas tutorialCanvas;
+    public GameObject tutorialHand;
+    public Canvas tutorialCanvas;
 
     private GameObject monster;
     private int score;
@@ -27,25 +27,32 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
     private Coroutine tutorialCoroutine, drawingCardsCoroutine;
     private EmotionsGenerator generator;
 
-    public override void PregameSetup () {
-        generator = GetComponent<EmotionsGenerator> ();
+    public override void PregameSetup()
+    {
+        generator = GetComponent<EmotionsGenerator>();
         EmotionCard.CheckEmotion = CheckEmotion;
-        tutorialCanvas.gameObject.SetActive (false);
-        tutorialHand.SetActive (false);
-        generator.cardHand.gameObject.SetActive (false);
-        generator.SetSlots (GameManager.Instance.GetLevel (typeOfGame) + 1);
-        difficultyLevel = GameManager.Instance.GetLevel (DataType.Minigame.MonsterEmotions);
+        tutorialCanvas.gameObject.SetActive(false);
+        tutorialHand.SetActive(false);
+        generator.cardHand.gameObject.SetActive(false);
+        generator.SetSlots(GameManager.Instance.GetLevel(typeOfGame) + 1);
+        difficultyLevel = GameManager.Instance.GetLevel(DataType.Minigame.MonsterEmotions);
 
 
-        if (GameManager.Instance.GetPendingTutorial (DataType.Minigame.MonsterEmotions)) {
-            tutorialCoroutine = StartCoroutine (RunTutorial ());
-        } else {
-            switch (difficultyLevel) {
+        if (GameManager.Instance.GetPendingTutorial(DataType.Minigame.MonsterEmotions))
+        {
+            tutorialCoroutine = StartCoroutine(RunTutorial());
+        }
+        else
+        {
+            switch (difficultyLevel)
+            {
                 case 2:
                     scoreGoal = 5;
+                    timeLimit = 30;
                     break;
                 case 3:
                     scoreGoal = 7;
+                    timeLimit = 45;
                     break;
                 default:
                     scoreGoal = 3;
@@ -56,29 +63,34 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
                 generator.allowOtherMonsterCards = true;
 
             if (!monster)
-                CreateMonster ();
-            ChangeMonsterEmotion (DataType.MonsterEmotions.Happy);
+                CreateMonster();
+            ChangeMonsterEmotion(DataType.MonsterEmotions.Happy);
 
             score = 0;
-            if (TimerClock.Instance != null) {
-                TimerClock.Instance.SetTimeLimit (timeLimit);
-                TimerClock.Instance.StopTimer ();
+            if (TimerClock.Instance != null)
+            {
+                TimerClock.Instance.SetTimeLimit(timeLimit);
+                TimerClock.Instance.StopTimer();
             }
 
             UpdateScoreGauge ();
             TimerClock.Instance.gameObject.SetActive (true);
             generator.cardHand.gameObject.SetActive (true);
             generator.cardHand.SpawnIn ();
+            AudioClip tutorial1 = voData.FindVO ("emotions_start");
+            SoundManager.Instance.PlayVoiceOverClip (tutorial1);
+
             StartCoroutine (DuringCountdown ());
             StartCountdown (PostCountdownSetup);
         }
-	}
+    }
 
-	public IEnumerator DuringCountdown() {
-        DrawCards (0.5f);
-		yield return new WaitForSeconds (3.0f);
-        ChangeMonsterEmotion (generator.GetSelectedEmotion ());
-	}
+    public IEnumerator DuringCountdown()
+    {
+        DrawCards(0.5f);
+        yield return new WaitForSeconds(3.0f);
+        ChangeMonsterEmotion(generator.GetSelectedEmotion());
+    }
 
     #region Tutorial
 
@@ -89,36 +101,38 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
 		inputAllowed = false;
         ScoreGauge.Instance.gameObject.SetActive (false);
         TimerClock.Instance.gameObject.SetActive (false);
-
 		yield return new WaitForSeconds(0.5f);
 
         if (!monster)
-            CreateMonster ();
-        ChangeMonsterEmotion (DataType.MonsterEmotions.Happy);
+            CreateMonster();
+        ChangeMonsterEmotion(DataType.MonsterEmotions.Happy);
 
-        SubtitlePanel.Instance.Display ("Welcome to Monster Feelings!", null);
-		SoundManager.Instance.StopPlayingVoiceOver();
-        AudioClip tutorial1 = voData.FindVO ("1_tutorial_start");
-		SoundManager.Instance.PlayVoiceOverClip(tutorial1);
-        
+        SubtitlePanel.Instance.Display("Welcome to Monster Feelings!", null);
+        SoundManager.Instance.StopPlayingVoiceOver();
+        AudioClip tutorial1 = voData.FindVO("1_tutorial_start");
+        SoundManager.Instance.PlayVoiceOverClip(tutorial1);
+
         float secsToRemove = 7f;
         yield return new WaitForSeconds(tutorial1.length - secsToRemove);
-        ChangeMonsterEmotion (DataType.MonsterEmotions.Afraid);
+
+        generator.SelectTutorialEmotions ();
+        ChangeMonsterEmotion (generator.GetSelectedEmotion ());
         generator.cardHand.gameObject.SetActive (true);
         SubtitlePanel.Instance.Hide ();
-
         float secsToRemoveAgain = 4f;
         yield return new WaitForSeconds (secsToRemove - secsToRemoveAgain);
+
         TutorialDrawCards ();
-        
         yield return new WaitForSeconds (secsToRemoveAgain);
 
         tutorialHand.SetActive (true);
 		tutorialHand.GetComponent<Animator> ().Play ("EM_HandMoveMonster");
 		yield return new WaitForSeconds(1.75f);
+
 		SubtitlePanel.Instance.Display (generator.GetSelectedEmotion().ToString(), null);
-		SoundManager.Instance.PlaySFXClip (answerSounds [1]);
-		yield return new WaitForSeconds(2.0f);
+        SoundManager.Instance.PlayCorrectSFX ();
+        yield return new WaitForSeconds(2.0f);
+
 		SubtitlePanel.Instance.Hide ();
 		yield return new WaitForSeconds(1.0f);
 
@@ -131,159 +145,205 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
 		inputAllowed = false;
 
         isTutorialRunning = false;
-        tutorialHand.SetActive (false);
-		GameManager.Instance.CompleteTutorial(DataType.Minigame.MonsterEmotions);
-		StopCoroutine (tutorialCoroutine);
-		StartCoroutine(TutorialTearDown ());
-	}
+        tutorialHand.SetActive(false);
+        GameManager.Instance.CompleteTutorial(DataType.Minigame.MonsterEmotions);
+        StopCoroutine(tutorialCoroutine);
+        StartCoroutine(TutorialTearDown());
+    }
 
-	IEnumerator TutorialTearDown() {
-		print ("TutorialTearDown");
+    IEnumerator TutorialTearDown()
+    {
+        print("TutorialTearDown");
         if (generator.isDrawingCards)
             StopCoroutine (drawingCardsCoroutine);
 
         yield return new WaitForSeconds (1.5f);
-        ChangeMonsterEmotion (DataType.MonsterEmotions.Joyous);
+        if (monster)
+            ChangeMonsterEmotion (DataType.MonsterEmotions.Joyous);
         generator.RemoveCards ();
         AudioClip letsplay = voData.FindVO ("letsplay");
         SoundManager.Instance.StopPlayingVoiceOver ();
         SubtitlePanel.Instance.Display ("Let's play!", letsplay);
 		yield return new WaitForSeconds(letsplay.length);
         if (generator.cardHand.gameObject.activeSelf)
-            generator.cardHand.ExitAnimation ();
-        tutorialCanvas.gameObject.SetActive (false);
+            generator.cardHand.ExitAnimation();
+        tutorialCanvas.gameObject.SetActive(false);
 
-		yield return new WaitForSeconds(1.0f);
-		SubtitlePanel.Instance.Hide ();
+        yield return new WaitForSeconds(1.0f);
+        SubtitlePanel.Instance.Hide();
 
-		PregameSetup ();
-	}
+        PregameSetup();
+    }
 
     #endregion
 
-    private void PostCountdownSetup() {
-		StartGame();
-	}
+    private void PostCountdownSetup()
+    {
+        StartGame();
+    }
 
-    private void StartGame () {
-        ScoreGauge.Instance.gameObject.SetActive (true);
+    private void StartGame()
+    {
+        ScoreGauge.Instance.gameObject.SetActive(true);
 
-        TimerClock.Instance.StopTimer ();
-        TimerClock.Instance.StartTimer ();
+        TimerClock.Instance.StopTimer();
+        TimerClock.Instance.StartTimer();
 
         gameStarted = true;
         inputAllowed = true;
     }
 
-    IEnumerator PostGame () {
-        print ("PostGame");
+    IEnumerator PostGame()
+    {
+        print("PostGame");
         gameStarted = false;
-        StopCoroutine (drawingCardsCoroutine);
+        StopCoroutine(drawingCardsCoroutine);
         inputAllowed = false;
         yield return new WaitForSeconds (1.0f);
+
         ChangeMonsterEmotion (DataType.MonsterEmotions.Happy);
         generator.RemoveCards ();
-        AudioClip end = voData.FindVO ("end");
+
+        AudioClip end = voData.FindVO ("emotions_end");
+
+        if (!GameManager.Instance.GetIsStickerUnlocked(typeOfGame)) {
+            end = voData.FindVO ("emotions_end3");
+        }
+        else {
+            if (Random.Range (0f, 1f) <= 0.5f) {
+                end = voData.FindVO ("emotions_end2");
+            }
+        }
+
+        yield return new WaitForSeconds (0.5f);
 
         SubtitlePanel.Instance.Display ("Great job! You matched " + score + " emotions!", end);
-        yield return new WaitForSeconds (3.0f);
-        if (generator.cardHand.gameObject.activeSelf)
-            generator.cardHand.ExitAnimation ();
         yield return new WaitForSeconds (1.0f);
 
+        if (generator.cardHand.gameObject.activeSelf)
+            generator.cardHand.ExitAnimation ();
+        yield return new WaitForSeconds (end.length - 1.0f);
+
         if (score >= scoreGoal) {
+            if (GameManager.Instance.GetLevel (typeOfGame) == 1) {
+                MilestoneManager.Instance.UnlockMilestone (DataType.Milestone.MonsterEmotions1);
+            } else if (GameManager.Instance.GetLevel (typeOfGame) == 3) {
+                MilestoneManager.Instance.UnlockMilestone (DataType.Milestone.MonsterEmotions3);
+            }
+
             if (difficultyLevel == 1) {
                 GameOver (DataType.GameEnd.EarnedSticker);
+                SoundManager.Instance.AddToVOQueue (voData.FindVO ("emotion_sticker"));
             } else {
                 GameOver (DataType.GameEnd.CompletedLevel);
             }
-        } else {
-            GameOver (DataType.GameEnd.FailedLevel);
+        }
+        else
+        {
+            GameOver(DataType.GameEnd.FailedLevel);
         }
     }
 
-    public void OnOutOfTime() {
-        StartCoroutine (PostGame ());
+    public void OnOutOfTime()
+    {
+        StartCoroutine(PostGame());
     }
 
-    public void CheckEmotion (DataType.MonsterEmotions emotion, AudioClip clip) {
-        if (inputAllowed && (isTutorialRunning || gameStarted)) {
+    public void CheckEmotion(DataType.MonsterEmotions emotion, AudioClip clip)
+    {
+        if (inputAllowed && (isTutorialRunning || gameStarted))
+        {
             inputAllowed = false;
             SubtitlePanel.Instance.Display (emotion.ToString (), clip);
             if (emotion == generator.GetSelectedEmotion ()) {
                 TimerClock.Instance.StopTimer ();
-                SoundManager.Instance.PlaySFXClip (answerSounds[1]);
+                SoundManager.Instance.PlayCorrectSFX ();
                 if (isTutorialRunning) {
                     TutorialFinished ();
                 } else {
                     ++score;
-                    UpdateScoreGauge ();
-                    if (score >= scoreGoal) {
-                        StartCoroutine (PostGame ());
+                    UpdateScoreGauge();
+                    if (score >= scoreGoal)
+                    {
+                        StartCoroutine(PostGame());
                     }
-                    else {
-                        DrawCards (waitDuration);
+                    else
+                    {
+                        DrawCards(waitDuration);
                     }
                 }
 
-            } else {
-                StartCoroutine (WrongAnswerWait (waitDuration));
+            }
+            else
+            {
+                StartCoroutine(WrongAnswerWait(waitDuration));
             }
         }
     }
 
-    public void DrawCards(float waitPeriod) {
-        drawingCardsCoroutine = StartCoroutine (generator.CreateNextEmotions (waitPeriod, ContinueGame));
+    public void DrawCards(float waitPeriod)
+    {
+        drawingCardsCoroutine = StartCoroutine(generator.CreateNextEmotions(waitPeriod, ContinueGame));
     }
 
-    public void TutorialDrawCards () {
-        drawingCardsCoroutine = StartCoroutine (generator.CreateTutorialCards ());
+    public void TutorialDrawCards()
+    {
+        drawingCardsCoroutine = StartCoroutine(generator.CreateTutorialCards());
     }
 
-    public void ContinueGame() {
-        if (gameStarted) {
-            ChangeMonsterEmotion (generator.GetSelectedEmotion ());
+    public void ContinueGame()
+    {
+        if (gameStarted)
+        {
+            ChangeMonsterEmotion(generator.GetSelectedEmotion());
             inputAllowed = true;
-            TimerClock.Instance.StartTimer ();
+            TimerClock.Instance.StartTimer();
         }
     }
 
-	public IEnumerator WrongAnswerWait (float duration) {
-		yield return new WaitForSeconds (duration);
+    public IEnumerator WrongAnswerWait(float duration)
+    {
+        yield return new WaitForSeconds(duration);
         if (!isTutorialRunning)
-            ContinueGame ();
-        else if (gameStarted) {
+            ContinueGame();
+        else if (gameStarted)
+        {
             inputAllowed = true;
         }
-            
-	}
 
-    void UpdateScoreGauge () {
+    }
+
+    void UpdateScoreGauge()
+    {
         if (ScoreGauge.Instance.gameObject.activeSelf)
-            ScoreGauge.Instance.SetProgressTransition ((float)score / scoreGoal);
+            ScoreGauge.Instance.SetProgressTransition((float)score / scoreGoal);
     }
 
-    public void SkipReviewButton (GameObject button) {
-        SkipReview ();
-        Destroy (button);
+    public void SkipReviewButton(GameObject button)
+    {
+        SkipReview();
+        Destroy(button);
     }
 
-    public void SkipReview () {
-        StopCoroutine (tutorialCoroutine);
-        TutorialFinished ();
+    public void SkipReview()
+    {
+        StopCoroutine(tutorialCoroutine);
+        TutorialFinished();
     }
 
-    public void CreateMonster () {
+    public void CreateMonster()
+    {
         Vector2 pos = monsterLocation.position;
-        monster = Instantiate (GameManager.Instance.GetPlayerMonsterObject (), pos, Quaternion.identity);
+        monster = Instantiate(GameManager.Instance.GetPlayerMonsterObject(), pos, Quaternion.identity);
         monster.transform.position = pos;
-        monster.transform.localScale = new Vector3 (0.8f, 0.8f, 0.8f);
+        monster.transform.localScale = new Vector3 (0.6f, 0.6f, 0.6f);
         monster.gameObject.AddComponent<Animator> ();
         monster.GetComponent<Monster> ().IdleAnimationOn = false;
         monster.GetComponent<Monster> ().AllowMonsterTickle = false;
     }
 
-    public void ChangeMonsterEmotion (DataType.MonsterEmotions emo) {
-        monster.GetComponent<Monster> ().ChangeEmotions (emo);
+    public void ChangeMonsterEmotion(DataType.MonsterEmotions emo)
+    {
+        monster.GetComponent<Monster>().ChangeEmotions(emo);
     }
 }

@@ -19,20 +19,34 @@ public class StartManager : Singleton<StartManager> {
         fader.FadeIn ();
     }
 
+    private void OnEnable () {
+        IntroManager.StartIntro += DisableButtons;
+        IntroManager.EndIntro += EnableButtons;
+    }
+
+    private void OnDisable () {
+        IntroManager.StartIntro -= DisableButtons;
+        IntroManager.EndIntro -= EnableButtons;
+    }
+
     void Start () {
+        SoundManager.Instance.PlayBackgroundMusic ();
         sceneLoader = GetComponent<SwitchScene> ();
+
+        // Remove when Release is ready for save system
+        #if TEST_BUILD
         GameManager.Instance.LoadGame ();
+        #endif
 
         monsterSpawn.gameObject.SetActive (false);
-        if (GameManager.Instance.GetIsMonsterSelected()) {
-            monsterSpawn.gameObject.SetActive (true);
-            CreateMonsterOnMap ();
-        }
 
         if (playIntro && !GameManager.Instance.isIntroShown) {
             GameManager.Instance.isIntroShown = true;
             DisableButtons ();
             StartCoroutine (PlayIntro ());
+        } else if (GameManager.Instance.GetIsMonsterSelected ()) {
+            monsterSpawn.gameObject.SetActive (true);
+            CreateMonsterOnMap ();
         }
     }
 
@@ -72,7 +86,7 @@ public class StartManager : Singleton<StartManager> {
         monster.transform.SetParent (monsterSpawn.transform);
         monster.spriteRenderer.sortingLayerName = "UI";
         monster.spriteRenderer.sortingOrder = 0;
-        monster.transform.localScale = Vector3.one * 40f;
+        monster.transform.localScale = Vector3.one * 30f;
         monster.AllowMonsterTickle = true;
         monster.IdleAnimationOn = true;
         monster.spawnAnimation = true;

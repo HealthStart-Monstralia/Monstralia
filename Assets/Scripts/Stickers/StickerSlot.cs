@@ -36,7 +36,13 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
 		}
 	}
 
-	public void ReceiveSticker(StickerBehaviour sticker, bool isAlreadyPlaced) {
+    public void EnableDrop (bool enable) {
+        if (!isStickerFilled) {
+            GetComponent<Image> ().raycastTarget = enable;
+        }
+    }
+
+    public void ReceiveSticker(StickerBehaviour sticker, bool isAlreadyPlaced) {
 		isStickerFilled = true;
 		sticker.gameObject.transform.position = transform.position;
 		sticker.transform.SetParent (transform);
@@ -45,7 +51,8 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
         if (!isAlreadyPlaced)
 		    GameManager.Instance.OnStickerPlaced(sticker.typeOfSticker);
 		Canvas can = gameObject.AddComponent<Canvas> ();
-		can.overrideSorting = true;
+        gameObject.AddComponent<GraphicRaycaster> ();
+        can.overrideSorting = true;
 		can.sortingOrder = -1;
         if (label) label.SetActive (true);
         sticker.OnSticked ();
@@ -55,4 +62,9 @@ public class StickerSlot : MonoBehaviour, IDropHandler {
 	public bool GetIsStickerFilled () {
 		return isStickerFilled;
 	}
+
+    public void PlayStickerVoiceOver () {
+        print ("Play Voice Over");
+        SoundManager.Instance.PlayVoiceOverClip (clipOfSticker);
+    }
 }
