@@ -1,13 +1,16 @@
 ﻿// Define globally used enums in here
 
-public static class DataType {
-    public enum GameEnd {
+public static class DataType
+{
+    public enum GameEnd
+    {
         EarnedSticker,
         CompletedLevel,
         FailedLevel
     };
 
-    public enum StickerType {
+    public enum StickerType
+    {
         None = -1,
         Amygdala = 0,
         Cerebellum = 1,
@@ -37,7 +40,8 @@ public static class DataType {
     }
 
     // Enum name should match scene name so MinigameButton can load the game.
-    public enum Minigame {
+    public enum Minigame
+    {
         // Brainstorm Lagoon
         Brainbow,
         BrainMaze,
@@ -56,7 +60,23 @@ public static class DataType {
         CatchTheToxins
     };
 
-    public enum IslandSection {
+    public enum Milestone
+    {
+        //1 time and 3 time completion of each Brainstorm Lagoon Game
+        Brainbow1,
+        Brainbow3,
+        MemoryMatch1,
+        MemoryMatch3,
+        BrainMaze1,
+        BrainMaze3,
+        MonsterEmotions1,
+        MonsterEmotions3,
+        MonsterSenses1,
+        MonsterSenses3
+    }
+
+    public enum IslandSection
+    {
         Monstralia,
         BrainstormLagoon,
         MainframeMountain,
@@ -65,13 +85,15 @@ public static class DataType {
         Digestive
     };
 
-    public enum Level {
+    public enum Level
+    {
         LevelOne = 1,
         LevelTwo = 2,
         LevelThree = 3
     }
 
-    public enum MonsterType {
+    public enum MonsterType
+    {
         Blue = 0,
         Green = 1,
         Red = 2,
@@ -79,7 +101,8 @@ public static class DataType {
     };
 
     // Emotions referenced by Monster.cs, EmotionsGenerator.cs, EmotionsCardHand.cs
-    public enum MonsterEmotions {
+    public enum MonsterEmotions
+    {
         Happy = 0,
         Afraid = 1,
         Disgusted = 2,
@@ -92,7 +115,8 @@ public static class DataType {
 
     // Referenced by SensesButton.cs
     //enumerates to elements 0, 1, 2, 3, 4
-    public enum Senses {
+    public enum Senses
+    {
         See,
         Hear,
         Feel,

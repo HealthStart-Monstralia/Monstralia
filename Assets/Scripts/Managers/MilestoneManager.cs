@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MilestoneManager : SingletonPersistent<MilestoneManager> {
+public class MilestoneManager : SingletonPersistent<MilestoneManager>
+{
 
     // Track milestone unlock status with their name
 
@@ -39,6 +40,6 @@ public class MilestoneManager : SingletonPersistent<MilestoneManager> {
     // Use this for gameplay rather than SetUnlockedStatus
     public void UnlockMilestone (DataType.Milestone mileName) {
         // Create notification code here
-        SetUnlockedStatus (mileName, true);
+        SetUnlockedStatus(mileName, true);
     }
 }
