@@ -8,11 +8,13 @@ public class StartManager : Singleton<StartManager> {
     public bool playIntro = true;
     public Button[] buttonsToDisable;
     public Fader fader;
-    public GameObject monsterSelection;
+    public MonsterSelectionPanel monsterPanel;
+    public DataType.MonsterType selectedMonster;
 
     // Events
+    public delegate void ChooseMonster (DataType.MonsterType monsterType);
     public delegate void GameAction ();
-    public static event GameAction OnMonsterSelected, OnMonsterUnselected;
+    public static event ChooseMonster OnMonsterSelected, OnMonsterUnselected;
 
     [SerializeField] private CreateMonster monsterSpawn;
     private SwitchScene sceneLoader;
@@ -78,11 +80,27 @@ public class StartManager : Singleton<StartManager> {
     public void SelectMonster () {
         GameManager.Instance.AllowSave ();
         if (!GameManager.Instance.GetIsMonsterSelected()) {
-            monsterSelection.SetActive (true);
+            monsterPanel.gameObject.SetActive (true);
         }
         else {
             SwitchScene ();
         }
+    }
+
+    public void OnSelectedMonster (DataType.MonsterType monsterType) {
+        selectedMonster = monsterType;
+        OnMonsterSelected (monsterType);
+        monsterPanel.ShowButtons ();
+    }
+
+    public void OnCancelSelection () {
+        OnMonsterUnselected (selectedMonster);
+        monsterPanel.HideButtons ();
+    }
+
+    public void StartGame () {
+        GameManager.Instance.SetPlayerMonsterType (selectedMonster);
+        SwitchScene ();
     }
 
     void CreateMonsterOnMap () {
