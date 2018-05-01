@@ -295,6 +295,7 @@ public class SoundManager : SingletonPersistent<SoundManager> {
         if (isQueuePlaying) {
             StopCoroutine (queueCoroutine);
             clipQueue.Clear ();
+            isQueuePlaying = false;
         }
     }
 

@@ -207,7 +207,7 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
     public void OnGuess (DishObject dish, Food food) {
         isGuessing = true;
         dish.OpenLid ();
-        
+
         SoundManager.Instance.AddToVOQueue (food.clipOfName);
         if (IsAnswerCorrect(food.gameObject)) {
             if (!isRunningTutorial) {

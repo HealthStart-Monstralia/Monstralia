@@ -18,12 +18,14 @@ public class BMazeFinishline : MonoBehaviour {
     }
 
     public void UnlockFinishline () {
+        isActivated = true;
         GetComponent<Collider2D> ().enabled = true;
 	}
 
 	void OnTriggerEnter2D (Collider2D col) {
         if (col.tag == "Monster" && isActivated) {
-            OnFinish ();
+            if (OnFinish != null)
+                OnFinish ();
             GetComponent<Collider2D> ().enabled = false;
         }
 	}

@@ -119,7 +119,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
         TimerClock.Instance.SetTimeLimit (levelConfig.timeLimit);
 
         finishLine.OnFinish += OnFinish;
-        finishLine.isActivated = true;
+        //finishLine.isActivated = true;
 
         monsterStart = mazeInstance.GetFirstCell ().transform;
         mazeInstance.ScaleMaze ();
@@ -132,6 +132,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
         scoreGoal = 2;
         doorInstance = tutorialDoor;
         finishLine = tutorialFinishline;
+        finishLine.OnFinish += OnFinish;
         tutorial.SetActive (true);
 		print ("RunTutorial");
 		ScoreGauge.Instance.gameObject.SetActive (false);
