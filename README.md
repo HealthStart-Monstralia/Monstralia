@@ -18,7 +18,6 @@ Core development will be on the **Brainstorm Lagoon** branch with each new minig
 
 ## Documentation:
 * We are using a combination of comments in our code and text documents in the GitHub Wiki/Google Drive to document our code.
-* We previously used Doxygen to document our code (for how to use doxygen, see http://www.stack.nl/~dimitri/doxygen/manual/docblocks.html). To view our old documentation, go to the html directory, and open "index.html" with your favorite browser
 
 ## Contact
 Have any questions? Please email monstralia@healthstartfoundation.org!
