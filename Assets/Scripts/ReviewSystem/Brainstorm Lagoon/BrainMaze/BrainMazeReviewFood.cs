@@ -30,7 +30,7 @@ public class BrainMazeReviewFood : MonoBehaviour {
     }
 
     void OnTriggerEnter2D (Collider2D col) {
-        if (col.GetComponent<ReviewBrainMazeMonster> ()) {
+        if (col.CompareTag ("Monster")) {
             SoundManager.Instance.PlaySFXClip (pickupSfx);
             gameObject.SetActive (false);
         }

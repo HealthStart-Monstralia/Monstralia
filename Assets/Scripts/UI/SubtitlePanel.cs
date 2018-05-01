@@ -27,13 +27,14 @@ public class SubtitlePanel : Singleton<SubtitlePanel> {
     /// <param name="clip">Voice over audioclip to be played alongside subtitle.</param>
     /// <param name="queueVO">Add the voice over to a queue to be played.</param>
     public void Display (string subtitle = "", AudioClip clip = null, bool queueVO = false, float duration = 3f) {
-        subtitleObject.SetActive (true);
-        if (!isDisplaying) {
-            waitCoroutine = StartCoroutine (DisplayCoroutine (subtitle, clip, queueVO, duration));
-        }
-        else {
-            StopCoroutine (waitCoroutine);
-            waitCoroutine = StartCoroutine (DisplayCoroutine (subtitle, clip, queueVO, duration));
+        if (subtitle != subtitleText.text || !isDisplaying) {
+            subtitleObject.SetActive (true);
+            if (!isDisplaying) {
+                waitCoroutine = StartCoroutine (DisplayCoroutine (subtitle, clip, queueVO, duration));
+            } else {
+                StopCoroutine (waitCoroutine);
+                waitCoroutine = StartCoroutine (DisplayCoroutine (subtitle, clip, queueVO, duration));
+            }
         }
     }
 

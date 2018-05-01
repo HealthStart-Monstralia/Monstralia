@@ -12,6 +12,7 @@ public class StickerManager : Singleton<StickerManager> {
     public string filePath;
 	public StickerSlot[] stickerSlots;
 	public Canvas mainCanvas;
+    public AudioClip welcomeClip;
 
     [SerializeField] private StickerContainer container;
 
@@ -21,6 +22,10 @@ public class StickerManager : Singleton<StickerManager> {
         stickerSlotDict = new Dictionary<DataType.StickerType, StickerSlot> ();
 
         AssignSlotsToDict ();
+        if (!GameManager.Instance.GetHasPlayerDone (DataType.GamePersistentEvents.Stickerbook)) {
+            GameManager.Instance.SetPlayerDone (DataType.GamePersistentEvents.Stickerbook);
+            SoundManager.Instance.PlayVoiceOverClip (welcomeClip);
+        }
 
         if (SoundManager.Instance)
 			SoundManager.Instance.ChangeAndPlayMusic(SoundManager.Instance.gameBackgroundMusic);
@@ -49,7 +54,8 @@ public class StickerManager : Singleton<StickerManager> {
 			if (stickerSlot.typeOfSticker != type) {
 				stickerSlot.DisableInput (true);
 			} else {
-				stickerSlot.DisableInput (false);
+                stickerSlot.EnableDrop (true);
+                stickerSlot.DisableInput (false);
 			}
 		}
 	}
@@ -57,8 +63,9 @@ public class StickerManager : Singleton<StickerManager> {
 	public void EnableOtherStickerSlots(DataType.StickerType type) {
 		foreach (StickerSlot stickerSlot in stickerSlots) {
 			stickerSlot.DisableInput (false);
-		}
-	}
+            stickerSlot.EnableDrop (false);
+        }
+    }
 
 	void Start () {
 		if (debug) GameManager.Instance.DebugStickers ();
@@ -77,6 +84,5 @@ public class StickerManager : Singleton<StickerManager> {
     public void OnDropSticker () {
         container.RemoveSticker ();
     }
-
 
 }

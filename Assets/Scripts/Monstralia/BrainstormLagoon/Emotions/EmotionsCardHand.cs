@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class EmotionsCardHand : MonoBehaviour {
     public GameObject[] cardLocations;
-
-    private int slots;
     private Animator animComp;
 
 
@@ -27,7 +25,6 @@ public class EmotionsCardHand : MonoBehaviour {
     }
 
     public void SetSlots (int numOfSlots) {
-        slots = numOfSlots;
         for (int i = 0; i < numOfSlots; i++) {
             cardLocations[i].SetActive (true);
         }

@@ -69,7 +69,7 @@ public class Maze : Singleton<Maze> {
         BMazeManager.Instance.doorInstance = CreateDoor (lastCell, lastPassage.direction);
 
         // Create finish line on last cell
-        BMazeManager.Instance.finishLine = CreateFinishline (lastCell, lastPassage.direction).GetComponent<BMazeFinishline>();
+        BMazeManager.Instance.finishLine = CreateFinishline (lastCell, lastPassage.direction);
 
         // Take all available cells and create pickups in them
         StartCoroutine (GeneratePickups ());
@@ -171,6 +171,6 @@ public class Maze : Singleton<Maze> {
         // sizeFactor calculated by Aspect Ratio * Number of Horizontal tiles * 9
         float sizeFactor = Camera.main.aspect * 10f / size.x;
         transform.localScale = Vector3.one * (sizeFactor);
-        transform.position = new Vector2 (transform.position.x * transform.localScale.x, -0.5f);
+        transform.position = new Vector2 (transform.position.x * transform.localScale.x, 0f);
     }
 }

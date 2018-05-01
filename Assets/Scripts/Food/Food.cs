@@ -8,12 +8,13 @@ using System.Collections;
  * The abstract Food class handles spawning the food into the scene.
  * Everything else is handled by the individual Food scripts.
  */
-public class Food : Colorable {
+public class Food : MonoBehaviour {
     public enum TypeOfFood { Fruit, Vegetable, Dairy, Meat, Misc } /*!< Food property for sorting into lists*/
-
+    public DataType.Color typeOfColor;
     public TypeOfFood foodType;     /*!< Food property variable to set manually in inspector */
     public string foodName;			/*!< Food's name to be used with subtitles */
 	public AudioClip clipOfName;	/*!< Audio clip of the food's name to be used with subtitles */
+    public AudioClip eatSound;
 
 	/**
 	 * \brief Spawn the food into the scene at the specified location
@@ -22,7 +23,7 @@ public class Food : Colorable {
 	 * @param scale: The scale the food is spawned at, defaults to 1.0f
 	 */
 	public virtual void Spawn(Transform spawnPos, Transform parent = null, float scale = 1.0f) {
-		if(parent != null) {
+		if (parent != null) {
 			gameObject.transform.SetParent (parent.transform);
 		}
 
@@ -31,4 +32,10 @@ public class Food : Colorable {
         gameObject.transform.localScale = new Vector3(scale, scale, 1);
 		gameObject.GetComponent<SpriteRenderer>().sortingOrder = 3;
 	}
+
+    public void EatFood () {
+        FoodList.IncreaseFoodCount (foodName);
+        Destroy (gameObject);
+        SoundManager.Instance.PlaySFXClip (eatSound);
+    }
 }

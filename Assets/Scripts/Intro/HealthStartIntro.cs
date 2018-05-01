@@ -19,12 +19,15 @@ public class HealthStartIntro : MonoBehaviour {
         yield return new WaitForSeconds (0.5f);
         fader.FadeIn ();
         yield return new WaitForSeconds (3f);
+        StartCoroutine (StartFadeOut ());
+    }
+
+    IEnumerator StartFadeOut () {
         fader.FadeOut ();
         yield return new WaitForSeconds (1.5f);
-        if (HasPlayerHasSeenIntro()) {
+        if (HasPlayerHasSeenIntro () || !SceneManager.GetSceneByName ("MonstraliaIntro").IsValid ()) {
             sceneLoader.LoadScene ("Start");
-        }
-        else {
+        } else {
             sceneLoader.LoadScene ();
         }
     }
