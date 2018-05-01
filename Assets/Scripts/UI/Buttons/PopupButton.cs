@@ -4,23 +4,23 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PopupButton : MonoBehaviour {
-    public GameObject currentPopup;
     public GameObject pagePrefab;
     public Button[] buttonsToControl;   // Any buttons in this list will be automatically disabled or enabled depending on if a popup exists
 
     // Create a popup instance from prefab, won't execute if there's already another popup.
     public void CreatePopupPage () {
-        currentPopup = Instantiate (pagePrefab, transform.parent);
-        currentPopup.SetActive (true);
-        currentPopup.GetComponent<PopupPage> ().Close = EnableButtons;
+        PopupPage.currentPopup = Instantiate (pagePrefab, transform.parent);
+        PopupPage.currentPopup.SetActive (true);
+        PopupPage.currentPopup.GetComponent<PopupPage> ().Close = EnableButtons;
         DisableButtons ();
+
     }
 
     // Delete the popup instance, won't execute if there's no popup.
     public void ClosePopupPage() {
-        if (currentPopup) {
-            currentPopup.GetComponent<PopupPage> ().OnButtonClose ();
-            currentPopup = null;
+        if (PopupPage.currentPopup) {
+            PopupPage.currentPopup.GetComponent<PopupPage> ().OnButtonClose ();
+            PopupPage.currentPopup = null;
         }
 
         EnableButtons ();

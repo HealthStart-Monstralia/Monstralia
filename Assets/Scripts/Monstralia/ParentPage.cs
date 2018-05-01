@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ParentPage : Singleton<ParentPage> {
+public class ParentPage : PopupPage {
 	public Button[] buttonsToEnable;
 	public int currentPage = 0;
 	public GameObject[] pageList;
@@ -14,12 +14,13 @@ public class ParentPage : Singleton<ParentPage> {
     [SerializeField] private AudioClip introductionVO;
     [SerializeField] private AudioClip introductionVO2;
 
-    new void Awake() {
-        base.Awake ();
+    new void Start() {
+        base.Start ();
 		SetCurrentPage (0);
 	}
 
-    private void OnEnable () {
+    private new void OnEnable () {
+        base.OnEnable ();
         if (!GameManager.Instance.GetHasPlayerDone (DataType.GamePersistentEvents.ParentPage)) {
             GameManager.Instance.SetPlayerDone (DataType.GamePersistentEvents.ParentPage);
             IntroducePlayerToPage ();
@@ -36,24 +37,31 @@ public class ParentPage : Singleton<ParentPage> {
         SoundManager.Instance.AddToVOQueue (introductionVO2);
     }
 
-    public void EnableButtons() {
-		for (int i = 0; i < buttonsToEnable.Length; i++) {
-            if (buttonsToEnable[i] != null)
-                buttonsToEnable [i].interactable = true;
-		}
-	}
-
-	public void DeleteParentPage() {
-		gameObject.SetActive (false);
-		Destroy(gameObject);
-		print ("Parent Page Deleted");
-	}
-
 	public void SetCurrentPage(int page) {
 		currentPage = page;
-		switch (currentPage) {
+        int sortingBaseNumber = 3;
+
+        for (int i = 0; i < pageTabList.Length; i++) {
+            if (i == currentPage) {
+                pageList[i].SetActive (true);
+                pageTabList[i].sortingOrder = i + sortingBaseNumber;
+                pageTabList[i].transform.localPosition = new Vector2 (
+                    pageTabList[i].transform.localPosition.x, selectedPosition);
+            }
+            else if (pageTabList[i].gameObject.activeSelf) {
+                pageList[i].SetActive (false);
+                pageTabList[i].sortingOrder = sortingBaseNumber - i;
+                pageTabList[i].transform.localPosition = new Vector2 (
+                    pageTabList[i].transform.localPosition.x, unselectedPosition);
+            }
+
+        }
+
+
+        /*
+        switch (currentPage) {
 		case 0:
-			pageList [0].SetActive (true);
+                pageList [0].SetActive (true);
 			pageTabList [0].sortingOrder = 5;
 			pageTabList [0].transform.localPosition = new Vector2 (
 				pageTabList[0].transform.localPosition.x, selectedPosition);
@@ -100,6 +108,8 @@ public class ParentPage : Singleton<ParentPage> {
 			pageTabList [2].transform.localPosition = new Vector2 (
 				pageTabList[2].transform.localPosition.x, selectedPosition);
 			break;
+
 		}
-	}
+        */
+    }
 }

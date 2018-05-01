@@ -18,6 +18,12 @@ public class MinigameButton : MonoBehaviour {
         }
     }
 
+    private void Start () {
+        Vector3 originalScale = gameObject.transform.localScale;
+        gameObject.transform.localScale = Vector3.zero;
+        LeanTween.scale (gameObject, originalScale, 0.75f).setEaseOutBack ();
+    }
+
     public void LoadGame() {
         print ("Loading: " + typeOfGame);
         if (ReviewManager.Instance) {

@@ -10,6 +10,10 @@ public class StartManager : Singleton<StartManager> {
     public Fader fader;
     public GameObject monsterSelection;
 
+    // Events
+    public delegate void GameAction ();
+    public static event GameAction OnMonsterSelected, OnMonsterUnselected;
+
     [SerializeField] private CreateMonster monsterSpawn;
     private SwitchScene sceneLoader;
 

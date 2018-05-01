@@ -82,6 +82,6 @@ public class DeleteSaveSystem : Singleton<DeleteSaveSystem> {
         Destroy (GameManager.Instance.gameObject);
         Destroy (SoundManager.Instance.gameObject);
         Destroy (ReviewManager.Instance.gameObject);
-        SceneManager.LoadScene("Start");
+        gameObject.AddComponent<SwitchScene> ().LoadScene ("Start");
     }
 }

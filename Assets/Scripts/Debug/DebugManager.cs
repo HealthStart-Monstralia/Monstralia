@@ -14,4 +14,9 @@ public class DebugManager : MonoBehaviour {
             entry.gameName = data.typeOfGame;
         }
     }
+
+    public void OnEatRandomFoodButton () {
+        GameObject foodItem = Instantiate (FoodList.GetRandomGoodFood ());
+        foodItem.GetComponent<Food> ().EatFood ();
+    }
 }

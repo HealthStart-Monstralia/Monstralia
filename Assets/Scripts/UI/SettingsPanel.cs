@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SettingsPanel : MonoBehaviour {
+public class SettingsPanel : PopupPage {
     public Slider musicSlider;
     public Slider ambientSlider;
     public Slider sfxSlider;
@@ -11,37 +11,21 @@ public class SettingsPanel : MonoBehaviour {
     public AudioClip sfxTestClip;
     public AudioClip voiceTestClip;
 
-    public Button[] buttonsToDisable;
-
-    public GameObject[] itemsToDisable;
-
     // Prevent helper sound effects from firing on start
     private bool finishedSetup = false;
-
-    public void DisableButtons () {
-        foreach (Button button in buttonsToDisable) {
-            button.interactable = false;
-        }
-
-        foreach (GameObject item in itemsToDisable) {
-            item.SetActive (false);
-        }
-    }
-
-    public void EnableButtons () {
-        foreach (Button button in buttonsToDisable) {
-            button.interactable = true;
-        }
-        foreach (GameObject item in itemsToDisable) {
-            item.SetActive (true);
-        }
-    }
 
     public void ClosePanel () {
         EnableButtons ();
     }
 
-    void Start () {
+    private new void OnDestroy () {
+        base.OnDestroy ();
+        print ("Destroyed");
+    }
+
+    private new void Start () {
+        print ("Settings Panel Start");
+        base.Start ();
         //set the value of the volume slider
         if (musicSlider)
             musicSlider.value = SoundManager.Instance.musicSource.volume;

@@ -1,35 +1,58 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PopupPage : MonoBehaviour {
+public class PopupPage : Singleton<PopupPage> {
     public static GameObject currentPopup;
     public delegate void OnClose ();
     public OnClose Close;
+    public Button[] buttonsToDisable;
+    public GameObject[] itemsToDisable;
 
-    private void Awake () {
+    protected void Start () {
         currentPopup = gameObject;
     }
 
-    private void OnDisable () {
-        //currentPopup = null;
+    protected void OnEnable () {
+        Vector3 originalScale = gameObject.transform.localScale;
+        gameObject.transform.localScale = Vector3.zero;
+        LeanTween.scale (gameObject, originalScale, 0.3f).setEaseOutBack ();
     }
 
-    private void OnDestroy () {
+    protected void OnDestroy () {
         currentPopup = null;
     }
 
-    public void OnButtonClose () {
-        Animator anim = GetComponent<Animator> ();
-        if (Close != null)
-            Close ();
-        if (anim) {
-            anim.Play ("PopupFadeOut", -1, 0f);
-        }
-        else {
-            Destroy (gameObject);
+    public void DisableButtons () {
+        for (int i = 0; i < buttonsToDisable.Length; i++) {
+            if (buttonsToDisable[i] != null)
+                buttonsToDisable[i].interactable = false;
         }
 
+        for (int i = 0; i < itemsToDisable.Length; i++) {
+            if (itemsToDisable[i] != null)
+                itemsToDisable[i].SetActive (false);
+        }
+    }
+
+    public void EnableButtons () {
+        for (int i = 0; i < buttonsToDisable.Length; i++) {
+            if (buttonsToDisable[i] != null)
+                buttonsToDisable[i].interactable = true;
+        }
+
+        for (int i = 0; i < itemsToDisable.Length; i++) {
+            if (itemsToDisable[i] != null)
+                itemsToDisable[i].SetActive (true);
+        }
+    }
+
+    public void OnButtonClose () {
+        if (Close != null)
+            Close ();
+        LeanTween.scale (gameObject, Vector3.zero, 0.3f).setEaseInBack ();
+        Destroy (gameObject, 0.3f);
     }
 
     public void DisableFromAnim () {

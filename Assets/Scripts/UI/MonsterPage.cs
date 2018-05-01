@@ -5,12 +5,39 @@ using UnityEngine.UI;
 
 public class MonsterPage : PopupPage {
     public Text monsterNameText;
+    public Text gamesPlayedText;
     public CreateMonster monsterCreator;
+    public Image monsterBackground;
+    public Color blueMonsterColor;
+    public Color greenMonsterColor;
+    public Color redMonsterColor;
+    public Color yellowMonsterColor;
+
     private Monster monster;
 
-    private void Start () {
+    private new void Start () {
+        base.Start ();
         monsterNameText.text = GameManager.Instance.GetMonsterName (GameManager.Instance.GetPlayerMonsterType());
+        gamesPlayedText.text = "Games Played: " + GameManager.Instance.GetNumOfGamesCompleted ();
         CreateMonster ();
+        DetermineColor ();
+    }
+
+    void DetermineColor () {
+        switch (GameManager.Instance.GetPlayerMonsterType ()) {
+            case DataType.MonsterType.Blue:
+                monsterBackground.color = blueMonsterColor;
+                break;
+            case DataType.MonsterType.Green:
+                monsterBackground.color = greenMonsterColor;
+                break;
+            case DataType.MonsterType.Red:
+                monsterBackground.color = redMonsterColor;
+                break;
+            case DataType.MonsterType.Yellow:
+                monsterBackground.color = yellowMonsterColor;
+                break;
+        }
     }
 
     void CreateMonster () {
@@ -22,6 +49,7 @@ public class MonsterPage : PopupPage {
         monster.AllowMonsterTickle = true;
         monster.IdleAnimationOn = true;
         monster.spawnAnimation = true;
+        monster.transform.localPosition = Vector3.zero;
     }
 
     new void OnButtonClose () {

@@ -9,6 +9,9 @@ public class IslandButton : MonoBehaviour {
     public bool lockForPublicBuilds = true;
     public string notificationText;
 
+    [SerializeField] private Color unavailableColor;
+    [SerializeField] private Color availableColor;
+
     [SerializeField] private Button buttonOfIsland;
     [SerializeField] private SwitchScene switchScene;
 
@@ -19,8 +22,13 @@ public class IslandButton : MonoBehaviour {
                 isUnlocked = true;
 #else
                 isUnlocked = false;
+            ColorBlock colorBlock = buttonOfIsland.colors;
+
+            colorBlock.normalColor = buttonOfIsland.colors.disabledColor;
+            buttonOfIsland.colors = colorBlock;
 #endif
-            buttonOfIsland.interactable = isUnlocked;
+            //buttonOfIsland.interactable = isUnlocked;
+
         }
 
     }
