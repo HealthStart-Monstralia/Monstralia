@@ -11,8 +11,12 @@ public class SettingsPanel : PopupPage {
     public AudioClip sfxTestClip;
     public AudioClip voiceTestClip;
 
+    public GameObject settings, credits;
+    public Text creditButtonText;
+
     // Prevent helper sound effects from firing on start
     private bool finishedSetup = false;
+    private bool isSettingsShowing = true;
 
     public void ClosePanel () {
         EnableButtons ();
@@ -26,6 +30,7 @@ public class SettingsPanel : PopupPage {
     private new void Start () {
         print ("Settings Panel Start");
         base.Start ();
+        ShowSettings ();
         //set the value of the volume slider
         if (musicSlider)
             musicSlider.value = SoundManager.Instance.musicSource.volume;
@@ -39,6 +44,29 @@ public class SettingsPanel : PopupPage {
             voiceOverSlider.value = SoundManager.Instance.voiceOverSource.volume;
 
         finishedSetup = true;
+    }
+
+    public void SwitchPanels () {
+        isSettingsShowing = !isSettingsShowing;
+
+        if (isSettingsShowing) {
+            ShowSettings ();
+        }
+        else {
+            ShowCredits ();
+        }
+    }
+
+    void ShowSettings () {
+        settings.SetActive (true);
+        credits.SetActive (false);
+        creditButtonText.text = "Credits";
+    }
+
+    void ShowCredits () {
+        settings.SetActive (false);
+        credits.SetActive (true);
+        creditButtonText.text = "Settings";
     }
 
     /**
