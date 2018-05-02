@@ -120,6 +120,8 @@ public class BrainbowTutorialManager : MonoBehaviour {
     }
 
     public void SkipTutorial () {
+        if (tutorialBanana)
+            Destroy (tutorialBanana);
         StopCoroutine (tutorialCoroutine);
         StartCoroutine (TutorialTearDown ());
     }

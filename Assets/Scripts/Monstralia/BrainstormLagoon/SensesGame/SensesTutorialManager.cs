@@ -13,8 +13,17 @@ public class SensesTutorialManager : MonoBehaviour {
     [SerializeField] private GameObject touch;
     [SerializeField] private GameObject smell;
     [SerializeField] private GameObject taste;
+    [SerializeField] private GameObject learnSenses;
+    [SerializeField] private GameObject welcomeSign;
 
     [SerializeField] private SensesFactory senseFactory;
+    [SerializeField] private SensesFactory senseFactory2;
+    [SerializeField] private SensesFactory senseFactory3;
+    [SerializeField] private GameObject objectToRequest;
+    [SerializeField] private GameObject objectToRequest2;
+    [SerializeField] private GameObject objectToRequest3;
+    [SerializeField] private GameObject hand;
+    [SerializeField] private Transform handSpawn;
     [SerializeField] private Text senseText;
     [SerializeField] private string[] correctLines;
     [SerializeField] private string[] wrongLines;
@@ -48,6 +57,7 @@ public class SensesTutorialManager : MonoBehaviour {
         isRunningTutorial = true;
         sensesManager.IsInputAllowed = false;
         instructionPopup.SetActive (true);
+        senseText.gameObject.SetActive (false);
         yield return new WaitForSeconds (1.0f);
 
         AudioClip tutorial1Clip = voData.FindVO ("1_tutorial_start");
@@ -80,6 +90,50 @@ public class SensesTutorialManager : MonoBehaviour {
         LeanTween.scale (smell, Vector3.one, 0.25f).setEaseOutBack ();
         SoundManager.Instance.PlayVoiceOverClip (tutorial6Clip);
         yield return new WaitForSeconds (tutorial6Clip.length);
+
+        AudioClip tutorial7Clip = voData.FindVO ("7_tap");
+        SoundManager.Instance.PlayVoiceOverClip (tutorial7Clip);
+        yield return new WaitForSeconds (tutorial7Clip.length);
+
+        AudioClip tutorial8Clip = voData.FindVO ("8_letmeshow");
+        SoundManager.Instance.PlayVoiceOverClip (tutorial8Clip);
+        yield return new WaitForSeconds (tutorial8Clip.length - 1f);
+
+        LeanTween.scale (learnSenses, Vector3.zero, 0.25f).setEaseOutBack ();
+        LeanTween.scale (welcomeSign, Vector3.zero, 0.3f).setEaseOutBack ();
+        yield return new WaitForSeconds (1f);
+
+        learnSenses.SetActive (false);
+        welcomeSign.SetActive (false);
+        senseText.gameObject.SetActive (true);
+
+        senseText.gameObject.transform.localScale = Vector3.zero;
+        LeanTween.scale (senseText.gameObject, Vector3.one, 0.3f).setEaseOutBack ();
+
+        GameObject product = senseFactory.Manufacture (objectToRequest);
+        GameObject product2 = senseFactory2.Manufacture (objectToRequest2);
+        GameObject product3 = senseFactory3.Manufacture (objectToRequest3);
+        yield return new WaitForSeconds (1f);
+
+        LeanTween.move (hand, product.transform.position, 1f);
+        yield return new WaitForSeconds (1.5f);
+
+        LeanTween.scale (hand, Vector3.one * 0.9f, 0.25f);
+        yield return new WaitForSeconds (0.5f);
+
+        SoundManager.Instance.PlayCorrectSFX ();
+        yield return new WaitForSeconds (0.5f);
+
+        LeanTween.scale (hand, Vector3.one * 0.9f, 0.25f);
+        yield return new WaitForSeconds (1f);
+
+        LeanTween.move (hand, handSpawn.transform.position, 1f);
+        yield return new WaitForSeconds (1.25f);
+
+        AudioClip tutorial9Clip = voData.FindVO ("9_nowyoutry");
+        SoundManager.Instance.PlayVoiceOverClip (tutorial9Clip);
+        sensesManager.IsInputAllowed = true;
+        yield return new WaitForSeconds (tutorial9Clip.length);
 
         if (isRunningTutorial) {
             StartCoroutine (TutorialEnd ());
