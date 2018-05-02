@@ -300,6 +300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabPath: Brainstorm Lagoon/Brain Maze/Pickups
+  usePrefabPath: 1
   pickupPrefabList: []
   scale: {x: 0.25, y: 0.25, z: 0.25}
 --- !u!4 &357238432
@@ -564,7 +565,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1287204238}
-  - {fileID: 2101632488}
   - {fileID: 1282871123}
   - {fileID: 772347115}
   m_Father: {fileID: 0}
@@ -915,7 +915,7 @@ Prefab:
     - target: {fileID: 224627324135277518, guid: 33469cb2f71fc9044bc399edb1d5323d,
         type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 224627324135277518, guid: 33469cb2f71fc9044bc399edb1d5323d,
         type: 2}
@@ -1344,6 +1344,7 @@ RectTransform:
   - {fileID: 635876711}
   - {fileID: 372522398}
   - {fileID: 311970470}
+  - {fileID: 2101632488}
   m_Father: {fileID: 136610714}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1829,7 +1830,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 555584992}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
@@ -2125,7 +2126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cell: {fileID: 0}
   direction: 0
-  finishSpot: {fileID: 1242864633}
+  isActivated: 0
 --- !u!1001 &1473829861
 Prefab:
   m_ObjectHideFlags: 0
@@ -2205,6 +2206,11 @@ Prefab:
       propertyPath: tutorialFinishline
       value: 
       objectReference: {fileID: 1473330619}
+    - target: {fileID: 114592024327917108, guid: 756bb4edc38c74542b76ba33549173ed,
+        type: 2}
+      propertyPath: loadingScreen
+      value: 
+      objectReference: {fileID: 117540, guid: 0ac25aff716064388843f1b68c1d8088, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 756bb4edc38c74542b76ba33549173ed, type: 2}
   m_IsPrefabParent: 0
@@ -2503,7 +2509,15 @@ Prefab:
     - target: {fileID: 224353930502890996, guid: d3aec06222eed294fb84dcc737502422,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 321
+      value: 326
+      objectReference: {fileID: 0}
+    - target: {fileID: 1911812662762258, guid: d3aec06222eed294fb84dcc737502422, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4497996496903974, guid: d3aec06222eed294fb84dcc737502422, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d3aec06222eed294fb84dcc737502422, type: 2}
@@ -2798,13 +2812,13 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2101632487}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1772948240}
-  m_Father: {fileID: 555584992}
-  m_RootOrder: 1
+  m_Father: {fileID: 1123047250}
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}

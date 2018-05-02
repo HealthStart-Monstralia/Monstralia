@@ -33,17 +33,18 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 	public GameObject tutorialHand;
     public float generationStepDelay;
 
+    private int numOfPickupsToSpawn;
+    private int numOfPickups = 0;
+
+    private List<GameObject> pickupPrefabList = new List<GameObject> ();
     private BrainMazeLevelConfig levelConfig;
 	private bool gameStarted = false;
 	private Coroutine tutorialCoroutine;
     private Animator monsterAnimator;
     private int score;
     private int scoreGoal;
-    private int numOfPickupsToSpawn;
-    private int numOfPickups = 0;
     private bool isTutorialRunning = false;
     private Maze mazeInstance;
-    private List<GameObject> pickupPrefabList = new List<GameObject> ();
     private Transform monsterStart;
 
     [Header ("References")]
@@ -61,18 +62,6 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 
     private new void Awake () {
         base.Awake ();
-
-        IntVector2 size = GetMazeSize ();
-        int numOfSpawnableTiles = size.x * size.y - 2;
-        if (numOfSpawnableTiles < 7) {
-            size.x = 3;
-            size.x = 3;
-        }
-
-        if (numOfPickupsToSpawn > numOfSpawnableTiles) {
-            numOfPickupsToSpawn = numOfSpawnableTiles - 1;
-        }
-
         tutorial.SetActive (false);
         pickupPrefabList.AddRange (GetFactoryList ());
     }
@@ -90,14 +79,12 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
         backButton.SetActive (true);
         tutorialHand.SetActive (false);
 
-        UpdateScoreGauge ();
-        ResetScore ();
-
         if (GameManager.Instance.GetPendingTutorial (DataType.Minigame.BrainMaze)) {
             tutorialCoroutine = StartCoroutine (RunTutorial ());
         } else {
             SelectLevel ();
             scoreGoal = levelConfig.scoreGoal;
+            ResetScore ();
             ScoreGauge.Instance.gameObject.SetActive (true);
             TimerClock.Instance.gameObject.SetActive (true);
             TimerClock.Instance.SetTimeLimit (levelConfig.timeLimit);
@@ -107,22 +94,33 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 
     IEnumerator GenerateMaze () {
         yield return null;
-        score = 0;
-        UpdateScoreGauge ();
         numOfPickups = 0;
         numOfPickupsToSpawn = scoreGoal;
+
+        IntVector2 size = levelConfig.mazeSize;
+        int numOfSpawnableTiles = size.x * size.y - 2;
+
+        if (numOfPickupsToSpawn > numOfSpawnableTiles) {
+            numOfPickupsToSpawn = numOfSpawnableTiles - 1;
+        }
+
         mazeInstance = Instantiate (mazePrefab, transform.position, Quaternion.identity) as Maze;
+        mazeInstance.SetMazeSize (levelConfig.mazeSize);
+
         StartCoroutine (mazeInstance.Generate (PostGeneration, generationStepDelay));
     }
 
     void PostGeneration () {
         TimerClock.Instance.SetTimeLimit (levelConfig.timeLimit);
-
+        doorInstance = mazeInstance.doorInstance;
+        finishLine = mazeInstance.finishLine;
         finishLine.OnFinish += OnFinish;
-        //finishLine.isActivated = true;
+        score = 0;
+        UpdateScoreGauge ();
 
         monsterStart = mazeInstance.GetFirstCell ().transform;
         mazeInstance.ScaleMaze ();
+
         StartCountdown (GameStart, 2f);
         Invoke ("CreateMonster", 1f);
     }
@@ -134,7 +132,6 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
         finishLine = tutorialFinishline;
         finishLine.OnFinish += OnFinish;
         tutorial.SetActive (true);
-		print ("RunTutorial");
 		ScoreGauge.Instance.gameObject.SetActive (false);
         TimerClock.Instance.gameObject.SetActive (false);
         yield return new WaitForSeconds(0.25f);
@@ -197,7 +194,6 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 	}
 
 	IEnumerator TutorialTearDown() {
-		print ("TutorialTearDown");
 		SubtitlePanel.Instance.Display ("Let's play!", null);
 		yield return new WaitForSeconds(2.0f);
 
@@ -209,8 +205,9 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
         PregameSetup ();
 	}
 
-    public void OnScore(BMazePickup obj) {
+    public void OnScore (BMazePickup obj) {
         score++;
+
         UpdateScoreGauge ();
         if (score >= scoreGoal) {
             doorInstance.OpenDoor ();
@@ -221,8 +218,9 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
     }
 
     public void UpdateScoreGauge () {
-        if (ScoreGauge.Instance.gameObject.activeSelf)
+        if (ScoreGauge.Instance.gameObject.activeSelf) {
             ScoreGauge.Instance.SetProgressTransition ((float)score / scoreGoal);
+        }
     }
 
     public void ResetScore () {
@@ -298,12 +296,8 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 	public void SkipLevel (GameObject button) {
 		if (isTutorialRunning) {
 			TutorialFinished ();
-		} else {
-			gameStarted = false;
-			if (GameManager.Instance)
-				GameManager.Instance.LevelUp (DataType.Minigame.BrainMaze);
-			Instance.ChangeScene ();
 		}
+        
 		button.SetActive (false);
 	}
 
@@ -321,10 +315,6 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 		    Destroy(playerMonster);
 	}
 
-    public List<GameObject> GetFactoryList () {
-        return factory.pickupPrefabList;
-    }
-
     public GameObject CreatePickup (MazeCell cell) {
         if (numOfPickupsToSpawn > 0) {
             GameObject prefabSelected;
@@ -340,7 +330,6 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
             numOfPickups++;
             GameObject product = OrderPickupFromFactory (prefabSelected, cell.transform);
             return product;
-            //return Instantiate (prefabSelected, cell.transform.position, Quaternion.identity, cell.transform);
         } else {
             return null;
         }
@@ -349,6 +338,10 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
     public GameObject OrderPickupFromFactory (GameObject prefab, Transform parent) {
         GameObject pickup = factory.Manufacture (prefab, parent);
         return pickup;
+    }
+
+    public List<GameObject> GetFactoryList () {
+        return factory.pickupPrefabList;
     }
 
     public void SetFactoryScale (float scale) {
@@ -381,10 +374,6 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 
     public bool GetIsTutorialRunning() {
         return isTutorialRunning;
-    }
-
-    public IntVector2 GetMazeSize() {
-        return levelConfig.mazeSize;
     }
 
     public bool GetInputAllowed () {

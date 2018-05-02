@@ -7,7 +7,6 @@ public class BMazeFinishline : MonoBehaviour {
 	 */
     public MazeCell cell;
     public MazeDirection direction;
-    public GameObject finishSpot;
     public bool isActivated = false;
 
     public delegate void FinishDelegate ();

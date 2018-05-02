@@ -11,6 +11,9 @@ public class Maze : Singleton<Maze> {
     public MazeWall wallPrefab;
     public MazeDoor doorPrefab;
 
+    public MazeDoor doorInstance;
+    public BMazeFinishline finishLine;
+
     public delegate void Callback ();
 
     private MazePassage lastPassage;
@@ -26,9 +29,18 @@ public class Maze : Singleton<Maze> {
     new void Awake () {
         base.Awake ();
         transform.position = Vector3.one * 0.5f;
-        size = BMazeManager.Instance.GetMazeSize();
         totalNumOfCells = size.x * size.y;
         print ("totalNumOfCells: " + totalNumOfCells);
+    }
+
+    public void SetMazeSize (IntVector2 inputSize) {
+        size = inputSize;
+        int numOfSpawnableTiles = size.x * size.y - 2;
+
+        if (numOfSpawnableTiles < 7) {
+            size.x = 3;
+            size.x = 3;
+        }
     }
 
     public IntVector2 RandomCoordinates {
@@ -66,10 +78,10 @@ public class Maze : Singleton<Maze> {
         cellList.RemoveAt (cellList.Count - 1);
 
         // Create door on last cell
-        BMazeManager.Instance.doorInstance = CreateDoor (lastCell, lastPassage.direction);
+        doorInstance = CreateDoor (lastCell, lastPassage.direction);
 
         // Create finish line on last cell
-        BMazeManager.Instance.finishLine = CreateFinishline (lastCell, lastPassage.direction);
+        finishLine = CreateFinishline (lastCell, lastPassage.direction);
 
         // Take all available cells and create pickups in them
         StartCoroutine (GeneratePickups ());
@@ -173,4 +185,5 @@ public class Maze : Singleton<Maze> {
         transform.localScale = Vector3.one * (sizeFactor);
         transform.position = new Vector2 (transform.position.x * transform.localScale.x, 0f);
     }
+
 }

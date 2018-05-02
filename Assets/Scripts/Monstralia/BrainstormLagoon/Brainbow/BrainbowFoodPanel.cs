@@ -47,8 +47,8 @@ public class BrainbowFoodPanel : MonoBehaviour {
 
     public void ClearFood () {
         foreach (Transform slot in slots) {
-            if (slot.childCount > 0) {
-                GameObject foodItem = slot.GetChild (0).gameObject;
+            if (slot.childCount > 2) {
+                GameObject foodItem = slot.GetChild (1).gameObject;
                 if (foodItem) Destroy (foodItem);
             }
         }
