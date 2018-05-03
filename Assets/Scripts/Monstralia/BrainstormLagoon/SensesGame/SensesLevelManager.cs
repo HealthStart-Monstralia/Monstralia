@@ -39,6 +39,7 @@ public class SensesLevelManager : MonoBehaviour {
         yield return new WaitForSeconds (0.1f);
 
         monster = monsterCreators[0].SpawnPlayerMonster ();
+        SensesGameManager.Instance.playerMonster = monster;
         SensesGameManager.Instance.ActivateHUD (true);
         SensesGameManager.Instance.StartCountdown (StartGame);
     }
@@ -46,13 +47,6 @@ public class SensesLevelManager : MonoBehaviour {
     private void CreateSenseItems () {
         foreach (SensesFactory factory in senseFactories) {
             GameObject product = factory.ManufactureRandom ();
-            product.AddComponent<SensesClickInput> ();
-        }
-    }
-
-    private void DestroySenseItems () {
-        foreach (SensesFactory factory in senseFactories) {
-            factory.RemoveCurrentObject ();
         }
     }
 
@@ -69,10 +63,9 @@ public class SensesLevelManager : MonoBehaviour {
     public void NextQuestion() {
         monster.ChangeEmotions (DataType.MonsterEmotions.Happy);
         SubtitlePanel.Instance.Hide ();
-        DestroySenseItems ();
         CreateSenseItems ();
         selectedSense = SelectRandomSense ();
-        senseText.text = string.Format ("What can I {0}?", selectedSense.ToString ().ToLower ());
+        senseText.text = string.Format ("What should I {0} with my {1}?", selectedSense.ToString ().ToLower (), GetBodyPartFromSense(selectedSense));
     }
 
     public void EndGame() {
@@ -118,6 +111,23 @@ public class SensesLevelManager : MonoBehaviour {
     void OnIncorrect () {
         SubtitlePanel.Instance.Display (wrongLines.GetRandomItem ());
         monster.ChangeEmotions (DataType.MonsterEmotions.Sad);
+    }
+
+    string GetBodyPartFromSense (DataType.Senses sense) {
+        switch (sense) {
+            case DataType.Senses.See:
+                return "eyes";
+            case DataType.Senses.Hear:
+                return "ears";
+            case DataType.Senses.Touch:
+                return "hands";
+            case DataType.Senses.Smell:
+                return "nose";
+            case DataType.Senses.Taste:
+                return "tongue";
+            default:
+                return "body part";
+        }
     }
 
 }

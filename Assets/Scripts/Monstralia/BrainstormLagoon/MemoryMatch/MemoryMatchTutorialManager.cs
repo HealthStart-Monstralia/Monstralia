@@ -90,11 +90,9 @@ public class MemoryMatchTutorialManager : MonoBehaviour {
         hand.gameObject.SetActive (true);
         originalScale = hand.transform.localScale;
 
-        print ("Move to Dish");
         LeanTween.move (hand.gameObject, tutorialDishes[0].transform.position, 1.5f).setEaseInOutCubic ();
         yield return new WaitForSeconds (1.75f);
 
-        print ("Click on Banana");
         LeanTween.scale (hand.gameObject, originalScale * 0.9f, 0.25f);
         yield return new WaitForSeconds (0.25f);
 
@@ -103,7 +101,6 @@ public class MemoryMatchTutorialManager : MonoBehaviour {
         tutorialDishes[0].OpenLid ();
         yield return new WaitForSeconds (0.5f);
 
-        print ("Move hand Away");
         LeanTween.move (hand.gameObject, handSpawn.transform.position, 1f).setEaseInBack ();
         yield return new WaitForSeconds (1.25f);
 

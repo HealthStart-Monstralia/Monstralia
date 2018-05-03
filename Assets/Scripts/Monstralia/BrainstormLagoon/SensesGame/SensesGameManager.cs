@@ -19,7 +19,7 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
     [Header ("Audio Clips")]
     [Tooltip ("Drag and drop the appropriate audio files to the appropriate function.")]
     [SerializeField] private AudioClip introChime;
-    [SerializeField] private AudioClip correctSfx;
+    public AudioClip correctSfx;
     [SerializeField] private AudioClip finishedSfx;
     [SerializeField] private AudioClip ambientSound;
 
@@ -78,6 +78,7 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
 
         //  && Application.platform != RuntimePlatform.WindowsEditor
         if (GameManager.Instance.GetPendingTutorial (typeOfGame) && (!skipTutorial)) {
+            tutorialManager.gameObject.SetActive (true);
             tutorialManager.StartTutorial ();
         }
         else {
@@ -120,10 +121,15 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
     public void OnScore() {
         StartCoroutine (OnGuess (true));
         SoundManager.Instance.PlaySFXClip (correctSfx);
-        score++;
-        UpdateScoreGauge ();
-        if (score >= currentLevelManager.scoreGoal) {
-            currentLevelManager.EndGame ();
+        if (tutorialManager.isRunningTutorial) {
+            tutorialManager.StartCoroutine (tutorialManager.TutorialEnd ());
+        }
+        else {
+            score++;
+            UpdateScoreGauge ();
+            if (score >= currentLevelManager.scoreGoal) {
+                currentLevelManager.EndGame ();
+            }
         }
     }
 
@@ -138,8 +144,14 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
 
     public void OnItemSense (SensesItem item) {
         if (isInputAllowed) {
-            if (currentLevelManager.DoesObjectHaveSense (item)) OnScore ();
-            else OnWrongScore ();
+            if (tutorialManager.isRunningTutorial) {
+                if (tutorialManager.DoesObjectHaveSense (item)) OnScore ();
+                else OnWrongScore ();
+            }
+            else {
+                if (currentLevelManager.DoesObjectHaveSense (item)) OnScore ();
+                else OnWrongScore ();
+            }
         }
     }
 
@@ -161,8 +173,12 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
                 currentLevelManager.NextQuestion ();
                 timerClock.StartTimer ();
             }
-            currentLevelManager.monster.ChangeEmotions (DataType.MonsterEmotions.Happy);
+            
         }
+        else if (tutorialManager.isRunningTutorial) {
+            IsInputAllowed = true;
+        }
+        playerMonster.ChangeEmotions (DataType.MonsterEmotions.Happy);
     }
 
     IEnumerator GameOverSequence () {

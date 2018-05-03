@@ -7,6 +7,7 @@ public class SensesTutorialManager : MonoBehaviour {
     public bool isRunningTutorial = false;
     public Coroutine tutorialCoroutine;
     public GameObject instructionPopup;
+    public CreateMonster monsterCreator;
 
     [SerializeField] private GameObject see;
     [SerializeField] private GameObject hear;
@@ -53,7 +54,7 @@ public class SensesTutorialManager : MonoBehaviour {
         smell.transform.localScale = Vector3.zero;
         taste.transform.localScale = Vector3.zero;
 
-        monster = SensesGameManager.Instance.playerMonster;
+
         isRunningTutorial = true;
         sensesManager.IsInputAllowed = false;
         instructionPopup.SetActive (true);
@@ -64,10 +65,14 @@ public class SensesTutorialManager : MonoBehaviour {
         SoundManager.Instance.PlayVoiceOverClip (tutorial1Clip);
         yield return new WaitForSeconds (tutorial1Clip.length);
 
+        monster = monsterCreator.SpawnPlayerMonster ();
+        SensesGameManager.Instance.playerMonster = monster;
+        sensesManager.playerMonster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
         AudioClip tutorial2Clip = voData.FindVO ("2_use_senses");
         SoundManager.Instance.PlayVoiceOverClip (tutorial2Clip);
         yield return new WaitForSeconds (tutorial2Clip.length - 1f);
 
+        sensesManager.playerMonster.ChangeEmotions (DataType.MonsterEmotions.Happy);
         LeanTween.scale (touch, Vector3.one, 0.25f).setEaseOutBack();
         yield return new WaitForSeconds (1f);
 
@@ -99,45 +104,47 @@ public class SensesTutorialManager : MonoBehaviour {
         SoundManager.Instance.PlayVoiceOverClip (tutorial8Clip);
         yield return new WaitForSeconds (tutorial8Clip.length - 1f);
 
-        LeanTween.scale (learnSenses, Vector3.zero, 0.25f).setEaseOutBack ();
-        LeanTween.scale (welcomeSign, Vector3.zero, 0.3f).setEaseOutBack ();
+        LeanTween.scale (learnSenses, Vector3.zero, 0.25f).setEaseInBack ();
+        LeanTween.scale (welcomeSign, Vector3.zero, 0.3f).setEaseInBack ();
         yield return new WaitForSeconds (1f);
 
         learnSenses.SetActive (false);
         welcomeSign.SetActive (false);
         senseText.gameObject.SetActive (true);
-
+        selectedSense = DataType.Senses.Taste;
         senseText.gameObject.transform.localScale = Vector3.zero;
         LeanTween.scale (senseText.gameObject, Vector3.one, 0.3f).setEaseOutBack ();
 
         GameObject product = senseFactory.Manufacture (objectToRequest);
+        product.AddComponent<SensesClickInput> ();
         GameObject product2 = senseFactory2.Manufacture (objectToRequest2);
+        product2.AddComponent<SensesClickInput> ();
         GameObject product3 = senseFactory3.Manufacture (objectToRequest3);
+        product3.AddComponent<SensesClickInput> ();
+        sensesManager.playerMonster.ChangeEmotions (DataType.MonsterEmotions.Thoughtful);
         yield return new WaitForSeconds (1f);
 
-        LeanTween.move (hand, product.transform.position, 1f);
+        hand.gameObject.SetActive (true);
+        Vector3 originalScale = hand.transform.localScale;
+
+        LeanTween.move (hand.gameObject, product.transform.position, 1.5f).setEaseInOutCubic ();
         yield return new WaitForSeconds (1.5f);
 
-        LeanTween.scale (hand, Vector3.one * 0.9f, 0.25f);
-        yield return new WaitForSeconds (0.5f);
+        LeanTween.scale (hand.gameObject, originalScale * 0.9f, 0.2f);
+        yield return new WaitForSeconds (0.2f);
 
-        SoundManager.Instance.PlayCorrectSFX ();
-        yield return new WaitForSeconds (0.5f);
+        LeanTween.scale (hand.gameObject, originalScale, 0.2f);
+        SoundManager.Instance.PlaySFXClip (SensesGameManager.Instance.correctSfx);
+        yield return new WaitForSeconds (0.35f);
 
-        LeanTween.scale (hand, Vector3.one * 0.9f, 0.25f);
-        yield return new WaitForSeconds (1f);
-
-        LeanTween.move (hand, handSpawn.transform.position, 1f);
+        LeanTween.move (hand.gameObject, handSpawn.transform.position, 1f).setEaseInBack ();
         yield return new WaitForSeconds (1.25f);
 
         AudioClip tutorial9Clip = voData.FindVO ("9_nowyoutry");
+        SubtitlePanel.Instance.Display ("Now you try!");
         SoundManager.Instance.PlayVoiceOverClip (tutorial9Clip);
         sensesManager.IsInputAllowed = true;
-        yield return new WaitForSeconds (tutorial9Clip.length);
-
-        if (isRunningTutorial) {
-            StartCoroutine (TutorialEnd ());
-        }
+        sensesManager.playerMonster.ChangeEmotions (DataType.MonsterEmotions.Happy);
     }
 
     public IEnumerator TutorialEnd () {
@@ -209,6 +216,23 @@ public class SensesTutorialManager : MonoBehaviour {
     void OnIncorrect () {
         SubtitlePanel.Instance.Display (wrongLines.GetRandomItem ());
         monster.ChangeEmotions (DataType.MonsterEmotions.Sad);
+    }
+
+    public bool DoesObjectHaveSense (SensesItem item) {
+        if (SensesGameManager.Instance.IsInputAllowed) {
+            if (selectedSense != DataType.Senses.NONE) {
+                foreach (DataType.Senses sense in item.validSenses) {
+                    if (sense == selectedSense) {
+                        OnCorrect ();
+                        return true;
+                    }
+                }
+
+                OnIncorrect ();
+            }
+        }
+
+        return false;
     }
 
     public bool IsSenseCorrect (DataType.Senses sense) {
