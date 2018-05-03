@@ -40,9 +40,12 @@ public class StartManager : Singleton<StartManager> {
         sceneLoader = GetComponent<SwitchScene> ();
 
         // Remove when Release is ready for save system
-        #if TEST_BUILD
-        GameManager.Instance.LoadGame ();
-        #endif
+#if TEST_BUILD
+        if (!DeleteSaveSystem.deleteAndRestart) {
+            GameManager.Instance.LoadGame ();
+            DeleteSaveSystem.deleteAndRestart = false;
+        }
+#endif
 
         monsterSpawn.gameObject.SetActive (false);
 

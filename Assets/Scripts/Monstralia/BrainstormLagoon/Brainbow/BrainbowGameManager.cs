@@ -60,7 +60,6 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
     public void OnOutOfTime () { EndGameTearDown (); }
 
     public override void PregameSetup () {
-        LeanTween.init (1600);
         SoundManager.Instance.ChangeAndPlayAmbientSound (ambientSound);
         foodPanel.DeactivateGameObject ();
 

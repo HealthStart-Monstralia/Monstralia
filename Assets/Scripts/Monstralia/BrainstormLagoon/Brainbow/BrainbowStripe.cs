@@ -15,7 +15,8 @@ public class BrainbowStripe : MonoBehaviour {
 
     public void MoveItemToSlot (GameObject item) {
         item.transform.SetParent (foodSlots[slotIndex]);
-        item.transform.localPosition = Vector3.zero;
+        LeanTween.move (item, item.transform.parent.position, 0.5f).setEaseOutExpo ();
+        //item.transform.localPosition = Vector3.zero;
         if (slotIndex < 5)
             slotIndex++;
     }

@@ -76,7 +76,8 @@ public class SensesGameManager : AbstractGameManager<SensesGameManager> {
         currentLevelManager = GetLevelConfig ();
         currentLevelManager.gameObject.SetActive (true);
 
-        if (GameManager.Instance.GetPendingTutorial (typeOfGame) && (!skipTutorial && Application.platform == RuntimePlatform.WindowsEditor)) {
+        //  && Application.platform != RuntimePlatform.WindowsEditor
+        if (GameManager.Instance.GetPendingTutorial (typeOfGame) && (!skipTutorial)) {
             tutorialManager.StartTutorial ();
         }
         else {

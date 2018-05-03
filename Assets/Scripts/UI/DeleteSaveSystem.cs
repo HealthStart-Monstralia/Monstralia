@@ -5,13 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class DeleteSaveSystem : Singleton<DeleteSaveSystem> {
     public Prompt currentPrompt;
-
     [SerializeField] private Prompt deleteSavePrompt;
     [SerializeField] private Prompt restartPrompt;
+    public static bool deleteAndRestart = false;
 
     private Animator anim;
     private bool isRestarting = false;
     private bool isTransitioning = false;
+    private bool saveDeleted = false;
 
     private new void Awake () {
         base.Awake ();
@@ -27,6 +28,7 @@ public class DeleteSaveSystem : Singleton<DeleteSaveSystem> {
 
     public void CallDeleteSave () {
         GameManager.Instance.DeleteSave ();
+        saveDeleted = true;
     }
 
     private void Update () {
@@ -49,6 +51,10 @@ public class DeleteSaveSystem : Singleton<DeleteSaveSystem> {
 
     public void OnRestartYes () {
         isRestarting = true;
+        if (saveDeleted) {
+            deleteAndRestart = true;
+        }
+
         StartCoroutine (CloseNotification ());
     }
 
@@ -61,19 +67,17 @@ public class DeleteSaveSystem : Singleton<DeleteSaveSystem> {
         print ("Close");
         if (!isTransitioning) {
             isTransitioning = true;
-            if (anim)
-                GetComponent<Animator> ().Play ("PopupFadeOut", -1, 0f);
-
             currentPrompt.OnClose ();
-            yield return new WaitForSeconds (0.5f);
 
             if (isRestarting) {
                 RestartGame ();
+                if (anim)
+                    GetComponent<Animator> ().Play ("PopupFadeOut", -1, 0f);
             }
             else {
                 Destroy (gameObject);
             }
-
+            yield return new WaitForSeconds (0.5f);
             isTransitioning = false;
         }
     }
@@ -82,6 +86,11 @@ public class DeleteSaveSystem : Singleton<DeleteSaveSystem> {
         Destroy (GameManager.Instance.gameObject);
         Destroy (SoundManager.Instance.gameObject);
         Destroy (ReviewManager.Instance.gameObject);
+        StartCoroutine (WaitToRestart ());
+    }
+
+    IEnumerator WaitToRestart () {
+        yield return new WaitForSeconds (0.1f);
         gameObject.AddComponent<SwitchScene> ().LoadScene ("Start");
     }
 }

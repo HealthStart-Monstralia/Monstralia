@@ -773,9 +773,10 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 931317147}
-  - {fileID: 1486090235}
   - {fileID: 1218314938}
   - {fileID: 1522108995}
+  - {fileID: 1486090235}
+  - {fileID: 1709048201}
   m_Father: {fileID: 1384742768}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3690,7 +3691,7 @@ RectTransform:
   m_Children:
   - {fileID: 980794688}
   m_Father: {fileID: 162543218}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -4137,6 +4138,8 @@ MonoBehaviour:
   instructionPopup: {fileID: 495790400}
   waterNotification: {fileID: 1522108994}
   isRunningTutorial: 0
+  rainbow: {fileID: 12190444}
+  handSpawn: {fileID: 1709048201}
 --- !u!4 &1384742768
 Transform:
   m_ObjectHideFlags: 0
@@ -4281,16 +4284,16 @@ RectTransform:
   m_GameObject: {fileID: 1486090234}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
   m_Children: []
   m_Father: {fileID: 162543218}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 553, y: -183.4389}
+  m_AnchoredPosition: {x: 493, y: -133}
   m_SizeDelta: {x: 128, y: 128}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0, y: 1}
 --- !u!222 &1486090236
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4304,7 +4307,7 @@ Animator:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1486090234}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 6ad1c5ffef93d7b41be4f3ec751231a9, type: 2}
   m_CullingMode: 0
@@ -4407,7 +4410,7 @@ RectTransform:
   - {fileID: 891507394}
   - {fileID: 1193129678}
   m_Father: {fileID: 162543218}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
@@ -4721,6 +4724,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stripe: {fileID: 1298286133}
+--- !u!1 &1709048200
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1709048201}
+  m_Layer: 5
+  m_Name: Hand Spawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1709048201
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1709048200}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 1}
+  m_Children: []
+  m_Father: {fileID: 162543218}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 543, y: -183}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1756093587
 GameObject:
   m_ObjectHideFlags: 0

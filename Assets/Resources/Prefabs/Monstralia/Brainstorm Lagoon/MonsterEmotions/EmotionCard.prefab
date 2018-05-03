@@ -228,6 +228,7 @@ TrailRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -243,6 +244,7 @@ TrailRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -332,6 +334,8 @@ MonoBehaviour:
   cardDraw: {fileID: 8300000, guid: 90456a14c0b82384883841bc5011ffe6, type: 3}
   cardFlip: {fileID: 8300000, guid: b3fe573dde0d0fc4b88162fe70d96ebd, type: 3}
   cardWoosh: {fileID: 8300000, guid: 7914fc0c9ef860f4593affa0565ea4dc, type: 3}
+  colorOfCard: {r: 0, g: 0, b: 0, a: 0}
+  monsterSprite: {fileID: 0}
 --- !u!114 &114928713937345046
 MonoBehaviour:
   m_ObjectHideFlags: 1

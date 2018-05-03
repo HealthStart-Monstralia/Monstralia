@@ -454,8 +454,8 @@ MonoBehaviour:
   isUnlocked: 1
   lockForPublicBuilds: 1
   notificationText: Coming soon to Monstralia!
-  unavailableColor: {r: 0, g: 0, b: 0, a: 0}
-  availableColor: {r: 0, g: 0, b: 0, a: 0}
+  unavailableColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+  availableColor: {r: 1, g: 1, b: 1, a: 1}
   buttonOfIsland: {fileID: 163429964}
   switchScene: {fileID: 163429967}
 --- !u!1 &187200991
@@ -771,10 +771,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   section: 4
   isUnlocked: 0
-  lockForPublicBuilds: 0
+  lockForPublicBuilds: 1
   notificationText: Coming soon to Monstralia!
-  unavailableColor: {r: 0, g: 0, b: 0, a: 0}
-  availableColor: {r: 0, g: 0, b: 0, a: 0}
+  unavailableColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+  availableColor: {r: 1, g: 1, b: 1, a: 1}
   buttonOfIsland: {fileID: 196991767}
   switchScene: {fileID: 0}
 --- !u!1001 &242500505
@@ -2550,8 +2550,8 @@ MonoBehaviour:
   isUnlocked: 1
   lockForPublicBuilds: 1
   notificationText: Coming soon to Monstralia!
-  unavailableColor: {r: 0, g: 0, b: 0, a: 0}
-  availableColor: {r: 0, g: 0, b: 0, a: 0}
+  unavailableColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+  availableColor: {r: 1, g: 1, b: 1, a: 1}
   buttonOfIsland: {fileID: 942510096}
   switchScene: {fileID: 942510099}
 --- !u!1 &974374118
@@ -2867,6 +2867,11 @@ Prefab:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 1159670186}
+    - target: {fileID: 224427702648599476, guid: 026b9d737f4a242c197e125197976783,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 54.599976
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 026b9d737f4a242c197e125197976783, type: 2}
   m_IsPrefabParent: 0
@@ -3749,10 +3754,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   section: 5
   isUnlocked: 0
-  lockForPublicBuilds: 0
+  lockForPublicBuilds: 1
   notificationText: Coming soon to Monstralia!
-  unavailableColor: {r: 0, g: 0, b: 0, a: 0}
-  availableColor: {r: 0, g: 0, b: 0, a: 0}
+  unavailableColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+  availableColor: {r: 1, g: 1, b: 1, a: 1}
   buttonOfIsland: {fileID: 1425475524}
   switchScene: {fileID: 0}
 --- !u!1001 &1540503306

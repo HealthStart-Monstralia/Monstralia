@@ -12,6 +12,8 @@ public class BrainbowFoodItem : MonoBehaviour {
     private SpriteRenderer spriteRenderer;
     [SerializeField] float t;
 
+    private int moveBackID;
+
     private void Awake () {
         rigBody = gameObject.GetComponent<Rigidbody2D> ();
         spriteRenderer = gameObject.GetComponent<SpriteRenderer> ();
@@ -34,6 +36,8 @@ public class BrainbowFoodItem : MonoBehaviour {
 
     private void OnMouseDown () {
         if (BrainbowGameManager.Instance.inputAllowed) {
+            LeanTween.cancel (moveBackID);
+
             offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint (new Vector3 (Input.mousePosition.x, Input.mousePosition.y, 0f));
             AudioClip clip = gameObject.GetComponent<Food> ().clipOfName;
             SubtitlePanel.Instance.Display (gameObject.name, null, true);
@@ -78,7 +82,8 @@ public class BrainbowFoodItem : MonoBehaviour {
     }
 
     void MoveBack () {
-        gameObject.transform.localPosition = Vector3.zero;
+        // gameObject.transform.localPosition = Vector3.zero;
+        moveBackID = LeanTween.move (gameObject, gameObject.transform.parent.position, 0.5f).setEaseOutExpo ().id;
         SoundManager.Instance.PlaySFXClip (BrainbowGameManager.Instance.incorrectSound);
     }
 
@@ -101,7 +106,6 @@ public class BrainbowFoodItem : MonoBehaviour {
 
         for (t = 0.0f; t < 0.1f; t += Time.deltaTime * 0.1f) {
             transform.position = Vector2.Lerp (transform.position, BrainbowGameManager.Instance.monsterObject.transform.position, t);
-            LeanTween.scale (gameObject, Vector3.zero, 2f);
             yield return null;
         }
 

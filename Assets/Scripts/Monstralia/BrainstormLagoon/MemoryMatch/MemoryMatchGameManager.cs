@@ -236,7 +236,7 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
     IEnumerator AnswerWait (float duration, DishObject dish, bool isCorrect) {
         yield return new WaitForSeconds (duration);
         isGuessing = false;
-        if (!HasScoreBeenReached ()) {
+        if (!HasScoreBeenReached () || isRunningTutorial) {
             if (isCorrect)
                 ChooseFoodToMatch ();
             else

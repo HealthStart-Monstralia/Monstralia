@@ -24,7 +24,6 @@ public class SettingsPanel : PopupPage {
 
     private new void OnDestroy () {
         base.OnDestroy ();
-        print ("Destroyed");
     }
 
     private new void Start () {

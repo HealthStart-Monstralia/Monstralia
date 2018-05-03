@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 225984950757997826}
   - component: {fileID: 82359725621295816}
   - component: {fileID: 61410630583039304}
+  - component: {fileID: 223635304386716740}
   m_Layer: 5
   m_Name: EmotionCard
   m_TagString: Untagged
@@ -228,6 +229,7 @@ TrailRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
@@ -243,6 +245,7 @@ TrailRenderer:
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
   m_SelectedEditorRenderState: 3
   m_MinimumChartSize: 4
   m_AutoUVMaxDistance: 0.5
@@ -332,6 +335,8 @@ MonoBehaviour:
   cardDraw: {fileID: 8300000, guid: 90456a14c0b82384883841bc5011ffe6, type: 3}
   cardFlip: {fileID: 8300000, guid: b3fe573dde0d0fc4b88162fe70d96ebd, type: 3}
   cardWoosh: {fileID: 8300000, guid: 7914fc0c9ef860f4593affa0565ea4dc, type: 3}
+  colorOfCard: {r: 0, g: 0, b: 0, a: 0}
+  monsterSprite: {fileID: 0}
 --- !u!114 &114928713937345046
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -431,6 +436,26 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1650590322694864}
+--- !u!223 &223635304386716740
+Canvas:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1650590322694864}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: -608095089
+  m_SortingOrder: 3
+  m_TargetDisplay: 0
 --- !u!224 &224565347592236982
 RectTransform:
   m_ObjectHideFlags: 1

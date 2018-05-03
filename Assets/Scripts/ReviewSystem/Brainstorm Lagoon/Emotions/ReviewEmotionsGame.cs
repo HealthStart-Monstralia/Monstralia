@@ -18,6 +18,7 @@ public class ReviewEmotionsGame : Singleton<ReviewEmotionsGame> {
 
     public void PrepareReview () {
         generator = GetComponent<EmotionsGenerator> ();
+        generator.MoveDeckOutOfScreen ();
         StartCoroutine (BeginReview ());
     }
 

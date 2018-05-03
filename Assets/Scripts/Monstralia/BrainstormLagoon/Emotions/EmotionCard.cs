@@ -54,7 +54,7 @@ public class EmotionCard : MonoBehaviour {
     public IEnumerator MoveToAndRemove (Transform obj) {
         CardUnflip ();
         SoundManager.Instance.PlaySFXClip (cardWoosh);
-        transform.SetParent (obj);
+        transform.SetParent (obj.parent);
         Vector2 pos = obj.position;
         for (float t = 0.0f; t < 1.0f; t += Time.deltaTime * 0.5f) {
             transform.position = Vector2.Lerp (transform.position, pos, t);

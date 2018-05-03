@@ -14,7 +14,8 @@ public class BrainbowTutorialManager : MonoBehaviour {
     public GameObject waterNotification;
     public bool isRunningTutorial = false;
     public Coroutine tutorialCoroutine;
-
+    public Transform rainbow;
+    public Transform handSpawn;
     private BrainbowGameManager brainbowManager;
 
     private void Awake () {
@@ -55,8 +56,25 @@ public class BrainbowTutorialManager : MonoBehaviour {
         yield return new WaitForSeconds (tutorial3.length - 1f);
 
         tutorialHand.SetActive (true);
-        tutorialHand.GetComponent<Animator> ().Play ("DragBananaToStripe");
-        yield return new WaitForSeconds (5f);
+        //tutorialHand.GetComponent<Animator> ().Play ("DragBananaToStripe");
+        Vector3 originalScale = tutorialHand.transform.localScale;
+
+        LeanTween.move (tutorialHand, tutorialBanana.transform.position, 1.5f).setEaseInOutExpo();
+        yield return new WaitForSeconds (1.75f);
+
+        LeanTween.scale (tutorialHand, originalScale * 0.9f, 0.25f);
+        yield return new WaitForSeconds (0.5f);
+
+        tutorialHand.GetComponent<BrainbowTutorialHand> ().GrabBanana ();
+        LeanTween.move (tutorialHand, rainbow.transform.position, 2.0f).setEaseInOutCubic ();
+        yield return new WaitForSeconds (2.25f);
+
+        LeanTween.scale (tutorialHand, originalScale, 0.25f);
+        tutorialHand.GetComponent<BrainbowTutorialHand> ().DropBanana ();
+        yield return new WaitForSeconds (0.5f);
+
+        LeanTween.move (tutorialHand, handSpawn.transform.position, 1f).setEaseInCubic ();
+        yield return new WaitForSeconds (1.25f);
 
         tutorialHand.SetActive (false);
         tutorialBanana.SetActive (false);

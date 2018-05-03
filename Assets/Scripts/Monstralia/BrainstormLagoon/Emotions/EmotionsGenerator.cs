@@ -22,6 +22,9 @@ public class EmotionsGenerator : MonoBehaviour {
 
     private List<GameObject> cardList = new List<GameObject> ();
     [SerializeField] private Transform cardSpawn;
+    [SerializeField] private Transform cards;
+    [SerializeField] private Transform cardHidePos;
+
     [SerializeField] private List<EmotionData> poolOfEmotionsData = new List<EmotionData> ();
 
     [SerializeField] private List<DataType.MonsterEmotions> emotions = new List<DataType.MonsterEmotions> ();
@@ -31,6 +34,8 @@ public class EmotionsGenerator : MonoBehaviour {
     private int numOfSlots = 2;
 
     private void Start () {
+        LeanTween.move (cards.gameObject, cardHidePos.transform.position, 0.1f).setEaseInOutCubic ();
+
         if (!cardSpawn) {
             cardSpawn = cardHand.transform;
         }
@@ -61,7 +66,7 @@ public class EmotionsGenerator : MonoBehaviour {
         isDrawingCards = true;
         ResetEmotionsList ();
         poolOfEmotions.Clear ();
-
+        MoveDeckToScreen ();
         yield return new WaitForSeconds (duration);
 
         RemoveCards ();
@@ -86,8 +91,19 @@ public class EmotionsGenerator : MonoBehaviour {
         }
         yield return new WaitForSecondsRealtime (0.5f);
 
+        MoveDeckOutOfScreen ();
         isDrawingCards = false;
         EmotionsManagerCallback ();
+    }
+
+    public void MoveDeckToScreen () {
+        cards.gameObject.SetActive (true);
+        LeanTween.move (cards.gameObject, cardSpawn.transform.position, 0.35f).setEaseInOutCubic ();
+    }
+
+    public void MoveDeckOutOfScreen () {
+        cards.gameObject.SetActive (true);
+        LeanTween.move (cards.gameObject, cardHidePos.transform.position, 0.35f).setEaseInOutCubic ();
     }
 
     private void RemoveDuplicateEmotion () {
@@ -161,7 +177,7 @@ public class EmotionsGenerator : MonoBehaviour {
                 EmotionCard card = cardHand.GetCardInSlot (slot);
                 if (card) {
                     cardList.Remove (card.gameObject);
-                    card.StartCoroutine (card.MoveToAndRemove (cardSpawn));
+                    card.StartCoroutine (card.MoveToAndRemove (cards));
                 }
             }
         }

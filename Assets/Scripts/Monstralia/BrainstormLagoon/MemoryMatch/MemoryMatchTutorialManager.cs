@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MemoryMatchTutorialManager : MonoBehaviour {
-    [SerializeField] private Animator tutorialHandAnim;
+    [SerializeField] private Transform handSpawn;
+    [SerializeField] private Transform hand;
     [SerializeField] private DishObject[] tutorialDishes;
     [SerializeField] private GameObject tutorialBanana;
     [SerializeField] private GameObject tutorialMatchBanana;
@@ -86,19 +87,38 @@ public class MemoryMatchTutorialManager : MonoBehaviour {
         SoundManager.Instance.PlayVoiceOverClip (tutorial4);
         yield return new WaitForSeconds (tutorial4.length);
 
-        tutorialHandAnim.Play ("mmhand_5_12");
-        yield return new WaitForSeconds (1.5f);
+        hand.gameObject.SetActive (true);
+        originalScale = hand.transform.localScale;
 
-        // Hand taps on the left dish cover
+        print ("Move to Dish");
+        LeanTween.move (hand.gameObject, tutorialDishes[0].transform.position, 1.5f).setEaseInOutCubic ();
+        yield return new WaitForSeconds (1.75f);
+
+        print ("Click on Banana");
+        LeanTween.scale (hand.gameObject, originalScale * 0.9f, 0.25f);
+        yield return new WaitForSeconds (0.25f);
+
+        LeanTween.scale (hand.gameObject, originalScale, 0.25f);
         SoundManager.Instance.PlayCorrectSFX ();
         tutorialDishes[0].OpenLid ();
+        yield return new WaitForSeconds (0.5f);
 
-        yield return new WaitForSeconds (3f);
+        print ("Move hand Away");
+        LeanTween.move (hand.gameObject, handSpawn.transform.position, 1f).setEaseInBack ();
+        yield return new WaitForSeconds (1.25f);
+
+        //tutorialHandAnim.Play ("mmhand_5_12");
+        //yield return new WaitForSeconds (1.5f);
+
+        // Hand taps on the left dish cover
+
+
+        //yield return new WaitForSeconds (3f);
 
         tutorialDishes[0].CloseLid ();
         yield return new WaitForSeconds (0.5f);
 
-        tutorialHandAnim.gameObject.SetActive (false);
+        hand.gameObject.SetActive (false);
         MemoryMatchGameManager.Instance.inputAllowed = true;
         AudioClip tutorial5 = voData.FindVO ("5_tutorial_nowtry");
         SubtitlePanel.Instance.Display ("Now you try!", tutorial5);
@@ -110,7 +130,7 @@ public class MemoryMatchTutorialManager : MonoBehaviour {
 
     public void SkipTutorialButton (GameObject button) {
         StopCoroutine (tutorialCoroutine);
-        tutorialHandAnim.gameObject.SetActive (false);
+        hand.gameObject.SetActive (false);
         StartCoroutine (MemoryMatchGameManager.Instance.TurnOffTutorial ());
         MemoryMatchGameManager.Instance.inputAllowed = false;
         Destroy (button);

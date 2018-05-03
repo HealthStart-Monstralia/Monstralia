@@ -20,15 +20,21 @@ public class IslandButton : MonoBehaviour {
             // Unlock section if test build, lock if public
 #if (TEST_BUILD)
                 isUnlocked = true;
-#else
-                isUnlocked = false;
             ColorBlock colorBlock = buttonOfIsland.colors;
-
-            colorBlock.normalColor = buttonOfIsland.colors.disabledColor;
+            colorBlock.normalColor = availableColor;
+            buttonOfIsland.colors = colorBlock;
+#else
+            isUnlocked = false;
+            ColorBlock colorBlock = buttonOfIsland.colors;
+            colorBlock.normalColor = unavailableColor;
             buttonOfIsland.colors = colorBlock;
 #endif
-            //buttonOfIsland.interactable = isUnlocked;
 
+        }
+        else {
+            Vector3 originalScale = gameObject.transform.localScale;
+            gameObject.transform.localScale = Vector3.zero;
+            LeanTween.scale (gameObject, originalScale, 0.75f).setEaseOutBack ();
         }
 
     }
