@@ -18,10 +18,13 @@ public class BrainbowTutorialManager : MonoBehaviour {
     public Transform handSpawn;
     private BrainbowGameManager brainbowManager;
 
+    [SerializeField] private GameObject foodPanelArrow;
+
     private void Awake () {
         instructionPopup.gameObject.SetActive (false);
         waterNotification.SetActive (false);
         tutorialHand.SetActive (false);
+        foodPanelArrow.SetActive (false);
     }
 
     public void StartTutorial() {
@@ -39,12 +42,20 @@ public class BrainbowTutorialManager : MonoBehaviour {
         brainbowManager.monsterObject.ChangeEmotions (DataType.MonsterEmotions.Happy);
         StartCoroutine (TurnOnRainbows ());
         AudioClip tutorial1 = brainbowManager.voData.FindVO ("1_tutorial_start");
-        SoundManager.Instance.PlayVoiceOverClip (tutorial1);
+        SubtitlePanel.Instance.Display ("Help me eat a rainbow of fruits and vegetables!", tutorial1);
+        //SoundManager.Instance.PlayVoiceOverClip (tutorial1);
         yield return new WaitForSeconds (tutorial1.length);
 
         AudioClip tutorial2 = brainbowManager.voData.FindVO ("2_tutorial_goodfood");
-        SoundManager.Instance.PlayVoiceOverClip (tutorial2);
-        yield return new WaitForSeconds (tutorial2.length - 0.5f);
+        SubtitlePanel.Instance.Display ("Foods that are good for your brain will appear down here!", tutorial2, false, 5f);
+        //SoundManager.Instance.PlayVoiceOverClip (tutorial2);
+        yield return new WaitForSeconds (tutorial2.length - 1.0f);
+
+        foodPanelArrow.SetActive (true);
+        Vector3 originalArrowScale = foodPanelArrow.transform.localScale;
+        foodPanelArrow.transform.localScale = Vector3.zero;
+        LeanTween.scale (foodPanelArrow, originalArrowScale, 0.5f).setEaseOutBounce();
+        yield return new WaitForSeconds (0.5f);
 
         brainbowManager.foodPanel.gameObject.SetActive (true);
         brainbowManager.foodPanel.TurnOnNumOfSlots (1);
@@ -52,16 +63,18 @@ public class BrainbowTutorialManager : MonoBehaviour {
         yield return new WaitForSeconds (1f);
 
         AudioClip tutorial3 = brainbowManager.voData.FindVO ("3_tutorial_likethis");
-        SoundManager.Instance.PlayVoiceOverClip (tutorial3);
+        SubtitlePanel.Instance.Display ("Drag the food here to the matching color of the rainbow!", tutorial3, false, 4f);
+        //SoundManager.Instance.PlayVoiceOverClip (tutorial3);
         yield return new WaitForSeconds (tutorial3.length - 1f);
 
+        LeanTween.scale (foodPanelArrow, Vector3.zero, 0.5f).setEaseInBounce();
         tutorialHand.SetActive (true);
-        //tutorialHand.GetComponent<Animator> ().Play ("DragBananaToStripe");
         Vector3 originalScale = tutorialHand.transform.localScale;
 
         LeanTween.move (tutorialHand, tutorialBanana.transform.position, 1.5f).setEaseInOutExpo();
         yield return new WaitForSeconds (1.75f);
 
+        foodPanelArrow.SetActive (false);
         LeanTween.scale (tutorialHand, originalScale * 0.9f, 0.25f);
         yield return new WaitForSeconds (0.5f);
 
@@ -140,6 +153,7 @@ public class BrainbowTutorialManager : MonoBehaviour {
     public void SkipTutorial () {
         if (tutorialBanana)
             Destroy (tutorialBanana);
+        foodPanelArrow.SetActive (false);
         StopCoroutine (tutorialCoroutine);
         StartCoroutine (TutorialTearDown ());
     }

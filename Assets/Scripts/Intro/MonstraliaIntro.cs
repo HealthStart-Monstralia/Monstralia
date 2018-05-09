@@ -11,7 +11,7 @@ public class MonstraliaIntro : MonoBehaviour {
 
     private void Awake () {
         sceneLoader = GetComponent<SwitchScene> ();
-        sceneLoader.loadingScreen = loadScreen;
+        //sceneLoader.loadingScreen = loadScreen;
     }
 
     private void Start () {

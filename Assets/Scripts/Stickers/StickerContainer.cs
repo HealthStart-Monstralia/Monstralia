@@ -9,6 +9,7 @@ public class StickerContainer : MonoBehaviour {
 
     [SerializeField] private Button buttonLeft;
     [SerializeField] private Button buttonRight;
+    [SerializeField] private Text instructionText;
     private List<GameObject> stickerList = new List<GameObject> ();
     private int index = 0;
     private float originalWidth, originalHeight;    // For rescaling the stickers
@@ -81,9 +82,20 @@ public class StickerContainer : MonoBehaviour {
     void ActivateButtons (bool activate) {
         buttonLeft.interactable = activate;
         buttonRight.interactable = activate;
+
+        UpdateHelpTextActive ();
+    }
+
+    public void UpdateHelpTextActive () {
+        if (stickerList.Count <= 0) {
+            instructionText.gameObject.SetActive (false);
+        } else {
+            instructionText.gameObject.SetActive (true);
+        }
     }
 
     void DisableStickerPanel () {
+        instructionText.gameObject.SetActive (false);
         transform.parent.gameObject.GetComponent<Button> ().interactable = false;
     }
 }

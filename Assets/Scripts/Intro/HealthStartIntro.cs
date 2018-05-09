@@ -10,7 +10,7 @@ public class HealthStartIntro : MonoBehaviour {
 
     private void Start () {
         sceneLoader = GetComponent<SwitchScene> ();
-        sceneLoader.loadingScreen = loadScreen;
+        //sceneLoader.loadingScreen = loadScreen;
         StartCoroutine (Intro ());
     }
 

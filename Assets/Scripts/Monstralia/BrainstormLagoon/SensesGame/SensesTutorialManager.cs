@@ -62,46 +62,57 @@ public class SensesTutorialManager : MonoBehaviour {
         yield return new WaitForSeconds (1.0f);
 
         AudioClip tutorial1Clip = voData.FindVO ("1_tutorial_start");
-        SoundManager.Instance.PlayVoiceOverClip (tutorial1Clip);
+        AudioClip tutorial2Clip = voData.FindVO ("2_use_senses");
+        AudioClip tutorial3Clip = voData.FindVO ("3_taste");
+        AudioClip tutorial4Clip = voData.FindVO ("4_hear");
+        AudioClip tutorial5Clip = voData.FindVO ("5_see");
+        AudioClip tutorial6Clip = voData.FindVO ("6_smell");
+        AudioClip tutorial7aClip = voData.FindVO ("7a_tap");
+        AudioClip tutorial7bClip = voData.FindVO ("7b_tap");
+        AudioClip tutorial7cClip = voData.FindVO ("7c_tap");
+        AudioClip tutorial8Clip = voData.FindVO ("8_letmeshow");
+        SubtitlePanel.Instance.Display ("Welcome to Senses Beach!", tutorial1Clip);
         yield return new WaitForSeconds (tutorial1Clip.length);
 
         monster = monsterCreator.SpawnPlayerMonster ();
         SensesGameManager.Instance.playerMonster = monster;
         sensesManager.playerMonster.ChangeEmotions (DataType.MonsterEmotions.Joyous);
-        AudioClip tutorial2Clip = voData.FindVO ("2_use_senses");
-        SoundManager.Instance.PlayVoiceOverClip (tutorial2Clip);
+
+        float waitTime = tutorial2Clip.length + tutorial3Clip.length + tutorial4Clip.length + tutorial5Clip.length + tutorial6Clip.length;
+        SubtitlePanel.Instance.Display ("Let's use our five senses to touch, taste, hear, see, and smell the items on the beach!", tutorial2Clip, false, waitTime);
         yield return new WaitForSeconds (tutorial2Clip.length - 1f);
 
         sensesManager.playerMonster.ChangeEmotions (DataType.MonsterEmotions.Happy);
         LeanTween.scale (touch, Vector3.one, 0.25f).setEaseOutBack();
         yield return new WaitForSeconds (1f);
 
-        AudioClip tutorial3Clip = voData.FindVO ("3_taste");
         SoundManager.Instance.PlayVoiceOverClip (tutorial3Clip);
         LeanTween.scale (taste, Vector3.one, 0.25f).setEaseOutBack ();
         yield return new WaitForSeconds (tutorial3Clip.length);
 
-        AudioClip tutorial4Clip = voData.FindVO ("4_hear");
         SoundManager.Instance.PlayVoiceOverClip (tutorial4Clip);
         LeanTween.scale (hear, Vector3.one, 0.25f).setEaseOutBack ();
         yield return new WaitForSeconds (tutorial4Clip.length);
 
-        AudioClip tutorial5Clip = voData.FindVO ("5_see");
         SoundManager.Instance.PlayVoiceOverClip (tutorial5Clip);
         LeanTween.scale (see, Vector3.one, 0.25f).setEaseOutBack ();
         yield return new WaitForSeconds (tutorial5Clip.length);
 
-        AudioClip tutorial6Clip = voData.FindVO ("6_smell");
         LeanTween.scale (smell, Vector3.one, 0.25f).setEaseOutBack ();
         SoundManager.Instance.PlayVoiceOverClip (tutorial6Clip);
         yield return new WaitForSeconds (tutorial6Clip.length);
 
-        AudioClip tutorial7Clip = voData.FindVO ("7_tap");
-        SoundManager.Instance.PlayVoiceOverClip (tutorial7Clip);
-        yield return new WaitForSeconds (tutorial7Clip.length);
+        SubtitlePanel.Instance.Display ("Our senses help keep us safe!", tutorial7aClip, false, tutorial7aClip.length);
+        yield return new WaitForSeconds (tutorial7aClip.length);
 
-        AudioClip tutorial8Clip = voData.FindVO ("8_letmeshow");
-        SoundManager.Instance.PlayVoiceOverClip (tutorial8Clip);
+        SubtitlePanel.Instance.Display ("I will ask you to find something with one of your senses.", tutorial7bClip, false, tutorial7bClip.length);
+        yield return new WaitForSeconds (tutorial7bClip.length);
+
+        SubtitlePanel.Instance.Display ("You tap the correct item on the screen.", tutorial7cClip, false, tutorial7cClip.length);
+        yield return new WaitForSeconds (tutorial7cClip.length);
+
+
+        SubtitlePanel.Instance.Display ("Let me show you!", tutorial8Clip, false, tutorial8Clip.length);
         yield return new WaitForSeconds (tutorial8Clip.length - 1f);
 
         LeanTween.scale (learnSenses, Vector3.zero, 0.25f).setEaseInBack ();

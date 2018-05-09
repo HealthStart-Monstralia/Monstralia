@@ -46,6 +46,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
     private bool isTutorialRunning = false;
     private Maze mazeInstance;
     private Transform monsterStart;
+    private GameObject loadingScreen; // For hiding the maze generation
 
     [Header ("References")]
     [SerializeField] private Maze mazePrefab;
@@ -107,6 +108,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
         mazeInstance = Instantiate (mazePrefab, transform.position, Quaternion.identity) as Maze;
         mazeInstance.SetMazeSize (levelConfig.mazeSize);
 
+        loadingScreen = GameManager.Instance.CreateLoadingScreen ();
         StartCoroutine (mazeInstance.Generate (PostGeneration, generationStepDelay));
     }
 
@@ -120,6 +122,11 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 
         monsterStart = mazeInstance.GetFirstCell ().transform;
         mazeInstance.ScaleMaze ();
+
+        if (loadingScreen) {
+            LeanTween.alphaCanvas (loadingScreen.GetComponent<CanvasGroup>(), 0f, 1.0f).setEaseInCubic ();
+            Destroy (loadingScreen, 1.0f);
+        }
 
         StartCountdown (GameStart, 2f);
         Invoke ("CreateMonster", 1f);
@@ -139,22 +146,26 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 		SubtitlePanel.Instance.Display ("Welcome to Brain Maze!", null);
 		SoundManager.Instance.StopPlayingVoiceOver();
         AudioClip tutorial1 = voData.FindVO ("1_tutorial_start");
-        AudioClip tutorial2 = voData.FindVO ("2_tutorial_drag");
-        AudioClip tutorial3 = voData.FindVO ("3_tutorial_letmeshow");
+        AudioClip tutorial2 = voData.FindVO ("2a_tutorial_beingactive");
+        AudioClip tutorial3 = voData.FindVO ("2b_tutorial_helpmetry");
+        AudioClip tutorial4 = voData.FindVO ("3_tutorial_letmeshow");
         SoundManager.Instance.PlayVoiceOverClip(tutorial1);
 		yield return new WaitForSeconds(tutorial1.length);
 
-		SubtitlePanel.Instance.Hide ();
+		//SubtitlePanel.Instance.Hide ();
         monsterStart = tutorialStartingSpot;
         CreateMonster ();
         playerMonster.transform.localScale = Vector3.one * 0.2f;
         InputAllowed = false;
 
-        SoundManager.Instance.PlayVoiceOverClip (tutorial2);
+        SubtitlePanel.Instance.Display ("Being active gets oxygen to our brains.", tutorial2, false, tutorial2.length);
         yield return new WaitForSeconds (tutorial2.length);
 
-        SoundManager.Instance.PlayVoiceOverClip (tutorial3);
+        SubtitlePanel.Instance.Display ("Help me try all these healthy activities before time runs out!", tutorial3, false, tutorial3.length);
         yield return new WaitForSeconds (tutorial3.length);
+
+        SubtitlePanel.Instance.Display ("Let me show you!", tutorial4, false, tutorial4.length);
+        yield return new WaitForSeconds (tutorial4.length);
 
         tutorialHand.SetActive (true);
 		tutorialHand.GetComponent<Animator> ().Play ("BMaze_HandMoveMonster");
@@ -176,13 +187,10 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
         playerMonster.transform.position = monsterStart.position;
         tutorialPickup.SetActive (true);
         InputAllowed = true;
-        SubtitlePanel.Instance.Hide ();
 		yield return new WaitForSeconds(2f);
 
 		SubtitlePanel.Instance.Display ("Get all the pickups!", null);
 		yield return new WaitForSeconds(5f);
-
-		SubtitlePanel.Instance.Hide ();
 	}
 
 	public void TutorialFinished() {
@@ -194,7 +202,7 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
 	}
 
 	IEnumerator TutorialTearDown() {
-		SubtitlePanel.Instance.Display ("Let's play!", null);
+        SubtitlePanel.Instance.Display ("Let's play!", voData.FindVO ("letsplay"));
 		yield return new WaitForSeconds(2.0f);
 
 		isTutorialRunning = false;
@@ -253,11 +261,22 @@ public class BMazeManager : AbstractGameManager<BMazeManager> {
         InputAllowed = false;
 
         MonsterVictoryDance ();
-        AudioClip youdidit = voData.FindVO ("youdidit");
-        SoundManager.Instance.AddToVOQueue (youdidit);
+
+        AudioClip endClip;
+        string endText;
+        if (Random.Range (0.0f, 0.5f) < 0.5f) {
+            endClip = voData.FindVO ("goodjob");
+            endText = "Good job!";
+        }
+        else {
+            endClip = voData.FindVO ("youdidit");
+            endText = "You did it!";
+        }
+
+        SubtitlePanel.Instance.Display (endText, endClip, false, endClip.length);
         TimerClock.Instance.StopTimer ();
 
-        StartCoroutine (EndGameWait (3f));
+        StartCoroutine (EndGameWait (3.5f));
     }
 
     void MonsterVictoryDance() {

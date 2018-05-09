@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 11406052}
   - component: {fileID: 223808804075633492}
   - component: {fileID: 114007828554531182}
+  - component: {fileID: 225594145634613952}
   m_Layer: 5
   m_Name: LoadingScreen
   m_TagString: Untagged
@@ -335,3 +336,14 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 158}
   m_SizeDelta: {x: 514.9, y: 514.9}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &225594145634613952
+CanvasGroup:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 117540}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0

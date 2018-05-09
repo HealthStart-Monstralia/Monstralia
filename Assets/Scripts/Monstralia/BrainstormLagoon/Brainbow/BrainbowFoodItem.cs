@@ -56,7 +56,7 @@ public class BrainbowFoodItem : MonoBehaviour {
                 InsertItemIntoStripe (stripeToAttach);
 
                 // Random praise VO line
-                if (Random.value < 0.2f) {
+                if (Random.value < 0.2f && !BrainbowGameManager.Instance.tutorialManager.isRunningTutorial) {
                     int randomClipIndex = Random.Range (0, BrainbowGameManager.Instance.correctMatchClips.Length);
                     SoundManager.Instance.AddToVOQueue (BrainbowGameManager.Instance.correctMatchClips[randomClipIndex]);
                 }

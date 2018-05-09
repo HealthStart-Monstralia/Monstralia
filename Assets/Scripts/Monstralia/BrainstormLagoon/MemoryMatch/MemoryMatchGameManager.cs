@@ -61,7 +61,9 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         // Use AddRange to copy lists. Assigning lists does not copy over the list, only the reference.
         foodList.AddRange (FoodList.GetGoodFoodsList ());
 
-		if (GameManager.Instance.GetPendingTutorial(DataType.Minigame.MemoryMatch)) {
+
+
+        if (GameManager.Instance.GetPendingTutorial(DataType.Minigame.MemoryMatch)) {
             isRunningTutorial = true;
             tutorialManager.StartTutorial (ref selectedFood);
         }
@@ -78,7 +80,7 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
         yield return new WaitForSeconds (1.0f);
 
         SubtitlePanel.Instance.Display ("Good job!", goodjobClips[1]);
-        yield return new WaitForSeconds (1.0f);
+        yield return new WaitForSeconds (goodjobClips[1].length);
 
         StartCoroutine (TurnOffTutorial ());
     }
@@ -311,8 +313,12 @@ public class MemoryMatchGameManager : AbstractGameManager<MemoryMatchGameManager
                 yield return new WaitForSeconds (0.5f);
             }
 		}
+
         monsterAnimator.Play ("MM_Dance", -1, 0f);
+        SubtitlePanel.Instance.Display ("Nice job!", voData.FindVO ("nicejob"), false, 3f);
         yield return new WaitForSeconds (1f);
+
+
         GameEnd ();
 	}
 

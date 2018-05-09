@@ -25,7 +25,6 @@ public class ScoreGauge : Singleton<ScoreGauge> {
 
     IEnumerator ProgressTransition(float initial, float desired) {
         isTransitioning = true;
-        print ("Scorebar transitioning");
         float t = 0f;
         while (t < 1f) {
             t += Time.deltaTime * 4;

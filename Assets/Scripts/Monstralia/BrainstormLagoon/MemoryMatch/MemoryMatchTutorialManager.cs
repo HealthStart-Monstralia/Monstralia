@@ -47,12 +47,17 @@ public class MemoryMatchTutorialManager : MonoBehaviour {
         yield return new WaitForSeconds (1f);
 
         AudioClip tutorial1 = voData.FindVO ("1_tutorial_welcome");
-        AudioClip tutorial2 = voData.FindVO ("2_tutorial_platters");
-        SoundManager.Instance.PlayVoiceOverClip (tutorial1);
+        AudioClip tutorial2a = voData.FindVO ("2a_tutorial_platters");
+        AudioClip tutorial2b = voData.FindVO ("2b_tutorial_platters");
+
+        SubtitlePanel.Instance.Display ("Your memory keeps you safe and healthy.", tutorial1, false, tutorial1.length);
         yield return new WaitForSeconds (tutorial1.length);
 
-        SoundManager.Instance.PlayVoiceOverClip (tutorial2);
-        yield return new WaitForSeconds (tutorial2.length);
+        SubtitlePanel.Instance.Display ("I'll show you some foods that are good for my brain-", tutorial2a, false, tutorial2a.length);
+        yield return new WaitForSeconds (tutorial2a.length);
+
+        SubtitlePanel.Instance.Display ("-hide them under the platters, and mix them up.", tutorial2b, false, tutorial2b.length);
+        yield return new WaitForSeconds (tutorial2b.length);
 
         tutDish1.SpawnLids (true);
         yield return new WaitForSeconds (0.25f);
@@ -67,11 +72,15 @@ public class MemoryMatchTutorialManager : MonoBehaviour {
             dish.OpenLid ();
         }
 
-        AudioClip tutorial3 = voData.FindVO ("3_tutorial_rememberfood");
+        AudioClip tutorial3a = voData.FindVO ("3a_tutorial_rememberfood");
+        AudioClip tutorial3b = voData.FindVO ("3b_tutorial_rememberfood");
         AudioClip tutorial4 = voData.FindVO ("4_tutorial_letmeshow");
-        SoundManager.Instance.PlayVoiceOverClip (tutorial3);
 
-        yield return new WaitForSeconds (tutorial3.length - 1.0f);
+        SubtitlePanel.Instance.Display ("Remember what is under the platters.", tutorial3a, false, tutorial3a.length);
+        yield return new WaitForSeconds (tutorial3a.length);
+
+        SubtitlePanel.Instance.Display ("Pick the platter with the food that matches the food at the bottom.", tutorial3b, false, tutorial3b.length);
+        yield return new WaitForSeconds (tutorial3b.length - 1.0f);
 
         tutorialMatchBanana.gameObject.SetActive (true);
         Vector3 originalScale = tutorialMatchBanana.transform.localScale;
@@ -84,7 +93,7 @@ public class MemoryMatchTutorialManager : MonoBehaviour {
             dish.CloseLid ();
         }
 
-        SoundManager.Instance.PlayVoiceOverClip (tutorial4);
+        SubtitlePanel.Instance.Display ("Here! I'll show you with this banana!", tutorial4, false, tutorial4.length);
         yield return new WaitForSeconds (tutorial4.length);
 
         hand.gameObject.SetActive (true);

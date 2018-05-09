@@ -459,4 +459,8 @@ public class GameManager : SingletonPersistent<GameManager> {
     public void TurnOffFPSDisplay () {
         fpsCounter.SetActive (false);
     }
+
+    public GameObject CreateLoadingScreen () {
+        return Instantiate (loadingScreenPrefab);
+    }
 }

@@ -91,7 +91,7 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
         DrawCards (0.5f);
         yield return new WaitForSeconds (0.5f);
 
-        SubtitlePanel.Instance.Display ("Match my emotion!", null);
+        SubtitlePanel.Instance.Display ("Find the emotion that match mine!", null);
         yield return new WaitForSeconds (2.5f);
         
         StartCountdown (PostCountdownSetup);
@@ -115,30 +115,38 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
             CreateMonster ();
         ChangeMonsterEmotion (DataType.MonsterEmotions.Happy);
 
-        SubtitlePanel.Instance.Display ("Welcome to Monster Feelings!", null);
 		SoundManager.Instance.StopPlayingVoiceOver();
-        AudioClip tutorial1 = voData.FindVO ("1_tutorial_start");
-		SoundManager.Instance.PlayVoiceOverClip(tutorial1);
-        
-        float secsToRemove = 8f;
-        yield return new WaitForSeconds(tutorial1.length - secsToRemove);
+        AudioClip tutorial1a = voData.FindVO ("1a_tutorial_start");
+        AudioClip tutorial1b = voData.FindVO ("1b_tutorial_start");
+        AudioClip tutorial1c = voData.FindVO ("1c_tutorial_start");
+        AudioClip tutorial1d = voData.FindVO ("1d_tutorial_start");
+        AudioClip tutorial1e = voData.FindVO ("1e_tutorial_start");
+
+        SubtitlePanel.Instance.Display ("Welcome to Monster Feelings!", tutorial1a, false, tutorial1a.length);
+        generator.cardHand.gameObject.SetActive (true);
+        yield return new WaitForSeconds(tutorial1a.length);
 
         generator.SelectTutorialEmotions ();
+        SubtitlePanel.Instance.Display ("Our emotions keep us safe and help us take care of one another!", tutorial1b, false, tutorial1b.length + 0.5f);
+        yield return new WaitForSeconds (tutorial1b.length + 0.5f);
+
+        SubtitlePanel.Instance.Display ("I'm going to make a face!", tutorial1c, false, tutorial1c.length + 1.0f);
+        yield return new WaitForSeconds (tutorial1c.length);
+
         ChangeMonsterEmotion (generator.GetSelectedEmotion ());
-        generator.cardHand.gameObject.SetActive (true);
-        SubtitlePanel.Instance.Hide ();
-        float secsToRemoveAgain = 4f;
-        yield return new WaitForSeconds (secsToRemove - secsToRemoveAgain);
+        yield return new WaitForSeconds (1f);
 
         generator.MoveDeckToScreen ();
-        yield return new WaitForSeconds (0.5f);
+        SubtitlePanel.Instance.Display ("Click on the monster's face that matches the feeling you see on my face!", tutorial1d, false, tutorial1d.length);
+        yield return new WaitForSeconds (1f);
 
         tutorialCardsDrawn = true;
         TutorialDrawCards ();
-        yield return new WaitForSeconds (0.5f);
+        yield return new WaitForSeconds (tutorial1d.length - 1f);
 
         generator.MoveDeckOutOfScreen ();
-        yield return new WaitForSeconds (secsToRemoveAgain - 1f);
+        SubtitlePanel.Instance.Display ("Click the card above me, like this!", tutorial1e, false, tutorial1e.length);
+        yield return new WaitForSeconds (tutorial1e.length);
 
         tutorialHand.SetActive (true);
 		tutorialHand.GetComponent<Animator> ().Play ("EM_HandMoveMonster");
@@ -147,9 +155,6 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
 		SubtitlePanel.Instance.Display (generator.GetSelectedEmotion().ToString(), null);
         SoundManager.Instance.PlayCorrectSFX ();
         yield return new WaitForSeconds(2.0f);
-
-		SubtitlePanel.Instance.Hide ();
-		yield return new WaitForSeconds(1.0f);
 
         AudioClip nowyoutry = voData.FindVO ("nowyoutry");
         SubtitlePanel.Instance.Display ("Now you try!", nowyoutry);
@@ -181,7 +186,7 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
         generator.RemoveCards ();
         AudioClip letsplay = voData.FindVO ("letsplay");
         SoundManager.Instance.StopPlayingVoiceOver ();
-        SubtitlePanel.Instance.Display ("Let's play!", letsplay);
+        SubtitlePanel.Instance.Display ("Perfect! Let's play!", letsplay);
 		yield return new WaitForSeconds(letsplay.length);
 
         if (tutorialCardsDrawn)
@@ -227,21 +232,22 @@ public class EmotionsGameManager : AbstractGameManager<EmotionsGameManager> {
         generator.RemoveCards ();
 
         AudioClip end = voData.FindVO ("emotions_end");
-
+        string endText = "Nice job! You matched the emotions correctly!";
         if (!GameManager.Instance.GetIsStickerUnlocked(typeOfGame)) {
             end = voData.FindVO ("emotions_end3");
+            endText = "Great job! Recognizing emotions happens mainly in your brain's hippocampus!";
         }
         else {
             if (Random.Range (0f, 1f) <= 0.5f) {
                 end = voData.FindVO ("emotions_end2");
+                endText = "You helped me recognize others' emotions!";
             }
         }
 
         yield return new WaitForSeconds (0.5f);
 
-        SubtitlePanel.Instance.Display ("Great job! You matched " + score + " emotions!");
-        SoundManager.Instance.AddToVOQueue (end);
-        yield return new WaitForSeconds (1.0f);
+        SubtitlePanel.Instance.Display (endText, end, true, end.length);
+        yield return new WaitForSeconds (0.5f);
 
         generator.MoveDeckOutOfScreen ();
         if (generator.cardHand.gameObject.activeSelf)

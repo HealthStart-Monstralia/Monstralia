@@ -241,9 +241,10 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
             monsterObject.ChangeEmotions (DataType.MonsterEmotions.Joyous);
             yield return new WaitForSeconds (2f + 0.1f * activeFoods.Count);
 
-            SoundManager.Instance.AddToVOQueue (voData.FindVO ("yay"));
+            AudioClip winClip = voData.FindVO ("yay");
+            SubtitlePanel.Instance.Display ("Mmm yummy! you fed me a rainbow of fruits and vegetables!", winClip, false, winClip.length);
             monsterObject.ChangeEmotions (DataType.MonsterEmotions.Happy);
-            yield return new WaitForSeconds (3f);
+            yield return new WaitForSeconds (winClip.length);
 
             StartCoroutine (TurnOffRainbows ());
 
@@ -266,8 +267,9 @@ public class BrainbowGameManager : AbstractGameManager<BrainbowGameManager> {
         else {
             monsterObject.ChangeEmotions (DataType.MonsterEmotions.Sad);
             StartCoroutine (TurnOffRainbows ());
-            SoundManager.Instance.PlayVoiceOverClip (voData.FindVO ("dnf"));
-            yield return new WaitForSeconds (3f);
+            AudioClip loseclip = voData.FindVO ("dnf");
+            SubtitlePanel.Instance.Display ("Uh oh, you didn't finish the rainbow in time. Try again!", loseclip, false, loseclip.length);
+            yield return new WaitForSeconds (loseclip.length);
 
             GameOver (DataType.GameEnd.FailedLevel);
         }

@@ -168,7 +168,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneToLoadName: BrainstormLagoon
-  loadingScreen: {fileID: 0}
 --- !u!114 &70895568
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1110,6 +1109,11 @@ Prefab:
         type: 2}
       propertyPath: m_AnchoredPosition.y
       value: -35
+      objectReference: {fileID: 0}
+    - target: {fileID: 114401933989589558, guid: d3aec06222eed294fb84dcc737502422,
+        type: 2}
+      propertyPath: m_Text
+      value: You helped me recognize others' emotions!
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d3aec06222eed294fb84dcc737502422, type: 2}

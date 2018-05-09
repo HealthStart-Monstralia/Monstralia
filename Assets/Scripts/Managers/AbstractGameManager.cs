@@ -32,6 +32,12 @@ public abstract class AbstractGameManager<T> : MonoBehaviour where T : Component
         } else if (instance != this)  {
             Destroy (gameObject);
         }
+
+        GameObject loadingScreen = GameManager.Instance.CreateLoadingScreen ();
+        if (loadingScreen) {
+            LeanTween.alphaCanvas (loadingScreen.GetComponent<CanvasGroup> (), 0f, 0.5f).setEaseInCubic ();
+            Destroy (loadingScreen, 0.5f);
+        }
     }
 
     void OnEnable () {

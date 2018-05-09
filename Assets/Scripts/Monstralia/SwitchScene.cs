@@ -4,18 +4,15 @@ using System.Collections;
 
 public class SwitchScene: MonoBehaviour {
 	public string sceneToLoadName;
-    public GameObject loadingScreen;
 
     public void LoadScene() {
-        if (SoundManager.Instance)
+        if (SoundManager.Instance) {
             SoundManager.Instance.StopAmbientSound ();
-
-        if (loadingScreen) {
-            Instantiate (loadingScreen, transform.root);
+            SoundManager.Instance.StopPlayingVoiceOver ();
         }
+
         if (GameManager.Instance) {
-            loadingScreen = GameManager.Instance.loadingScreenPrefab;
-            Instantiate (loadingScreen, transform.root);
+            GameManager.Instance.CreateLoadingScreen ();
         }
 
         if (sceneToLoadName != "")
@@ -27,14 +24,14 @@ public class SwitchScene: MonoBehaviour {
     }
 
 	public void LoadScene(string name) {
-        if (loadingScreen)
-            Instantiate (loadingScreen, transform.root);
-		SceneManager.LoadScene (name);
+        sceneToLoadName = name;
+        LoadScene ();
 	}
 
     public void LoadScene (Scene scene) {
-        if (loadingScreen)
-            Instantiate (loadingScreen, transform.root);
+        if (GameManager.Instance) {
+            GameManager.Instance.CreateLoadingScreen ();
+        }
         SceneManager.LoadScene (scene.name);
     }
 
@@ -85,8 +82,9 @@ public class SwitchScene: MonoBehaviour {
     }
 
     public void ReloadScene () {
-        if (loadingScreen)
-            Instantiate (loadingScreen, transform.root);
+        if (GameManager.Instance) {
+            GameManager.Instance.CreateLoadingScreen ();
+        }
         SceneManager.LoadScene (SceneManager.GetActiveScene().name);
     }
 }

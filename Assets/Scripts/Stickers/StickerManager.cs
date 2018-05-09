@@ -45,6 +45,7 @@ public class StickerManager : Singleton<StickerManager> {
                 stickerSlotDict[typeOfSticker].ReceiveSticker (stickerObject.GetComponent<StickerBehaviour> (), true);
             } else {
                 container.AddSticker (stickerPrefab);
+                container.UpdateHelpTextActive ();
             }
         }
     }
